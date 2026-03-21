@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 import './App.css'
-import { Game } from './components/game/Game'
-import { GameProvider } from './state/game/provider'
+import { Game } from './components/Game'
+import { GameProvider } from './game/state/provider'
 
-function App() {
+function App() { 
 
 return (
   <GameProvider>
