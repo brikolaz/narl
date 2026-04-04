@@ -34,15 +34,21 @@ export function resolvePickUpAction(
     const backpackIsFull = itemsInBackpack === backpackSize;
 
     if (backpackIsFull) {
-        return defaultActionResolution;
+        const nextState = addLog(state, {
+            message: "Can't pick up item. Backpack is full.",
+            turn: state.turn
+        });
+
+        return {
+            nextState,
+            consumesTurn: false,
+        };
     }
 
     let nextItems = cloneDeep(state.world.items);
     let itemToPickUp: ItemEntity | undefined = undefined;
 
-
     for (let i = nextItems.length - 1; i >= 0; i--) {
-
         const item = nextItems[i];
         const itemPositionComponent = getComponentByType(item, PositionComponent);
         if (playerPosition === itemPositionComponent?.position) {
