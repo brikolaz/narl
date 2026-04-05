@@ -7,6 +7,7 @@ export type SizeComponentProps = {
 
 export class SizeComponent extends Component {
     size: number = DEFAULT_BACKPACK_SIZE;
+    
     constructor(props: SizeComponentProps) {
         super();
         Object.assign(this, props);

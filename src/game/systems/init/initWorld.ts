@@ -6,16 +6,18 @@ import { SwordEntity } from "../../model/entities/items/Sword";
 import { PlayerEntity } from "../../model/entities/PlayerEntity";
 import type { WorldState } from "../../state/state";
 
-// World could be of type EntityMap[] - each map would
-// contain floor, player, items, monsters etc.
 export const initWorld = (): WorldState => {
-    return {
-        tiles: getDummyArray(MAP_SIZE).map((_, position) => new FloorEntity({ position })),
-        player: new PlayerEntity({
-            position: INITIAL_PLAYER_POSITION, entities: [
-                new BackpackEntity(),
-            ]
-        }),
-        items: [new SwordEntity({ position: 3 })],
-    }
+    const world: WorldState = getDummyArray(MAP_SIZE).map(() => ({
+        floor: new FloorEntity(),
+        player: undefined,
+        items: [],
+    }));
+    world[INITIAL_PLAYER_POSITION].player = new PlayerEntity({
+        entities: [
+            new BackpackEntity(),
+        ]
+    })
+    world[3].items.push(new SwordEntity());
+
+    return world;
 }

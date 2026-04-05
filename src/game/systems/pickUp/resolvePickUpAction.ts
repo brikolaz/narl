@@ -1,82 +1,53 @@
-import { cloneDeep } from "lodash";
-import { getComponentByType, removeComponentsByType } from "../../../core/ecs/queries/component";
-import { getEntitiesByType, getEntityByType } from "../../../core/ecs/queries/entities";
-import { DEFAULT_BACKPACK_SIZE, INITIAL_PLAYER_POSITION } from "../../../utils/constants";
-import { SizeComponent } from "../../model/components/CapacityComponent";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { replaceEntityById } from "../../../core/ecs/queries/entities";
 import { BackpackEntity } from "../../model/entities/BackpackEntity";
-import { ItemEntity } from "../../model/entities/items/ItemEntity";
-import type { GameState } from "../../state/state";
-import { addLog } from "../log/addLog";
+import { PlayerEntity } from "../../model/entities/PlayerEntity";
+import type { GameState, WorldState } from "../../state/state";
+import { fulfillAction, rejectAction } from "../log/action";
 import type { ActionResolution } from "../turn";
+import { getBackpack, isBackpackFull } from "./backpack";
 
-export function resolvePickUpAction(
+export const resolvePickUpAction = (
     state: GameState,
-): ActionResolution<GameState> {
-    const defaultActionResolution = {
+): ActionResolution<GameState> => {
+    let actionResolution: ActionResolution<GameState> = {
         nextState: state,
         consumesTurn: false,
     };
-    const nextPlayerEntity = cloneDeep(state.world.player);
-    const playerRenderableComponent = getComponentByType(nextPlayerEntity, PositionComponent);
-    if (!playerRenderableComponent) {
-        return defaultActionResolution
-    }
-    const playerPosition = playerRenderableComponent.position ?? INITIAL_PLAYER_POSITION;
-    const playerBackpack = getEntityByType(nextPlayerEntity, BackpackEntity);
+    const nextWorld: WorldState = state.world.map((tile) => {
+        if (!tile.player) {
+            return tile;
+        }
 
-    if (!playerBackpack) {
-        return defaultActionResolution;
-    }
-
-    const itemsInBackpack = getEntitiesByType(playerBackpack, ItemEntity)?.length ?? 0;
-    const backpackSize = getComponentByType(playerBackpack, SizeComponent)?.size ?? DEFAULT_BACKPACK_SIZE;
-    const backpackIsFull = itemsInBackpack === backpackSize;
-
-    if (backpackIsFull) {
-        const nextState = addLog(state, {
-            message: "Can't pick up item. Backpack is full.",
-            turn: state.turn
+        const nextPlayerEntity = new PlayerEntity({
+            components: tile.player.components,
+            entities: [...tile.player.entities],
         });
+        const backpack = getBackpack(nextPlayerEntity);
+        if (!backpack) {
+            return tile;
+        }
+        if (isBackpackFull(backpack)) {
+            actionResolution = rejectAction(state, "Can't pick up item. Backpack is full.", false);
+            return tile;
+        }
+        const itemToPickUp = tile.items.at(-1);
+        if (!itemToPickUp) {
+            return tile;
+        }
+        const nextBackpack = new BackpackEntity({
+            components: backpack.components,
+            entities: [...backpack.entities, itemToPickUp],
+        });
+        replaceEntityById(nextPlayerEntity, backpack.id, nextBackpack);
+        actionResolution = fulfillAction(state, "Player picked up a Sword.", true); // TODO: Add NameComponent
 
         return {
-            nextState,
-            consumesTurn: false,
-        };
-    }
-
-    let nextItems = cloneDeep(state.world.items);
-    let itemToPickUp: ItemEntity | undefined = undefined;
-
-    for (let i = nextItems.length - 1; i >= 0; i--) {
-        const item = nextItems[i];
-        const itemPositionComponent = getComponentByType(item, PositionComponent);
-        if (playerPosition === itemPositionComponent?.position) {
-            itemToPickUp = cloneDeep(item);
-            nextItems = nextItems.filter((_, index) => index !== i);
-            break;
-        }
-    }
-    if (!itemToPickUp) {
-        return defaultActionResolution;
-    }
-    removeComponentsByType(itemToPickUp, PositionComponent);
-    playerBackpack.entities.push(itemToPickUp);
-
-    const nextState = addLog({
-        ...state,
-        world: {
-            ...state.world,
+            floor: tile.floor,
             player: nextPlayerEntity,
-            items: nextItems,
-        }
-    }, {
-        message: "Player picked up a Sword.", // TODO: Add NameComponent
-        turn: state.turn
-    });
+            items: tile.items.slice(0, -1),
+        };
+    })
+    actionResolution.nextState.world = nextWorld;
 
-    return {
-        nextState,
-        consumesTurn: true,
-    };
+    return actionResolution;
 }
