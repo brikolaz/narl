@@ -4,7 +4,6 @@ import { Direction } from "../turn";
 type GetNextPlayerPositionParams = {
     currentPosition: number;
     direction: Direction;
-    tilesCount: number;
 };
 
 export function getNextPlayerPosition({

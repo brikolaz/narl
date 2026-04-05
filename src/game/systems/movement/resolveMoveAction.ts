@@ -1,60 +1,50 @@
-import { cloneDeep } from "lodash";
-import { getComponentByType } from "../../../core/ecs/queries/component";
-import { INITIAL_PLAYER_POSITION } from "../../../utils/constants";
-import type { GameState } from "../../state/state";
+import type { GameState, Tile, WorldState } from "../../state/state";
+import { fulfillAction, rejectAction } from "../log/action";
 import type { ActionResolution, Direction } from "../turn";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
-import { PositionComponent } from "../../model/components/PositionComponent";
-import { addLog } from "../log/addLog";
+
+const getNextState = (
+  state: GameState,
+  currentPlayerPosition: number,
+  nextPlayerPosition: number,
+): GameState => {
+  const nextWorld: WorldState = [...state.world];
+  const player = nextWorld[currentPlayerPosition].player;
+  const oldPlayerTile: Tile = {
+    floor: nextWorld[currentPlayerPosition].floor,
+    items: nextWorld[currentPlayerPosition].items,
+    player: undefined,
+  };
+  const newPlayerTile: Tile = {
+    floor: nextWorld[nextPlayerPosition].floor,
+    items: nextWorld[nextPlayerPosition].items,
+    player: player,
+  };
+  nextWorld[currentPlayerPosition] = oldPlayerTile;
+  nextWorld[nextPlayerPosition] = newPlayerTile;
+
+  return { ...state, world: nextWorld };
+};
 
 export function resolveMoveAction(
-    state: GameState,
-    direction: Direction
+  state: GameState,
+  direction: Direction,
 ): ActionResolution<GameState> {
-    const defaultActionResolution = {
-        nextState: state,
-        consumesTurn: false,
-    };
+  const currentPlayerPosition = state.world.findIndex((tile) => tile.player); // TODO: getPlayerPosition util
+  const nextPlayerPosition = getNextPlayerPosition({
+    currentPosition: currentPlayerPosition,
+    direction,
+  });
 
-    const playerRenderableComponent = getComponentByType(state.world.player, PositionComponent);
-    if (!playerRenderableComponent) {
-        return defaultActionResolution
-    }
-    const currentPosition = playerRenderableComponent.position ?? INITIAL_PLAYER_POSITION;
+  if (nextPlayerPosition === null) {
+    return rejectAction(state, "Cannot move in that direction.", false);
+  }
 
-    const nextPosition = getNextPlayerPosition({
-        currentPosition,
-        direction,
-        tilesCount: state.world.tiles.length,
-    });
+  const nextState = getNextState(
+    state,
+    currentPlayerPosition,
+    nextPlayerPosition,
+  );
 
-    if (nextPosition === null) {
-        defaultActionResolution.nextState = addLog(state, {
-            message: "Cannot move in that direction.",
-            turn: state.turn
-        });
-        return defaultActionResolution;
-    }
-
-    const nextPlayerEntity = cloneDeep(state.world.player);
-    const nextPositionComponent = getComponentByType(nextPlayerEntity, PositionComponent);
-    if (nextPositionComponent) {
-        nextPositionComponent.position = nextPosition;
-    }
-
-    const nextState = addLog({
-        ...state,
-        world: {
-            ...state.world,
-            player: nextPlayerEntity,
-        },
-    }, {
-        message: "Player moved.",
-        turn: state.turn
-    });
-
-    return {
-        nextState,
-        consumesTurn: true,
-    };
+  return fulfillAction(nextState, "Player moved.", true);
 }
