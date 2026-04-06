@@ -12,11 +12,7 @@ export const initWorld = (): WorldState => {
         player: undefined,
         items: [],
     }));
-    world[INITIAL_PLAYER_POSITION].player = new PlayerEntity({
-        entities: [
-            new BackpackEntity(),
-        ]
-    })
+    world[INITIAL_PLAYER_POSITION].player = new PlayerEntity()
     world[3].items.push(new SwordEntity());
 
     return world;

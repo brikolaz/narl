@@ -1,103 +1,100 @@
 import type { Constructor } from "../Constructor";
 import type { Entity } from "../Entity";
+import { clone } from "./clone";
 
 export const getEntityById = (
   entity: Entity,
-  childEntityId: string
+  childEntityId: string,
 ): Entity | undefined =>
   entity.entities.find((child) => child.id === childEntityId);
 
 export const getEntityByType = <T extends Entity>(
   entity: Entity,
-  entityClass: Constructor<T>
+  entityClass: Constructor<T>,
 ): T | undefined =>
   entity.entities.find((entity): entity is T => entity instanceof entityClass);
 
 export const getEntitiesByType = <T extends Entity>(
   entity: Entity,
-  entityClass: Constructor<T>
+  entityClass: Constructor<T>,
 ): T[] =>
-  entity.entities.filter((entity): entity is T => entity instanceof entityClass);
-
-export const hasEntityById = (
-  entity: Entity,
-  childEntityId: string
-): boolean =>
-  entity.entities.some((child) => child.id === childEntityId);
-
-export const addEntity = (
-  entity: Entity,
-  child: Entity
-): Entity => ({
-  ...entity,
-  entities: [...entity.entities, child],
-});
-
-export const removeEntityById = (
-  entity: Entity,
-  childEntityId: string
-): Entity => {
-  const nextEntities = entity.entities.filter(
-    (child) => child.id !== childEntityId
+  entity.entities.filter(
+    (entity): entity is T => entity instanceof entityClass,
   );
 
-  return nextEntities.length === entity.entities.length
-    ? entity
-    : {
-        ...entity,
-        entities: nextEntities,
-      };
+export const hasEntityById = (entity: Entity, childEntityId: string): boolean =>
+  entity.entities.some((child) => child.id === childEntityId);
+
+export const addEntity = (entity: Entity, child: Entity): Entity => {
+  const nextEntity = clone(entity);
+  nextEntity.entities = [...entity.entities, child];
+
+  return nextEntity;
 };
+
+// export const removeEntityById = (
+//   entity: Entity,
+//   childEntityId: string
+// ): Entity => {
+//   const nextEntities = entity.entities.filter(
+//     (child) => child.id !== childEntityId
+//   );
+
+//   return nextEntities.length === entity.entities.length
+//     ? entity
+//     : {
+//         ...entity,
+//         entities: nextEntities,
+//       };
+// };
 
 export const replaceEntityById = (
   entity: Entity,
   childEntityId: string,
-  nextChild: Entity
+  nextChild: Entity,
 ): Entity => {
   let replaced = false;
-
-  const nextEntities = entity.entities.map((child) => {
+  const nextChildEntities = entity.entities.map((child) => {
     if (child.id !== childEntityId) return child;
     replaced = true;
     return nextChild;
   });
+  if (!replaced) return entity;
 
-  return replaced
-    ? {
-        ...entity,
-        entities: nextEntities,
-      }
-    : entity;
+  const nextEntity = clone(entity);
+  nextEntity.entities = nextChildEntities;
+
+  return nextEntity;
 };
 
-export const upsertEntityById = (
-  entity: Entity,
-  nextChild: Entity
-): Entity => {
-  const exists = entity.entities.some((child) => child.id === nextChild.id);
+// export const upsertEntityById = (
+//   entity: Entity,
+//   nextChild: Entity
+// ): Entity => {
+//   const exists = entity.entities.some((child) => child.id === nextChild.id);
 
-  return exists
-    ? replaceEntityById(entity, nextChild.id, nextChild)
-    : addEntity(entity, nextChild);
-};
+//   return exists
+//     ? replaceEntityById(entity, nextChild.id, nextChild)
+//     : addEntity(entity, nextChild);
+// };
 
-export const patchEntityById = (
-  entity: Entity,
-  childEntityId: string,
-  patcher: (child: Entity) => Entity
-): Entity => {
-  let changed = false;
+// export const patchEntityById = (
+//   entity: Entity,
+//   childEntityId: string,
+//   patcher: (child: Entity) => Entity
+// ): Entity => {
+//   let changed = false;
 
-  const nextEntities = entity.entities.map((child) => {
-    if (child.id !== childEntityId) return child;
-    changed = true;
-    return patcher(child);
-  });
+//   const nextEntities = entity.entities.map((child) => {
+//     if (child.id !== childEntityId) return child;
+//     changed = true;
+//     return patcher(child);
+//   });
 
-  return changed
-    ? {
-        ...entity,
-        entities: nextEntities,
-      }
-    : entity;
-};
+//   return changed
+//     ? {
+//         ...entity,
+//         entities: nextEntities,
+//       }
+//     : entity;
+// };
