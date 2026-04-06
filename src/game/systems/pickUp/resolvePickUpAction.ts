@@ -1,9 +1,7 @@
 import {
-  addEntity,
-  replaceEntityById,
+    addEntity,
+    replaceEntityById,
 } from "../../../core/ecs/queries/entities";
-import { BackpackEntity } from "../../model/entities/BackpackEntity";
-import { PlayerEntity } from "../../model/entities/PlayerEntity";
 import type { GameState, WorldState } from "../../state/state";
 import { fulfillAction, rejectAction } from "../log/action";
 import type { ActionResolution } from "../turn";

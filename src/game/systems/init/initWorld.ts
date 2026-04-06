@@ -1,6 +1,5 @@
 import { INITIAL_PLAYER_POSITION, MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
-import { BackpackEntity } from "../../model/entities/BackpackEntity";
 import { FloorEntity } from "../../model/entities/FloorEntity";
 import { SwordEntity } from "../../model/entities/items/Sword";
 import { PlayerEntity } from "../../model/entities/PlayerEntity";
