@@ -2,7 +2,7 @@ import { INITIAL_TURN } from "../../utils/constants";
 import { FloorEntity } from "../model/entities/FloorEntity";
 import { ItemEntity } from "../model/entities/items/ItemEntity";
 import { PlayerEntity } from "../model/entities/PlayerEntity";
-import { initWorld } from "../systems/init/initWorld";
+import { initWorld } from "../systems/init";
 import type { LogEntry } from "../systems/log";
 
 export type Tile = {

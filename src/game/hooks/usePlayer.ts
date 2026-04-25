@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { GameContext } from "../state/context";
-import { getPlayer } from "../state/selectors/getPlayer";
+import { getPlayer } from "../state/selectors";
 import type { PlayerEntity } from "../model/entities/PlayerEntity";
-import { getBackpack } from "../systems/pickUp/backpack";
+import { getBackpack } from "../systems/pickUp";
 import type { BackpackEntity } from "../model/entities/BackpackEntity";
 import { getComponentByType } from "../../core/ecs/queries/component";
 import { ExpComponent } from "../model/components/ExpComponent";

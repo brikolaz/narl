@@ -1,6 +1,6 @@
 import { getComponentByType } from "../../../core/ecs/queries/component";
 import { MISSING_COLOR, MISSING_GLYPH } from "../../../utils/constants";
-import { ApperanceComponent } from "../../model/components/ApperanceComponent";
+import { AppearanceComponent } from "../../model/components/AppearanceComponent";
 import { GlyphComponent } from "../../model/components/GlyphComponent";
 import type { GameState, Tile } from "../../state/state";
 import { RenderedTile } from "./types";
@@ -21,7 +21,7 @@ const resolveGlyph = (tile: Tile) => {
 
 export const getRenderedMap = (gameState: GameState) => {
   const renderedMap: RenderedTile[] = gameState.world.map((tile) => {
-    const floorAppearance = getComponentByType(tile.floor, ApperanceComponent);
+    const floorAppearance = getComponentByType(tile.floor, AppearanceComponent);
 
     return new RenderedTile({
       char: resolveGlyph(tile),

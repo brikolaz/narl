@@ -1,10 +1,9 @@
 import { upsertComponent } from "../../../core/ecs/queries/component";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import type { GameState, Tile } from "../../state/state";
-import { addExplorationExp } from "../exp/addExp";
-import { fulfillAction, rejectAction } from "../log/action";
+import { addExplorationExp } from "../exp";
+import { fulfillAction, rejectAction } from "../log";
 import type { ActionResolution, Direction } from "../turn";
-import { isInitialTurn } from "../turn/isInitialTurn";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
 
 const markAsVisited = (state: GameState, position: number): GameState => {
@@ -34,10 +33,7 @@ const getNextState = (
   const newPlayerTile: Tile = {
     floor: nextWorld[nextPlayerPosition].floor,
     items: nextWorld[nextPlayerPosition].items,
-    player: addExplorationExp(
-      nextWorld[nextPlayerPosition].floor,
-      player,
-    ),
+    player: addExplorationExp(nextWorld[nextPlayerPosition].floor, player),
   };
   nextWorld[currentPlayerPosition] = oldPlayerTile;
   nextWorld[nextPlayerPosition] = newPlayerTile;

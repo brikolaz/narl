@@ -1,13 +1,13 @@
 import { Component } from "../../../core/ecs/Component";
 
-export type ApperanceComponentProps = {
+export type AppearanceComponentProps = {
     background: string;
 }
 
-export class ApperanceComponent extends Component {
+export class AppearanceComponent extends Component {
     background: string = '#000000';
 
-    constructor(props: ApperanceComponentProps) {
+    constructor(props: AppearanceComponentProps) {
         super();
         Object.assign(this, props);
     }
