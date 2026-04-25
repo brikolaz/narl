@@ -1,14 +1,13 @@
-import './App.css'
-import { Game } from './components/Game'
-import { GameProvider } from './game/state/provider'
+import "./App.css";
+import { Game } from "./components/Game";
+import { GameProvider } from "./game/state/provider";
 
-function App() {
-
+const App = () => {
   return (
     <GameProvider>
       <Game />
     </GameProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

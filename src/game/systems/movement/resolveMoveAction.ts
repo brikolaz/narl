@@ -42,10 +42,10 @@ const getNextState = (
   return nextState;
 };
 
-export function resolveMoveAction(
+export const resolveMoveAction = (
   state: GameState,
   direction: Direction,
-): ActionResolution<GameState> {
+): ActionResolution<GameState> => {
   const currentPlayerPosition = state.world.findIndex((tile) => tile.player); // TODO: getPlayerPosition util
   const nextPlayerPosition = getNextPlayerPosition({
     currentPosition: currentPlayerPosition,

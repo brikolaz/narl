@@ -3,11 +3,11 @@ import { GameContext } from "../state/context";
 import { dispatchGameAction } from "../systems/turn";
 import { mapKeyboardEventToAction } from "../systems/input/keyboard";
 
-export function useKeyboardControls() {
+export const useKeyboardControls = () => {
     const { setGameState } = useContext(GameContext);
 
     useEffect(() => {
-        function handleKeyDown(event: KeyboardEvent) {
+        const handleKeyDown = (event: KeyboardEvent) => {
             const action = mapKeyboardEventToAction(event);
 
             if (action) {
@@ -17,7 +17,7 @@ export function useKeyboardControls() {
                     return dispatchGameAction(action)(state);
                 });
             }
-        }
+        };
 
         window.addEventListener("keydown", handleKeyDown);
         return () => {

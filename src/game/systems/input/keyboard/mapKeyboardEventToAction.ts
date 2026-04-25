@@ -1,9 +1,9 @@
 // game/systems/input/mapKeyboardEventToAction.ts
 import { Direction, GameActionType, type GameAction } from "../../turn";
 
-export function mapKeyboardEventToAction(
+export const mapKeyboardEventToAction = (
     event: KeyboardEvent
-): GameAction | undefined {
+): GameAction | undefined => {
     switch (event.key) {
         case "ArrowLeft":
             return { type: GameActionType.MOVE, direction: Direction.LEFT };
@@ -15,4 +15,4 @@ export function mapKeyboardEventToAction(
         default:
             return undefined;
     }
-}
+};

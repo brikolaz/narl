@@ -6,10 +6,10 @@ type GetNextPlayerPositionParams = {
     direction: Direction;
 };
 
-export function getNextPlayerPosition({
+export const getNextPlayerPosition = ({
     currentPosition,
     direction,
-}: GetNextPlayerPositionParams): number | null {
+}: GetNextPlayerPositionParams): number | null => {
     const delta = direction === Direction.LEFT ? -1 : 1;
     const nextPosition = currentPosition + delta;
 
