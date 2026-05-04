@@ -1,3 +1,4 @@
+import { immerable } from "immer";
 import { getId } from "../../utils/getId";
 import type { Component } from "./Component";
 import type { Unique } from "./Unique";
@@ -8,6 +9,7 @@ export type EntityProps = {
 };
 
 export abstract class Entity implements Unique {
+    [immerable] = true
     id = '';
     components: Component[] = [];
     entities: Entity[] = [];

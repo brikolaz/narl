@@ -1,7 +1,6 @@
 import type { Component } from "../Component";
 import type { Constructor } from "../Constructor";
 import type { Entity } from "../Entity";
-import { clone } from "./clone";
 
 export const isComponentType = <T extends Component>(
   component: Component,
@@ -64,7 +63,7 @@ export const hasComponentById = (
 export const upsertComponent = <T extends Component>(
   entity: Entity,
   nextComponent: T,
-): Entity => {
+): void => {
   let replaced = false;
 
   const nextComponents = entity.components.map((component) => {
@@ -74,48 +73,34 @@ export const upsertComponent = <T extends Component>(
     return nextComponent;
   });
 
-  const nextEntity = clone(entity);
   if (replaced) {
-    nextEntity.components = nextComponents;
+    entity.components = nextComponents;
   } else {
-    nextEntity.components = [...entity.components, nextComponent];
+    entity.components.push(nextComponent);
   }
-
-  return nextEntity;
 };
 
 export const patchComponentByType = <T extends Component>(
   entity: Entity,
   componentClass: Constructor<T>,
   patcher: (child: T) => Component,
-  immutable = true,
-): Entity => {
+): void => {
   let changed = false;
   const nextComponents = entity.components.map((child) => {
     if (!isComponentType(child, componentClass)) return child;
     changed = true;
 
-    if (immutable) {
-      const nextChild = clone(child);
-      return patcher(nextChild);
-    }
     return patcher(child);
   });
-  if (!changed) return entity;
-
-  const nextEntity = clone(entity);
-  nextEntity.components = nextComponents;
-
-  return nextEntity;
+  if (changed) entity.components = nextComponents;
 };
 
 export const addComponent = <T extends Component>(
   entity: Entity,
   component: T,
 ): Entity => {
-  const nextEntity = clone(entity);
-  nextEntity.components = [...entity.components, component];
-  return nextEntity;
+  entity.components.push(component);
+  return entity;
 };
 
 // export const removeComponentById = (

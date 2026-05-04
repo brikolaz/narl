@@ -1,18 +1,14 @@
-import {
-  addEntity,
-  removeEntityById,
-  replaceEntityById,
-} from "../../../core/ecs";
+import { produce } from "immer";
+import { addEntity, removeEntityById } from "../../../core/ecs";
 import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
 import { getPlayer } from "../../state";
-import { replacePlayer } from "../../state/actions/replacePlayer";
 import type { GameState } from "../../state/state";
 import { getItemSlots } from "../inv/getItemSlots";
-import { fulfillAction, rejectAction } from "../log/action";
 import { getBackpack, getBackpackItem } from "../pickUp";
 import type { ActionResolution, EqSlot, InvSlot } from "../turn";
 
 import { getEq, getEqSlots } from "./getEq";
+import { Action } from "../log";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -27,49 +23,43 @@ const canBeEquipped = (
 
 export const resolveEquipAction = (
   state: GameState,
-  invSlot: InvSlot,
-  eqSlot: EqSlot,
+  invSlotIndex: InvSlot,
+  eqSlotIndex: EqSlot,
 ): ActionResolution<GameState> => {
-  const oldPlayer = getPlayer(state);
-  const oldBackpack = getBackpack(oldPlayer);
+  const action = new Action();
+  const nextState = produce(state, (draft) => {
+    const player = getPlayer(draft);
+    const backpack = getBackpack(player);
+    if (!backpack) {
+      throw new Error("Player has no backpack");
+    }
 
-  if (!oldBackpack) {
-    throw new Error("Player has no backpack");
-  }
+    const itemToEquip = getBackpackItem(backpack, invSlotIndex);
+    if (!itemToEquip) {
+      return action.reject(`No item in slot ${invSlotIndex} to equip.`);
+    }
 
-  const itemToEquip = getBackpackItem(oldBackpack, invSlot);
+    const eqSlot = getEqSlots(player)[eqSlotIndex - 1];
+    const eqItemSlots = getItemSlots(eqSlot);
+    const itemSlots = getItemSlots(itemToEquip);
+    if (!canBeEquipped(itemSlots, eqItemSlots)) {
+      return action.reject(
+        `Item in slot ${invSlotIndex} can't be equipped in eq slot ${eqSlotIndex}.`,
+      );;
+    }
 
-  if (!itemToEquip) {
-    return rejectAction(state, `No item in slot ${invSlot} to equip.`, false);
-  }
+    const eq = getEq(player);
+    if (!eq) {
+      throw new Error("Player has no equipment");
+    }
 
-  const oldSlot = getEqSlots(oldPlayer)[eqSlot - 1];
-  const eqItemSlots = getItemSlots(oldSlot);
-  const itemSlots = getItemSlots(itemToEquip);
+    removeEntityById(backpack, itemToEquip.id);
+    addEntity(eqSlot, itemToEquip);
 
-  if (!canBeEquipped(itemSlots, eqItemSlots)) {
-    return rejectAction(
-      state,
-      `Item in slot ${invSlot} can't be equipped in eq slot ${eqSlot}.`,
-      false,
+    action.fulfill(
+      `Equipped item from slot ${invSlotIndex} to eq slot ${eqSlotIndex}.`,
     );
-  }
+  });
 
-  const oldEq = getEq(oldPlayer);
-
-  if (!oldEq) {
-    throw new Error("Player has no equipment");
-  }
-
-  const newBackpack = removeEntityById(oldBackpack, itemToEquip.id);
-  const newSlot = addEntity(oldSlot, itemToEquip);
-  const newEq = replaceEntityById(oldEq, oldSlot.id, newSlot);
-  let newPlayer = replaceEntityById(oldPlayer, oldEq.id, newEq);
-  newPlayer = replaceEntityById(newPlayer, oldBackpack.id, newBackpack);
-
-  return fulfillAction(
-    replacePlayer(state, newPlayer),
-    `Equipped item from slot ${invSlot} to eq slot ${eqSlot}.`,
-    true,
-  );
+  return action.resolve(nextState);
 };

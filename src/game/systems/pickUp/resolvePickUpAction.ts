@@ -1,57 +1,43 @@
-import type { GameState, WorldState } from "../../state/state";
-import { fulfillAction, rejectAction } from "../log/action";
-import type { ActionResolution } from "../turn";
+import { produce } from "immer";
+import { getComponentByType } from "../../../core/ecs";
+import { NameComponent } from "../../model/components/AppearanceComponent copy";
+import type { GameState } from "../../state/state";
 import {
   addItemToEntityBackpack,
   getBackpack,
   isBackpackFull,
 } from "../inv/backpack";
+import { Action } from "../log/action";
+import type { ActionResolution } from "../turn";
 import { pickUpItem } from "./pickUp";
 
 export const resolvePickUpAction = (
   state: GameState,
 ): ActionResolution<GameState> => {
-  let actionResolution: ActionResolution<GameState> = {
-    nextState: state,
-    consumesTurn: false,
-  };
-  const nextWorld: WorldState = state.world.map((tile) => {
-    if (!tile.player) {
-      return tile;
-    }
+  const action = new Action();
+  const nextState = produce(state, (draft) => {
+    draft.world.forEach((tile) => {
+      if (!tile.player) {
+        return;
+      }
 
-    const backpack = getBackpack(tile.player);
-    if (!backpack) {
-      return tile;
-    }
-    if (isBackpackFull(backpack)) {
-      actionResolution = rejectAction(
-        state,
-        "Can't pick up item. Backpack is full.",
-        false,
-      );
-      return tile;
-    }
-    const itemToPickUp = pickUpItem(tile.items);
-    if (!itemToPickUp) {
-      return tile;
-    }
+      const backpack = getBackpack(tile.player);
+      if (!backpack) {
+        return;
+      }
+      if (isBackpackFull(backpack)) {
+        return action.reject("Can't pick up item. Backpack is full.");
+      }
+      const itemToPickUp = pickUpItem(tile);
+      if (!itemToPickUp) {
+        return;
+      }
+      addItemToEntityBackpack(tile.player, itemToPickUp, backpack.id);
 
-    const nextPlayer = addItemToEntityBackpack(
-      tile.player,
-      itemToPickUp,
-      backpack.id,
-    );
-
-    actionResolution = fulfillAction(state, "Player picked up a Sword.", true); // TODO: Add NameComponent
-
-    return {
-      floor: tile.floor,
-      player: nextPlayer,
-      items: tile.items.slice(0, -1),
-    };
+      const itemName = getComponentByType(itemToPickUp, NameComponent)?.name;
+      action.fulfill(`Player picked up a ${itemName}.`);
+    });
   });
-  actionResolution.nextState.world = nextWorld;
 
-  return actionResolution;
+  return action.resolve(nextState);
 };

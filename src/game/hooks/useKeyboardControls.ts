@@ -4,24 +4,23 @@ import { dispatchGameAction } from "../systems/turn";
 import { mapKeyboardEventToAction } from "../systems/input/keyboard";
 
 export const useKeyboardControls = () => {
-    const { setGameState } = useContext(GameContext);
+  const { setGameState } = useContext(GameContext);
 
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            const action = mapKeyboardEventToAction(event);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const action = mapKeyboardEventToAction(event);
 
-            if (action) {
-                event.preventDefault();
-                setGameState((state) => {
-                    console.log(dispatchGameAction(action)(state));
-                    return dispatchGameAction(action)(state);
-                });
-            }
-        };
+      if (action) {
+        event.preventDefault();
+        setGameState((state) => {
+          return dispatchGameAction(action)(state);
+        });
+      }
+    };
 
-        window.addEventListener("keydown", handleKeyDown);
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [setGameState]);
-}
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setGameState]);
+};

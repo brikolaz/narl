@@ -1,12 +1,21 @@
 import { MAX_VISIBLE_LOG } from "../../../utils/constants";
 import type { GameState } from "../../state/state";
-import type { LogEntry } from "./types";
 
-export const addLog = (gameState: GameState, logEntry: LogEntry): GameState => {
-  const next = [...gameState.log, logEntry].slice(-MAX_VISIBLE_LOG);
+export const addLog = (
+  gameState: GameState,
+  logEntry: string,
+  consumesTurn: boolean,
+): GameState => {
+  const nextLog = [
+    ...gameState.log,
+    {
+      message: logEntry,
+      turn: gameState.turn + Number(consumesTurn),
+    },
+  ];
 
   return {
     ...gameState,
-    log: next,
+    log: nextLog.slice(-MAX_VISIBLE_LOG),
   };
 };

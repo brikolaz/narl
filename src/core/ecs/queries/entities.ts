@@ -32,23 +32,19 @@ export const hasEntityById = (entity: Entity, childEntityId: string): boolean =>
   entity.entities.some((child) => child.id === childEntityId);
 
 export const addEntity = (entity: Entity, child: Entity): Entity => {
-  const nextEntity = clone(entity);
-  nextEntity.entities = [...entity.entities, child];
-
-  return nextEntity;
+  entity.entities.push(child);
+  return entity;
 };
 
 export const removeEntityById = (
   entity: Entity,
   childEntityId: string,
-): Entity => {
+): void => {
   const nextEntities = entity.entities.filter(
     (child) => child.id !== childEntityId,
   );
-  if (nextEntities.length === entity.entities.length) return entity;
-  const nextEntity = clone(entity);
-  nextEntity.entities = nextEntities;
-  return nextEntity;
+  if (nextEntities.length !== entity.entities.length)
+    entity.entities = nextEntities;
 };
 
 export const replaceEntityById = (
@@ -64,17 +60,15 @@ export const replaceEntityById = (
   });
   if (!replaced) return entity;
 
-  const nextEntity = clone(entity);
-  nextEntity.entities = nextChildEntities;
-
-  return nextEntity;
+  entity.entities = nextChildEntities;
+  return entity;
 };
 
 export const patchEntityById = (
   entity: Entity,
   childEntityId: string,
   patcher: (child: Entity) => Entity,
-): Entity => {
+): void => {
   let changed = false;
   const nextEntities = entity.entities.map((child) => {
     if (child.id !== childEntityId) return child;
@@ -82,12 +76,7 @@ export const patchEntityById = (
 
     return patcher(child);
   });
-  if (!changed) return entity;
-
-  const nextEntity = clone(entity);
-  nextEntity.entities = nextEntities;
-
-  return nextEntity;
+  if (changed) entity.entities = nextEntities;
 };
 
 // export const upsertEntityById = (

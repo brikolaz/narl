@@ -2,22 +2,23 @@ import type { GameState } from "../../state/state";
 import type { ActionResolution } from "../turn";
 import { addLog } from "./addLog";
 
-const resolveAction = (state: GameState, message: string, consumesTurn: boolean): ActionResolution<GameState> => {
-    const nextState = addLog(state, {
-        message,
-        turn: state.turn
-    });
+export class Action {
+  public consumesTurn = false;
+  private message = "";
 
+  reject = (message: string): void => {
+    this.message = message;
+  };
+
+  fulfill = (message: string): void => {
+    this.message = message;
+    this.consumesTurn = true;
+  };
+
+  resolve = (nextState: GameState): ActionResolution<GameState> => {
     return {
-        nextState,
-        consumesTurn,
+      nextState: addLog(nextState, this.message, this.consumesTurn),
+      consumesTurn: this.consumesTurn,
     };
-}
-
-export const rejectAction = (state: GameState, message: string, consumesTurn: boolean): ActionResolution<GameState> => {
-    return resolveAction(state, message, consumesTurn);
-}
-
-export const fulfillAction = (state: GameState, message: string, consumesTurn: boolean): ActionResolution<GameState> => {
-    return resolveAction(state, message, consumesTurn);
+  };
 }

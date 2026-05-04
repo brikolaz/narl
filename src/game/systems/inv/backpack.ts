@@ -28,10 +28,8 @@ export const addItemToEntityBackpack = (
   entity: Entity,
   item: ItemEntity,
   backpackId: string,
-): BackpackEntity => {
-  return patchEntityById(entity, backpackId, (backpack) =>
-    addEntity(backpack, item),
-  );
+): void => {
+  patchEntityById(entity, backpackId, (backpack) => addEntity(backpack, item));
 };
 
 export const getBackpackItem = (
