@@ -10,17 +10,17 @@ import { resolveMoveAction } from "../movement";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { increaseTurn } from "./turn";
 import {
-  GameActionType,
+  PlayerActionType,
   type ActionResolution,
-  type GameAction,
+  type PlayerAction
 } from "./types";
 
 export const resolvePlayerAction = (
   state: GameState,
-  action: GameAction,
-): ActionResolution<GameState> => {
+  action: PlayerAction,
+): ActionResolution => {
   switch (action.type) {
-    case GameActionType.MOVE: {
+    case PlayerActionType.MOVE: {
       const actionResolution = resolveMoveAction(state, action.direction);
       let nextState = actionResolution.nextState;
 
@@ -33,7 +33,7 @@ export const resolvePlayerAction = (
         nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
-    case GameActionType.PICK_UP: {
+    case PlayerActionType.PICK_UP: {
       const actionResolution = resolvePickUpAction(state);
       let nextState = actionResolution.nextState;
       if (actionResolution.consumesTurn) {
@@ -44,7 +44,7 @@ export const resolvePlayerAction = (
         nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
-    case GameActionType.EQUIP_ITEM: {
+    case PlayerActionType.EQUIP_ITEM: {
       const actionResolution = resolveEquipAction(
         state,
         action.invSlot,
@@ -60,7 +60,7 @@ export const resolvePlayerAction = (
         nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
-    case GameActionType.UNEQUIP_ITEM: {
+    case PlayerActionType.UNEQUIP_ITEM: {
       const actionResolution = resolveUnequipAction(state, action.eqSlot);
       let nextState = actionResolution.nextState;
 
@@ -72,7 +72,7 @@ export const resolvePlayerAction = (
         nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
-    case GameActionType.ATTACK: {
+    case PlayerActionType.ATTACK: {
       const ctx = prepareAttack(state, action.targetPosition);
       if (!ctx.ok) {
         return {

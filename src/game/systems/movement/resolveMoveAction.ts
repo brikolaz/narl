@@ -5,7 +5,7 @@ import type { GameState, Tile } from "../../state/state";
 import { hasMobs } from "../combat";
 import { addExplorationExp } from "../exp";
 import { Action } from "../log";
-import { GameActionType, type ActionResolution, type Direction } from "../turn";
+import { PlayerActionType, type ActionResolution, type Direction } from "../turn";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
 import { getPlayerPosition } from "../../state";
 
@@ -40,7 +40,7 @@ const getNextState = (
 export const resolveMoveAction = (
   state: GameState,
   direction: Direction,
-): ActionResolution<GameState> => {
+): ActionResolution => {
   const action = new Action();
   const nextState = produce(state, (draft) => {
     const currentPlayerPosition = getPlayerPosition(draft);
@@ -54,7 +54,7 @@ export const resolveMoveAction = (
     }
     if (hasMobs(draft.world[nextPlayerPosition])) {
       return action.addPending({
-        type: GameActionType.ATTACK,
+        type: PlayerActionType.ATTACK,
         targetPosition: nextPlayerPosition,
       });
     }

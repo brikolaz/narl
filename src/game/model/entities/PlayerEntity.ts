@@ -2,7 +2,7 @@ import { Entity, type EntityProps } from "../../../core/ecs/Entity";
 import { PLAYER_SIGN } from "../../../utils/constants";
 import { ExpComponent } from "../components/ExpComponent";
 import { GlyphComponent } from "../components/GlyphComponent";
-import { BackpackEntity } from "./BackpackEntity";
+import { BackpackEntity } from "./items/BackpackEntity";
 import { EqEntity } from "./eq/EqEntity";
 
 export type PlayerEntityProps = EntityProps;

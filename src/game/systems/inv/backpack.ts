@@ -7,7 +7,7 @@ import {
   patchEntityById,
 } from "../../../core/ecs/queries/entities";
 import { SizeComponent } from "../../model/components/SizeComponent";
-import { BackpackEntity } from "../../model/entities/BackpackEntity";
+import { BackpackEntity } from "../../model/entities/items/BackpackEntity";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
 import type { InvSlot } from "../turn";
 

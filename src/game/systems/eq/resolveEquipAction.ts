@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { addEntity, removeEntityById } from "../../../core/ecs";
+import { addEntity, getComponentByType, removeEntityById } from "../../../core/ecs";
 import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
 import { getPlayer } from "../../state";
 import type { GameState } from "../../state/state";
@@ -7,8 +7,9 @@ import { getItemSlots } from "../inv/getItemSlots";
 import type { ActionResolution, EqSlot, InvSlot } from "../turn";
 
 import { Action } from "../log";
-import { getEq, getEqSlots } from "./eq";
+import { getEq, getEqSlots, getEquippedWeapon } from "./eq";
 import { getBackpack, getBackpackItem } from "../inv";
+import { NameComponent } from "../../model/components/AppearanceComponent copy";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -42,6 +43,13 @@ export const resolveEquipAction = (
     const eqSlot = getEqSlots(player)[eqSlotIndex - 1];
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
+    const equippedWeapon = getEquippedWeapon(player)
+    if(equippedWeapon) {
+      const weaponName = getComponentByType(equippedWeapon, NameComponent)?.name
+      return action.reject(
+        `Can't equip. ${weaponName} in slot ${eqSlotIndex}.`,
+      );;
+    }
     if (!canBeEquipped(itemSlots, eqItemSlots)) {
       return action.reject(
         `Item in slot ${invSlotIndex} can't be equipped in eq slot ${eqSlotIndex}.`,

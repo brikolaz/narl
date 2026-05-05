@@ -8,7 +8,7 @@ import { getBackpack } from "../../inv";
 import { addLogImmutable } from "../../log";
 import {
   Direction,
-  GameActionType,
+  PlayerActionType,
   type GameAction,
   type InvSlot
 } from "../../turn";
@@ -31,7 +31,7 @@ export const mapKeyboardEventToAction = (
 
       buffer.current = [];
       return {
-        type: GameActionType.EQUIP_ITEM,
+        type: PlayerActionType.EQUIP_ITEM,
         invSlot: Number(event.key) as InvSlot,
         eqSlot: 1, // hardcoded for now
       };
@@ -44,7 +44,7 @@ export const mapKeyboardEventToAction = (
 
       buffer.current = [];
       return {
-        type: GameActionType.UNEQUIP_ITEM,
+        type: PlayerActionType.UNEQUIP_ITEM,
         eqSlot: 1, // hardcoded for now
       };
     }
@@ -53,12 +53,12 @@ export const mapKeyboardEventToAction = (
 
   switch (event.key) {
     case "ArrowLeft":
-      return { type: GameActionType.MOVE, direction: Direction.LEFT };
+      return { type: PlayerActionType.MOVE, direction: Direction.LEFT };
     case "ArrowRight":
-      return { type: GameActionType.MOVE, direction: Direction.RIGHT };
+      return { type: PlayerActionType.MOVE, direction: Direction.RIGHT };
     case "g":
     case "G":
-      return { type: GameActionType.PICK_UP };
+      return { type: PlayerActionType.PICK_UP };
     case "e":
     case "E": {
       buffer.current.push("e");

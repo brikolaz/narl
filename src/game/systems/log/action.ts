@@ -16,17 +16,20 @@ export class Action {
     this.consumesTurn = true;
   };
 
-  resolve = (nextState: GameState): ActionResolution<GameState> => {
+  resolve = (
+    nextState: GameState,
+    consumesTurn?: boolean,
+  ): ActionResolution => {
     return {
       nextState,
-      consumesTurn: this.consumesTurn,
+      consumesTurn: consumesTurn ?? this.consumesTurn,
       pendingActions: this.pendingActions,
-      action: this
+      action: this,
     };
   };
 
-  addPending = (pendingAction: GameAction): void => {
-    this.pendingActions.push(pendingAction);
+  addPending = (...pendingAction: GameAction[]): void => {
+    this.pendingActions.push(...pendingAction);
   };
 
   log(message: string) {

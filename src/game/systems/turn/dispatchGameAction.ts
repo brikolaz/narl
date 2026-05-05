@@ -1,19 +1,30 @@
 import type { GameState } from "../../state/state";
-import type { GameAction } from "./types";
-import { resolvePlayerAction } from "./resolvePlayerAction";
+import { resolveGameAction } from "./resolveGameAction";
 import { runWorldTurn } from "./runWorldTurn";
+import type { GameAction } from "./types";
 
 export const dispatchGameAction =
   (action: GameAction) => (state: GameState) => {
-    let resolution = resolvePlayerAction(state, action);
-    if (resolution.pendingActions.length) {
-      resolution = resolvePlayerAction(state, resolution.pendingActions[0]);
-    }
-    if (!resolution.consumesTurn) {
-      return resolution.nextState;
+    let currentState = state;
+    const queue: GameAction[] = [action];
+    let consumesTurn = false;
+
+    while (queue.length) {
+      const currentAction = queue.shift() as GameAction;
+
+      const resolution = resolveGameAction(currentState, currentAction);
+
+      currentState = resolution.nextState;
+      consumesTurn = consumesTurn || resolution.consumesTurn;
+
+      queue.push(...resolution.pendingActions);
     }
 
-    const afterWorldTurn = runWorldTurn(resolution.nextState);
+    if (!consumesTurn) {
+      return currentState;
+    }
+
+    const afterWorldTurn = runWorldTurn(currentState);
 
     return {
       ...afterWorldTurn,

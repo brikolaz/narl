@@ -1,7 +1,11 @@
 import { produce } from "immer";
 import { getPlayer } from "../../state";
 import type { GameState } from "../../state/state";
-import type { ActionResolution } from "../turn";
+import {
+  WorldActionEntityType,
+  WorldActionType,
+  type ActionResolution,
+} from "../turn";
 
 import { getComponentByType } from "../../../core/ecs";
 import { ExpComponent, ItemEntity } from "../../model";
@@ -9,7 +13,8 @@ import { NameComponent } from "../../model/components/AppearanceComponent copy";
 import { getEquippedWeapon, getEquippedWeaponDamage } from "../eq";
 import { Action } from "../log";
 import { getHp } from "./hp";
-import { getMob, hasMobs, killMob } from "./mobs";
+import { getMob, hasMobs, killMobById } from "./mobs";
+import { getBackpack } from "../inv";
 
 type AttackContext =
   | {
@@ -64,7 +69,7 @@ export const prepareAttack = (
 export const resolveAttackAction = (
   state: GameState,
   ctx: AttackContext,
-): ActionResolution<GameState> => {
+): ActionResolution => {
   const action = new Action();
   const nextState = produce(state, (draft) => {
     if (!ctx.ok) {
@@ -96,8 +101,24 @@ export const resolveAttackAction = (
         throw new Error("No exp component");
       }
       playerExp.exp += mobExp;
-      killMob(target.mobs);
-      return action.fulfill(`Killed ${mobName} and gained ${mobExp} exp`);
+      const mobBackpack = getBackpack(mob);
+      // TODO: move death consequences to EntityDiedAction resolver
+      if (mobBackpack) {
+        action.addPending({
+          type: WorldActionType.DROP_ITEM,
+          entityType: WorldActionEntityType.MOB,
+          entityId: mob.id,
+          targetPosition: ctx.targetPosition,
+          itemId: mobBackpack.id,
+        });
+      }
+      action.addPending({
+        type: WorldActionType.REMOVE_ENTITY,
+        entityType: WorldActionEntityType.MOB,
+        entityId: mob.id,
+        position: ctx.targetPosition,
+      });
+      return action.fulfill(`Gained ${mobExp} exp`);
     }
     mobHp.hp = nextHp;
     action.fulfill(`Dealt ${dmg} dmg to ${mobName}`);
