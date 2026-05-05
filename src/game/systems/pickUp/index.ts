@@ -1,2 +1,2 @@
-export * from "../inv/backpack";
+export * from "./pickUp";
 export * from "./resolvePickUpAction";

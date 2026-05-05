@@ -1,1 +1,1 @@
-export * from "./getPlayer";
+export * from "./player";

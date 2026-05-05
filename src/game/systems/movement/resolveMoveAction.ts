@@ -7,6 +7,7 @@ import { addExplorationExp } from "../exp";
 import { Action } from "../log";
 import { GameActionType, type ActionResolution, type Direction } from "../turn";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
+import { getPlayerPosition } from "../../state";
 
 const markAsVisited = (state: GameState, position: number): void => {
   upsertComponent(state.world[position].floor, new VisitedComponent());
@@ -42,7 +43,7 @@ export const resolveMoveAction = (
 ): ActionResolution<GameState> => {
   const action = new Action();
   const nextState = produce(state, (draft) => {
-    const currentPlayerPosition = draft.world.findIndex((tile) => tile.player); // TODO: getPlayerPosition util
+    const currentPlayerPosition = getPlayerPosition(draft);
     const nextPlayerPosition = getNextPlayerPosition({
       currentPosition: currentPlayerPosition,
       direction,

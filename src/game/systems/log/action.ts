@@ -1,6 +1,6 @@
 import type { GameState } from "../../state/state";
 import type { ActionResolution, GameAction } from "../turn";
-import { addLogImmutable } from "./addLog";
+import { addLogImmutable } from "./log";
 
 export class Action {
   public consumesTurn = false;

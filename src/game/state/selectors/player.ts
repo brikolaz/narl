@@ -6,3 +6,7 @@ export const getPlayer = (state: GameState): PlayerEntity => {
   if (!player) throw new Error("Player not found");
   return player;
 };
+
+export const getPlayerPosition = (state: GameState): number => {
+  return state.world.findIndex((tile) => tile.player);
+};

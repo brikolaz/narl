@@ -1,3 +1,3 @@
 export * from "./types";
-export * from "./addLog";
+export * from "./log";
 export * from "./action";;
