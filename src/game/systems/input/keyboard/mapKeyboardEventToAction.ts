@@ -1,13 +1,17 @@
 // game/systems/input/mapKeyboardEventToAction.ts
 import type { RefObject } from "react";
+import { getComponentByType } from "../../../../core/ecs";
+import { SizeComponent } from "../../../model";
+import { getPlayer, type GameState } from "../../../state";
+import { getEqSlots } from "../../eq";
+import { getBackpack } from "../../inv";
+import { addLogImmutable } from "../../log";
 import {
   Direction,
   GameActionType,
   type GameAction,
-  type InvSlot,
+  type InvSlot
 } from "../../turn";
-import type { GameState } from "../../../state";
-import { addLogImmutable } from "../../log";
 
 export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
@@ -32,6 +36,18 @@ export const mapKeyboardEventToAction = (
         eqSlot: 1, // hardcoded for now
       };
     }
+    if (buffer.current[0] === "u") {
+      if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
+        setGameState(addLogImmutable(gameState, "Unequip action in progress"));
+        return;
+      }
+
+      buffer.current = [];
+      return {
+        type: GameActionType.UNEQUIP_ITEM,
+        eqSlot: 1, // hardcoded for now
+      };
+    }
     return;
   }
 
@@ -44,11 +60,24 @@ export const mapKeyboardEventToAction = (
     case "G":
       return { type: GameActionType.PICK_UP };
     case "e":
-    case "E":
+    case "E": {
       buffer.current.push("e");
-      setGameState(addLogImmutable(gameState, "Select item to equip (1-9)"));
-
+      const backpack = getBackpack(getPlayer(gameState));
+      const backpackSize = getComponentByType(backpack, SizeComponent)?.size;
+      setGameState(
+        addLogImmutable(gameState, `Select item to equip (1-${backpackSize})`),
+      );
       return;
+    }
+    case "u":
+    case "U": {
+      const eqSlots = getEqSlots(getPlayer(gameState)).length;
+      buffer.current.push("u");
+      setGameState(
+        addLogImmutable(gameState, `Select item to unequip (1-${eqSlots})`),
+      );
+      return;
+    }
     default:
       return undefined;
   }

@@ -9,6 +9,7 @@ export enum GameActionType {
   MOVE,
   PICK_UP,
   EQUIP_ITEM,
+  UNEQUIP_ITEM,
   ATTACK,
 }
 
@@ -23,11 +24,15 @@ export type GameAction =
       invSlot: InvSlot;
       eqSlot: EqSlot;
     }
+  | {
+      type: GameActionType.UNEQUIP_ITEM;
+      eqSlot: EqSlot;
+    }
   | { type: GameActionType.ATTACK; targetPosition: number };
 
 export type ActionResolution<TGameState> = {
   nextState: TGameState;
   consumesTurn: boolean;
   pendingActions: GameAction[];
-  action?: Action
+  action?: Action;
 };

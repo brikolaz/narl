@@ -4,6 +4,7 @@ import {
   resolveAttackAction,
 } from "../combat/resolveAttackAction";
 import { resolveEquipAction } from "../eq/resolveEquipAction";
+import { resolveUnequipAction } from "../eq/resolveUnequipAction";
 import { addLogImmutable } from "../log";
 import { resolveMoveAction } from "../movement";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
@@ -59,7 +60,18 @@ export const resolvePlayerAction = (
         nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
+    case GameActionType.UNEQUIP_ITEM: {
+      const actionResolution = resolveUnequipAction(state, action.eqSlot);
+      let nextState = actionResolution.nextState;
 
+      if (actionResolution.consumesTurn) {
+        nextState = increaseTurn(nextState);
+      }
+      return {
+        ...actionResolution,
+        nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
+      };
+    }
     case GameActionType.ATTACK: {
       const ctx = prepareAttack(state, action.targetPosition);
       if (!ctx.ok) {

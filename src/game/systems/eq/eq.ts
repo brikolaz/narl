@@ -3,6 +3,7 @@ import {
   getComponentByType,
   getEntitiesByType,
   getEntityByType,
+  removeEntityById,
 } from "../../../core/ecs";
 import { EqSlotEntity } from "../../model/entities/eq/EqSlotEntity";
 import { EqEntity } from "../../model/entities/eq/EqEntity";
@@ -31,4 +32,14 @@ export const getEquippedWeaponDamage = (weapon: ItemEntity) => {
     throw new Error(`Equiped weapon does not have a DmgComponent`);
   }
   return dmg;
+};
+
+export const unequipWeapon = (entity: Entity, index: number) => {
+  const slots = getEqSlots(entity);
+  const slot = slots[index];
+  const weapon = getEntityByType(slot, ItemEntity);
+  if (weapon) {
+    removeEntityById(slot, weapon.id);
+  }
+  return weapon;
 };
