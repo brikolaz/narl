@@ -53,14 +53,6 @@ export const mapKeyboardEventToAction = (
         eqSlot: 1, // hardcoded for now
       };
     }
-    if (buffer.current[0] === "Shift") {
-      if (event.key.toLowerCase() === "g") {
-        buffer.current = [];
-        return {
-          type: PlayerActionType.PICK_UP_UNPACK,
-        };
-      }
-    }
     return;
   }
 
@@ -70,7 +62,7 @@ export const mapKeyboardEventToAction = (
     case "ArrowRight":
       return { type: PlayerActionType.MOVE, direction: Direction.RIGHT };
     case "g":
-      return { type: PlayerActionType.PICK_UP };
+      return { type: PlayerActionType.PICK_UP_UNPACK };
     case "e":
     case "E": {
       buffer.current.push("e");
@@ -90,9 +82,6 @@ export const mapKeyboardEventToAction = (
       );
       return;
     }
-    case "Shift":
-      buffer.current.push("Shift");
-      return;
     default:
       return undefined;
   }
