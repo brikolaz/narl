@@ -8,11 +8,12 @@ import { resolveUnequipAction } from "../eq/resolveUnequipAction";
 import { addLogImmutable } from "../log";
 import { resolveMoveAction } from "../movement";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
+import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 import { increaseTurn } from "./turn";
 import {
   PlayerActionType,
   type ActionResolution,
-  type PlayerAction
+  type PlayerAction,
 } from "./types";
 
 export const resolvePlayerAction = (
@@ -35,6 +36,17 @@ export const resolvePlayerAction = (
     }
     case PlayerActionType.PICK_UP: {
       const actionResolution = resolvePickUpAction(state);
+      let nextState = actionResolution.nextState;
+      if (actionResolution.consumesTurn) {
+        nextState = increaseTurn(nextState);
+      }
+      return {
+        ...actionResolution,
+        nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
+      };
+    }
+    case PlayerActionType.PICK_UP_UNPACK: {
+      const actionResolution = resolvePickUpUnpack(state);
       let nextState = actionResolution.nextState;
       if (actionResolution.consumesTurn) {
         nextState = increaseTurn(nextState);

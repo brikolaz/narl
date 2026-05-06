@@ -1,9 +1,12 @@
+import { hasComponentByType, type Entity } from "../../../core/ecs";
 import type { ItemEntity } from "../../model";
+import { PickupableComponent } from "../../model/components/PickupableComponent";
 import type { Tile } from "../../state";
 
 export const pickUpItem = (tile: Tile): ItemEntity | undefined => {
-  const item = tile.items.at(-1);
-  if (!item) return;
-  tile.items = tile.items.slice(0, -1);
-  return item;
+  return tile.items[0];
+};
+
+export const isPickupable = (item: Entity) => {
+  return hasComponentByType(item, PickupableComponent);
 };

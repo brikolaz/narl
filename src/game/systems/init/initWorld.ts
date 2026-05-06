@@ -18,6 +18,7 @@ export const initWorld = (): WorldState => {
   world[3].items.push(new SwordEntity());
   world[0].floor.components.push(new VisitedComponent());
   world[6].mobs.push(new RageBaitEntity());
+  world[7].mobs.push(new RageBaitEntity());
 
   return world;
 };

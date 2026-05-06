@@ -9,6 +9,7 @@ export enum Direction {
 export enum PlayerActionType {
   MOVE = "MOVE",
   PICK_UP = "PICK_UP",
+  PICK_UP_UNPACK = "PICK_UP_UNPACK",
   EQUIP_ITEM = "EQUIP_ITEM",
   UNEQUIP_ITEM = "UNEQUIP_ITEM",
   ATTACK = "ATTACK",
@@ -26,6 +27,7 @@ export type EqSlot = 1;
 export type PlayerAction =
   | { type: PlayerActionType.MOVE; direction: Direction }
   | { type: PlayerActionType.PICK_UP }
+  | { type: PlayerActionType.PICK_UP_UNPACK }
   | {
       type: PlayerActionType.EQUIP_ITEM;
       invSlot: InvSlot;

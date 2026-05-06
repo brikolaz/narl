@@ -11,7 +11,7 @@ import { BackpackEntity } from "../../model/entities/items/BackpackEntity";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
 import type { InvSlot } from "../turn";
 
-export const getBackpack = (entity: ItemEntity): BackpackEntity | undefined => {
+export const getBackpack = (entity: Entity): BackpackEntity | undefined => {
   return getEntityByType(entity, BackpackEntity);
 };
 

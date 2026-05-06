@@ -11,10 +11,10 @@ import { getComponentByType } from "../../../core/ecs";
 import { ExpComponent, ItemEntity } from "../../model";
 import { NameComponent } from "../../model/components/AppearanceComponent copy";
 import { getEquippedWeapon, getEquippedWeaponDamage } from "../eq";
+import { getBackpack } from "../inv";
 import { Action } from "../log";
 import { getHp } from "./hp";
-import { getMob, hasMobs, killMobById } from "./mobs";
-import { getBackpack } from "../inv";
+import { getMob, hasMobs } from "./mobs";
 
 type AttackContext =
   | {
@@ -101,15 +101,15 @@ export const resolveAttackAction = (
         throw new Error("No exp component");
       }
       playerExp.exp += mobExp;
-      const mobBackpack = getBackpack(mob);
+      const mobContainer = getBackpack(mob);
       // TODO: move death consequences to EntityDiedAction resolver
-      if (mobBackpack) {
+      if (mobContainer) {
         action.addPending({
           type: WorldActionType.DROP_ITEM,
           entityType: WorldActionEntityType.MOB,
           entityId: mob.id,
           targetPosition: ctx.targetPosition,
-          itemId: mobBackpack.id,
+          itemId: mobContainer.id,
         });
       }
       action.addPending({

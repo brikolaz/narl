@@ -1,2 +1,2 @@
-export * from "./backpack"
+export * from "./containers"
 export * from "./getItemSlots"

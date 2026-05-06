@@ -1,15 +1,23 @@
 import { useContext, useEffect, useRef } from "react";
 import { GameContext } from "../state/context";
-import { mapKeyboardEventToAction } from "../systems/input/keyboard";
+import {
+  clearBuffer,
+  mapKeyboardEventToAction,
+} from "../systems/input/keyboard";
 import { dispatchGameAction } from "../systems/turn";
 
 export const useKeyboardControls = () => {
-  const { gameState,setGameState } = useContext(GameContext);
-  const buffer = useRef<string[]>([])
+  const { gameState, setGameState } = useContext(GameContext);
+  const buffer = useRef<string[]>([]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const action = mapKeyboardEventToAction(event, buffer, gameState, setGameState);
+      const action = mapKeyboardEventToAction(
+        event,
+        buffer,
+        gameState,
+        setGameState,
+      );
 
       if (action) {
         event.preventDefault();
@@ -18,10 +26,14 @@ export const useKeyboardControls = () => {
         });
       }
     };
+    const handleKeyUp = () => clearBuffer(buffer);
 
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyUp);
     };
   }, [setGameState, buffer, gameState]);
 };

@@ -10,9 +10,14 @@ import {
   Direction,
   PlayerActionType,
   type GameAction,
-  type InvSlot
+  type InvSlot,
 } from "../../turn";
 
+export const clearBuffer = (buffer: RefObject<string[]>): void => {
+  if (buffer.current[0] === "Shift") {
+    buffer.current = [];
+  }
+};
 export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
   buffer: RefObject<string[]>,
@@ -48,6 +53,14 @@ export const mapKeyboardEventToAction = (
         eqSlot: 1, // hardcoded for now
       };
     }
+    if (buffer.current[0] === "Shift") {
+      if (event.key.toLowerCase() === "g") {
+        buffer.current = [];
+        return {
+          type: PlayerActionType.PICK_UP_UNPACK,
+        };
+      }
+    }
     return;
   }
 
@@ -57,7 +70,6 @@ export const mapKeyboardEventToAction = (
     case "ArrowRight":
       return { type: PlayerActionType.MOVE, direction: Direction.RIGHT };
     case "g":
-    case "G":
       return { type: PlayerActionType.PICK_UP };
     case "e":
     case "E": {
@@ -78,6 +90,9 @@ export const mapKeyboardEventToAction = (
       );
       return;
     }
+    case "Shift":
+      buffer.current.push("Shift");
+      return;
     default:
       return undefined;
   }

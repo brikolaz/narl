@@ -26,7 +26,7 @@ export const resolveEquipAction = (
   state: GameState,
   invSlotIndex: InvSlot,
   eqSlotIndex: EqSlot,
-): ActionResolution<GameState> => {
+): ActionResolution => {
   const action = new Action();
   const nextState = produce(state, (draft) => {
     const player = getPlayer(draft);

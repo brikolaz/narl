@@ -14,7 +14,6 @@ export const resolveDropAction = (
   entityId: string | undefined,
   itemId: string,
 ): ActionResolution => {
-  debugger;
   const action = new Action();
   const nextState = produce(state, (draft) => {
     let entity: Entity | undefined = undefined;
