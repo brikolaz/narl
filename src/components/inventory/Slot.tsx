@@ -1,5 +1,4 @@
-import { getComponentByType } from "../../core/ecs/queries/component";
-import { GlyphComponent } from "../../game/model/components/GlyphComponent";
+import { useItem } from "../../game/hooks/useItem";
 import type { ItemEntity } from "../../game/model/entities/items/ItemEntity";
 
 interface SlotProps {
@@ -7,7 +6,7 @@ interface SlotProps {
 }
 
 export const Slot = ({ item }: SlotProps) => {
-  const { glyph, color } = getComponentByType(item, GlyphComponent) ?? {};
+  const { glyph, color } = useItem(item);
 
   return (
     <div

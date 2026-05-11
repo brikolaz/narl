@@ -95,11 +95,11 @@ export const patchComponentByType = <T extends Component>(
   if (changed) entity.components = nextComponents;
 };
 
-export const addComponent = <T extends Component>(
+export const addComponents = <T extends Component>(
   entity: Entity,
-  component: T,
+  ...components: T[]
 ): Entity => {
-  entity.components.push(component);
+  entity.components.push(...components);
   return entity;
 };
 

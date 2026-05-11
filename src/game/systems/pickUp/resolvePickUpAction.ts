@@ -1,16 +1,18 @@
 import { produce } from "immer";
-import { getComponentByType } from "../../../core/ecs";
+import { getComponentByType, hasComponentByType } from "../../../core/ecs";
+import { removeById } from "../../../utils/removeById";
 import { NameComponent } from "../../model/components/AppearanceComponent copy";
+import { ContainerComponent } from "../../model/components/ContainerComponent";
 import type { GameState } from "../../state/state";
+import { isCursed } from "../curse/cursed";
 import {
   addItemToEntityBackpack,
   getBackpack,
   isBackpackFull,
 } from "../inv/containers";
 import { Action } from "../log/action";
-import type { ActionResolution } from "../turn";
+import { WorldActionType, type ActionResolution } from "../turn";
 import { isPickupable, pickUpItem } from "./pickUp";
-import { removeById } from "../../../utils/removeById";
 
 export const resolvePickUpAction = (state: GameState): ActionResolution => {
   const action = new Action();
@@ -36,10 +38,19 @@ export const resolvePickUpAction = (state: GameState): ActionResolution => {
       if (!isPickupable(itemToPickUp)) {
         return action.reject(`${itemName} is not pickupable`);
       }
+      const isContainer = hasComponentByType(itemToPickUp, ContainerComponent);
+      if (isContainer) {
+        action.addPending({
+          type: WorldActionType.CURSE_ITEM,
+          itemId: itemToPickUp.id,
+        });
+      }
       addItemToEntityBackpack(tile.player, itemToPickUp, backpack.id);
       removeById(tile.items, itemToPickUp.id);
 
-      action.fulfill(`Player picked up a ${itemName}.`);
+      action.fulfill(
+        `Player picked up a ${isCursed(itemToPickUp) ? "Cursed " : ""}${itemName}.`,
+      );
     });
   });
 

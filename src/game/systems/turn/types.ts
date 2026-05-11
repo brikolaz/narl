@@ -18,6 +18,7 @@ export enum PlayerActionType {
 export enum WorldActionType {
   DROP_ITEM = "DROP_ITEM",
   REMOVE_ENTITY = "REMOVE_ENTITY",
+  CURSE_ITEM = "CURSE_ITEM",
 }
 export type ActionType = PlayerActionType | WorldActionType;
 
@@ -51,7 +52,7 @@ export type WorldAction =
       targetPosition: number;
       entityType: WorldActionEntityType.PLAYER;
       entityId: undefined;
-      itemId: string;
+      itemId: string | undefined;
     }
   | {
       type: WorldActionType.DROP_ITEM;
@@ -71,7 +72,12 @@ export type WorldAction =
       entityId: undefined;
       entityType: WorldActionEntityType.PLAYER;
       position: number;
+    }
+  | {
+      type: WorldActionType.CURSE_ITEM;
+      itemId: string;
     };
+    
 export type GameAction = PlayerAction | WorldAction;
 
 export type ActionResolution = {

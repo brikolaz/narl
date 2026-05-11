@@ -8,22 +8,28 @@ import { GameContext } from "../state/context";
 import { getPlayer } from "../state/selectors";
 import { useEq, type Eq } from "./useEq";
 import { getBackpack } from "../systems/inv";
+import { ItemEntity, SizeComponent } from "../model";
+import { getEntitiesByType } from "../../core/ecs";
 
 type Player = {
   player: PlayerEntity;
-  getPlayerBackpack: () => BackpackEntity | undefined;
+  backpack: BackpackEntity | undefined;
   exp: number;
   eq: Eq;
+  backpackSize: number;
+  items: ItemEntity[];
 };
 
 export const usePlayer = (): Player => {
   const { gameState } = useContext(GameContext);
   const player = getPlayer(gameState);
-  const getPlayerBackpack = () => getBackpack(player);
+  const backpack = getBackpack(player);
   const eq = useEq(player);
+  const backpackSize = getComponentByType(backpack, SizeComponent)?.size ?? 0;
+  const items = getEntitiesByType(backpack, ItemEntity);
 
   const exp =
     getComponentByType(player, ExpComponent)?.exp ?? INITIAL_PLAYER_EXP;
 
-  return { player, getPlayerBackpack, exp, eq };
+  return { player, backpack, backpackSize, items, exp, eq };
 };

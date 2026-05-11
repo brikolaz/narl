@@ -2,13 +2,15 @@
 import type { RefObject } from "react";
 import { getComponentByType } from "../../../../core/ecs";
 import { SizeComponent } from "../../../model";
-import { getPlayer, type GameState } from "../../../state";
+import { getPlayer, getPlayerPosition, type GameState } from "../../../state";
 import { getEqSlots } from "../../eq";
-import { getBackpack } from "../../inv";
+import { getBackpack, getBackpackItem } from "../../inv";
 import { addLogImmutable } from "../../log";
 import {
   Direction,
   PlayerActionType,
+  WorldActionEntityType,
+  WorldActionType,
   type GameAction,
   type InvSlot,
 } from "../../turn";
@@ -53,6 +55,27 @@ export const mapKeyboardEventToAction = (
         eqSlot: 1, // hardcoded for now
       };
     }
+    if (buffer.current[0] === "d") {
+      if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
+        setGameState(addLogImmutable(gameState, "Drop action in progress"));
+        return;
+      }
+
+      buffer.current = [];
+      const backpack = getBackpack(getPlayer(gameState));
+      if (!backpack) {
+        throw new Error("No Backpack");
+      }
+      const item = getBackpackItem(backpack, Number(event.key) as InvSlot);
+
+      return {
+        type: WorldActionType.DROP_ITEM,
+        entityType: WorldActionEntityType.PLAYER,
+        itemId: item?.id,
+        targetPosition: getPlayerPosition(gameState),
+        entityId: undefined,
+      };
+    }
     return;
   }
 
@@ -79,6 +102,16 @@ export const mapKeyboardEventToAction = (
       buffer.current.push("u");
       setGameState(
         addLogImmutable(gameState, `Select item to unequip (1-${eqSlots})`),
+      );
+      return;
+    }
+    case "d":
+    case "D": {
+      buffer.current.push("d");
+      const backpack = getBackpack(getPlayer(gameState));
+      const backpackSize = getComponentByType(backpack, SizeComponent)?.size;
+      setGameState(
+        addLogImmutable(gameState, `Select item to drop (1-${backpackSize})`),
       );
       return;
     }

@@ -18,6 +18,7 @@ import {
 import { Action } from "../log/action";
 import { PlayerActionType, type ActionResolution } from "../turn";
 import { pickUpItem } from "./pickUp";
+import { CursedComponent } from "../../model/components/CursedComponent";
 
 export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
   const action = new Action();
@@ -41,7 +42,8 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
       const isContainer = hasComponentByType(itemToPickUp, ContainerComponent);
       if (isContainer) {
         const itemsInContainer = getEntitiesByType(itemToPickUp, ItemEntity);
-        if (!itemsInContainer.length) {
+        const isCursed = getComponentByType(itemToPickUp, CursedComponent);
+        if (!itemsInContainer.length || isCursed) {
           return action.addPending({
             type: PlayerActionType.PICK_UP,
           });
@@ -63,9 +65,9 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
         }
         return;
       }
-      addItemToEntityBackpack(tile.player, itemToPickUp, backpack.id);
-      const itemName = getComponentByType(itemToPickUp, NameComponent)?.name;
-      return action.fulfill(`Picked up ${itemName}.`);
+      action.addPending({
+        type: PlayerActionType.PICK_UP,
+      });
     });
   });
 
