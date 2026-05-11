@@ -1,10 +1,8 @@
 // game/systems/input/mapKeyboardEventToAction.ts
 import type { RefObject } from "react";
-import { getComponentByType } from "../../../../core/ecs";
-import { SizeComponent } from "../../../model";
 import { getPlayer, getPlayerPosition, type GameState } from "../../../state";
 import { getEqSlots } from "../../eq";
-import { getBackpack, getBackpackItem } from "../../inv";
+import { getBackpack, getBackpackItem, getContainerSize } from "../../inv";
 import { addLogImmutable } from "../../log";
 import {
   Direction,
@@ -13,6 +11,7 @@ import {
   WorldActionType,
   type GameAction,
   type InvSlot,
+  type PlayerAction,
 } from "../../turn";
 
 export const clearBuffer = (buffer: RefObject<string[]>): void => {
@@ -76,6 +75,44 @@ export const mapKeyboardEventToAction = (
         entityId: undefined,
       };
     }
+    if (buffer.current[0] === "m") {
+      const backpack = getBackpack(getPlayer(gameState));
+      if (!backpack) {
+        throw new Error("No Backpack");
+      }
+      const backpackSize = backpack ? getContainerSize(backpack) : undefined;
+      if (buffer.current[1] === undefined) {
+        if (
+          !["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)
+        ) {
+          setGameState(addLogImmutable(gameState, "Move action in progress"));
+          return;
+        }
+
+        buffer.current.push(event.key);
+        setGameState(
+          addLogImmutable(
+            gameState,
+            `Select target container (1-${backpackSize})`,
+          ),
+        );
+        return;
+      }
+
+      if (!["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
+        setGameState(addLogImmutable(gameState, "Move action in progress"));
+        return;
+      }
+
+      const gameAction: PlayerAction = {
+        type: PlayerActionType.MOVE_ITEM,
+        fromSlot: Number(buffer.current[1]) as InvSlot,
+        toSlot: Number(event.key) as InvSlot,
+      };
+      buffer.current = [];
+
+      return gameAction;
+    }
     return;
   }
 
@@ -90,7 +127,7 @@ export const mapKeyboardEventToAction = (
     case "E": {
       buffer.current.push("e");
       const backpack = getBackpack(getPlayer(gameState));
-      const backpackSize = getComponentByType(backpack, SizeComponent)?.size;
+      const backpackSize = backpack ? getContainerSize(backpack) : undefined;
       setGameState(
         addLogImmutable(gameState, `Select item to equip (1-${backpackSize})`),
       );
@@ -109,9 +146,19 @@ export const mapKeyboardEventToAction = (
     case "D": {
       buffer.current.push("d");
       const backpack = getBackpack(getPlayer(gameState));
-      const backpackSize = getComponentByType(backpack, SizeComponent)?.size;
+      const backpackSize = backpack ? getContainerSize(backpack) : undefined;
       setGameState(
         addLogImmutable(gameState, `Select item to drop (1-${backpackSize})`),
+      );
+      return;
+    }
+    case "m":
+    case "M": {
+      buffer.current.push("m");
+      const backpack = getBackpack(getPlayer(gameState));
+      const backpackSize = backpack ? getContainerSize(backpack) : undefined;
+      setGameState(
+        addLogImmutable(gameState, `Select item to move (1-${backpackSize})`),
       );
       return;
     }

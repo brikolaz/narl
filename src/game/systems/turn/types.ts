@@ -13,6 +13,7 @@ export enum PlayerActionType {
   EQUIP_ITEM = "EQUIP_ITEM",
   UNEQUIP_ITEM = "UNEQUIP_ITEM",
   ATTACK = "ATTACK",
+  MOVE_ITEM = "MOVE_ITEM",
 }
 
 export enum WorldActionType {
@@ -38,7 +39,8 @@ export type PlayerAction =
       type: PlayerActionType.UNEQUIP_ITEM;
       eqSlot: EqSlot;
     }
-  | { type: PlayerActionType.ATTACK; targetPosition: number };
+  | { type: PlayerActionType.ATTACK; targetPosition: number }
+  | { type: PlayerActionType.MOVE_ITEM; fromSlot: InvSlot; toSlot: InvSlot };
 
 export enum WorldActionEntityType {
   MOB = "MOB",
@@ -77,7 +79,7 @@ export type WorldAction =
       type: WorldActionType.CURSE_ITEM;
       itemId: string;
     };
-    
+
 export type GameAction = PlayerAction | WorldAction;
 
 export type ActionResolution = {

@@ -13,7 +13,8 @@ import type { GameState } from "../../state/state";
 import {
   addItemToEntityBackpack,
   getBackpack,
-  isBackpackFull,
+  isContainerFull,
+  isContainer,
 } from "../inv/containers";
 import { Action } from "../log/action";
 import { PlayerActionType, type ActionResolution } from "../turn";
@@ -32,15 +33,15 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
       if (!backpack) {
         return;
       }
-      if (isBackpackFull(backpack)) {
+      if (isContainerFull(backpack)) {
         return action.reject("Can't pick up item. Backpack is full.");
       }
       const itemToPickUp = pickUpItem(tile);
       if (!itemToPickUp) {
         return action.reject("Nothing to pick up");
       }
-      const isContainer = hasComponentByType(itemToPickUp, ContainerComponent);
-      if (isContainer) {
+
+      if (isContainer(itemToPickUp)) {
         const itemsInContainer = getEntitiesByType(itemToPickUp, ItemEntity);
         const isCursed = getComponentByType(itemToPickUp, CursedComponent);
         if (!itemsInContainer.length || isCursed) {
@@ -49,7 +50,7 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
           });
         }
         while (itemsInContainer.length) {
-          if (isBackpackFull(backpack)) {
+          if (isContainerFull(backpack)) {
             return action.log(`Backpack is full`);
           }
           const nextItem = itemsInContainer.pop();

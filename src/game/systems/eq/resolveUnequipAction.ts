@@ -8,7 +8,7 @@ import {
   type EqSlot,
 } from "../turn";
 
-import { addItemToEntityBackpack, getBackpack, isBackpackFull } from "../inv";
+import { addItemToEntityBackpack, getBackpack, isContainerFull } from "../inv";
 import { Action } from "../log";
 import { unequipWeapon } from "./eq";
 
@@ -24,7 +24,7 @@ export const resolveUnequipAction = (
       throw new Error("Player has no backpack");
     }
 
-    const isFull = isBackpackFull(backpack);
+    const isFull = isContainerFull(backpack);
     const equippedWeapon = unequipWeapon(player, eqSlotIndex - 1);
     if (!equippedWeapon) {
       return action.reject(`No item in slot ${eqSlotIndex} to unequip.`);

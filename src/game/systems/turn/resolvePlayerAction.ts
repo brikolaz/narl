@@ -6,6 +6,7 @@ import {
 import { resolveEquipAction } from "../eq/resolveEquipAction";
 import { resolveUnequipAction } from "../eq/resolveUnequipAction";
 import { addLogImmutable } from "../log";
+import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
 import { resolveMoveAction } from "../movement";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
@@ -99,6 +100,22 @@ export const resolvePlayerAction = (
         nextState:
           actionResolution.action?.flushLogs(actionResolution.nextState) ??
           actionResolution.nextState,
+      };
+    }
+    case PlayerActionType.MOVE_ITEM: {
+      const actionResolution = resolveMoveItemAction(
+        state,
+        action.fromSlot,
+        action.toSlot,
+      );
+      let nextState = actionResolution.nextState;
+
+      if (actionResolution.consumesTurn) {
+        nextState = increaseTurn(nextState);
+      }
+      return {
+        ...actionResolution,
+        nextState: actionResolution.action?.flushLogs(nextState) ?? nextState,
       };
     }
     default:

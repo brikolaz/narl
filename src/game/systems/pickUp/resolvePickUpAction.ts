@@ -8,7 +8,8 @@ import { isCursed } from "../curse/cursed";
 import {
   addItemToEntityBackpack,
   getBackpack,
-  isBackpackFull,
+  isContainerFull,
+  isContainer,
 } from "../inv/containers";
 import { Action } from "../log/action";
 import { WorldActionType, type ActionResolution } from "../turn";
@@ -26,7 +27,7 @@ export const resolvePickUpAction = (state: GameState): ActionResolution => {
       if (!backpack) {
         return;
       }
-      if (isBackpackFull(backpack)) {
+      if (isContainerFull(backpack)) {
         return action.reject("Can't pick up item. Backpack is full.");
       }
       const itemToPickUp = pickUpItem(tile);
@@ -38,8 +39,7 @@ export const resolvePickUpAction = (state: GameState): ActionResolution => {
       if (!isPickupable(itemToPickUp)) {
         return action.reject(`${itemName} is not pickupable`);
       }
-      const isContainer = hasComponentByType(itemToPickUp, ContainerComponent);
-      if (isContainer) {
+      if (isContainer(itemToPickUp)) {
         action.addPending({
           type: WorldActionType.CURSE_ITEM,
           itemId: itemToPickUp.id,
