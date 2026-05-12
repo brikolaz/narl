@@ -10,7 +10,9 @@ export const EQ = () => {
     <div style={{ display: "flex", flexDirection: "row" }}>
       {eqSlots.map((slot, index) => {
         const item = getItemInSlot(slot);
-        return <Slot key={slot?.id ?? `empty-${index}`} item={item} />;
+        return (
+          <Slot key={slot?.id ?? `empty-${index}`} item={item} index={index + 1} />
+        );
       })}
     </div>
   );
