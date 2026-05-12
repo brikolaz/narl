@@ -20,6 +20,5 @@ export const initWorld = (): WorldState => {
   world[5].mobs.push(new RageBaitEntity());
   world[6].mobs.push(new RageBaitEntity());
   world[7].mobs.push(new RageBaitEntity());
-
   return world;
 };
