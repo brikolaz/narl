@@ -17,6 +17,7 @@ export const initWorld = (): WorldState => {
   world[INITIAL_PLAYER_POSITION].player = initPlayer();
   world[3].items.push(new SwordEntity());
   world[0].floor.components.push(new VisitedComponent());
+  world[5].mobs.push(new RageBaitEntity());
   world[6].mobs.push(new RageBaitEntity());
   world[7].mobs.push(new RageBaitEntity());
 

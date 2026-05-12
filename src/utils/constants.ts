@@ -8,4 +8,4 @@ export const MAX_VISIBLE_LOG = 5 as const;
 export const DEFAULT_BACKPACK_SIZE = 9 as const;
 export const INITIAL_TURN = 0 as const;
 export const INITIAL_PLAYER_EXP = 0 as const;
-
+export const MAX_CURSED_CONTAINER_DEPTH = 2

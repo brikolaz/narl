@@ -1,10 +1,25 @@
 import { produce } from "immer";
-import { addEntity, removeEntityById } from "../../../core/ecs";
+import { addEntity, Entity, removeEntityById } from "../../../core/ecs";
 import { getPlayer, type GameState } from "../../state";
 import { getBackpack, isContainer, isContainerFull } from "../inv";
 import { getInvItemAt } from "../inv/inv";
 import { Action } from "../log";
 import type { ActionResolution, InvSlot } from "../turn";
+import { MAX_CURSED_CONTAINER_DEPTH } from "../../../utils";
+
+const getNestDepth = (entity: Entity): number => {
+  if (!isContainer(entity)) {
+    return 0;
+  }
+
+  const nestedContainers = entity.entities.filter(isContainer);
+
+  if (!nestedContainers.length) {
+    return 1;
+  }
+
+  return 1 + Math.max(...nestedContainers.map(getNestDepth));
+};
 
 // TODO: add swap (new resolver)
 export const resolveMoveItemAction = (
@@ -33,6 +48,17 @@ export const resolveMoveItemAction = (
     if (isContainerFull(toItem)) {
       return action.reject("Target container is full");
     }
+
+    if (isContainer(fromItem)) {
+      const fromItemNestDepth = getNestDepth(fromItem);
+
+      if (fromItemNestDepth + 1 > MAX_CURSED_CONTAINER_DEPTH) {
+        return action.reject(
+          `Max nest depth (${MAX_CURSED_CONTAINER_DEPTH}) reached`,
+        );
+      }
+    }
+
     removeEntityById(backpack, fromItem.id);
     addEntity(toItem, fromItem);
 
