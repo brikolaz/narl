@@ -8,7 +8,7 @@ import {
   isContainerFull,
 } from "../inv/containers";
 import { getItemName } from "../inv/items";
-import { Action } from "../log/action";
+import { Action } from "../turn/actions/action";
 import { WorldActionType, type ActionResolution } from "../turn";
 import { isPickupable, pickUpItem } from "./pickUp";
 

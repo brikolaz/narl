@@ -4,8 +4,8 @@ import { VisitedComponent } from "../../model/components/VisitedComponent";
 import type { GameState, Tile } from "../../state/state";
 import { hasMobs } from "../attack";
 import { addExplorationExp } from "../exp";
-import { Action } from "../log";
 import {
+  Action,
   PlayerActionType,
   type ActionResolution,
   type Direction,

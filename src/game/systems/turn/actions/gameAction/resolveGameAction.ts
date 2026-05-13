@@ -1,14 +1,9 @@
-import type { GameState } from "../../state";
-import { resolvePlayerAction } from "./resolvePlayerAction";
-import { resolveWorldAction } from "../world/resolveWorldAction";
-import {
-  PlayerActionType,
-  WorldActionType,
-  type ActionResolution,
-  type GameAction,
-  type PlayerAction,
-  type WorldAction,
-} from "./types";
+import type { GameState } from "../../../../state";
+import { resolveWorldAction } from "../../../world/resolveWorldAction";
+import { PlayerActionType, resolvePlayerAction, type PlayerAction } from "../playerAction";
+import type { ActionResolution, GameAction } from "../types";
+import { WorldActionType, type WorldAction } from "./types";
+
 
 export const resolveGameAction = (
   state: GameState,

@@ -1,11 +1,10 @@
 import { produce } from "immer";
 import type { GameState } from "../../state/state";
-import { WorldActionEntityType, type ActionResolution } from "../turn";
+import { Action, WorldActionEntityType, type ActionResolution } from "../turn";
 
 import { getComponentByType } from "../../../core/ecs";
 import { NameComponent } from "../../model/components/NameComponent";
 import { getMobById, killMobById } from "../attack";
-import { Action } from "../log";
 
 export const resolveRemoveEntityAction = (
   state: GameState,

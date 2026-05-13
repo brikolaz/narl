@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { getPlayer } from "../../state";
 import type { GameState } from "../../state/state";
-import { type ActionResolution } from "../turn";
+import { Action, type ActionResolution } from "../turn";
 
 import {
   addComponents,
@@ -13,7 +13,6 @@ import { ColorComponent } from "../../model/components/ColorComponent";
 import { CursedComponent } from "../../model/components/CursedComponent";
 import { getBackpack } from "../inv";
 import { getItemName } from "../inv/items";
-import { Action } from "../log";
 import { isCursed } from "./curse";
 
 export const resolveCurseAction = (

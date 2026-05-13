@@ -2,6 +2,7 @@ import { produce } from "immer";
 import { getPlayer } from "../../state";
 import type { GameState } from "../../state/state";
 import {
+  Action,
   WorldActionEntityType,
   WorldActionType,
   type ActionResolution,
@@ -12,7 +13,6 @@ import { ExpComponent, ItemEntity } from "../../model";
 import { NameComponent } from "../../model/components/NameComponent";
 import { getEquippedWeapon, getEquippedWeaponDamage } from "../eq";
 import { getBackpack } from "../inv";
-import { Action } from "../log";
 import { getHp } from "./hp";
 import { getMob, hasMobs } from "./mobs";
 

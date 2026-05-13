@@ -14,7 +14,7 @@ import {
   isContainerFull
 } from "../inv/containers";
 import { getItemName } from "../inv/items";
-import { Action } from "../log/action";
+import { Action } from "../turn/actions/action";
 import { PlayerActionType, type ActionResolution } from "../turn";
 import { pickUpItem } from "./pickUp";
 

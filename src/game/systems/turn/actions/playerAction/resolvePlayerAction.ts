@@ -1,21 +1,15 @@
-import type { GameState } from "../../state/state";
-import {
-  prepareAttack,
-  resolveAttackAction,
-} from "../attack/resolveAttackAction";
-import { resolveEquipAction } from "../eq/resolveEquipAction";
-import { resolveUnequipAction } from "../eq/resolveUnequipAction";
-import { addLogImmutable } from "../log";
-import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
-import { resolveMoveAction } from "../movement";
-import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
-import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
-import { increaseTurn } from "./turn";
-import {
-  PlayerActionType,
-  type ActionResolution,
-  type PlayerAction,
-} from "./types";
+import type { GameState } from "../../../../state";
+import { prepareAttack, resolveAttackAction } from "../../../attack";
+import { resolveEquipAction, resolveUnequipAction } from "../../../eq";
+import { addLogImmutable } from "../../../log";
+import { resolveMoveItemAction } from "../../../moveItem/resolveMoveItemAction";
+import { resolveMoveAction } from "../../../movement";
+import { resolvePickUpAction } from "../../../pickUp";
+import { resolvePickUpUnpack } from "../../../pickUp/resolvePickUpUnpack";
+import { increaseTurn } from "../../turn";
+import type { ActionResolution } from "../types";
+import { PlayerActionType, type PlayerAction } from "./types";
+
 
 export const resolvePlayerAction = (
   state: GameState,

@@ -1,11 +1,10 @@
 import { produce } from "immer";
 import { getPlayer } from "../../state";
 import type { GameState } from "../../state/state";
-import { WorldActionEntityType, type ActionResolution } from "../turn";
+import { Action, WorldActionEntityType, type ActionResolution } from "../turn";
 
 import { Entity, getEntityById, removeEntityById } from "../../../core/ecs";
 import { getMobById } from "../attack";
-import { Action } from "../log";
 import { getBackpack } from "../inv";
 import { getItemName } from "../inv/items";
 

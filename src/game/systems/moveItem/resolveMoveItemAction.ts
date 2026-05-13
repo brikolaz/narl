@@ -1,10 +1,9 @@
 import { produce } from "immer";
 import { addEntity, Entity, removeEntityById } from "../../../core/ecs";
 import { getPlayer, type GameState } from "../../state";
-import { getBackpack, isContainer, isContainerFull } from "../inv";
+import { getBackpack, isContainer, isContainerFull, type InvSlot } from "../inv";
 import { getInvItemAt } from "../inv/inv";
-import { Action } from "../log";
-import type { ActionResolution, InvSlot } from "../turn";
+import { Action, type ActionResolution } from "../turn";
 import { MAX_CURSED_CONTAINER_DEPTH } from "../../../utils";
 
 const getNestDepth = (entity: Entity): number => {

@@ -2,16 +2,17 @@ import { produce } from "immer";
 import { getPlayer, getPlayerPosition } from "../../state";
 import type { GameState } from "../../state/state";
 import {
+  Action,
   WorldActionEntityType,
   WorldActionType,
   type ActionResolution,
-  type EqSlot,
+  
 } from "../turn";
 
 import { addItemToEntityBackpack, getBackpack, isContainerFull } from "../inv";
 import { getItemName } from "../inv/items";
-import { Action } from "../log";
 import { unequipWeapon } from "./eq";
+import type { EqSlot } from "./types";
 
 export const resolveUnequipAction = (
   state: GameState,
