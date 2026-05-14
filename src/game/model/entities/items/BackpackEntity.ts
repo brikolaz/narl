@@ -8,6 +8,7 @@ import { SizeComponent } from "../../components/SizeComponent";
 import { ItemEntity } from "./ItemEntity";
 import { GlyphComponent } from "../../components/GlyphComponent";
 import { MainHandComponent } from "../../components/eq/MainHandComponent";
+import { NestDepthComponent } from "../../components/NestDepthComponent";
 
 export type BackpackEntityProps = {
   size?: number;
@@ -24,6 +25,7 @@ export class BackpackEntity extends ItemEntity {
         size: props.size ?? DEFAULT_BACKPACK_SIZE,
       }),
       new ContainerComponent(),
+      new NestDepthComponent({ nestDepth: 2 }),
     ];
     if (props.dmg) {
       components.push(

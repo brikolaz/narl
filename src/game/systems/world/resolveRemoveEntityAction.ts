@@ -26,8 +26,8 @@ export const resolveRemoveEntityAction = (
     const mob = getMobById(tile, entityId);
     const mobName = getComponentByType(mob, NameComponent)?.name;
     killMobById(tile, entityId);
-    return action.fulfill(`${mobName} died.`);
+    return action.success(`${mobName} died.`);
   });
 
-  return action.resolve(nextState, false);
+  return action.resolve(nextState);
 };

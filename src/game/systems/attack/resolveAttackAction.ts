@@ -79,25 +79,25 @@ export const resolveAttackAction = (
     }
     const target = draft.world[ctx.targetPosition];
     if (!hasMobs(target)) {
-      return action.reject("No mobs to attack in that direction.");
+      return action.fail("No mobs to attack in that direction.");
     }
     const mob = getMob(target);
     const mobName = ctx.mobName;
     if (!mob) {
-      return action.reject("No mobs to attack in that direction.");
+      return action.fail("No mobs to attack in that direction.");
     }
     const weapon = "weapon" in ctx ? ctx.weapon : undefined;
     const dmg = "dmg" in ctx ? ctx.dmg : undefined;
     if (!weapon || !dmg) {
       // TODO: Handle hostile mobs
-      return action.fulfill(`Poked ${mobName}`);
+      return action.success(`Poked ${mobName}`);
     }
     const mobHp = getHp(mob);
     const nextHp = mobHp?.hp - dmg;
 
     if (nextHp <= 0) {
       const player = getPlayer(draft);
-      action.log(`Dealt ${dmg} dmg to ${mobName}`);
+      action.info(`Dealt ${dmg} dmg to ${mobName}`);
       const mobExp = ctx.mobExp;
       const playerExp = getComponentByType(player, ExpComponent);
       if (!mobExp || !playerExp) {
@@ -121,10 +121,10 @@ export const resolveAttackAction = (
         entityId: mob.id,
         position: ctx.targetPosition,
       });
-      return action.fulfill(`Gained ${mobExp} exp`);
+      return action.success(`Gained ${mobExp} exp`);
     }
     mobHp.hp = nextHp;
-    action.fulfill(`Dealt ${dmg} dmg to ${mobName}`);
+    action.success(`Dealt ${dmg} dmg to ${mobName}`);
   });
 
   return action.resolve(nextState);

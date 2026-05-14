@@ -11,7 +11,7 @@ import { getEntityById, removeEntityById } from "../../../core/ecs/queries/entit
 import { getItemName } from "../inv/items";
 
 // TODO: split into resolvePlayerDropAction and resolveMobDropAction
-export const resolveDropAction = (
+export const resolveDropItemAction = (
   state: GameState,
   { entityId, entityType, targetPosition, itemId }: WorldDropItemAction,
 ): ActionResolution => {
@@ -41,7 +41,7 @@ export const resolveDropAction = (
     tile.items.push(itemToDrop);
     removeEntityById(entity, itemToDrop.id);
 
-    return action.fulfill(`Dropped ${getItemName(itemToDrop)}`);
+    return action.success(`Dropped ${getItemName(itemToDrop)}`);
   });
 
   return action.resolve(nextState);

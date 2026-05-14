@@ -1,18 +1,18 @@
-
 import type { GameState } from "../../state/state";
-import { addLogImmutable } from "../log/log";
 import type { ActionResolution, GameAction } from "./types";
+
+export type PendingLog = string;
 
 export class Action {
   public consumesTurn = false;
-  private pendingLogs: string[] = [];
+  private pendingLogs: PendingLog[] = []; // TODO: add log object: message, increaseTurn
   private pendingActions: GameAction[] = [];
 
-  reject = (message: string): void => {
+  fail = (message: string): void => {
     this.pendingLogs.push(message);
   };
 
-  fulfill = (message: string): void => {
+  success = (message: string): void => {
     this.pendingLogs.push(message);
     this.consumesTurn = true;
   };
@@ -24,6 +24,7 @@ export class Action {
     return {
       nextState,
       consumesTurn: consumesTurn ?? this.consumesTurn,
+      pendingLogs: this.pendingLogs,
       pendingActions: this.pendingActions,
       action: this,
     };
@@ -33,14 +34,7 @@ export class Action {
     this.pendingActions.push(...pendingAction);
   };
 
-  log(message: string) {
+  info(message: string) {
     this.pendingLogs.push(message);
-  }
-
-  flushLogs(state: GameState): GameState {
-    return this.pendingLogs.reduce(
-      (next, msg) => addLogImmutable(next, msg),
-      state,
-    );
   }
 }

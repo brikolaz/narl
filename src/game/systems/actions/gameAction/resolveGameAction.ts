@@ -5,8 +5,6 @@ import { resolveWorldAction } from "../../world/resolveWorldAction";
 import type { ActionResolution, GameAction } from "../types";
 import { WorldActionType, type WorldAction } from "./types";
 
-
-
 export const resolveGameAction = (
   state: GameState,
   action: GameAction,
@@ -21,9 +19,5 @@ export const resolveGameAction = (
     return resolveWorldAction(state, action as WorldAction);
   }
 
-  return {
-    nextState: state,
-    consumesTurn: false,
-    pendingActions: [],
-  };
+  throw new Error("Invalid game action");
 };

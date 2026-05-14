@@ -24,7 +24,7 @@ export const resolveUnequipAction = (
     const isFull = isContainerFull(backpack);
     const equippedWeapon = unequipWeapon(player, eqSlotIndex - 1);
     if (!equippedWeapon) {
-      return action.reject(`No item in slot ${eqSlotIndex} to unequip.`);
+      return action.fail(`No item in slot ${eqSlotIndex} to unequip.`);
     }
 
     if (isFull) {
@@ -40,11 +40,11 @@ export const resolveUnequipAction = (
         targetPosition: getPlayerPosition(draft),
         entityId: undefined,
       });
-      return action.fulfill(`Backpack is full. Dropped to the ground`);
+      return action.success(`Backpack is full. Dropped to the ground`);
     }
 
     addItemToEntityBackpack(player, equippedWeapon, backpack.id);
-    action.fulfill(
+    action.success(
       `Unequipped ${getItemName(equippedWeapon)} from slot ${eqSlotIndex}`,
     );
   });

@@ -24,11 +24,11 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
         return;
       }
       if (isContainerFull(backpack)) {
-        return action.reject("Can't pick up item. Backpack is full.");
+        return action.fail("Can't pick up item. Backpack is full.");
       }
       const itemToPickUp = pickUpItem(tile);
       if (!itemToPickUp) {
-        return action.reject("Nothing to pick up");
+        return action.fail("Nothing to pick up");
       }
 
       if (isContainer(itemToPickUp)) {
@@ -41,13 +41,13 @@ export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
         }
         while (itemsInContainer.length) {
           if (isContainerFull(backpack)) {
-            return action.log(`Backpack is full`);
+            return action.info(`Backpack is full`);
           }
           const nextItem = itemsInContainer.pop();
           if (nextItem) {
             addEntity(backpack, nextItem);
             removeEntityById(itemToPickUp, nextItem.id);
-            action.fulfill(`Picked up ${getItemName(nextItem)}`);
+            action.success(`Picked up ${getItemName(nextItem)}`);
           }
         }
         return;

@@ -48,8 +48,8 @@ export const resolveCurseItemAction = (
 
     const logMsg = `${getItemName(itemToCurse)} got cursed`;
     curseItem(itemToCurse);
-    return action.fulfill(logMsg);
+    return action.success(logMsg);
   });
 
-  return action.resolve(nextState, false);
+  return action.resolve(nextState);
 };

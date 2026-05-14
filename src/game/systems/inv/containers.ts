@@ -9,7 +9,9 @@ import {
   getEntityByType,
   patchEntityById,
 } from "../../../core/ecs/queries/entities";
+import { DEFAULT_NEST_DEPTH } from "../../../utils";
 import { ContainerComponent } from "../../model/components/ContainerComponent";
+import { NestDepthComponent } from "../../model/components/NestDepthComponent";
 import { SizeComponent } from "../../model/components/SizeComponent";
 import { BackpackEntity } from "../../model/entities/items/BackpackEntity";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
@@ -53,4 +55,22 @@ export const getContainerSize = (entity: Entity) => {
     throw new Error("Not a container");
   }
   return size;
+};
+
+export const getNestDepth = (entity: Entity): number => {
+  if (!isContainer(entity)) {
+    return 0;
+  }
+
+  const nestedContainers = entity.entities.filter(isContainer);
+
+  if (!nestedContainers.length) {
+    return 1;
+  }
+
+  return 1 + Math.max(...nestedContainers.map(getNestDepth));
+};
+
+export const getMaxNestDepth = (entity: Entity) => {
+  return getComponentByType(entity, NestDepthComponent)?.nestDepth ?? DEFAULT_NEST_DEPTH;
 };

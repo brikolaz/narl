@@ -27,17 +27,17 @@ export const resolvePickUpAction = (state: GameState): ActionResolution => {
       }
       const itemToPickUp = pickUpItem(tile);
       if (!itemToPickUp) {
-        return action.reject("Nothing to pick up");
+        return action.fail("Nothing to pick up");
       }
 
       if (isContainerFull(backpack)) {
-        return action.reject(
+        return action.fail(
           `Can't pick up ${getItemName(itemToPickUp)}. Backpack is full.`,
         );
       }
 
       if (!isPickupable(itemToPickUp)) {
-        return action.reject(`${getItemName(itemToPickUp)} is not pickupable`);
+        return action.fail(`${getItemName(itemToPickUp)} is not pickupable`);
       }
       if (isContainer(itemToPickUp)) {
         action.addPending({
@@ -48,7 +48,7 @@ export const resolvePickUpAction = (state: GameState): ActionResolution => {
       addItemToEntityBackpack(tile.player, itemToPickUp, backpack.id);
       removeById(tile.items, itemToPickUp.id);
 
-      action.fulfill(`Picked up ${getItemName(itemToPickUp)}.`);
+      action.success(`Picked up ${getItemName(itemToPickUp)}.`);
     });
   });
 

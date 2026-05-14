@@ -51,7 +51,7 @@ export const resolveMoveAction = (
     });
 
     if (nextPlayerPosition === null) {
-      return action.reject(`Cannot move ${direction.toLowerCase()}`);
+      return action.fail(`Cannot move ${direction.toLowerCase()}`);
     }
     if (hasMobs(draft.world[nextPlayerPosition])) {
       return action.addPending({
@@ -61,7 +61,7 @@ export const resolveMoveAction = (
     }
 
     getNextState(draft, currentPlayerPosition, nextPlayerPosition);
-    action.fulfill(`Moved ${direction.toLowerCase()}`);
+    action.success(`Moved ${direction.toLowerCase()}`);
   });
 
   return action.resolve(nextState);

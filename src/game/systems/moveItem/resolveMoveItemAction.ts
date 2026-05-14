@@ -1,28 +1,21 @@
 import { produce } from "immer";
-import type { Entity } from "../../../core/ecs/Entity";
-import { addEntity, removeEntityById } from "../../../core/ecs/queries/entities";
-import { MAX_CURSED_CONTAINER_DEPTH } from "../../../utils";
+import {
+  addEntity,
+  removeEntityById,
+} from "../../../core/ecs/queries/entities";
 import { getPlayer } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getBackpack, isContainer, isContainerFull } from "../inv/containers";
+import {
+  getBackpack,
+  getMaxNestDepth,
+  getNestDepth,
+  isContainer,
+  isContainerFull,
+} from "../inv/containers";
 import { getInvItemAt } from "../inv/inv";
 import type { PlayerMoveItemAction } from "../player/types";
-
-const getNestDepth = (entity: Entity): number => {
-  if (!isContainer(entity)) {
-    return 0;
-  }
-
-  const nestedContainers = entity.entities.filter(isContainer);
-
-  if (!nestedContainers.length) {
-    return 1;
-  }
-
-  return 1 + Math.max(...nestedContainers.map(getNestDepth));
-};
 
 // TODO: add swap (new resolver)
 export const resolveMoveItemAction = (
@@ -40,31 +33,29 @@ export const resolveMoveItemAction = (
     const toItem = getInvItemAt(backpack, toSlot);
 
     if (!fromItem || !toItem) {
-      return action.reject("Invalid item selection");
+      return action.fail("Invalid item selection");
     }
 
     if (!isContainer(toItem)) {
-      return action.reject("Target item is not a container");
+      return action.fail("Target item is not a container");
     }
 
     if (isContainerFull(toItem)) {
-      return action.reject("Target container is full");
+      return action.fail("Target container is full");
     }
 
     if (isContainer(fromItem)) {
       const fromItemNestDepth = getNestDepth(fromItem);
-
-      if (fromItemNestDepth + 1 > MAX_CURSED_CONTAINER_DEPTH) {
-        return action.reject(
-          `Max nest depth (${MAX_CURSED_CONTAINER_DEPTH}) reached`,
-        );
+      const toItemMaxNextDepth = getMaxNestDepth(toItem);
+      if (fromItemNestDepth + 1 > toItemMaxNextDepth) {
+        return action.fail(`Max nest depth (${toItemMaxNextDepth}) reached`);
       }
     }
 
     removeEntityById(backpack, fromItem.id);
     addEntity(toItem, fromItem);
 
-    action.fulfill(
+    action.success(
       `Moved item from inv slot ${fromSlot} to container at slot ${toSlot}`,
     );
   });
