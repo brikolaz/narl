@@ -1,13 +1,21 @@
 import { produce } from "immer";
+import type { Entity } from "../../../core/ecs/Entity";
+import { getComponentByType } from "../../../core/ecs/queries/component";
+import {
+  getEntityById,
+  removeEntityById,
+} from "../../../core/ecs/queries/entities";
+import { NameComponent } from "../../model/components/NameComponent";
+import { getPlayer } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
-import { WorldActionEntityType, type WorldDropItemAction } from "../actions/gameAction/types";
+import {
+  WorldActionEntityType,
+  type WorldDropItemAction,
+} from "../actions/gameAction/types";
 import type { ActionResolution } from "../actions/types";
-import type { Entity } from "../../../core/ecs/Entity";
-import { getBackpack } from "../inv/containers";
-import { getPlayer } from "../../state/selectors/player";
 import { getMobById } from "../attack/mobs";
-import { getEntityById, removeEntityById } from "../../../core/ecs/queries/entities";
+import { getBackpack } from "../inv/containers";
 import { getItemName } from "../inv/items";
 
 // TODO: split into resolvePlayerDropAction and resolveMobDropAction
@@ -17,30 +25,37 @@ export const resolveDropItemAction = (
 ): ActionResolution => {
   const action = new Action();
   const nextState = produce(state, (draft) => {
-    let entity: Entity | undefined = undefined;
+    let source: Entity | undefined = undefined;
+    let sourceEntityName: string | undefined;
     const tile = draft.world[targetPosition];
     if (entityType === WorldActionEntityType.PLAYER) {
-      entity = getBackpack(getPlayer(draft));
+      source = getBackpack(getPlayer(draft));
     } else if (entityType === WorldActionEntityType.MOB) {
       if (!entityId) {
         throw new Error("No mob id");
       }
-      entity = getMobById(tile, entityId);
+      source = getMobById(tile, entityId);
+      sourceEntityName = getComponentByType(source, NameComponent)?.name;
     }
-    if (!entity) {
+    if (!source) {
       throw new Error("No entity");
     }
 
     if (!itemId) {
-      throw new Error("No item to drop");
+      return action.fail(`Nothing to drop`);
     }
-    const itemToDrop = getEntityById(entity, itemId);
+    const itemToDrop = getEntityById(source, itemId);
     if (!itemToDrop) {
-      throw new Error("No item to drop");
+      return action.fail(`Nothing to drop`);
     }
     tile.items.push(itemToDrop);
-    removeEntityById(entity, itemToDrop.id);
+    removeEntityById(source, itemToDrop.id);
 
+    if (sourceEntityName) {
+      return action.success(
+        `${sourceEntityName} dropped ${getItemName(itemToDrop)}`,
+      );
+    }
     return action.success(`Dropped ${getItemName(itemToDrop)}`);
   });
 

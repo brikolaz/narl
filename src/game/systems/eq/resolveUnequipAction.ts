@@ -45,7 +45,7 @@ export const resolveUnequipAction = (
 
     addItemToEntityBackpack(player, equippedWeapon, backpack.id);
     action.success(
-      `Unequipped ${getItemName(equippedWeapon)} from slot ${eqSlotIndex}`,
+      `Unequipped ${getItemName(equippedWeapon)} from EQ slot ${eqSlotIndex}`,
     );
   });
 

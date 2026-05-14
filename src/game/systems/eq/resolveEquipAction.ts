@@ -1,5 +1,8 @@
 import { produce } from "immer";
-import { addEntity, removeEntityById } from "../../../core/ecs/queries/entities";
+import {
+  addEntity,
+  removeEntityById,
+} from "../../../core/ecs/queries/entities";
 import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
 import { getPlayer } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
@@ -10,6 +13,11 @@ import { getItemSlots } from "../inv/getItemSlots";
 import { getItemName } from "../inv/items";
 import type { PlayerEquipItemAction } from "../player/types";
 import { getEq, getEqSlots, getEquippedWeapon } from "./eq";
+import {
+  getComponentByType,
+  getComponentsByType,
+} from "../../../core/ecs/queries/component";
+import { NameComponent } from "../../model/components/NameComponent";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -63,7 +71,7 @@ export const resolveEquipAction = (
     addEntity(eqSlot, itemToEquip);
 
     action.success(
-      `Equipped item from slot ${invSlotIndex} to eq slot ${eqSlotIndex}`,
+      `Equipped ${getItemName(itemToEquip)} from slot ${invSlotIndex} to EQ slot ${eqSlotIndex}`,
     );
   });
 
