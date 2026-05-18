@@ -3,6 +3,7 @@ import { FloorEntity } from "../model/entities/FloorEntity";
 import { ItemEntity } from "../model/entities/items/ItemEntity";
 import type { MobEntity } from "../model/entities/mobs/MobEntity";
 import { PlayerEntity } from "../model/entities/PlayerEntity";
+import { InternalActionType } from "../systems/internal/type";
 import { initWorld } from "../systems/init/initWorld";
 import type { LogEntry } from "../systems/log/types";
 
@@ -26,6 +27,7 @@ export const getInitialState = (): GameState => ({
   turn: INITIAL_TURN,
   log: [
     {
+      action: { type: InternalActionType.INIT },
       turn: 1,
       message: "You'd rather stay dead",
     },

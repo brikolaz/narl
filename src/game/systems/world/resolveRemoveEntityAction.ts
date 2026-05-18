@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import type { GameState } from "../../state/state";
-import { WorldActionEntityType, type WorldRemoveEntityAction } from "../actions/gameAction/types";
+import { WorldActionEntityType, type WorldRemoveEntityAction } from "./types";
 import type { ActionResolution } from "../actions/types";
 import { Action } from "../actions/action";
 import { getMobById, killMobById } from "../attack/mobs";

@@ -6,13 +6,23 @@ import { getBackpack, isContainer, isContainerFull } from "../inv/containers";
 import { pickUpItem } from "./pickUp";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { CursedComponent } from "../../model/components/CursedComponent";
-import { addEntity, getEntitiesByType, removeEntityById } from "../../../core/ecs/queries/entities";
+import {
+  addEntity,
+  getEntitiesByType,
+  removeEntityById,
+} from "../../../core/ecs/queries/entities";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { PlayerActionType } from "../player/types";
+import {
+  PlayerActionType,
+  type PlayerPickUpUnpackAction,
+} from "../player/types";
 import { getItemName } from "../inv/items";
 
-export const resolvePickUpUnpack = (state: GameState): ActionResolution => {
-  const action = new Action();
+export const resolvePickUpUnpack = (
+  state: GameState,
+  gameAction: PlayerPickUpUnpackAction,
+): ActionResolution => {
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     draft.world.forEach((tile) => {
       if (!tile.player) {

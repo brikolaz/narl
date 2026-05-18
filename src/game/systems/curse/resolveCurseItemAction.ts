@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
-import type { WorldCurseItemAction } from "../actions/gameAction/types";
+import type { WorldCurseItemAction } from "../world/types";
 import type { ActionResolution } from "../actions/types";
 import { getPlayer } from "../../state/selectors/player";
 import { getBackpack, isContainer } from "../inv/containers";
@@ -29,9 +29,10 @@ const curseItem = (item: Entity) => {
 
 export const resolveCurseItemAction = (
   state: GameState,
-  { itemId }: WorldCurseItemAction,
+  gameAction: WorldCurseItemAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { itemId } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const player = getPlayer(draft);
     const backpack = getBackpack(player);

@@ -4,16 +4,21 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import type { PlayerUnequipItemAction } from "../player/types";
 import { getPlayer, getPlayerPosition } from "../../state/selectors/player";
-import { addItemToEntityBackpack, getBackpack, isContainerFull } from "../inv/containers";
+import {
+  addItemToEntityBackpack,
+  getBackpack,
+  isContainerFull,
+} from "../inv/containers";
 import { unequipWeapon } from "./eq";
-import { WorldActionEntityType, WorldActionType } from "../actions/gameAction/types";
+import { WorldActionEntityType, WorldActionType } from "../world/types";
 import { getItemName } from "../inv/items";
 
 export const resolveUnequipAction = (
   state: GameState,
-  { eqSlot: eqSlotIndex }: PlayerUnequipItemAction,
+  gameAction: PlayerUnequipItemAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { eqSlot: eqSlotIndex } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const player = getPlayer(draft);
     const backpack = getBackpack(player);

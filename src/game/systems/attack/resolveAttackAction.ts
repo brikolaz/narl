@@ -12,7 +12,7 @@ import type { PlayerAttackAction } from "../player/types";
 import { getMob, hasMobs } from "./mobs";
 import { getHp } from "./hp";
 import { getBackpack } from "../inv/containers";
-import { WorldActionEntityType, WorldActionType } from "../actions/gameAction/types";
+import { WorldActionEntityType, WorldActionType } from "../world/types";
 
 type AttackContext =
   | {
@@ -69,10 +69,10 @@ export const prepareAttack = (
 
 export const resolveAttackAction = (
   state: GameState,
-  playerAction: PlayerAttackAction,
+  gameAction: PlayerAttackAction,
 ): ActionResolution => {
-  const action = new Action();
-  const ctx = prepareAttack(state, playerAction);
+  const action = new Action(gameAction);
+  const ctx = prepareAttack(state, gameAction);
   const nextState = produce(state, (draft) => {
     if (!ctx.ok) {
       return;

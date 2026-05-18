@@ -1,12 +1,19 @@
-// TODO: recreate as entity (message, turn, stackable)
+import type { GameAction } from "../actions/types";
+
 export type LogEntry = {
-    message: string;
-    turn: number;
-}
+  message: string;
+  action: Pick<GameAction, "type"> | GameAction;
+  turn: number;
+};
+
+export type PendingLog = {
+  message: string;
+  action: GameAction;
+};
 
 export enum PendingActionType {
-    Attack
+  Attack,
 }
 export type PendingAction = {
-    type: PendingActionType;
-}
+  type: PendingActionType;
+};

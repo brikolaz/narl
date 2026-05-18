@@ -1,14 +1,19 @@
 import { MAX_VISIBLE_LOG } from "../../../utils";
 import type { GameState } from "../../state/state";
-import type { PendingLog } from "../actions/action";
+import type { GameAction } from "../actions/types";
 import { increaseTurn } from "../turn/turn";
-import type { LogEntry } from "./types";
+import type { LogEntry, PendingLog } from "./types";
 
-const addLog = (gameState: GameState, logEntry: string): LogEntry[] => {
+const addLog = (
+  gameState: GameState,
+  action: GameAction,
+  message: string,
+): LogEntry[] => {
   return [
     ...gameState.log,
     {
-      message: logEntry,
+      message,
+      action,
       turn: gameState.turn,
     },
   ].slice(-MAX_VISIBLE_LOG);
@@ -16,31 +21,49 @@ const addLog = (gameState: GameState, logEntry: string): LogEntry[] => {
 
 export const addLogImmutable = (
   gameState: GameState,
-  logEntry: string,
+  action: GameAction,
+  message: string,
 ): GameState => {
   return {
     ...gameState,
-    log: addLog(gameState, logEntry),
+    log: addLog(gameState, action, message),
   };
 };
 
-export const addLogMutable = (gameState: GameState, logEntry: string): void => {
-  gameState.log = addLog(gameState, logEntry);
+export const addLogMutable = (
+  gameState: GameState,
+  action: GameAction,
+  message: string,
+): void => {
+  gameState.log = addLog(gameState, action, message);
 };
 
 export const flushLogs = (
   gameState: GameState,
   logs: PendingLog[],
   consumesTurn: boolean,
-): LogEntry[] => {
+): GameState => {
   const lastestTurn = gameState.turn;
   const nextTurn = consumesTurn ? increaseTurn(lastestTurn) : lastestTurn;
-  const nextLogs = logs.reduce<LogEntry[]>((next, message) => {
+  const nextLogs = logs.reduce<LogEntry[]>((next, log) => {
     next.push({
-      message,
+      ...log,
       turn: nextTurn,
     });
     return next;
   }, []);
-  return [...gameState.log, ...nextLogs].slice(-MAX_VISIBLE_LOG);
+  return {
+    ...gameState,
+    log: [...gameState.log, ...nextLogs].slice(-MAX_VISIBLE_LOG),
+  };
+};
+
+export const getPendingLogs = (action: GameAction, messages: string[]) => {
+  return messages.reduce<PendingLog[]>((pendingLogs, message) => {
+    pendingLogs.push({
+      message,
+      action,
+    });
+    return pendingLogs;
+  }, []);
 };

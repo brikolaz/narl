@@ -13,11 +13,6 @@ import { getItemSlots } from "../inv/getItemSlots";
 import { getItemName } from "../inv/items";
 import type { PlayerEquipItemAction } from "../player/types";
 import { getEq, getEqSlots, getEquippedWeapon } from "./eq";
-import {
-  getComponentByType,
-  getComponentsByType,
-} from "../../../core/ecs/queries/component";
-import { NameComponent } from "../../model/components/NameComponent";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -32,9 +27,10 @@ const canBeEquipped = (
 
 export const resolveEquipAction = (
   state: GameState,
-  { invSlot: invSlotIndex, eqSlot: eqSlotIndex }: PlayerEquipItemAction,
+  gameAction: PlayerEquipItemAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { invSlot: invSlotIndex, eqSlot: eqSlotIndex } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const player = getPlayer(draft);
     const backpack = getBackpack(player);

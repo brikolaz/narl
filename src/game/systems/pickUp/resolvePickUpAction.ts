@@ -1,6 +1,8 @@
 import { produce } from "immer";
 import { removeById } from "../../../utils/removeById";
 import type { GameState } from "../../state/state";
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
 import {
   addItemToEntityBackpack,
   getBackpack,
@@ -8,13 +10,15 @@ import {
   isContainerFull,
 } from "../inv/containers";
 import { getItemName } from "../inv/items";
+import type { PlayerPickUpAction } from "../player/types";
+import { WorldActionType } from "../world/types";
 import { isPickupable, pickUpItem } from "./pickUp";
-import type { ActionResolution } from "../actions/types";
-import { Action } from "../actions/action";
-import { WorldActionType } from "../actions/gameAction/types";
 
-export const resolvePickUpAction = (state: GameState): ActionResolution => {
-  const action = new Action();
+export const resolvePickUpAction = (
+  state: GameState,
+  gameAction: PlayerPickUpAction,
+): ActionResolution => {
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     draft.world.forEach((tile) => {
       if (!tile.player) {

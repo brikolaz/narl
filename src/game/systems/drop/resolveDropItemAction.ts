@@ -12,7 +12,7 @@ import { Action } from "../actions/action";
 import {
   WorldActionEntityType,
   type WorldDropItemAction,
-} from "../actions/gameAction/types";
+} from "../world/types";
 import type { ActionResolution } from "../actions/types";
 import { getMobById } from "../attack/mobs";
 import { getBackpack } from "../inv/containers";
@@ -21,9 +21,10 @@ import { getItemName } from "../inv/items";
 // TODO: split into resolvePlayerDropAction and resolveMobDropAction
 export const resolveDropItemAction = (
   state: GameState,
-  { entityId, entityType, targetPosition, itemId }: WorldDropItemAction,
+  gameAction: WorldDropItemAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { entityId, entityType, targetPosition, itemId } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     let source: Entity | undefined = undefined;
     let sourceEntityName: string | undefined;

@@ -13,7 +13,6 @@ export const useKeyboardControls = () => {
         event,
         buffer,
         gameState,
-        setGameState,
       );
 
       if (action) {

@@ -40,9 +40,10 @@ const getNextState = (
 
 export const resolveMoveAction = (
   state: GameState,
-  { direction }: PlayerMoveAction,
+  gameAction: PlayerMoveAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { direction } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const currentPlayerPosition = getPlayerPosition(draft);
     const nextPlayerPosition = getNextPlayerPosition({

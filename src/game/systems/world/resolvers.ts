@@ -1,4 +1,4 @@
-import { WorldActionType } from "../actions/gameAction/types";
+import { WorldActionType } from "./types";
 import { resolveCurseItemAction } from "../curse/resolveCurseItemAction";
 import { resolveDropItemAction } from "../drop/resolveDropItemAction";
 import { resolveRemoveEntityAction } from "./resolveRemoveEntityAction";

@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
-import { GameContext } from "../game/state/context";
-import { MAX_VISIBLE_LOG } from "../utils/constants";
+import React from "react";
+import { useLogs } from "../game/hooks/useLogs";
 
 export const Log: React.FC = () => {
-  const { gameState } = useContext(GameContext);
-  const visibleLog = gameState.log.slice(0, MAX_VISIBLE_LOG);
+  const { visibleLogs } = useLogs();
 
   return (
     <div style={{ width: 400, height: 120 }}>
-      {visibleLog.map((entry, i) => (
+      {visibleLogs.map((entry, i) => (
         <div key={i}>{`[${entry.turn}] ${entry.message}`}</div>
       ))}
     </div>

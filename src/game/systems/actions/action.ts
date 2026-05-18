@@ -1,19 +1,23 @@
 import type { GameState } from "../../state/state";
+import { getPendingLogs } from "../log/log";
 import type { ActionResolution, GameAction } from "./types";
-
-export type PendingLog = string;
 
 export class Action {
   public consumesTurn = false;
-  private pendingLogs: PendingLog[] = []; // TODO: add log object: message, increaseTurn
+  private pendingLogMessages: string[] = []; // TODO: add log object: message, increaseTurn
   private pendingActions: GameAction[] = [];
+  private gameAction: GameAction;
+
+  constructor(gameAction:GameAction) {
+    this.gameAction = gameAction;
+  }
 
   fail = (message: string): void => {
-    this.pendingLogs.push(message);
+    this.pendingLogMessages.push(message);
   };
 
   success = (message: string): void => {
-    this.pendingLogs.push(message);
+    this.pendingLogMessages.push(message);
     this.consumesTurn = true;
   };
 
@@ -24,7 +28,7 @@ export class Action {
     return {
       nextState,
       consumesTurn: consumesTurn ?? this.consumesTurn,
-      pendingLogs: this.pendingLogs,
+      pendingLogs: getPendingLogs(this.gameAction, this.pendingLogMessages),
       pendingActions: this.pendingActions,
       action: this,
     };
@@ -35,6 +39,6 @@ export class Action {
   };
 
   info(message: string) {
-    this.pendingLogs.push(message);
+    this.pendingLogMessages.push(message);
   }
 }

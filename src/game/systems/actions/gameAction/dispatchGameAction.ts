@@ -1,8 +1,8 @@
 import type { GameState } from "../../../state/state";
 import { flushLogs } from "../../log/log";
+import type { PendingLog } from "../../log/types";
 import { runWorldTurn } from "../../turn/runWorldTurn";
 import { increaseTurn } from "../../turn/turn";
-import type { PendingLog } from "../action";
 import type { GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
 
@@ -27,11 +27,10 @@ export const dispatchGameAction =
     }
 
     const afterWorldTurn = runWorldTurn(currentState);
-    const flushedLogs = flushLogs(afterWorldTurn, pendingLogs, consumesTurn);
+    const afterFlushLogs = flushLogs(afterWorldTurn, pendingLogs, consumesTurn);
 
     return {
-      ...afterWorldTurn,
-      log: flushedLogs,
+      ...afterFlushLogs,
       turn: consumesTurn
         ? increaseTurn(afterWorldTurn.turn)
         : afterWorldTurn.turn,

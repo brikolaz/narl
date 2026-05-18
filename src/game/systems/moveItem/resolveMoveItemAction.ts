@@ -20,9 +20,10 @@ import type { PlayerMoveItemAction } from "../player/types";
 // TODO: add swap (new resolver)
 export const resolveMoveItemAction = (
   state: GameState,
-  { fromSlot, toSlot }: PlayerMoveItemAction,
+  gameAction: PlayerMoveItemAction,
 ): ActionResolution => {
-  const action = new Action();
+  const { fromSlot, toSlot } = gameAction;
+  const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const player = getPlayer(draft);
     const backpack = getBackpack(player);
