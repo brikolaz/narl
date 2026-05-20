@@ -23,7 +23,7 @@ With arcane keybindings, of course.
 * backflip
 * profit
 
-![Cursed inventory](/narl/assets/images/cursed-topology.gif)
+![Cursed inventory](/narl/assets/images/cursed-topology/cursed-topology.gif)
 
 Works surprisingly well. I optimize for developer (me) experience, so I hope it stays this way.
 
