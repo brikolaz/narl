@@ -26,7 +26,7 @@ export const resolvePickUpUnpack = (
 ): ActionResolution => {
   const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
-    const {player, position: playerPosition} = getPlayer(draft);
+    const { player, position: playerPosition } = getPlayer(draft);
     getVisibleTiles(draft).forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;
@@ -36,12 +36,12 @@ export const resolvePickUpUnpack = (
       if (!backpack) {
         return;
       }
-      if (isContainerFull(backpack)) {
-        return action.fail("Can't pick up item. Backpack is full");
-      }
       const itemToPickUp = pickUpItem(tile);
       if (!itemToPickUp) {
         return action.fail("Nothing to pick up");
+      }
+      if (isContainerFull(backpack)) {
+        return action.fail("Can't pick up item. Backpack is full");
       }
 
       if (isContainer(itemToPickUp)) {

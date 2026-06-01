@@ -1,14 +1,20 @@
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils";
 import { FloorEntity } from "../../model/entities/FloorEntity";
 import type { GameState, Tile } from "../../state/state";
+import { getRandomMob } from "../rng/spawnTable";
 
 const generateTile = (position: number): Tile => {
-  return {
+  const tile: Tile = {
     floor: new FloorEntity(),
     items: [],
     mobs: [],
     position,
   };
+  const mob = getRandomMob(position);
+  if (mob) {
+    tile.mobs.push(mob);
+  }
+  return tile;
 };
 
 export const getTile = (gameState: GameState, position: number): Tile => {

@@ -1,10 +1,11 @@
-
 import { ExpComponent } from "../../components/ExpComponent";
 import { HpComponent } from "../../components/HpComponent";
 import { PickupableComponent } from "../../components/PickupableComponent";
 import { BackpackEntity } from "../items/BackpackEntity";
 import { SwordEntity } from "../items/SwordEntity";
 import { MobEntity } from "./MobEntity";
+
+export const RAGE_BAIT_NAME = "Rage Bait";
 
 export class RageBaitEntity extends MobEntity {
   constructor() {
@@ -18,7 +19,7 @@ export class RageBaitEntity extends MobEntity {
     });
 
     super({
-      name: "Rage Bait",
+      name: RAGE_BAIT_NAME,
       glyph: "r",
       components: [hp, exp],
       entities: [container],
