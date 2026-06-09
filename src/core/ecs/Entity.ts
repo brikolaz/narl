@@ -16,6 +16,9 @@ export abstract class Entity implements Unique {
 
     constructor(props: EntityProps) {
         this.id = getId();
-        Object.assign(this, props);
+        Object.assign(this, {
+            entities: props?.entities ?? [],
+            components: props?.components ?? []
+        });
     }
 }

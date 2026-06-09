@@ -11,7 +11,7 @@ export const getEntityByType = <T extends Entity>(
   entity: Entity | undefined,
   entityClass: Constructor<T>,
 ): T | undefined => {
-  return entity?.entities.find(
+  return entity?.entities?.find(
     (entity): entity is T => entity instanceof entityClass,
   );
 };
@@ -21,7 +21,7 @@ export const getEntitiesByType = <T extends Entity>(
   entityClass: Constructor<T>,
 ): T[] => {
   return (
-    entity?.entities.filter(
+    entity?.entities?.filter(
       (entity): entity is T => entity instanceof entityClass,
     ) ?? []
   );

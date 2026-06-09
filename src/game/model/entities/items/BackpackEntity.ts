@@ -1,18 +1,19 @@
+import type { Component } from "../../../../core/ecs/Component";
 import { type EntityProps } from "../../../../core/ecs/Entity";
+import { addComponents } from "../../../../core/ecs/queries/component";
+import { addEntities } from "../../../../core/ecs/queries/entities";
+import { getDummyArray } from "../../../../utils";
 import { DEFAULT_BACKPACK_SIZE } from "../../../../utils/constants";
-import { NameComponent } from "../../components/NameComponent";
+import { RNG } from "../../../systems/rng/rng";
 import { ContainerComponent } from "../../components/ContainerComponent";
-import { DmgComponent } from "../../components/DmgComponent";
-import { EquippableComponent } from "../../components/EquippableComponent";
+import { MainHandComponent } from "../../components/eq/MainHandComponent";
+import { GlyphComponent } from "../../components/GlyphComponent";
+import { NameComponent } from "../../components/NameComponent";
+import { NestDepthComponent } from "../../components/NestDepthComponent";
+import { PickupableComponent } from "../../components/PickupableComponent";
 import { SizeComponent } from "../../components/SizeComponent";
 import { ItemEntity } from "./ItemEntity";
-import { GlyphComponent } from "../../components/GlyphComponent";
-import { MainHandComponent } from "../../components/eq/MainHandComponent";
-import { NestDepthComponent } from "../../components/NestDepthComponent";
-import type { Component } from "../../../../core/ecs/Component";
-import { addComponents } from "../../../../core/ecs/queries/component";
-import { RNG } from "../../../systems/rng/rng";
-import { PickupableComponent } from "../../components/PickupableComponent";
+import { PlaceholderEntity } from "./PlaceholderItemEntity";
 
 export type BackpackEntityProps = {
   size?: number;
@@ -43,6 +44,13 @@ export class BackpackEntityFactory {
     return backpack;
   }
 
+  private static addPlaceholders(
+    backpack: BackpackEntity,
+    { size }: SizeComponent,
+  ): void {
+    const entities = getDummyArray(size).map(() => new PlaceholderEntity());
+    addEntities(backpack, ...entities);
+  }
   static getPlayerBackpack(): BackpackEntity {
     const backpack = this.getBase();
 
@@ -50,6 +58,7 @@ export class BackpackEntityFactory {
       size: DEFAULT_BACKPACK_SIZE,
     });
     addComponents(backpack, size);
+        this.addPlaceholders(backpack, size);
 
     return backpack;
   }
@@ -60,6 +69,7 @@ export class BackpackEntityFactory {
     const size = new SizeComponent({
       size: RNG.items.range(2, 4),
     });
+  
     const nestDepth = new NestDepthComponent({
       nestDepth: RNG.items.range(1, 2),
     });
@@ -69,6 +79,7 @@ export class BackpackEntityFactory {
       backpack,
       ...([size, nestDepth, mainHand, pickup] as Component[]),
     );
+    this.addPlaceholders(backpack, size);
 
     return backpack;
   }

@@ -109,7 +109,6 @@ export const resolveAttackAction = (
       if (mobContainer) {
         action.addPending({
           type: WorldActionType.DROP_ITEM,
-          entityType: WorldActionEntityType.MOB,
           entityId: mob.id,
           targetPosition: ctx.targetPosition,
           itemId: mobContainer.id,

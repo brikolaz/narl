@@ -8,6 +8,7 @@ import { MainHandComponent } from "../../components/eq/MainHandComponent";
 import { addComponents } from "../../../../core/ecs/queries/component";
 import type { Component } from "../../../../core/ecs/Component";
 import { RNG } from "../../../systems/rng/rng";
+import { DroppableComponent } from "../../components/DroppableComponent";
 
 export type SwordEntityProps = EntityProps;
 
@@ -42,7 +43,8 @@ export class SwordEntityFactory {
     const mainHand = new MainHandComponent();
     const dmg = new DmgComponent({ dmg: RNG.items.range(5, 8) });
     const pickupable = new PickupableComponent();
-    addComponents(sword, ...([mainHand, dmg, pickupable] as Component[]));
+    const droppable = new DroppableComponent();
+    addComponents(sword, ...([mainHand, dmg, pickupable, droppable] as Component[]));
 
     return sword;
   }

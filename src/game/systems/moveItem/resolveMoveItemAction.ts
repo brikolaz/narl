@@ -1,13 +1,11 @@
 import { produce } from "immer";
-import {
-  addEntities,
-  removeEntityById,
-} from "../../../core/ecs/queries/entities";
 import { getPlayerEntity } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
+  addItemToContainer,
+  clearContainerItemById,
   getBackpack,
   getMaxNestDepth,
   getNestDepth,
@@ -15,8 +13,8 @@ import {
   isContainerFull,
 } from "../inv/containers";
 import { getInvItemAt } from "../inv/inv";
-import type { PlayerMoveItemAction } from "../player/types";
 import { getItemName } from "../inv/items";
+import type { PlayerMoveItemAction } from "../player/types";
 
 // TODO: add swap (new resolver)
 export const resolveMoveItemAction = (
@@ -54,8 +52,8 @@ export const resolveMoveItemAction = (
       }
     }
 
-    removeEntityById(backpack, fromItem.id);
-    addEntities(toItem, fromItem);
+    clearContainerItemById(backpack, fromItem.id)
+    addItemToContainer(toItem, fromItem);
 
     action.success(
       `Moved ${getItemName(fromItem)} from inv slot ${fromSlot} to ${getItemName(toItem)} at slot ${toSlot}`,

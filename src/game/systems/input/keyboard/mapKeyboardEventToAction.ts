@@ -1,18 +1,24 @@
 import type { RefObject } from "react";
-import { getPlayerEntity, getPlayerPosition } from "../../../state/selectors/player";
+import {
+  getPlayerEntity,
+  getPlayerPosition,
+} from "../../../state/selectors/player";
 import type { GameState } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
 import { getEqSlots } from "../../eq/eq";
 import { InternalActionType } from "../../internal/type";
 import {
   getBackpack,
-  getBackpackItem,
+  getContainerItemAt,
   getContainerSize,
 } from "../../inv/containers";
 import type { InvSlot } from "../../inv/types";
-import { PlayerActionType, type PlayerAction } from "../../player/types";
+import {
+  PlayerActionType,
+  PlayerDropItemActionReason,
+  type PlayerAction,
+} from "../../player/types";
 import { Direction } from "../../turn/types";
-import { WorldActionEntityType, WorldActionType } from "../../world/types";
 
 const INV_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] as const;
 
@@ -79,14 +85,14 @@ export const mapKeyboardEventToAction = (
       if (!backpack) {
         throw new Error("No Backpack");
       }
-      const item = getBackpackItem(backpack, keyToInvSlot(event.key));
+      const item = getContainerItemAt(backpack, keyToInvSlot(event.key));
 
       return {
-        type: WorldActionType.DROP_ITEM,
-        entityType: WorldActionEntityType.PLAYER,
+        type: PlayerActionType.DROP_ITEM,
         itemId: item?.id,
         targetPosition: getPlayerPosition(gameState),
-        entityId: undefined,
+        reason: PlayerDropItemActionReason.MANUAL,
+        eqSlot: undefined,
       };
     }
     if (buffer.current[0] === "m") {

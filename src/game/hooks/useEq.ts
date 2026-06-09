@@ -12,6 +12,7 @@ export type Eq = {
 
 export const useEq = (entity: Entity): Eq => {
   const eqSlots = getEqSlots(entity);
+  console.log(eqSlots)
   const getItemInSlot = (slot: EqSlotEntity) => {
     return getEntityByType(slot, ItemEntity);
   };

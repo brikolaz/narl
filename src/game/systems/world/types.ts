@@ -1,5 +1,5 @@
 export enum WorldActionType {
-  DROP_ITEM = "DROP_ITEM",
+  DROP_ITEM = "WORLD_DROP_ITEM",
   REMOVE_ENTITY = "REMOVE_ENTITY",
   CURSE_ITEM = "CURSE_ITEM",
 }
@@ -10,18 +10,9 @@ export enum WorldActionEntityType {
   OBJECT = "OBJECT",
 }
 
-export type WorldDropItemAction =
-  | {
+export type WorldDropItemAction ={
       type: WorldActionType.DROP_ITEM;
       targetPosition: number;
-      entityType: WorldActionEntityType.PLAYER;
-      entityId: undefined;
-      itemId: string | undefined;
-    }
-  | {
-      type: WorldActionType.DROP_ITEM;
-      targetPosition: number;
-      entityType: WorldActionEntityType.MOB;
       entityId: string;
       itemId: string;
     };

@@ -5,6 +5,7 @@ export type SizeComponentProps = {
 }
 
 export class SizeComponent extends Component { 
+    size = 0
     constructor(props: SizeComponentProps) {
         super();
         Object.assign(this, props);

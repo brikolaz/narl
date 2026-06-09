@@ -1,10 +1,11 @@
 import { resolveAttackAction } from "../attack/resolveAttackAction";
-import { resolveEquipAction,  } from "../eq/resolveEquipAction";
-import { resolveUnequipAction  } from "../eq/resolveUnequipAction";
-import  { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
-import  { resolveMoveAction } from "../movement/resolveMoveAction";
-import  { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
-import  { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
+import { resolvePlayerDropItemAction } from "../drop/resolvePlayerDropItemAction";
+import { resolveEquipAction } from "../eq/resolveEquipAction";
+import { resolveUnequipAction } from "../eq/resolveUnequipAction";
+import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
+import { resolveMoveAction } from "../movement/resolveMoveAction";
+import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
+import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 
 import { PlayerActionType } from "./types";
 
@@ -15,7 +16,8 @@ type PlayerActionResolver =
   | typeof resolveEquipAction
   | typeof resolveUnequipAction
   | typeof resolveAttackAction
-  | typeof resolveMoveItemAction;
+  | typeof resolveMoveItemAction
+  | typeof resolvePlayerDropItemAction;
 
 export const playerActionResolvers = {
   [PlayerActionType.MOVE]: resolveMoveAction,
@@ -25,4 +27,5 @@ export const playerActionResolvers = {
   [PlayerActionType.UNEQUIP_ITEM]: resolveUnequipAction,
   [PlayerActionType.ATTACK]: resolveAttackAction,
   [PlayerActionType.MOVE_ITEM]: resolveMoveItemAction,
+  [PlayerActionType.DROP_ITEM]: resolvePlayerDropItemAction,
 } satisfies Record<PlayerActionType, PlayerActionResolver>;

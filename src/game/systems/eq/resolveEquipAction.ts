@@ -1,18 +1,19 @@
 import { produce } from "immer";
-import {
-  addEntities,
-  removeEntityById,
-} from "../../../core/ecs/queries/entities";
 import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
 import { getPlayerEntity } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getBackpack, getBackpackItem } from "../inv/containers";
+import {
+  addItemToContainer,
+  clearContainerItemById,
+  getBackpack,
+  getContainerItemAt,
+} from "../inv/containers";
 import { getItemSlots } from "../inv/getItemSlots";
 import { getItemName } from "../inv/items";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEq, getEqSlots, getEquippedWeapon } from "./eq";
+import { getEq, getEqSlotAt, getEquippedWeapon } from "./eq";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -38,12 +39,12 @@ export const resolveEquipAction = (
       throw new Error("Player has no backpack");
     }
 
-    const itemToEquip = getBackpackItem(backpack, invSlotIndex);
+    const itemToEquip = getContainerItemAt(backpack, invSlotIndex);
     if (!itemToEquip) {
       return action.fail(`No item in slot ${invSlotIndex} to equip`);
     }
 
-    const eqSlot = getEqSlots(player)[eqSlotIndex - 1];
+    const eqSlot = getEqSlotAt(player, eqSlotIndex);
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
     const equippedWeapon = getEquippedWeapon(player);
@@ -63,8 +64,8 @@ export const resolveEquipAction = (
       throw new Error("Player has no equipment");
     }
 
-    removeEntityById(backpack, itemToEquip.id);
-    addEntities(eqSlot, itemToEquip);
+    addItemToContainer(eqSlot, itemToEquip);
+    clearContainerItemById(backpack, itemToEquip.id);
 
     action.success(
       `Equipped ${getItemName(itemToEquip)} from slot ${invSlotIndex} to EQ slot ${eqSlotIndex}`,

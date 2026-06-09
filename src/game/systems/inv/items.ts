@@ -9,7 +9,10 @@ const getItemPrefix = (item: ItemEntity) => {
   return cursed ? CURSED_PREFIX : undefined;
 };
 
-export const getItemName = (item: ItemEntity) => {
+export const getItemName = (item?: ItemEntity) => {
+  if (!item) {
+    throw new Error("No item to get name from");
+  }
   const name = getComponentByType(item, NameComponent)?.name;
   if (name === undefined) {
     throw new Error("Unnamed item");

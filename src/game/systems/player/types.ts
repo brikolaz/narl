@@ -2,7 +2,6 @@ import type { EqSlot } from "../eq/types";
 import type { InvSlot } from "../inv/types";
 import type { Direction } from "../turn/types";
 
-
 export enum PlayerActionType {
   MOVE = "MOVE",
   PICK_UP = "PICK_UP",
@@ -11,8 +10,21 @@ export enum PlayerActionType {
   UNEQUIP_ITEM = "UNEQUIP_ITEM",
   ATTACK = "ATTACK",
   MOVE_ITEM = "MOVE_ITEM",
+  DROP_ITEM = "PLAYER_DROP_ITEM",
 }
 
+export enum PlayerDropItemActionReason {
+  MANUAL = "MANUAL",
+  BACKPACK_FULL = "BACKPACK_FULL",
+}
+
+export type PlayerDropItemAction = {
+  type: PlayerActionType.DROP_ITEM;
+  targetPosition: number;
+  itemId: string | undefined;
+  eqSlot: EqSlot | undefined;
+  reason: PlayerDropItemActionReason;
+};
 export type PlayerMoveAction = {
   type: PlayerActionType.MOVE;
   direction: Direction;
@@ -41,6 +53,7 @@ export type PlayerMoveItemAction = {
 };
 
 export type PlayerAction =
+  | PlayerDropItemAction
   | PlayerMoveAction
   | PlayerPickUpAction
   | PlayerPickUpUnpackAction

@@ -1,18 +1,25 @@
 import { produce } from "immer";
+import { removeEntityById } from "../../../core/ecs/queries/entities";
+import {
+  getPlayerEntity,
+  getPlayerPosition,
+} from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import type { PlayerUnequipItemAction } from "../player/types";
-import { getPlayerEntity, getPlayerPosition } from "../../state/selectors/player";
 import {
   addItemToEntityBackpack,
+  clearContainerItemAt,
   getBackpack,
   isContainerFull,
 } from "../inv/containers";
-import { unequipWeapon } from "./eq";
-import { WorldActionEntityType, WorldActionType } from "../world/types";
 import { getItemName } from "../inv/items";
-import { getTile } from "../world/getTile";
+import {
+  PlayerActionType,
+  PlayerDropItemActionReason,
+  type PlayerUnequipItemAction,
+} from "../player/types";
+import { getEqSlotAt, getEquippedWeapon } from "./eq";
 
 export const resolveUnequipAction = (
   state: GameState,
@@ -28,28 +35,25 @@ export const resolveUnequipAction = (
     }
 
     const isFull = isContainerFull(backpack);
-    const equippedWeapon = unequipWeapon(player, eqSlotIndex - 1);
+    const equippedWeapon = getEquippedWeapon(player);
     if (!equippedWeapon) {
       return action.fail(`No item in slot ${eqSlotIndex} to unequip`);
     }
 
     if (isFull) {
-      const playerTile = getTile(draft, getPlayerPosition(draft));
-      if (!playerTile) {
-        throw new Error("Player has no tile");
-      }
-      playerTile.items.push(equippedWeapon);
       action.addPending({
-        type: WorldActionType.DROP_ITEM,
-        entityType: WorldActionEntityType.PLAYER,
+        type: PlayerActionType.DROP_ITEM,
         itemId: equippedWeapon.id,
         targetPosition: getPlayerPosition(draft),
-        entityId: undefined,
+        eqSlot: eqSlotIndex,
+        reason: PlayerDropItemActionReason.BACKPACK_FULL,
       });
-      return action.success(`Backpack is full. Dropped to the ground`);
+      return;
     }
 
-    addItemToEntityBackpack(player, equippedWeapon, backpack.id);
+    removeEntityById(getEqSlotAt(player, eqSlotIndex), equippedWeapon.id);
+    addItemToEntityBackpack(player, equippedWeapon);
+    clearContainerItemAt(getEqSlotAt(player, eqSlotIndex), 1);
     action.success(
       `Unequipped ${getItemName(equippedWeapon)} from EQ slot ${eqSlotIndex}`,
     );

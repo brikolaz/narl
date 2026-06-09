@@ -4,53 +4,191 @@ import {
   hasComponentByType,
 } from "../../../core/ecs/queries/component";
 import {
-  addEntities,
-  getEntitiesByType,
+  getEntityById,
   getEntityByType,
-  patchEntityById,
+  replaceEntityById,
 } from "../../../core/ecs/queries/entities";
 import { DEFAULT_NEST_DEPTH } from "../../../utils";
 import { ContainerComponent } from "../../model/components/ContainerComponent";
 import { NestDepthComponent } from "../../model/components/NestDepthComponent";
+import { PlaceholderComponent } from "../../model/components/PlaceholderComponent";
 import { SizeComponent } from "../../model/components/SizeComponent";
 import { BackpackEntity } from "../../model/entities/items/BackpackEntity";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
+import { PlaceholderEntity } from "../../model/entities/items/PlaceholderItemEntity";
 import type { InvSlot } from "./types";
 
 export const getBackpack = (entity: Entity): BackpackEntity | undefined => {
   return getEntityByType(entity, BackpackEntity);
 };
 
-export const isContainerFull = (entity: Entity): boolean => {
-  const itemsInContainer = getEntitiesByType(entity, ItemEntity)?.length ?? 0;
-  const containerSize = entity ? getContainerSize(entity) : undefined;
-  const cointainerFull = itemsInContainer === containerSize;
-
-  return cointainerFull;
+export const isContainerFull = (container: Entity): boolean => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  return getFirstEmptyContainerSlot(container) === undefined;
 };
 
-// TODO: make backpackId optional (if real use case found)
 export const addItemToEntityBackpack = (
   entity: Entity,
   item: ItemEntity,
-  backpackId: string,
 ): void => {
-  patchEntityById(entity, backpackId, (backpack) => addEntities(backpack, item));
+  const backpack = getBackpack(entity);
+  if (!backpack) {
+    throw new Error("No backpack");
+  }
+  const slot = getFirstEmptyContainerSlot(backpack);
+  if (!slot) {
+    throw new Error("Backpack is full");
+  }
+  setContainerItemAt(backpack, slot, item);
 };
 
-export const getBackpackItem = (
-  backpack: BackpackEntity,
+export const addItemToContainer = (
+  container: Entity,
+  item: ItemEntity,
+): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const slot = getFirstEmptyContainerSlot(container);
+  if (!slot) {
+    throw new Error("Container is full");
+  }
+  setContainerItemAt(container, slot, item);
+};
+
+export const getContainerItemAt = (
+  container: Entity,
   slot: InvSlot,
 ): ItemEntity | undefined => {
-  return backpack.entities[slot - 1];
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const item = container.entities[slot - 1];
+
+  if (isPlaceholderSlot(item)) {
+    return undefined;
+  }
+
+  return item as ItemEntity;
+};
+
+export const getContainerItemById = (
+  container: Entity,
+  itemId: string,
+): ItemEntity | undefined => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const item = getEntityById(container, itemId);
+  if (!item) {
+    throw new Error("No item in container");
+  }
+  if (isPlaceholderSlot(item)) {
+    return undefined;
+  }
+
+  return item as ItemEntity;
+};
+
+export const swapContainerItems = (
+  container: Entity,
+  sourceSlot: InvSlot,
+  targetSlot: InvSlot,
+): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const sourceItem = getContainerItemAt(container, sourceSlot);
+  const targetItem = getContainerItemAt(container, targetSlot);
+  if (!sourceItem) {
+    throw new Error("No source item to swap");
+  }
+  setContainerItemAt(container, targetSlot, sourceItem);
+  setContainerItemAt(
+    container,
+    sourceSlot,
+    targetItem ?? new PlaceholderEntity(),
+  );
+};
+
+export const setContainerItemAt = (
+  container: Entity,
+  slot: InvSlot,
+  entity: Entity,
+): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  container.entities[slot - 1] = entity;
+};
+
+export const setContainerItemById = (
+  container: Entity,
+  id: string,
+  entity: Entity,
+): void => {
+  if (!isContainer(entity)) {
+    throw new Error("Entity is not a container");
+  }
+  replaceEntityById(container, id, entity);
+};
+
+export const clearContainerItemAt = (
+  container: Entity,
+  slot: InvSlot,
+): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  setContainerItemAt(container, slot, new PlaceholderEntity());
+};
+
+export const clearContainerItemById = (container: Entity, id: string): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  replaceEntityById(container, id, new PlaceholderEntity());
+};
+
+export const isPlaceholderSlot = (entity: Entity): boolean => {
+  return hasComponentByType(entity, PlaceholderComponent);
+};
+
+export const getFirstEmptyContainerSlot = (
+  container: Entity,
+): InvSlot | undefined => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const index = container.entities.findIndex(isPlaceholderSlot);
+
+  if (index === -1) {
+    return undefined;
+  }
+
+  return (index + 1) as InvSlot;
+};
+
+export const getFirstContainerItem = (
+  container: Entity,
+): ItemEntity | undefined => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  return container.entities.find((item) => !isPlaceholderSlot(item));
 };
 
 export const isContainer = (entity: Entity) => {
   return hasComponentByType(entity, ContainerComponent);
 };
 
-export const getContainerSize = (entity: Entity) => {
-  const size = getComponentByType(entity, SizeComponent)?.size;
+export const getContainerSize = (container: Entity) => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const size = getComponentByType(container, SizeComponent)?.size;
   if (size === undefined) {
     throw new Error("Not a container");
   }
@@ -72,5 +210,8 @@ export const getNestDepth = (entity: Entity): number => {
 };
 
 export const getMaxNestDepth = (entity: Entity) => {
-  return getComponentByType(entity, NestDepthComponent)?.nestDepth ?? DEFAULT_NEST_DEPTH;
+  return (
+    getComponentByType(entity, NestDepthComponent)?.nestDepth ??
+    DEFAULT_NEST_DEPTH
+  );
 };

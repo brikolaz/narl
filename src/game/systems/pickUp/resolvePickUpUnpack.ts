@@ -1,24 +1,25 @@
 import { produce } from "immer";
+import { getComponentByType } from "../../../core/ecs/queries/component";
+import { CursedComponent } from "../../model/components/CursedComponent";
+import { getPlayer } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getBackpack, isContainer, isContainerFull } from "../inv/containers";
-import { pickUpItem } from "./pickUp";
-import { ItemEntity } from "../../model/entities/items/ItemEntity";
-import { CursedComponent } from "../../model/components/CursedComponent";
 import {
-  addEntities,
-  getEntitiesByType,
-  removeEntityById,
-} from "../../../core/ecs/queries/entities";
-import { getComponentByType } from "../../../core/ecs/queries/component";
+  addItemToEntityBackpack,
+  clearContainerItemById,
+  getBackpack,
+  getFirstContainerItem,
+  isContainer,
+  isContainerFull,
+} from "../inv/containers";
+import { getItemName } from "../inv/items";
 import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
 } from "../player/types";
-import { getItemName } from "../inv/items";
-import { getPlayer } from "../../state/selectors/player";
 import { getVisibleTiles } from "../render/getVisibleTiles";
+import { pickUpItem } from "./pickUp";
 
 export const resolvePickUpUnpack = (
   state: GameState,
@@ -45,23 +46,21 @@ export const resolvePickUpUnpack = (
       }
 
       if (isContainer(itemToPickUp)) {
-        const itemsInContainer = getEntitiesByType(itemToPickUp, ItemEntity);
         const isCursed = getComponentByType(itemToPickUp, CursedComponent);
-        if (!itemsInContainer.length || isCursed) {
+        let nextItem = getFirstContainerItem(itemToPickUp);
+        if (!nextItem || isCursed) {
           return action.addPending({
             type: PlayerActionType.PICK_UP,
           });
         }
-        while (itemsInContainer.length) {
+        while (nextItem) {
           if (isContainerFull(backpack)) {
             return action.info(`Backpack is full`);
           }
-          const nextItem = itemsInContainer.pop();
-          if (nextItem) {
-            addEntities(backpack, nextItem);
-            removeEntityById(itemToPickUp, nextItem.id);
-            action.success(`Picked up ${getItemName(nextItem)}`);
-          }
+          addItemToEntityBackpack(player, nextItem);
+          clearContainerItemById(itemToPickUp, nextItem.id);
+          action.success(`Picked up ${getItemName(nextItem)}`);
+          nextItem = getFirstContainerItem(itemToPickUp);
         }
         return;
       }
