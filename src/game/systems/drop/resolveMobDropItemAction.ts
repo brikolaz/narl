@@ -1,5 +1,8 @@
 import { produce } from "immer";
-import { getComponentByType } from "../../../core/ecs/queries/component";
+import {
+  getComponentByType,
+  hasComponentByType,
+} from "../../../core/ecs/queries/component";
 import {
   getEntityById,
   removeEntityById,
@@ -11,9 +14,9 @@ import type { ActionResolution } from "../actions/types";
 import { getMobById } from "../attack/mobs";
 import { getItemName } from "../inv/items";
 import { getTile } from "../world/getTile";
-import {
-  type WorldDropItemAction
-} from "../world/types";
+import { type WorldDropItemAction } from "../world/types";
+import { DroppableComponent } from "../../model/components/DroppableComponent";
+import { getContainerItems } from "../inv/containers";
 
 export const resolveMobDropItemAction = (
   state: GameState,
@@ -23,19 +26,31 @@ export const resolveMobDropItemAction = (
   const action = new Action(gameAction);
   const nextState = produce(state, (draft) => {
     const tile = getTile(draft, targetPosition);
-    const source = action.assert(getMobById(tile, entityId), "No mob")
+    const source = action.assert(getMobById(tile, entityId), "No mob");
     const sourceEntityName = getComponentByType(source, NameComponent)?.name;
 
-    const itemToDrop = getEntityById(source, itemId);
-    if (!itemToDrop) {
+    const container = getEntityById(source, itemId);
+    const itemsToDrop = [];
+    if (!container) {
       return action.fail(`Nothing to drop`);
     }
-    tile.items.push(itemToDrop);
-    removeEntityById(source, itemToDrop.id);
+    if (hasComponentByType(container, DroppableComponent)) {
+      itemsToDrop.push(container);
+      tile.items.push(container);
+    } else {
+      itemsToDrop.push(
+        ...getContainerItems(container).filter((item) =>
+          hasComponentByType(item, DroppableComponent),
+        ),
+      );
+    }
+    if (!itemsToDrop.length) {
+      return;
+    }
+    removeEntityById(source, container.id);
 
-    return action.success(
-      `${sourceEntityName} dropped ${getItemName(itemToDrop)}`,
-    );
+    const itemNames = itemsToDrop.map((item) => getItemName(item)).join(", ");
+    return action.success(`${sourceEntityName} dropped ${itemNames}`);
   });
 
   return action.resolve(nextState);

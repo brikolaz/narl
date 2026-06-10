@@ -45,6 +45,9 @@ export class RageBaitEntityFactory {
       items.push(SwordEntityFactory.getDefault());
     }
     const backpack = BackpackEntityFactory.getDefault();
+    if (RNG.items.chance(5)) {
+      BackpackEntityFactory.setDroppable(backpack);
+    }
     addEntities(backpack, ...items);
 
     return backpack;

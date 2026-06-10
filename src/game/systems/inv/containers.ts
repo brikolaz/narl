@@ -4,6 +4,7 @@ import {
   hasComponentByType,
 } from "../../../core/ecs/queries/component";
 import {
+  getEntitiesByType,
   getEntityById,
   getEntityByType,
   replaceEntityById,
@@ -75,6 +76,14 @@ export const getContainerItemAt = (
   }
 
   return item as ItemEntity;
+};
+
+export const getContainerItems = (container: Entity): ItemEntity[] => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  const items = getEntitiesByType(container, ItemEntity);
+  return items.filter((item) => !isPlaceholderSlot(item));
 };
 
 export const getContainerItemById = (

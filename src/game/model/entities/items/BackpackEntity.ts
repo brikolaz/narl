@@ -6,6 +6,7 @@ import { getDummyArray } from "../../../../utils";
 import { DEFAULT_BACKPACK_SIZE } from "../../../../utils/constants";
 import { RNG } from "../../../systems/rng/rng";
 import { ContainerComponent } from "../../components/ContainerComponent";
+import { DroppableComponent } from "../../components/DroppableComponent";
 import { MainHandComponent } from "../../components/eq/MainHandComponent";
 import { GlyphComponent } from "../../components/GlyphComponent";
 import { NameComponent } from "../../components/NameComponent";
@@ -58,7 +59,7 @@ export class BackpackEntityFactory {
       size: DEFAULT_BACKPACK_SIZE,
     });
     addComponents(backpack, size);
-        this.addPlaceholders(backpack, size);
+    this.addPlaceholders(backpack, size);
 
     return backpack;
   }
@@ -69,7 +70,7 @@ export class BackpackEntityFactory {
     const size = new SizeComponent({
       size: RNG.items.range(2, 4),
     });
-  
+
     const nestDepth = new NestDepthComponent({
       nestDepth: RNG.items.range(1, 2),
     });
@@ -81,6 +82,12 @@ export class BackpackEntityFactory {
     );
     this.addPlaceholders(backpack, size);
 
+    return backpack;
+  }
+
+  static setDroppable(backpack: BackpackEntity): BackpackEntity {
+    const droppable = new DroppableComponent();
+    addComponents(backpack, droppable);
     return backpack;
   }
 }
