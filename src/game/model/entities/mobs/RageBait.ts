@@ -7,6 +7,9 @@ import { HpComponent } from "../../components/HpComponent";
 import { HostileComponent } from "../../components/mobs/HostileComponent";
 import { PeacefulComponent } from "../../components/mobs/PeacefulComponent";
 import { BackpackEntity, BackpackEntityFactory } from "../items/BackpackEntity";
+import {
+  HornedHelmetEntityFactory
+} from "../items/HornedHelmetEntity";
 import type { ItemEntity } from "../items/ItemEntity";
 import { SwordEntityFactory } from "../items/SwordEntity";
 import { MobEntity } from "./MobEntity";
@@ -43,6 +46,9 @@ export class RageBaitEntityFactory {
 
     if (RNG.items.chance(20)) {
       items.push(SwordEntityFactory.getDefault());
+    }
+    if (RNG.items.chance(50)) {
+      items.push(HornedHelmetEntityFactory.getDefault());
     }
     const backpack = BackpackEntityFactory.getDefault();
     if (RNG.items.chance(5)) {

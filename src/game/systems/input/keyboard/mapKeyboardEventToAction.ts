@@ -6,11 +6,11 @@ import {
 import type { GameState } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
 import { getEqSlots } from "../../eq/eq";
+import type { EqSlot } from "../../eq/types";
 import { InternalActionType } from "../../internal/type";
 import {
   getBackpack,
-  getContainerItemAt,
-  getContainerSize,
+  getContainerSize
 } from "../../inv/containers";
 import type { InvSlot } from "../../inv/types";
 import {
@@ -19,7 +19,6 @@ import {
   type PlayerAction,
 } from "../../player/types";
 import { Direction } from "../../turn/types";
-import type { EqSlot } from "../../eq/types";
 
 const INV_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] as const;
 
