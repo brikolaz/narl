@@ -6,7 +6,7 @@ import type { PlayerInspectEqAction } from "../player/types";
 import { getPlayerEntity } from "../../state/selectors/player";
 import { getEqSlotAt } from "../eq/eq";
 import { getContainerItemAt } from "../inv/containers";
-import { getItemInspectLines } from "./inspect";
+import { getItemInspectText } from "./inspect";
 
 export const resolveInspectEqAction = (
   state: GameState,
@@ -18,13 +18,13 @@ export const resolveInspectEqAction = (
   const nextState = produce(state, (draft) => {
     const player = getPlayerEntity(draft);
     const slot = getEqSlotAt(player, eqSlot);
-    const item = getContainerItemAt(slot, eqSlot);
+    const item = getContainerItemAt(slot, 1);
 
     if (!item) {
       return action.info(`EQ slot ${eqSlot} is empty`);
     }
 
-    getItemInspectLines(item).forEach((line) => action.info(line));
+    action.info(getItemInspectText(item));
   });
 
   return action.resolve(nextState, false);

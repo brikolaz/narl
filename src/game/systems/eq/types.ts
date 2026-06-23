@@ -1,1 +1,1 @@
-export type EqSlot = 1;
+export type EqSlot = 1 | 2;

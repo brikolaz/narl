@@ -22,3 +22,5 @@ export const NAMESPACE_SEPARATOR = ":" as const;
 export const MOBS_NAMESPACE_SEPARATOR = ":" as const;
 export const RANDOM_TOTAL_CHANCE = 100 as const;
 
+export const DEFAULT_DEF = 0
+

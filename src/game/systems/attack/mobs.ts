@@ -14,7 +14,7 @@ export const getMobById = (tile: Tile, id: string) => {
 };
 
 export const killMob = (mobs: MobEntity[]) => {
-  mobs = mobs.splice(0, 1);
+  mobs.splice(0, 1);
 };
 
 export const killMobById = (tile: Tile, id: string) => {

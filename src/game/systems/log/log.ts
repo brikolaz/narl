@@ -1,6 +1,7 @@
 import { MAX_VISIBLE_LOG } from "../../../utils";
 import type { GameState } from "../../state/state";
 import type { GameAction } from "../actions/types";
+import { InternalActionType } from "../internal/type";
 import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
@@ -67,3 +68,8 @@ export const getPendingLogs = (action: GameAction, messages: string[]) => {
     return pendingLogs;
   }, []);
 };
+
+export const getInternalLogAction = (message: string): GameAction => ({
+  type: InternalActionType.LOG,
+  message,
+});

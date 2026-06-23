@@ -20,6 +20,10 @@ import { PlaceholderEntity } from "../../model/entities/items/PlaceholderItemEnt
 
 export type ContainerSlot = number;
 
+// TODO: remove backpack functions
+// use generic container funcs
+// add getPlayerBackpack(gameState)
+
 export const getBackpack = (entity: Entity): BackpackEntity | undefined => {
   return getEntityByType(entity, BackpackEntity);
 };

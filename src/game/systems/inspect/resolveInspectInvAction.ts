@@ -5,7 +5,7 @@ import type { ActionResolution } from "../actions/types";
 import type { PlayerInspectInvAction } from "../player/types";
 import { getPlayerEntity } from "../../state/selectors/player";
 import { getBackpack, getContainerItemAt } from "../inv/containers";
-import { getItemInspectLines } from "./inspect";
+import { getItemInspectText } from "./inspect";
 
 export const resolveInspectInvAction = (
   state: GameState,
@@ -24,10 +24,10 @@ export const resolveInspectInvAction = (
     const item = getContainerItemAt(backpack, invSlot);
 
     if (!item) {
-      return action.info(`Inv slot ${invSlot} is empty`);
+      return action.info(`INV slot ${invSlot} is empty`);
     }
 
-    getItemInspectLines(item).forEach((line) => action.info(line));
+    action.info(getItemInspectText(item))
   });
 
   return action.resolve(nextState, false);

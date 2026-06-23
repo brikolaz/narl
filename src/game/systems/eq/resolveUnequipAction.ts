@@ -10,6 +10,7 @@ import {
   addItemToEntityBackpack,
   clearContainerItemAt,
   getBackpack,
+  getContainerItemAt,
   isContainerFull,
 } from "../inv/containers";
 import { getItemName } from "../inv/items";
@@ -18,7 +19,7 @@ import {
   PlayerDropItemActionReason,
   type PlayerUnequipItemAction,
 } from "../player/types";
-import { getEqSlotAt, getEquippedWeapon } from "./eq";
+import { getEqSlotAt } from "./eq";
 
 export const resolveUnequipAction = (
   state: GameState,
@@ -33,10 +34,6 @@ export const resolveUnequipAction = (
       "Player has no backpack",
     );
     const isFull = isContainerFull(backpack);
-    const equippedWeapon = getEquippedWeapon(player);
-    if (!equippedWeapon) {
-      return action.fail(`No item in slot ${eqSlotIndex} to unequip`);
-    }
 
     if (isFull) {
       action.addPending({
@@ -49,10 +46,16 @@ export const resolveUnequipAction = (
       return;
     }
 
-    addItemToEntityBackpack(player, equippedWeapon);
+    const slot = getEqSlotAt(player, eqSlotIndex);
+    const item = getContainerItemAt(slot, 1);
+    if (!item) {
+      return action.fail(`No item at slot ${eqSlotIndex}`);
+    }
+
+    addItemToEntityBackpack(player, item);
     clearContainerItemAt(getEqSlotAt(player, eqSlotIndex), 1);
     action.success(
-      `Unequipped ${getItemName(equippedWeapon)} from EQ slot ${eqSlotIndex}`,
+      `Unequipped ${getItemName(item)} from EQ slot ${eqSlotIndex}`,
     );
   });
 

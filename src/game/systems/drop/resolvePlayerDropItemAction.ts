@@ -17,6 +17,7 @@ import {
 } from "../player/types";
 import { getTile } from "../world/getTile";
 
+// TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
   state: GameState,
   gameAction: PlayerDropItemAction,

@@ -9,11 +9,12 @@ import {
   clearContainerItemById,
   getBackpack,
   getContainerItemAt,
+  getFirstContainerItem
 } from "../inv/containers";
 import { getItemSlots } from "../inv/getItemSlots";
 import { getItemName } from "../inv/items";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEqSlotAt, getEquippedWeapon } from "./eq";
+import { getEqSlotAt } from "./eq";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -41,16 +42,17 @@ export const resolveEquipAction = (
 
     const itemToEquip = getContainerItemAt(backpack, invSlotIndex);
     if (!itemToEquip) {
-      return action.fail(`No item in slot ${invSlotIndex} to equip`);
+      return action.fail(`No item in INV slot ${invSlotIndex} to equip`);
     }
 
     const eqSlot = getEqSlotAt(player, eqSlotIndex);
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
-    const equippedWeapon = getEquippedWeapon(player);
-    if (equippedWeapon) {
+    const itemInSlot = getFirstContainerItem(eqSlot)
+
+    if (itemInSlot) {
       return action.fail(
-        `Can't equip. ${getItemName(equippedWeapon)} in slot ${eqSlotIndex}`,
+        `Can't equip. ${getItemName(itemInSlot)} in slot ${eqSlotIndex}`,
       );
     }
     if (!canBeEquipped(itemSlots, eqItemSlots)) {
@@ -63,7 +65,7 @@ export const resolveEquipAction = (
     clearContainerItemById(backpack, itemToEquip.id);
 
     action.success(
-      `Equipped ${getItemName(itemToEquip)} from slot ${invSlotIndex} to EQ slot ${eqSlotIndex}`,
+      `Equipped ${getItemName(itemToEquip)} from INV slot ${invSlotIndex} to EQ slot ${eqSlotIndex}`,
     );
   });
 

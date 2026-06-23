@@ -1,0 +1,10 @@
+import type { Entity } from "../../../core/ecs/Entity";
+import { getComponentByType } from "../../../core/ecs/queries/component";
+import { DEFAULT_DEF } from "../../../utils";
+import { DefComponent } from "../../model/components/DefComponent";
+
+export const getDef = (entity: Entity): number => {
+  const def = getComponentByType(entity, DefComponent)?.def ?? DEFAULT_DEF
+
+  return def
+};

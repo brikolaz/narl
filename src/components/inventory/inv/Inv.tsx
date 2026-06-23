@@ -5,10 +5,11 @@ import { InvRow } from "./InvRow";
 
 export const Inv = () => {
   const { backpackSize, items } = usePlayer();
+  const size = backpackSize ?? 0;
 
   const rows = [];
 
-  for (let i = 0; i < backpackSize; i += INV_SLOTS_PER_ROW) {
+  for (let i = 0; i < size; i += INV_SLOTS_PER_ROW) {
     rows.push(
       <InvRow
         key={i}
