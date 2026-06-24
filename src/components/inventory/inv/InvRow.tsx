@@ -5,9 +5,11 @@ import { Slot } from "../Slot";
 type InvRowProps = {
   items: (ItemEntity | undefined)[];
   startIndex: number;
+  rowIndex: number;
+  rowCount: number;
 };
 
-export const InvRow = ({ items, startIndex }: InvRowProps) => {
+export const InvRow = ({ items, startIndex, rowIndex, rowCount }: InvRowProps) => {
   if (items?.length === undefined) {
     return <></>;
   }
@@ -21,6 +23,10 @@ export const InvRow = ({ items, startIndex }: InvRowProps) => {
             key={item?.id ?? `empty-${startIndex + index}`}
             item={item}
             index={startIndex + index}
+            isFirstColumn={index === 0}
+            isLastColumn={index === items.length - 1}
+            isFirstRow={rowIndex === 0}
+            isLastRow={rowIndex === rowCount - 1}
           />
         );
       })}

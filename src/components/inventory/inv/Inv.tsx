@@ -9,10 +9,14 @@ export const Inv = () => {
 
   const rows = [];
 
+  const rowCount = Math.ceil(size / INV_SLOTS_PER_ROW);
+
   for (let i = 0; i < size; i += INV_SLOTS_PER_ROW) {
     rows.push(
       <InvRow
         key={i}
+        rowIndex={i / INV_SLOTS_PER_ROW}
+        rowCount={rowCount}
         startIndex={i + 1}
         items={padArray(
           items.slice(i, i + INV_SLOTS_PER_ROW),

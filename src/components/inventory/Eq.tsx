@@ -16,6 +16,8 @@ export const EQ = () => {
             key={slot?.id ?? `empty-${index}`}
             item={item}
             index={index + 1}
+            isFirstColumn={index === 0}
+            isLastColumn={index === eqSlots.length - 1}
           />
         );
       })}

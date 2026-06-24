@@ -5,7 +5,12 @@ import Tile from './Tile';
 export const Map: React.FC = () => {
     const renderedMap = useRenderedMap();
 
-    return renderedMap.map((tile) => (
-        <Tile renderedTile={tile} key={tile.id} />
+    return renderedMap.map((tile, index) => (
+        <Tile
+            renderedTile={tile}
+            key={tile.id}
+            isFirst={index === 0}
+            isLast={index === renderedMap.length - 1}
+        />
     ))
 };
