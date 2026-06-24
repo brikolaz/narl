@@ -1,6 +1,7 @@
 import { Entity, type EntityProps } from "../../../core/ecs/Entity";
-import { AppearanceComponent } from "../components/AppearanceComponent";
-import { GlyphComponent } from "../components/GlyphComponent";
+import { DEFAULT_APPEARANCE_COLOR } from "../../../utils";
+import { AppearanceComponent } from "../components/display/AppearanceComponent";
+import { GlyphComponent } from "../components/display/GlyphComponent";
 
 export type FloorEntityProps = {
     background?: string;
@@ -13,7 +14,7 @@ export class FloorEntity extends Entity {
             glyph: props?.glyph ?? '.' as string,
         });
         const apperance = new AppearanceComponent({
-            background: props?.background ?? '#000000',
+            background: props?.background ?? DEFAULT_APPEARANCE_COLOR,
         });
         super({ components: [apperance, glyph] });
     }

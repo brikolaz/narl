@@ -1,7 +1,7 @@
 import { Entity, type EntityProps } from "../../../../core/ecs/Entity";
-import { NameComponent } from "../../components/NameComponent";
-import { ColorComponent } from "../../components/ColorComponent";
-import { GlyphComponent } from "../../components/GlyphComponent";
+import { NameComponent } from "../../components/display/NameComponent";
+import { ColorComponent } from "../../components/display/ColorComponent";
+import { GlyphComponent } from "../../components/display/GlyphComponent";
 
 export type MobEntityProps = {
   name: string;

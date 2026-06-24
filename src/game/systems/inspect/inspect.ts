@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/ecs/Entity";
 import { hasComponentByType } from "../../../core/ecs/queries/component";
-import { DefComponent } from "../../model/components/DefComponent";
-import { DmgComponent } from "../../model/components/DmgComponent";
+import { DefComponent } from "../../model/components/items/DefComponent";
+import { DmgComponent } from "../../model/components/items/DmgComponent";
 import { getDef } from "../attack/def";
 import { getChildrenDmg, getDmg, getDmgMod, getOwnDmg } from "../attack/dmg";
 import { isContainer } from "../inv/containers";

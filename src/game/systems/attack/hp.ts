@@ -1,7 +1,7 @@
 
 import type { Entity } from "../../../core/ecs/Entity";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { HpComponent } from "../../model/components/HpComponent";
+import { HpComponent } from "../../model/components/mobs/HpComponent";
 
 export const getHp = (entity: Entity): HpComponent => {
   const hpComponent = getComponentByType(entity, HpComponent);

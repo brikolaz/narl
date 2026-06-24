@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/ecs/Entity";
 import { hasComponentByType } from "../../../core/ecs/queries/component";
-import { PickupableComponent } from "../../model/components/PickupableComponent";
+import { PickupableComponent } from "../../model/components/items/PickupableComponent";
 import type { ItemEntity } from "../../model/entities/items/ItemEntity";
 import type { Tile } from "../../state/state";
 

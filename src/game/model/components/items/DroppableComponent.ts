@@ -1,4 +1,4 @@
-import { Component } from "../../../core/ecs/Component";
+import { Component } from "../../../../core/ecs/Component";
 
 export class DroppableComponent extends Component {
   constructor() {

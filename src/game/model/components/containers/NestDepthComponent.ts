@@ -1,5 +1,5 @@
-import { Component } from "../../../core/ecs/Component";
-import { DEFAULT_NEST_DEPTH } from "../../../utils/constants";
+import { Component } from "../../../../core/ecs/Component";
+import { DEFAULT_NEST_DEPTH } from "../../../../utils";
 
 export type NestDepthComponentProps = {
   nestDepth: number;

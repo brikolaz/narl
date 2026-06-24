@@ -8,13 +8,12 @@ import {
   getEntityById,
   getEntityByType,
   replaceEntityById,
-  resetEntities,
 } from "../../../core/ecs/queries/entities";
 import { DEFAULT_NEST_DEPTH } from "../../../utils";
-import { ContainerComponent } from "../../model/components/ContainerComponent";
-import { NestDepthComponent } from "../../model/components/NestDepthComponent";
-import { PlaceholderComponent } from "../../model/components/PlaceholderComponent";
-import { SizeComponent } from "../../model/components/SizeComponent";
+import { ContainerComponent } from "../../model/components/containers/ContainerComponent";
+import { NestDepthComponent } from "../../model/components/containers/NestDepthComponent";
+import { PlaceholderComponent } from "../../model/components/containers/PlaceholderComponent";
+import { SizeComponent } from "../../model/components/containers/SizeComponent";
 import { BackpackEntity } from "../../model/entities/items/BackpackEntity";
 import { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { PlaceholderEntity } from "../../model/entities/items/PlaceholderItemEntity";

@@ -1,4 +1,4 @@
-import { PlaceholderComponent } from "../../components/PlaceholderComponent";
+import { PlaceholderComponent } from "../../components/containers/PlaceholderComponent";
 import { ItemEntity } from "./ItemEntity";
 
 export class PlaceholderEntity extends ItemEntity {

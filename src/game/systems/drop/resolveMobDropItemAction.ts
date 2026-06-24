@@ -7,7 +7,7 @@ import {
   getEntityById,
   removeEntityById,
 } from "../../../core/ecs/queries/entities";
-import { NameComponent } from "../../model/components/NameComponent";
+import { NameComponent } from "../../model/components/display/NameComponent";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -15,7 +15,7 @@ import { getMobById } from "../attack/mobs";
 import { getItemName } from "../inv/items";
 import { getTile } from "../world/getTile";
 import { type WorldDropItemAction } from "../world/types";
-import { DroppableComponent } from "../../model/components/DroppableComponent";
+import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { getContainerItems } from "../inv/containers";
 
 export const resolveMobDropItemAction = (

@@ -3,7 +3,7 @@ import {
   hasComponentByType,
   patchComponentByType,
 } from "../../../core/ecs/queries/component";
-import { ExpComponent } from "../../model/components/ExpComponent";
+import { ExpComponent } from "../../model/components/mobs/ExpComponent";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import type { FloorEntity } from "../../model/entities/FloorEntity";
 import type { PlayerEntity } from "../../model/entities/PlayerEntity";

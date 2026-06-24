@@ -23,5 +23,5 @@ export const MOBS_RNG_NAMESPACE = "mobs" as const;
 export const ITEMS_RNG_NAMESPACE = "items" as const;
 export const RANDOM_TOTAL_CHANCE = 100 as const;
 
-export const DEFAULT_DEF = 0
-
+export const DEFAULT_DEF = 0;
+export const DEFAULT_APPEARANCE_COLOR = "#000000" as const;

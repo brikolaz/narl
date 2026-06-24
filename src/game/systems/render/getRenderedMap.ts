@@ -1,9 +1,9 @@
 import { getComponentByType } from "../../../core/ecs/queries/component";
 import { COLORS } from "../../../utils/colors";
 import { MISSING_COLOR, MISSING_GLYPH } from "../../../utils/constants";
-import { AppearanceComponent } from "../../model/components/AppearanceComponent";
-import { ColorComponent } from "../../model/components/ColorComponent";
-import { GlyphComponent } from "../../model/components/GlyphComponent";
+import { AppearanceComponent } from "../../model/components/display/AppearanceComponent";
+import { ColorComponent } from "../../model/components/display/ColorComponent";
+import { GlyphComponent } from "../../model/components/display/GlyphComponent";
 import type { PlayerEntity } from "../../model/entities/PlayerEntity";
 import { getPlayer } from "../../state/selectors/player";
 import type { GameState, Tile } from "../../state/state";

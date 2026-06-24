@@ -5,7 +5,7 @@ import type { ActionResolution } from "../actions/types";
 import { Action } from "../actions/action";
 import { getMobById, killMobById } from "../attack/mobs";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { NameComponent } from "../../model/components/NameComponent";
+import { NameComponent } from "../../model/components/display/NameComponent";
 import { getTile } from "./getTile";
 
 export const resolveRemoveEntityAction = (

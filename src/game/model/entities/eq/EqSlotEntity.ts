@@ -1,5 +1,5 @@
 import { Entity, type EntityProps } from "../../../../core/ecs/Entity";
-import { ContainerComponent } from "../../components/ContainerComponent";
+import { ContainerComponent } from "../../components/containers/ContainerComponent";
 import { EqSlotComponent } from "../../components/eq/EqSlotComponent";
 import { PlaceholderEntity } from "../items/PlaceholderItemEntity";
 

@@ -2,12 +2,12 @@ import type { Component } from "../../../../core/ecs/Component";
 import type { EntityProps } from "../../../../core/ecs/Entity";
 import { addComponents } from "../../../../core/ecs/queries/component";
 import { RNG } from "../../../systems/rng/rng";
-import { DefComponent } from "../../components/DefComponent";
-import { DroppableComponent } from "../../components/DroppableComponent";
+import { DefComponent } from "../../components/items/DefComponent";
+import { DroppableComponent } from "../../components/items/DroppableComponent";
 import { HeadComponent } from "../../components/eq/HeadComponent";
-import { GlyphComponent } from "../../components/GlyphComponent";
-import { NameComponent } from "../../components/NameComponent";
-import { PickupableComponent } from "../../components/PickupableComponent";
+import { GlyphComponent } from "../../components/display/GlyphComponent";
+import { NameComponent } from "../../components/display/NameComponent";
+import { PickupableComponent } from "../../components/items/PickupableComponent";
 import { ItemEntity } from "./ItemEntity";
 
 export type HornedHelmetEntityProps = EntityProps;

@@ -1,14 +1,14 @@
 import type { EntityProps } from "../../../../core/ecs/Entity";
-import { NameComponent } from "../../components/NameComponent";
-import { DmgComponent } from "../../components/DmgComponent";
-import { GlyphComponent } from "../../components/GlyphComponent";
-import { PickupableComponent } from "../../components/PickupableComponent";
+import { NameComponent } from "../../components/display/NameComponent";
+import { DmgComponent } from "../../components/items/DmgComponent";
+import { GlyphComponent } from "../../components/display/GlyphComponent";
+import { PickupableComponent } from "../../components/items/PickupableComponent";
 import { ItemEntity } from "./ItemEntity";
 import { MainHandComponent } from "../../components/eq/MainHandComponent";
 import { addComponents } from "../../../../core/ecs/queries/component";
 import type { Component } from "../../../../core/ecs/Component";
 import { RNG } from "../../../systems/rng/rng";
-import { DroppableComponent } from "../../components/DroppableComponent";
+import { DroppableComponent } from "../../components/items/DroppableComponent";
 
 export type SwordEntityProps = EntityProps;
 

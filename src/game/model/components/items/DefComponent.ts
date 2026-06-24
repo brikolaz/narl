@@ -1,5 +1,5 @@
-import { Component } from "../../../core/ecs/Component";
-import { DEFAULT_DEF } from "../../../utils";
+import { Component } from "../../../../core/ecs/Component";
+import { DEFAULT_DEF } from "../../../../utils";
 
 
 export type DefComponentProps = {

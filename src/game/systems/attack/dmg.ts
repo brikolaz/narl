@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/ecs/Entity";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { DmgComponent } from "../../model/components/DmgComponent";
-import { DmgModComponent } from "../../model/components/DmgModComponent";
+import { DmgComponent } from "../../model/components/items/DmgComponent";
+import { DmgModComponent } from "../../model/components/items/DmgModComponent";
 import { isContainer } from "../inv/containers";
 
 export const getOwnDmg = (entity: Entity): number => {

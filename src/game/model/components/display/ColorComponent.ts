@@ -1,5 +1,5 @@
-import { Component } from "../../../core/ecs/Component";
-import { COLORS } from "../../../utils/colors";
+import { Component } from "../../../../core/ecs/Component";
+import { COLORS } from "../../../../utils/colors";
 
 export type ColorComponentProps = {
   color: string;

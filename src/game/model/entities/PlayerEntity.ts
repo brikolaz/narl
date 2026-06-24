@@ -1,11 +1,11 @@
 import { Entity, type EntityProps } from "../../../core/ecs/Entity";
 import { PLAYER_SIGN } from "../../../utils/constants";
-import { ExpComponent } from "../components/ExpComponent";
-import { GlyphComponent } from "../components/GlyphComponent";
+import { ExpComponent } from "../components/mobs/ExpComponent";
+import { GlyphComponent } from "../components/display/GlyphComponent";
 import { BackpackEntityFactory } from "./items/BackpackEntity";
 import { EqEntity } from "./eq/EqEntity";
-import { ColorComponent } from "../components/ColorComponent";
-import { NameComponent } from "../components/NameComponent";
+import { ColorComponent } from "../components/display/ColorComponent";
+import { NameComponent } from "../components/display/NameComponent";
 
 export type PlayerEntityProps = EntityProps;
 

@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { ExpComponent } from "../../model/components/ExpComponent";
-import { NameComponent } from "../../model/components/NameComponent";
+import { ExpComponent } from "../../model/components/mobs/ExpComponent";
+import { NameComponent } from "../../model/components/display/NameComponent";
 import type { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { getPlayerEntity } from "../../state/selectors/player";
 import type { GameState } from "../../state/state";
