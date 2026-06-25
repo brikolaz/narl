@@ -29,17 +29,16 @@ export const resolveMobDropItemAction = (
     const source = action.assert(getMobById(tile, entityId), "No mob");
     const sourceEntityName = getComponentByType(source, NameComponent)?.name;
 
-    const container = getEntityById(source, itemId);
+    const item = getEntityById(source, itemId);
     const itemsToDrop = [];
-    if (!container) {
+    if (!item) {
       return action.fail(`Nothing to drop`);
     }
-    if (hasComponentByType(container, DroppableComponent)) {
-      itemsToDrop.push(container);
-      tile.items.push(container);
+    if (hasComponentByType(item, DroppableComponent)) {
+      itemsToDrop.push(item);
     } else {
       itemsToDrop.push(
-        ...getContainerItems(container).filter((item) =>
+        ...getContainerItems(item).filter((item) =>
           hasComponentByType(item, DroppableComponent),
         ),
       );
@@ -47,7 +46,8 @@ export const resolveMobDropItemAction = (
     if (!itemsToDrop.length) {
       return;
     }
-    removeEntityById(source, container.id);
+    tile.items.push(...itemsToDrop);
+    removeEntityById(source, item.id);
 
     const itemNames = itemsToDrop.map((item) => getItemName(item)).join(", ");
     return action.success(`${sourceEntityName} dropped ${itemNames}`);
