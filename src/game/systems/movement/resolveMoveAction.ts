@@ -4,7 +4,7 @@ import { VisitedComponent } from "../../model/components/VisitedComponent";
 import {
   getPlayerEntity,
   getPlayerPosition,
-} from "../../state/selectors/player";
+} from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

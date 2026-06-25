@@ -4,16 +4,15 @@ import {
   getEntitiesByType,
   getEntityByType,
 } from "../../../core/ecs/queries/entities";
-import { getDmg } from "./dmg";
 import type { EqSlot } from "../../systems/eq/types";
-import {
-  getContainerItemAt,
-  getContainerItems,
-} from "./containers";
 import { NameComponent } from "../components/display/NameComponent";
 import { EqEntity } from "../entities/eq/EqEntity";
 import { EqSlotEntity } from "../entities/eq/EqSlotEntity";
 import type { ItemEntity } from "../entities/items/ItemEntity";
+import {
+  getContainerItemAt,
+  getContainerItems,
+} from "./containers";
 
 export const getEq = (entity: Entity): EqEntity | undefined => {
   return getEntityByType(entity, EqEntity);
@@ -32,11 +31,6 @@ export const getEqItems = (entity: Entity) => {
 
 export const getEqSlotAt = (entity: Entity, slot: EqSlot) => {
   return getEqSlots(entity)[slot - 1];
-};
-
-export const getEquippedWeaponDamage = (weapon: ItemEntity) => {
-  const dmg = getDmg(weapon);
-  return dmg;
 };
 
 export const getEquippedWeapon = (entity: Entity): ItemEntity | undefined => {

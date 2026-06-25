@@ -18,7 +18,7 @@ import { type WorldDropItemAction } from "../world/types";
 import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { getContainerItems } from "../../model/queries/containers";
 
-export const resolveMobDropItemAction = (
+export const resolveWorldDropItemAction = (
   state: GameState,
   gameAction: WorldDropItemAction,
 ): ActionResolution => {

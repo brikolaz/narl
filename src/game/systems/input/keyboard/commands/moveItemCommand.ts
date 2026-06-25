@@ -1,4 +1,4 @@
-import { getPlayerEntity } from "../../../../state/selectors/player";
+import { getPlayerEntity } from "../../../../model/queries/player";
 import type { GameState } from "../../../../state/state";
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import type { InvSlot } from "../../../inv/types";

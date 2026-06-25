@@ -3,7 +3,7 @@ import {
   MAX_WORLD_POSITION,
   MIN_WORLD_POSITION,
 } from "../../../utils";
-import { getPlayerPosition } from "../../state/selectors/player";
+import { getPlayerPosition } from "../../model/queries/player";
 import type { GameState, Tile } from "../../state/state";
 
 export const getVisibleTiles = (gameState: GameState): Tile[] => {

@@ -1,10 +1,10 @@
 import type { Constructor } from "../../../../core/ecs/Constructor";
-import type { Factory } from "../../../../core/ecs/Factory";
+import type { Factory } from "../../Factory";
 import type { MobEntity } from "./MobEntity";
 import {
   RageBaitEntity,
-  RageBaitEntityFactory
-} from "./RageBait";
+} from "./rageBait/RageBaitEntity";
+import { RageBaitEntityFactory } from "./rageBait/RageBaitEntityFactory";
 
 type MobClass = Constructor<MobEntity>;
 

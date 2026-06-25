@@ -1,6 +1,6 @@
 import type { GameState } from "../../state/state";
 import type { ActionResolution } from "../actions/types";
-import { resolveAttackAction } from "../attack/resolveAttackAction";
+import { resolvePlayerAttackAction } from "../attack/resolvePlayerAttackAction";
 import { resolvePlayerCurseItemAction } from "../curse/resolvePlayerCurseItemAction";
 import { resolvePlayerDropItemAction } from "../drop/resolvePlayerDropItemAction";
 import { resolveEquipAction } from "../eq/resolveEquipAction";
@@ -22,7 +22,7 @@ export const playerActionResolvers = {
   [PlayerActionType.PICK_UP_UNPACK]: resolvePickUpUnpack,
   [PlayerActionType.EQUIP_ITEM]: resolveEquipAction,
   [PlayerActionType.UNEQUIP_ITEM]: resolveUnequipAction,
-  [PlayerActionType.ATTACK]: resolveAttackAction,
+  [PlayerActionType.ATTACK]: resolvePlayerAttackAction,
   [PlayerActionType.MOVE_ITEM]: resolveMoveItemAction,
   [PlayerActionType.DROP_ITEM]: resolvePlayerDropItemAction,
   [PlayerActionType.INSPECT_INV]: resolveInspectInvAction,

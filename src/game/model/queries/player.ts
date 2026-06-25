@@ -1,5 +1,5 @@
-import type { PlayerEntity } from "../../model/entities/PlayerEntity";
-import type { GameState, PlayerState } from "../state";
+import type { PlayerEntity } from "../entities/PlayerEntity";
+import type { GameState, PlayerState } from "../../state/state";
 
 export const getPlayer = (state: GameState): PlayerState => {
   if (!state.player) {

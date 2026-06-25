@@ -1,5 +1,5 @@
 import type { Constructor } from "../../../../core/ecs/Constructor";
-import type { Factory } from "../../../../core/ecs/Factory";
+import type { Factory } from "../../Factory";
 import { BackpackEntity, BackpackEntityFactory } from "./BackpackEntity";
 import {
   HornedHelmetEntity,

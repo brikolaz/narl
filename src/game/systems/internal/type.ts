@@ -1,6 +1,6 @@
 export enum InternalActionType {
-  INIT = "INIT",
-  LOG = "LOG",
+  INIT = "INTERNAL_INIT",
+  LOG = "INTERNAL_LOG",
 }
 
 export type InternalInitAction = { type: InternalActionType.INIT };

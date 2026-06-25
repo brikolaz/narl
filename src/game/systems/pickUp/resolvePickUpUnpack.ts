@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { removeById } from "../../../utils/removeById";
-import { getPlayer } from "../../state/selectors/player";
+import { getPlayer } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

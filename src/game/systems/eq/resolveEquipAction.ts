@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
-import { getPlayerEntity } from "../../state/selectors/player";
+import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

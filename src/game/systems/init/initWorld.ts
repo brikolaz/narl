@@ -6,7 +6,7 @@ import { HornedHelmetEntityFactory } from "../../model/entities/items/HornedHelm
 import {
   SwordEntityFactory
 } from "../../model/entities/items/SwordEntity";
-import { RageBaitEntityFactory } from "../../model/entities/mobs/RageBait";
+import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/RageBaitEntityFactory";
 import type { WorldState } from "../../state/state";
 
 export const initWorld = (): WorldState => {

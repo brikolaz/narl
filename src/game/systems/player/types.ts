@@ -3,17 +3,17 @@ import type { InvSlot } from "../inv/types";
 import type { Direction } from "../turn/types";
 
 export enum PlayerActionType {
-  MOVE = "MOVE",
-  PICK_UP = "PICK_UP",
-  PICK_UP_UNPACK = "PICK_UP_UNPACK",
-  EQUIP_ITEM = "EQUIP_ITEM",
-  UNEQUIP_ITEM = "UNEQUIP_ITEM",
-  ATTACK = "ATTACK",
-  MOVE_ITEM = "MOVE_ITEM",
+  MOVE = "PLAYER_MOVE",
+  PICK_UP = "PLAYER_PICK_UP",
+  PICK_UP_UNPACK = "PLAYER_PICK_UP_UNPACK",
+  EQUIP_ITEM = "PLAYER_EQUIP_ITEM",
+  UNEQUIP_ITEM = "PLAYER_UNEQUIP_ITEM",
+  ATTACK = "PLAYER_ATTACK",
+  MOVE_ITEM = "PLAYER_MOVE_ITEM",
   DROP_ITEM = "PLAYER_DROP_ITEM",
-  INSPECT_INV = "INSPECT_INV",
-  INSPECT_EQ = "INSPECT_EQ",
-  CURSE_ITEM = "CURSE_ITEM",
+  INSPECT_INV = "PLAYER_INSPECT_INV",
+  INSPECT_EQ = "PLAYER_INSPECT_EQ",
+  CURSE_ITEM = "PLAYER_CURSE_ITEM",
 }
 
 export enum PlayerDropItemActionReason {

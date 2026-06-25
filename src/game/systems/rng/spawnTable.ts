@@ -1,6 +1,6 @@
 import type { Constructor } from "../../../core/ecs/Constructor";
 import type { MobEntity } from "../../model/entities/mobs/MobEntity";
-import { RageBaitEntity } from "../../model/entities/mobs/RageBait";
+import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import { getMobFactory } from "../../model/entities/mobs/getMobFactory";
 import { RNG } from "./rng";
 import { getZone, Zone } from "./zones";
