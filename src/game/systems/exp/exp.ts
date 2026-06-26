@@ -9,7 +9,7 @@ import type { FloorEntity } from "../../model/entities/FloorEntity";
 import type { PlayerEntity } from "../../model/entities/PlayerEntity";
 import { EXP } from "./expTable";
 
-const addExp = (exp: number, entity: Entity | undefined): void => {
+export const addExp = (entity: Entity | undefined, exp: number): void => {
   if (!entity) throw new Error("Cannot add exp to undefined entity.");
 
   patchComponentByType(entity, ExpComponent, (expComponent) => {
@@ -25,7 +25,7 @@ export const addExplorationExp = (
   if (!player) throw new Error("Cannot add exp to undefined player.");
 
   if (!hasComponentByType(floor, VisitedComponent)) {
-    addExp(EXP.VISITED_TILE, player);
+    addExp(player, EXP.VISITED_TILE);
   }
   return player;
 };

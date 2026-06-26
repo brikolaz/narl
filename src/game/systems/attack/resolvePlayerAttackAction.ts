@@ -1,9 +1,6 @@
 import { produce } from "immer";
-import { getComponentByType } from "../../../core/ecs/queries/component";
-import { ExpComponent } from "../../model/components/mobs/ExpComponent";
 import type { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { getMobManual } from "../../model/entities/mobs/getMobManual";
-import { getBackpack } from "../../model/queries/containers";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
@@ -14,7 +11,7 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerAttackAction } from "../player/types";
-import { WorldActionEntityType, WorldActionType } from "../world/types";
+import { WorldActionType } from "../world/types";
 
 type AttackContext =
   | {
@@ -22,13 +19,11 @@ type AttackContext =
       targetPosition: number;
       weapon: ItemEntity;
       dmg: number;
-      mobExp: number;
       mobName: string;
     }
   | {
       ok: true;
       targetPosition: number;
-      mobExp: number;
       mobName: string;
     }
   | {
@@ -57,14 +52,12 @@ export const prepareAttack = (
 
   const dmg = weapon ? getDmg(weapon) : undefined;
   const mobName = getEntityName(mob);
-  const mobExp = getComponentByType(mob, ExpComponent)?.exp ?? 0;
 
   return {
     ok: true,
     targetPosition,
     weapon,
     dmg,
-    mobExp,
     mobName,
   };
 };
@@ -98,32 +91,13 @@ export const resolvePlayerAttackAction = (
     const nextHp = mobHp?.hp - dmg;
 
     if (nextHp <= 0) {
-      const player = getPlayerEntity(draft);
       action.info(`Dealt ${dmg} dmg to ${mobName}`);
-      const mobExp = action.assert(ctx.mobExp, "No exp component");
-      const playerExp = action.assert(
-        getComponentByType(player, ExpComponent),
-        "No exp component",
-      );
-      playerExp.exp += mobExp;
 
-      const mobContainer = getBackpack(mob);
-      // TODO: move death consequences to EntityDiedAction resolver
-      if (mobContainer) {
-        action.addPending({
-          type: WorldActionType.DROP_ITEM,
-          entityId: mob.id,
-          targetPosition: ctx.targetPosition,
-          itemId: mobContainer.id,
-        });
-      }
       action.addPending({
-        type: WorldActionType.KILL_ENTITY,
-        entityType: WorldActionEntityType.MOB,
+        type: WorldActionType.KILL,
         entityId: mob.id,
         position: ctx.targetPosition,
       });
-      return action.success(`Gained ${mobExp} exp`); // TODO: add GAIN_EXP
     }
     mobHp.hp = nextHp;
     action.success(`Dealt ${dmg} dmg to ${mobName}`);

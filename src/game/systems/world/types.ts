@@ -1,14 +1,10 @@
 export enum WorldActionType {
   DROP_ITEM = "WORLD_DROP_ITEM",
-  KILL_ENTITY = "WORLD_KILL_ENTITY",
+  GAIN_EXP = "WORLD_GAIN_EXP",
+  KILL = "WORLD_KILL",
+  REMOVE_ENTITY = "WORLD_REMOVE_ENTITY",
   CURSE_ITEM = "WORLD_CURSE_ITEM",
   ATTACK = "WORLD_ATTACK",
-}
-
-export enum WorldActionEntityType {
-  MOB = "MOB",
-  PLAYER = "PLAYER",
-  OBJECT = "OBJECT",
 }
 
 export type WorldDropItemAction = {
@@ -17,10 +13,18 @@ export type WorldDropItemAction = {
   entityId: string;
   itemId: string;
 };
-export type WorldRemoveEntityAction = {
-  type: WorldActionType.KILL_ENTITY;
+export type WorldKillAction = {
+  type: WorldActionType.KILL;
   entityId: string;
-  entityType: WorldActionEntityType;
+  position: number;
+};
+export type WorldGainExpAction = {
+  type: WorldActionType.GAIN_EXP;
+  exp: number;
+};
+export type WorldRemoveEntityAction = {
+  type: WorldActionType.REMOVE_ENTITY;
+  entityId: string;
   position: number;
 };
 export type WorldCurseItemAction = {
@@ -35,6 +39,8 @@ export type WorldAttackAction = {
 
 export type WorldAction =
   | WorldDropItemAction
+  | WorldGainExpAction
+  | WorldKillAction
   | WorldRemoveEntityAction
   | WorldCurseItemAction
   | WorldAttackAction;
