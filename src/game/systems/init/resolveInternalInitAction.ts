@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { INITIAL_TURN } from "../../../utils";
+import { INITIAL_TURN } from "../../../utils/constants";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

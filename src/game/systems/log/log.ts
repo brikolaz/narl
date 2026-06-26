@@ -1,9 +1,11 @@
-import { MAX_VISIBLE_LOG } from "../../../utils";
+import { MAX_VISIBLE_LOGS } from "../../../utils/constants";
 import type { GameState } from "../../state/state";
 import type { GameAction } from "../actions/types";
 import { InternalActionType } from "../internal/type";
 import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
+
+
 
 const addLog = (
   gameState: GameState,
@@ -17,7 +19,7 @@ const addLog = (
       action,
       turn: gameState.turn,
     },
-  ].slice(-MAX_VISIBLE_LOG);
+  ].slice(-MAX_VISIBLE_LOGS);
 };
 
 export const addLogImmutable = (
@@ -55,7 +57,7 @@ export const flushLogs = (
   }, []);
   return {
     ...gameState,
-    log: [...gameState.log, ...nextLogs].slice(-MAX_VISIBLE_LOG),
+    log: [...gameState.log, ...nextLogs].slice(-MAX_VISIBLE_LOGS),
   };
 };
 

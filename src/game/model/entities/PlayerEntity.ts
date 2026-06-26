@@ -1,5 +1,8 @@
 import { Entity, type EntityProps } from "../../../core/ecs/Entity";
-import { PLAYER_SIGN } from "../../../utils/constants";
+import {
+  DEFAULT_PLAYER_GLYPH,
+  DEFAULT_PLAYER_BACKPACK_SIZE,
+} from "../../../utils/constants";
 import { ExpComponent } from "../components/mobs/ExpComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
 import { BackpackEntityFactory } from "./items/BackpackEntity";
@@ -17,9 +20,11 @@ export type PlayerEntityProps = EntityProps;
 export class PlayerEntity extends Entity {
   constructor(props?: PlayerEntityProps) {
     const glyph = new GlyphComponent({
-      glyph: PLAYER_SIGN as string,
+      glyph: DEFAULT_PLAYER_GLYPH as string,
     });
-    const backpack = BackpackEntityFactory.getPlayerBackpack();
+    const backpack = BackpackEntityFactory.getPlayerBackpack(
+      DEFAULT_PLAYER_BACKPACK_SIZE,
+    );
     const exp = new ExpComponent();
 
     const color = new ColorComponent();

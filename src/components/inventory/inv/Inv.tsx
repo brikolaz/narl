@@ -1,7 +1,8 @@
 import { usePlayer } from "../../../game/hooks/usePlayer";
-import { INV_SLOTS_PER_ROW } from "../../../utils";
 import { padArray } from "../../../utils/padArray";
 import { InvRow } from "./InvRow";
+
+const INV_SLOTS_PER_ROW = 3 as const;
 
 export const Inv = () => {
   const { backpackSize, items } = usePlayer();

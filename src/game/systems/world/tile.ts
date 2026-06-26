@@ -1,4 +1,4 @@
-import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils";
+import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
 import { FloorEntity } from "../../model/entities/FloorEntity";
 import type { GameState, Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";

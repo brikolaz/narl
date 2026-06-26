@@ -10,6 +10,8 @@ export type RenderedTileProps = {
 };
 
 export class RenderedTile {
+  static MISSING_GLYPH = "#" as const;
+
   id: string;
   char: string | undefined;
   background: string | undefined;

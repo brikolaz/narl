@@ -1,4 +1,4 @@
-import { MAX_WORLD_SIZE } from "../../../utils";
+import { MAX_WORLD_SIZE } from "../../../utils/constants";
 import { Direction } from "../turn/types";
 
 

@@ -8,7 +8,6 @@ import {
   getEntityById,
   getEntityByType,
 } from "../../../core/ecs/queries/entities";
-import { DEFAULT_NEST_DEPTH } from "../../../utils";
 import { ContainerComponent } from "../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../components/containers/NestDepthComponent";
 import { PlaceholderComponent } from "../components/containers/PlaceholderComponent";
@@ -132,6 +131,6 @@ export const getNestDepth = (entity: Entity): number => {
 export const getMaxNestDepth = (entity: Entity) => {
   return (
     getComponentByType(entity, NestDepthComponent)?.nestDepth ??
-    DEFAULT_NEST_DEPTH
+    NestDepthComponent.DEFAULT_NEST_DEPTH
   );
 };

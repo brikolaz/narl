@@ -5,7 +5,8 @@ export type ExpComponentProps = {
 };
 
 export class ExpComponent extends Component {
-  exp = 0;
+  static DEFAULT_EXP = 0 as const;
+  exp = ExpComponent.DEFAULT_EXP;
 
   constructor(props?: ExpComponentProps) {
     super();

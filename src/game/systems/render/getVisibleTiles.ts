@@ -2,7 +2,7 @@ import {
   MAP_SIZE,
   MAX_WORLD_POSITION,
   MIN_WORLD_POSITION,
-} from "../../../utils";
+} from "../../../utils/constants";
 import { getPlayerPosition } from "../../model/queries/player";
 import type { GameState, Tile } from "../../state/state";
 

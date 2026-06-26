@@ -1,15 +1,15 @@
 import { Component } from "../../../../core/ecs/Component";
-import { DEFAULT_APPEARANCE_COLOR } from "../../../../utils";
 
 export type AppearanceComponentProps = {
-    background: string;
-}
+  background: string;
+};
 
 export class AppearanceComponent extends Component {
-    background: string = DEFAULT_APPEARANCE_COLOR;
+  static DEFAULT_BACKGROUND = "#000000" as const;
+  background: string = AppearanceComponent.DEFAULT_BACKGROUND;
 
-    constructor(props: AppearanceComponentProps) {
-        super();
-        Object.assign(this, props);
-    }
+  constructor(props: AppearanceComponentProps) {
+    super();
+    Object.assign(this, props);
+  }
 }

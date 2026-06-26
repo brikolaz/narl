@@ -1,4 +1,8 @@
-import { DEFAULT_SEED, ITEMS_RNG_NAMESPACE, MOBS_RNG_NAMESPACE } from "../../../utils";
+import {
+  DEFAULT_SEED,
+  ITEMS_RNG_NAMESPACE,
+  MOBS_RNG_NAMESPACE,
+} from "../../../utils/constants";
 import { Random } from "./random";
 
 type RNGTypes = "mobs" | "items";

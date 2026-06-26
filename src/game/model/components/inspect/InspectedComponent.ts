@@ -1,8 +1,8 @@
 import { Component } from "../../../../core/ecs/Component";
-import { DEFAULT_INSPECTED_TIMES } from "../../../../utils";
 
 export class InspectedComponent extends Component {
-  times: number = DEFAULT_INSPECTED_TIMES;
+  static DEFAULT_TIMES = 0 as const;
+  times: number = InspectedComponent.DEFAULT_TIMES;
 
   constructor() {
     super();

@@ -5,8 +5,7 @@ import {
   upsertComponents,
 } from "../../../../core/ecs/queries/component";
 import { addEntities } from "../../../../core/ecs/queries/entities";
-import { getDummyArray } from "../../../../utils";
-import { DEFAULT_BACKPACK_SIZE } from "../../../../utils/constants";
+import { getDummyArray } from "../../../../utils/getDummyArray";
 import { RNG } from "../../../systems/rng/rng";
 import { ContainerComponent } from "../../components/containers/ContainerComponent";
 import { DroppableComponent } from "../../components/items/DroppableComponent";
@@ -62,14 +61,14 @@ export class BackpackEntityFactory {
     const entities = getDummyArray(size).map(() => new PlaceholderEntity());
     addEntities(backpack, ...entities);
   }
-  static getPlayerBackpack(): BackpackEntity {
+  static getPlayerBackpack(size: number): BackpackEntity {
     const backpack = this.getBase();
 
-    const size = new SizeComponent({
-      size: DEFAULT_BACKPACK_SIZE,
+    const sizeComponent = new SizeComponent({
+      size,
     });
-    addComponents(backpack, size);
-    this.addPlaceholders(backpack, size);
+    addComponents(backpack, sizeComponent);
+    this.addPlaceholders(backpack, sizeComponent);
 
     return backpack;
   }

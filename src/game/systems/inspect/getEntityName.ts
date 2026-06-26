@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/ecs/Entity";
 import { getComponentByType } from "../../../core/ecs/queries/component";
-import { CURSED_PREFIX } from "../../../utils";
+import { CURSED_PREFIX } from "../../../utils/constants";
 import { NameComponent } from "../../model/components/display/NameComponent";
 import { isCursed } from "../../model/queries/curse";
 

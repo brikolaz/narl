@@ -1,4 +1,4 @@
-import { INITIAL_PLAYER_POSITION } from "../../../utils";
+import { INITIAL_PLAYER_POSITION } from "../../../utils/constants";
 import {
     PlayerEntityFactory
 } from "../../model/entities/PlayerEntity";

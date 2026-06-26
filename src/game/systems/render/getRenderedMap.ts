@@ -1,6 +1,5 @@
 import { getComponentByType } from "../../../core/ecs/queries/component";
 import { COLORS } from "../../../utils/colors";
-import { MISSING_COLOR, MISSING_GLYPH } from "../../../utils/constants";
 import { AppearanceComponent } from "../../model/components/display/AppearanceComponent";
 import { ColorComponent } from "../../model/components/display/ColorComponent";
 import { GlyphComponent } from "../../model/components/display/GlyphComponent";
@@ -25,7 +24,13 @@ const resolveGlyph = (tile: Tile, player: PlayerEntity | undefined) => {
     ? getComponentByType(lastMob, GlyphComponent)?.glyph
     : undefined;
 
-  return playerGlyph ?? mobGlyph ?? itemGlyph ?? floorGlyph ?? MISSING_GLYPH;
+  return (
+    playerGlyph ??
+    mobGlyph ??
+    itemGlyph ??
+    floorGlyph ??
+    RenderedTile.MISSING_GLYPH
+  );
 };
 
 const resolveColor = (tile: Tile, player: PlayerEntity | undefined) => {
@@ -53,7 +58,7 @@ export const getRenderedMap = (gameState: GameState) => {
 
     return new RenderedTile({
       char: resolveGlyph(tile, player),
-      background: floorAppearance?.background ?? MISSING_COLOR,
+      background: floorAppearance?.background ?? COLORS.MISSING_COLOR,
       color: resolveColor(tile, player),
       position: tile.position,
     });

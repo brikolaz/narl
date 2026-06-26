@@ -1,16 +1,15 @@
 import { Component } from "../../../../core/ecs/Component";
-import { DEFAULT_NEST_DEPTH } from "../../../../utils";
 
 export type NestDepthComponentProps = {
   nestDepth: number;
 };
 
 export class NestDepthComponent extends Component {
-  nestDepth: number = DEFAULT_NEST_DEPTH;
+  static DEFAULT_NEST_DEPTH = 0 as const;
+  nestDepth: number = NestDepthComponent.DEFAULT_NEST_DEPTH;
 
   constructor(props: NestDepthComponentProps) {
     super();
     Object.assign(this, props);
   }
 }
- 

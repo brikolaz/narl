@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { NAMESPACE_SEPARATOR, RANDOM_TOTAL_CHANCE } from "../../../utils";
+import { NAMESPACE_SEPARATOR } from "../../../utils/constants";
 
 export type RandomContext = {
   namespace: string;
@@ -11,6 +11,7 @@ export const getRandomContextNamespace = (namespaces: string[]): string => {
 };
 
 export class Random {
+  private static readonly RANDOM_TOTAL_CHANCE = 100 as const;
   rng: () => number;
 
   constructor(private readonly context: RandomContext) {
@@ -24,7 +25,7 @@ export class Random {
   }
 
   chance(percent: number): boolean {
-    return this.random() * RANDOM_TOTAL_CHANCE <= percent;
+    return this.random() * Random.RANDOM_TOTAL_CHANCE <= percent;
   }
 
   range(min: number, max: number): number {
@@ -32,6 +33,6 @@ export class Random {
   }
 
   roll(): number {
-    return this.range(1, 100)
+    return this.range(1, 100);
   }
 }
