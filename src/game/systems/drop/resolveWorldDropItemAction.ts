@@ -1,22 +1,20 @@
 import { produce } from "immer";
 import {
-  getComponentByType,
   hasComponentByType,
 } from "../../../core/ecs/queries/component";
 import {
   getEntityById,
   removeEntityById,
 } from "../../../core/ecs/queries/entities";
-import { NameComponent } from "../../model/components/display/NameComponent";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getMobById } from "../../model/queries/mobs";
-import { getItemName } from "../../model/queries/items";
 import { getTile } from "../../model/queries/tile";
 import { type WorldDropItemAction } from "../world/types";
 import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { getContainerItems } from "../../model/queries/containers";
+import { getEntityName } from "../inspect/getEntityName";
 
 export const resolveWorldDropItemAction = (
   state: GameState,
@@ -27,7 +25,7 @@ export const resolveWorldDropItemAction = (
   const nextState = produce(state, (draft) => {
     const tile = getTile(draft, targetPosition);
     const source = action.assert(getMobById(tile, entityId), "No mob");
-    const sourceEntityName = getComponentByType(source, NameComponent)?.name;
+    const sourceEntityName = getEntityName(source);
 
     const item = getEntityById(source, itemId);
     const itemsToDrop = [];
@@ -49,7 +47,7 @@ export const resolveWorldDropItemAction = (
     tile.items.push(...itemsToDrop);
     removeEntityById(source, item.id);
 
-    const itemNames = itemsToDrop.map((item) => getItemName(item)).join(", ");
+    const itemNames = itemsToDrop.map((item) => getEntityName(item)).join(", ");
     return action.success(`${sourceEntityName} dropped ${itemNames}`);
   });
 

@@ -10,12 +10,12 @@ import {
   getBackpack,
   getContainerItemAt,
 } from "../../model/queries/containers";
-import { getItemName } from "../../model/queries/items";
 import {
   PlayerDropItemActionReason,
   type PlayerDropItemAction,
 } from "../player/types";
 import { getTile } from "../../model/queries/tile";
+import { getEntityName } from "../inspect/getEntityName";
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
@@ -53,11 +53,11 @@ export const resolvePlayerDropItemAction = (
 
     clearContainerItemById(source, itemToDrop.id);
     if (reason === PlayerDropItemActionReason.MANUAL) {
-      return action.success(`Dropped ${getItemName(itemToDrop)}`);
+      return action.success(`Dropped ${getEntityName(itemToDrop)}`);
     }
 
     return action.success(
-      `Backpack is full. Dropped ${getItemName(itemToDrop)} to the ground`,
+      `Backpack is full. Dropped ${getEntityName(itemToDrop)} to the ground`,
     );
   });
 

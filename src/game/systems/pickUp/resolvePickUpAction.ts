@@ -11,11 +11,11 @@ import {
   getBackpack,
   isContainerFull,
 } from "../../model/queries/containers";
-import { getItemName } from "../../model/queries/items";
 import type { PlayerPickUpAction } from "../player/types";
 import { isPickupable, pickUpItem } from "../../model/queries/pickUp";
 import { getVisibleTiles } from "../render/getVisibleTiles";
 import { curse } from "../curse/curse";
+import { getEntityName } from "../inspect/getEntityName";
 
 export const resolvePickUpAction = (
   state: GameState,
@@ -40,16 +40,16 @@ export const resolvePickUpAction = (
 
       if (isContainerFull(backpack)) {
         return action.fail(
-          `Can't pick up ${getItemName(itemToPickUp)}. Backpack is full`,
+          `Can't pick up ${getEntityName(itemToPickUp)}. Backpack is full`,
         );
       }
 
       if (!isPickupable(itemToPickUp)) {
-        return action.fail(`${getItemName(itemToPickUp)} is not pickupable`);
+        return action.fail(`${getEntityName(itemToPickUp)} is not pickupable`);
       }
       addItemToEntityBackpack(player, itemToPickUp);
       removeById(tile.items, itemToPickUp.id);
-      action.success(`Picked up ${getItemName(itemToPickUp)}`);
+      action.success(`Picked up ${getEntityName(itemToPickUp)}`);
       curse(itemToPickUp, action);
     });
   });

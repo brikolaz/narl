@@ -16,10 +16,6 @@ enum EqStat {
   DEF = "DEF",
 }
 
-enum PlayerStat {
-  HP = "HP",
-}
-
 // TODO: resolve stats based on slots/item types
 // TODO; remove duplication in Inspect action
 export type EqStats = Record<EqStat, number>;

@@ -2,7 +2,6 @@ import type { Component } from "../../../../core/ecs/Component";
 import type { EntityProps } from "../../../../core/ecs/Entity";
 import {
   addComponents,
-  hasComponentByType,
   upsertComponents,
 } from "../../../../core/ecs/queries/component";
 import { COLORS } from "../../../../utils/colors";
@@ -17,6 +16,7 @@ import { CursedComponent } from "../../components/items/CursedComponent";
 import { DefComponent } from "../../components/items/DefComponent";
 import { DroppableComponent } from "../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../components/items/PickupableComponent";
+import { isCursed } from "../../queries/curse";
 import { getInspectedTimes } from "../../queries/inspect";
 import { ItemEntity } from "./ItemEntity";
 
@@ -68,7 +68,7 @@ export class HornedHelmetEntityFactory {
   }
 
   static curse(item: HornedHelmetEntity): boolean {
-    const wasCursed = hasComponentByType(item, CursedComponent);
+    const wasCursed = isCursed(item);
     if (wasCursed) {
       return false;
     }

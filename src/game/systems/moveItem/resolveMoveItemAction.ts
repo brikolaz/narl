@@ -15,7 +15,7 @@ import {
   isContainer,
   isContainerFull,
 } from "../../model/queries/containers";
-import { getItemName } from "../../model/queries/items";
+import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerMoveItemAction } from "../player/types";
 
 // TODO: add swap (new resolver)
@@ -55,7 +55,7 @@ export const resolveMoveItemAction = (
     addItemToContainer(toItem, fromItem);
 
     action.success(
-      `Moved ${getItemName(fromItem)} from inv slot ${fromSlot} to ${getItemName(toItem)} at slot ${toSlot}`,
+      `Moved ${getEntityName(fromItem)} from inv slot ${fromSlot} to ${getEntityName(toItem)} at slot ${toSlot}`,
     );
   });
 

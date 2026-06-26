@@ -5,9 +5,8 @@ import type { ActionResolution } from "../actions/types";
 import { Action } from "../actions/action";
 import { getMobById } from "../../model/queries/mobs";
 import { killMobById } from "../attack/mobs";
-import { getComponentByType } from "../../../core/ecs/queries/component";
-import { NameComponent } from "../../model/components/display/NameComponent";
 import { getTile } from "../../model/queries/tile";
+import { getEntityName } from "../inspect/getEntityName";
 
 export const resolveRemoveEntityAction = (
   state: GameState,
@@ -23,7 +22,7 @@ export const resolveRemoveEntityAction = (
     );
     action.assertCondition(entityId, "No entity id to drop item");
     const mob = getMobById(tile, entityId);
-    const mobName = getComponentByType(mob, NameComponent)?.name;
+    const mobName = getEntityName(mob);
     killMobById(tile, entityId);
     return action.success(`${mobName} died`);
   });

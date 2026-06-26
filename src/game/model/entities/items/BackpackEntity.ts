@@ -2,7 +2,6 @@ import type { Component } from "../../../../core/ecs/Component";
 import { type EntityProps } from "../../../../core/ecs/Entity";
 import {
   addComponents,
-  hasComponentByType,
   upsertComponents,
 } from "../../../../core/ecs/queries/component";
 import { addEntities } from "../../../../core/ecs/queries/entities";
@@ -25,6 +24,7 @@ import { ColorComponent } from "../../components/display/ColorComponent";
 import { DmgModComponent } from "../../components/items/DmgModComponent";
 import { EquippableComponent } from "../../components/eq/EquippableComponent";
 import { DmgComponent } from "../../components/items/DmgComponent";
+import { isCursed } from "../../queries/curse";
 
 export type BackpackEntityProps = {
   size?: number;
@@ -102,7 +102,7 @@ export class BackpackEntityFactory {
   }
 
   static curse(item: BackpackEntity): boolean {
-    const wasCursed = hasComponentByType(item, CursedComponent);
+    const wasCursed = isCursed(item);
     if (wasCursed) {
       return false;
     }

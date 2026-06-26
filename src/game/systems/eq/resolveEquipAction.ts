@@ -14,9 +14,9 @@ import {
   getFirstContainerItem,
 } from "../../model/queries/containers";
 import { getItemSlots } from "../../model/queries/items";
-import { getItemName } from "../../model/queries/items";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEqSlotAt, getEqSlotName } from "../../model/queries/eq";
+import { getEqSlotAt } from "../../model/queries/eq";
+import { getEntityName } from "../inspect/getEntityName";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -51,15 +51,16 @@ export const resolveEquipAction = (
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
     const itemInSlot = getFirstContainerItem(eqSlot);
+    const eqSlotName = getEntityName(eqSlot);
 
     if (itemInSlot) {
       return action.fail(
-        `Can't equip. ${getItemName(itemInSlot)} in ${getEqSlotName(player, eqSlotIndex)} EQ slot`,
+        `Can't equip. ${getEntityName(itemInSlot)} in ${eqSlotName} EQ slot`,
       );
     }
     if (!canBeEquipped(itemSlots, eqItemSlots)) {
       return action.fail(
-        `${getItemName(itemToEquip)} from INV slot ${invSlotIndex} can't be equipped in ${getEqSlotName(player, eqSlotIndex)} EQ slot`,
+        `${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} can't be equipped in ${eqSlotName} EQ slot`,
       );
     }
 
@@ -67,7 +68,7 @@ export const resolveEquipAction = (
     clearContainerItemById(backpack, itemToEquip.id);
 
     action.success(
-      `Equipped ${getItemName(itemToEquip)} from INV slot ${invSlotIndex} to ${getEqSlotName(player, eqSlotIndex)} EQ slot`,
+      `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );
   });
 

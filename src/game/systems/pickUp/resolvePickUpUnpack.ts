@@ -14,13 +14,13 @@ import {
   isContainer,
   isContainerFull,
 } from "../../model/queries/containers";
-import { getItemName } from "../../model/queries/items";
 import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
 } from "../player/types";
 import { getVisibleTiles } from "../render/getVisibleTiles";
 import { pickUpItem } from "../../model/queries/pickUp";
+import { getEntityName } from "../inspect/getEntityName";
 
 export const resolvePickUpUnpack = (
   state: GameState,
@@ -61,7 +61,7 @@ export const resolvePickUpUnpack = (
       });
       if (containerItems.length) {
         return action.info(
-          `Dropped ${getItemName(itemToPickUp)} items to the floor`,
+          `Dropped ${getEntityName(itemToPickUp)} items to the floor`,
         );
       }
     });

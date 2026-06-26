@@ -8,19 +8,25 @@ import {
 import { InspectDescComponent } from "../../model/components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../model/components/inspect/InspectedComponent";
 import { DefComponent } from "../../model/components/items/DefComponent";
-import { DmgComponent } from "../../model/components/items/DmgComponent";
 import { getDef } from "../../model/queries/def";
-import { getChildrenDmg, getDmg, getDmgMod, getOwnDmg } from "../../model/queries/dmg";
+import {
+  getChildrenDmg,
+  getDmg,
+  getDmgMod,
+  getOwnDmg,
+} from "../../model/queries/dmg";
 import { isContainer } from "../../model/queries/containers";
-import { getItemName } from "../../model/queries/items";
+import { getInspectedTimes } from "../../model/queries/inspect";
+import { isWeapon } from "../../model/queries/weapons";
+import { getEntityName } from "./getEntityName";
 
 const getInspectDesc = (entity: Entity) => {
-  const inspected = getComponentByType(entity, InspectedComponent);
-  if (!inspected) {
+  const inspectedTimes = getInspectedTimes(entity);
+  if (!inspectedTimes) {
     return "";
   }
   const inspectDesc = (getComponentsByType(entity, InspectDescComponent) ?? [])
-    .filter(({ times: requiredTimes }) => inspected.times >= requiredTimes)
+    .filter(({ times: requiredTimes }) => inspectedTimes >= requiredTimes)
     .sort((a, b) => a.times - b.times);
 
   return inspectDesc.at(-1)?.text ?? "";
@@ -34,7 +40,7 @@ export const getItemInspectText = (entity: Entity): string => {
     stats.push(`${getChildrenDmg(entity)} CHILDREN DMG`);
     stats.push(`${getDmgMod(entity)} DMG MOD`);
   } else {
-    if (hasComponentByType(entity, DmgComponent)) {
+    if (isWeapon(entity)) {
       stats.push(`${getDmg(entity)} DMG`);
     }
     if (hasComponentByType(entity, DefComponent)) {
@@ -43,7 +49,7 @@ export const getItemInspectText = (entity: Entity): string => {
   }
 
   let lines = [];
-  lines.push(getItemName(entity));
+  lines.push(getEntityName(entity));
   lines.push(getInspectDesc(entity));
   lines.push(stats.join(", "));
   lines = lines.filter(Boolean);

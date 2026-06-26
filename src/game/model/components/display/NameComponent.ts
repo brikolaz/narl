@@ -5,7 +5,9 @@ export type NameComponentProps = {
 };
 
 export class NameComponent extends Component {
-  name = "";
+  static DEFAULT_NAME = "???";
+  name = NameComponent.DEFAULT_NAME;
+
   constructor(props: NameComponentProps) {
     super();
     Object.assign(this, props);

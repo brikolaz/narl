@@ -7,11 +7,12 @@ import { getBackpack } from "../../model/queries/containers";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
-import { getMob, getMobName, hasMobs } from "../../model/queries/mobs";
+import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerAttackAction } from "../player/types";
 import { WorldActionEntityType, WorldActionType } from "../world/types";
 
@@ -55,7 +56,7 @@ export const prepareAttack = (
   const weapon = getEquippedWeapon(player);
 
   const dmg = weapon ? getDmg(weapon) : undefined;
-  const mobName = getMobName(mob) ?? "mob";
+  const mobName = getEntityName(mob);
   const mobExp = getComponentByType(mob, ExpComponent)?.exp ?? 0;
 
   return {
