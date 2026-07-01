@@ -11,7 +11,7 @@ import {
   BackpackEntity,
 } from "../../items/backpack/BackpackEntity";
 import { BackpackEntityFactory } from "../../items/backpack/BackpackEntityFactory";
-import { HornedHelmetEntityFactory } from "../../items/HelmetEntity";
+import { HornedHelmetEntityFactory } from "../../items/helmet/HelmetEntityFactory";
 import type { ItemEntity } from "../../items/ItemEntity";
 import { SwordEntityFactory } from "../../items/SwordEntity";
 import { RageBaitEntity } from "./RageBaitEntity";

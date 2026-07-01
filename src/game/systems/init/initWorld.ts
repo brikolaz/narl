@@ -2,7 +2,7 @@ import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { FloorEntity } from "../../model/entities/FloorEntity";
-import { HornedHelmetEntityFactory } from "../../model/entities/items/HelmetEntity";
+import { HornedHelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntityFactory";
 import {
   SwordEntityFactory
 } from "../../model/entities/items/SwordEntity";

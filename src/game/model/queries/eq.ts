@@ -6,11 +6,8 @@ import {
 import { EqEntity } from "../entities/eq/EqEntity";
 import { EqSlotEntity } from "../entities/eq/EqSlotEntity";
 import type { ItemEntity } from "../entities/items/ItemEntity";
-import {
-  getContainerItemAt,
-  getContainerItems,
-} from "./containers";
-import type { EqSlot } from "../../systems/eq/types";
+import { getContainerItemAt, getContainerItems } from "./containers";
+import { EqSlot } from "../../systems/eq/types";
 
 export const getEq = (entity: Entity): EqEntity | undefined => {
   return getEntityByType(entity, EqEntity);
@@ -32,6 +29,6 @@ export const getEqSlotAt = (entity: Entity, slot: EqSlot) => {
 };
 
 export const getEquippedWeapon = (entity: Entity): ItemEntity | undefined => {
-  const slot = getEqSlotAt(entity, 1);
+  const slot = getEqSlotAt(entity, EqSlot.MAIN_HAND);
   return getContainerItemAt(slot, 1);
 };

@@ -8,7 +8,7 @@ import { DefComponent } from "../../../components/items/DefComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
 import { VariantComponent } from "../../../components/VariantComponent";
-import { HelmetEntity, HelmetEntityVariants } from "../HelmetEntity";
+import { HelmetEntity, HelmetEntityVariants } from "./HelmetEntity";
 
 export class HornedHelmetEntityFactory {
   private static addInspectDesc(item: HelmetEntity) {

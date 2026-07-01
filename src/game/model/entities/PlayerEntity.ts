@@ -1,18 +1,23 @@
 import { Entity, type EntityProps } from "../../../core/ecs/Entity";
-import {
-  DEFAULT_PLAYER_GLYPH,
-  DEFAULT_PLAYER_BACKPACK_SIZE,
-} from "../../../utils/constants";
-import { ExpComponent } from "../components/mobs/ExpComponent";
-import { GlyphComponent } from "../components/display/GlyphComponent";
-import { EqEntity } from "./eq/EqEntity";
-import { ColorComponent } from "../components/display/ColorComponent";
-import { NameComponent } from "../components/display/NameComponent";
-import { HpComponent } from "../components/mobs/HpComponent";
-import { MainHandSlotEntity } from "./eq/MainHandSlotEntity";
-import { HeadSlotEntity } from "./eq/HeadSlotEntity";
-import { PantsSlotEntity } from "./eq/PantsSlotEntity";
 import { addEntities } from "../../../core/ecs/queries/entities";
+import {
+  DEFAULT_PLAYER_BACKPACK_SIZE,
+  DEFAULT_PLAYER_GLYPH,
+} from "../../../utils/constants";
+import { ColorComponent } from "../components/display/ColorComponent";
+import { GlyphComponent } from "../components/display/GlyphComponent";
+import { NameComponent } from "../components/display/NameComponent";
+import { ExpComponent } from "../components/mobs/ExpComponent";
+import { HpComponent } from "../components/mobs/HpComponent";
+import { AmuletSlotEntity } from "./eq/AmuletSlotEntity";
+import { ArmorSlotEntity } from "./eq/ArmorSlotEntity";
+import { BootsSlotEntity } from "./eq/BootsSlotEntity";
+import { EqEntity } from "./eq/EqEntity";
+import { HeadSlotEntity } from "./eq/HeadSlotEntity";
+import { MainHandSlotEntity } from "./eq/MainHandSlotEntity";
+import { OffhandSlotEntity } from "./eq/OffhandSlotEntity";
+import { PantsSlotEntity } from "./eq/PantsSlotEntity";
+import { RingSlotEntity } from "./eq/RingSlotEntity";
 import { BackpackEntityFactory } from "./items/backpack/BackpackEntityFactory";
 
 export type PlayerEntityProps = EntityProps;
@@ -46,9 +51,14 @@ export class PlayerEntityFactory {
 
   private static getEq() {
     const entities = [
-      new MainHandSlotEntity(),
       new HeadSlotEntity(),
+      new AmuletSlotEntity(),
+      new MainHandSlotEntity(),
+      new ArmorSlotEntity(),
+      new OffhandSlotEntity(),
+      new RingSlotEntity(),
       new PantsSlotEntity(),
+      new BootsSlotEntity(),
     ];
     const eq = new EqEntity({ entities });
     return eq;

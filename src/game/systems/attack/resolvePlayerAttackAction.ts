@@ -31,6 +31,7 @@ type AttackContext =
       message: string;
     };
 
+// TODO: can be deleted
 export const prepareAttack = (
   state: GameState,
   { targetPosition }: PlayerAttackAction,

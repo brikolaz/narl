@@ -9,7 +9,7 @@ import { CursedComponent } from "../../../components/items/CursedComponent";
 import { VariantComponent } from "../../../components/VariantComponent";
 import { isCursed } from "../../../queries/curse";
 import { getInspectedTimes } from "../../../queries/inspect";
-import { HelmetEntityVariants, type HelmetEntity } from "../HelmetEntity";
+import { HelmetEntityVariants, type HelmetEntity } from "./HelmetEntity";
 
 export class HelmetEntityManual {
   static curse(item: HelmetEntity): boolean {
