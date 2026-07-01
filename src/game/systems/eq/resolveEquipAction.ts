@@ -4,10 +4,7 @@ import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import {
-  addItemToContainer,
-  clearContainerItemById,
-} from "../inv/containers";
+import { addItemToContainer, clearContainerItemById } from "../inv/containers";
 import {
   getBackpack,
   getContainerItemAt,
@@ -15,8 +12,9 @@ import {
 } from "../../model/queries/containers";
 import { getItemSlots } from "../../model/queries/items";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEqSlotAt } from "../../model/queries/eq";
+import { getEqSlot } from "../../model/queries/eq";
 import { getEntityName } from "../inspect/getEntityName";
+import { curse } from "../curse/curse";
 
 const canBeEquipped = (
   itemSlots: ItemSlotComponent[],
@@ -47,7 +45,7 @@ export const resolveEquipAction = (
       return action.fail(`No item in INV slot ${invSlotIndex} to equip`);
     }
 
-    const eqSlot = getEqSlotAt(player, eqSlotIndex);
+    const eqSlot = getEqSlot(player, eqSlotIndex);
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
     const itemInSlot = getFirstContainerItem(eqSlot);
@@ -70,6 +68,7 @@ export const resolveEquipAction = (
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );
+    curse(itemToEquip, draft, action);
   });
 
   return action.resolve(nextState);

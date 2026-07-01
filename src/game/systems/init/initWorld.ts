@@ -3,6 +3,7 @@ import { getDummyArray } from "../../../utils/getDummyArray";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { FloorEntity } from "../../model/entities/FloorEntity";
 import { HornedHelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntityFactory";
+import { RingEntityFactory } from "../../model/entities/items/ring/RingEntityFactory";
 import {
   SwordEntityFactory
 } from "../../model/entities/items/SwordEntity";
@@ -17,6 +18,7 @@ export const initWorld = (): WorldState => {
     mobs: [],
     position,
   }));
+  world[3].items.push(RingEntityFactory.getDefault());
   world[3].items.push(SwordEntityFactory.getDefault());
   world[4].items.push(HornedHelmetEntityFactory.getHornedHelmet());
   world[0].floor.components.push(new VisitedComponent());

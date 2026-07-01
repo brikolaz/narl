@@ -1,6 +1,6 @@
-import { NameComponent } from "../../components/display/NameComponent";
-import { OffhandComponent } from "../../components/eq/OffhandComponent";
-import { EqSlotEntity } from "./EqSlotEntity";
+import { NameComponent } from "../../../components/display/NameComponent";
+import { OffhandComponent } from "../../../components/eq/OffhandComponent";
+import { EqSlotEntity } from "../EqSlotEntity";
 
 export class OffhandSlotEntity extends EqSlotEntity {
   constructor() {

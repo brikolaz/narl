@@ -1,27 +1,25 @@
 import { produce } from "immer";
 import {
-  getPlayerEntity,
-  getPlayerPosition,
-} from "../../model/queries/player";
+  getBackpack,
+  getContainerItemAt,
+  isContainerFull,
+} from "../../model/queries/containers";
+import { getEqSlot } from "../../model/queries/eq";
+import { isRemovable } from "../../model/queries/items";
+import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { getEntityName } from "../inspect/getEntityName";
 import {
   addItemToEntityBackpack,
   clearContainerItemAt,
 } from "../inv/containers";
 import {
-  getBackpack,
-  getContainerItemAt,
-  isContainerFull,
-} from "../../model/queries/containers";
-import {
   PlayerActionType,
   PlayerDropItemActionReason,
   type PlayerUnequipItemAction,
 } from "../player/types";
-import { getEqSlotAt } from "../../model/queries/eq";
-import { getEntityName } from "../inspect/getEntityName";
 
 export const resolveUnequipAction = (
   state: GameState,
@@ -37,6 +35,17 @@ export const resolveUnequipAction = (
     );
     const isFull = isContainerFull(backpack);
 
+    const slot = getEqSlot(player, eqSlotIndex);
+    const slotName = getEntityName(slot);
+    const item = getContainerItemAt(slot, 1);
+    if (!item) {
+      return action.fail(`No item at ${slotName} EQ slot`);
+    }
+
+    if (!isRemovable(item)) {
+      return action.fail(`Can't be removed`);
+    }
+
     if (isFull) {
       action.addPending({
         type: PlayerActionType.DROP_ITEM,
@@ -48,15 +57,8 @@ export const resolveUnequipAction = (
       return;
     }
 
-    const slot = getEqSlotAt(player, eqSlotIndex);
-    const slotName = getEntityName(slot);
-    const item = getContainerItemAt(slot, 1);
-    if (!item) {
-      return action.fail(`No item at ${slotName} EQ slot`);
-    }
-
     addItemToEntityBackpack(player, item);
-    clearContainerItemAt(getEqSlotAt(player, eqSlotIndex), 1);
+    clearContainerItemAt(getEqSlot(player, eqSlotIndex), 1);
     action.success(
       `Unequipped ${getEntityName(item)} from ${slotName} EQ slot`,
     );

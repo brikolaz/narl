@@ -9,6 +9,7 @@ import { addComponents } from "../../../../core/ecs/queries/component";
 import type { Component } from "../../../../core/ecs/Component";
 import { RNG } from "../../../systems/rng/rng";
 import { DroppableComponent } from "../../components/items/DroppableComponent";
+import { RemovableComponent } from "../../components/eq/RemovableComponent";
 
 export type SwordEntityProps = EntityProps;
 
@@ -18,10 +19,10 @@ export class SwordEntity extends ItemEntity {
       glyph: "/" as string,
     });
     const name = new NameComponent({ name: "Sword" });
-
+    const removable = new RemovableComponent();
     super({
       ...props,
-      components: [...(props?.components ?? []), glyph, name],
+      components: [...(props?.components ?? []), glyph, name, removable],
     });
   }
 }

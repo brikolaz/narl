@@ -4,7 +4,7 @@ import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getEqSlotAt } from "../../model/queries/eq";
+import { getEqSlot } from "../../model/queries/eq";
 import { clearContainerItemById } from "../inv/containers";
 import {
   getBackpack,
@@ -31,7 +31,7 @@ export const resolvePlayerDropItemAction = (
       "Player has no backpack",
     );
     const source = action.assert(
-      eqSlot ? getEqSlotAt(player, eqSlot) : invSlot ? backpack : undefined,
+      eqSlot ? getEqSlot(player, eqSlot) : invSlot ? backpack : undefined,
       "No source to drop item",
     );
     let itemToDrop: ItemEntity | undefined = undefined;

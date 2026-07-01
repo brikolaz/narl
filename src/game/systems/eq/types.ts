@@ -1,5 +1,5 @@
 export enum EqSlot {
-  HELMET = 1,
+  HEAD = 1,
   AMULET = 2,
   MAIN_HAND = 3,
   ARMOR = 4,

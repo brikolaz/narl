@@ -30,7 +30,7 @@ export const resolveInspectInvAction = (
     increaseInspected(item);
 
     action.info(getItemInspectText(item));
-    curse(item, action);
+    curse(item, draft, action);
   });
 
   return action.resolve(nextState, false);

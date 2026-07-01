@@ -9,7 +9,7 @@ export type Manual<T> = {
     gameAction: Action,
   ) => void;
   getEquippedWeapon?: (entity: T) => Entity;
-  curse?: (item: T) => boolean;
-  shouldBeCursed?: (item: T) => boolean;
+  curse?: (item: T, gameState: GameState) => void;
+  shouldBeCursed?: (item: T, gameState: GameState) => boolean;
   poke?: (entity: T, gameAction: Action) => void;
 };

@@ -1,5 +1,8 @@
 import type { Component } from "../../../../../core/ecs/Component";
-import { addComponents, upsertComponents } from "../../../../../core/ecs/queries/component";
+import {
+  addComponents,
+  upsertComponents,
+} from "../../../../../core/ecs/queries/component";
 import { RNG } from "../../../../systems/rng/rng";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { HeadComponent } from "../../../components/eq/HeadComponent";
@@ -36,7 +39,8 @@ export class HornedHelmetEntityFactory {
     const variant = new VariantComponent({
       variant: HelmetEntityVariants.HELMET,
     });
-    addComponents(
+
+    upsertComponents(
       hornedHelmet,
       ...([head, def, pickupable, droppable, variant] as Component[]),
     );

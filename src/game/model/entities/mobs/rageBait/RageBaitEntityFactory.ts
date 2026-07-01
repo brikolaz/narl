@@ -6,10 +6,8 @@ import { RNG } from "../../../../systems/rng/rng";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import { EqEntity } from "../../eq/EqEntity";
-import { MainHandSlotEntity } from "../../eq/MainHandSlotEntity";
-import {
-  BackpackEntity,
-} from "../../items/backpack/BackpackEntity";
+import { MainHandSlotEntity } from "../../eq/slots/MainHandSlotEntity";
+import { BackpackEntity } from "../../items/backpack/BackpackEntity";
 import { BackpackEntityFactory } from "../../items/backpack/BackpackEntityFactory";
 import { HornedHelmetEntityFactory } from "../../items/helmet/HelmetEntityFactory";
 import type { ItemEntity } from "../../items/ItemEntity";
@@ -46,7 +44,11 @@ export class RageBaitEntityFactory {
     const mainHandSlot = new MainHandSlotEntity();
     const sword = SwordEntityFactory.getDefault();
     setContainerItemAt(mainHandSlot, 1, sword);
-    addEntities(eq, mainHandSlot);
+
+    addEntities(
+      eq,
+      mainHandSlot,
+    );
     return eq;
   }
 

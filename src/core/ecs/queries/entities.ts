@@ -1,6 +1,12 @@
 import type { Constructor } from "../Constructor";
 import type { Entity } from "../Entity";
 
+// TODO: to be used in this file
+export const isEntityType = <T extends Entity>(
+  entity: Entity,
+  entityClass: Constructor<T>,
+): entity is T => entity instanceof entityClass;
+
 export const getEntityById = (
   entity: Entity,
   childEntityId: string,

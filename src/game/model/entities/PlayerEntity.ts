@@ -9,15 +9,15 @@ import { GlyphComponent } from "../components/display/GlyphComponent";
 import { NameComponent } from "../components/display/NameComponent";
 import { ExpComponent } from "../components/mobs/ExpComponent";
 import { HpComponent } from "../components/mobs/HpComponent";
-import { AmuletSlotEntity } from "./eq/AmuletSlotEntity";
-import { ArmorSlotEntity } from "./eq/ArmorSlotEntity";
-import { BootsSlotEntity } from "./eq/BootsSlotEntity";
+import { AmuletSlotEntity } from "./eq/slots/AmuletSlotEntity";
+import { ArmorSlotEntity } from "./eq/slots/ArmorSlotEntity";
+import { BootsSlotEntity } from "./eq/slots/BootsSlotEntity";
 import { EqEntity } from "./eq/EqEntity";
-import { HeadSlotEntity } from "./eq/HeadSlotEntity";
-import { MainHandSlotEntity } from "./eq/MainHandSlotEntity";
-import { OffhandSlotEntity } from "./eq/OffhandSlotEntity";
-import { PantsSlotEntity } from "./eq/PantsSlotEntity";
-import { RingSlotEntity } from "./eq/RingSlotEntity";
+import { HeadSlotEntity } from "./eq/slots/HeadSlotEntity";
+import { MainHandSlotEntity } from "./eq/slots/MainHandSlotEntity";
+import { OffhandSlotEntity } from "./eq/slots/OffhandSlotEntity";
+import { PantsSlotEntity } from "./eq/slots/PantsSlotEntity";
+import { RingSlotEntity } from "./eq/slots/RingSlotEntity";
 import { BackpackEntityFactory } from "./items/backpack/BackpackEntityFactory";
 
 export type PlayerEntityProps = EntityProps;
@@ -58,6 +58,7 @@ export class PlayerEntityFactory {
       new OffhandSlotEntity(),
       new RingSlotEntity(),
       new PantsSlotEntity(),
+      new RingSlotEntity(),
       new BootsSlotEntity(),
     ];
     const eq = new EqEntity({ entities });

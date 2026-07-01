@@ -1,6 +1,6 @@
-import { NameComponent } from "../../components/display/NameComponent";
-import { BootsComponent } from "../../components/eq/BootsComponent";
-import { EqSlotEntity } from "./EqSlotEntity";
+import { NameComponent } from "../../../components/display/NameComponent";
+import { BootsComponent } from "../../../components/eq/BootsComponent";
+import { EqSlotEntity } from "../EqSlotEntity";
 
 export class BootsSlotEntity extends EqSlotEntity {
   constructor() {

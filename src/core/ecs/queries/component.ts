@@ -68,10 +68,7 @@ export const upsertComponents = (
     let replaced = false;
 
     const nextEntityComponents = entity.components.map((component) => {
-      if (
-        replaced ||
-        !(component instanceof nextComponent.constructor)
-      ) {
+      if (replaced || !(component instanceof nextComponent.constructor)) {
         return component;
       }
 
@@ -110,37 +107,27 @@ export const addComponents = <T extends Component>(
   return entity;
 };
 
-// export const removeComponentById = (
-//   entity: Entity,
-//   componentId: string
-// ): Entity => {
-//   const nextComponents = entity.components.filter(
-//     (component) => component.id !== componentId
-//   );
+export const removeComponentById = (
+  entity: Entity,
+  componentId: string,
+): void => {
+  const nextComponents = entity.components.filter(
+    (component) => component.id !== componentId,
+  );
 
-//   return nextComponents.length === entity.components.length
-//     ? entity
-//     : {
-//       ...entity,
-//       components: nextComponents,
-//     };
-// };
+  entity.components = nextComponents;
+};
 
-// export const removeComponentsByType = <T extends Component>(
-//   entity: Entity,
-//   componentClass: Constructor<T>
-// ): Entity => {
-//   const nextComponents = entity.components.filter(
-//     (component) => !(component instanceof componentClass)
-//   );
+export const removeComponentsByType = <T extends Component>(
+  entity: Entity,
+  componentClass: Constructor<T>,
+): void => {
+  const nextComponents = entity.components.filter(
+    (component) => !isComponentType(component, componentClass),
+  );
 
-//   return nextComponents.length === entity.components.length
-//     ? entity
-//     : {
-//       ...entity,
-//       components: nextComponents,
-//     };
-// };
+  entity.components = nextComponents;
+};
 
 // export const replaceComponentById = <T extends Component>(
 //   entity: Entity,

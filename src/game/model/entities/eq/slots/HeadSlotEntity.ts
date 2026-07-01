@@ -1,6 +1,6 @@
-import { NameComponent } from "../../components/display/NameComponent";
-import { HeadComponent } from "../../components/eq/HeadComponent";
-import { EqSlotEntity } from "./EqSlotEntity";
+import { NameComponent } from "../../../components/display/NameComponent";
+import { HeadComponent } from "../../../components/eq/HeadComponent";
+import { EqSlotEntity } from "../EqSlotEntity";
 
 export class HeadSlotEntity extends EqSlotEntity {
   constructor() {
