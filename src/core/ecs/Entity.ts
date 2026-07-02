@@ -1,26 +1,35 @@
 import { immerable } from "immer";
 import { getId } from "../../utils/getId";
-import type { Component } from "./Component";
+import type { Component, ComponentType } from "./Component";
+import type { ConcreteConstructor } from "./Constructor";
+import type { Id } from "./Id";
 import type { Unique } from "./Unique";
-import type { Constructor } from "./Constructor";
 
-export type EntityClass<T extends Entity> = Constructor<T>;
-export type EntityProps = {
-  components?: Component[];
-  entities?: Entity[];
-};
+export type EntityClass = ConcreteConstructor<Entity>;
+export type EntityProps = Partial<{
+  components: Component[];
+  entities: Entity[];
+}>;
+enum EntityRole {
+  DEFAULT = "DEFAULT",
+  CONTAINER = "CONTAINER",
+  BACKPACK = "BACKPACK",
+  EQ = "EQ",
+}
 
-export abstract class Entity implements Unique {
+export class Entity implements Unique {
   [immerable] = true;
-  id = "";
-  components: Component[] = [];
-  entities: Entity[] = [];
+  id: Id = "";
+  components = new Map<ComponentType, Component[]>();
+  entities = new Map<EntityRole, Entity[]>();
 
-  constructor(props: EntityProps) {
+  constructor() {
     this.id = getId();
-    Object.assign(this, {
-      entities: props?.entities ?? [],
-      components: props?.components ?? [],
-    });
   }
 }
+
+export const createEntity = () => {
+  const entity = new Entity();
+
+  return entity;
+};
