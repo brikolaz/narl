@@ -6,6 +6,7 @@ import { Map } from "./Map";
 import { EQ } from "./inventory/Eq";
 import { Inv } from "./inventory/inv/Inv";
 import { PlayerStats } from "./PlayerStats";
+import { EqStats } from "./EqStats";
 
 export const Game: React.FC = () => {
   useKeyboardControls();
@@ -27,7 +28,10 @@ export const Game: React.FC = () => {
         }}
       >
         <EQ />
-        <PlayerStats />
+        <div style={{ marginLeft: 16, display: 'flex' }}>
+          <EqStats />
+          <PlayerStats />
+        </div>
       </div>
       <div
         style={{

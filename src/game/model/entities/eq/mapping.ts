@@ -10,6 +10,7 @@ import { OffhandSlotEntity } from "./slots/OffhandSlotEntity";
 import { PantsSlotEntity } from "./slots/PantsSlotEntity";
 import { RingSlotEntity } from "./slots/RingSlotEntity";
 
+// ORDER IS IMPORTANT
 export const EQ_SLOT_TO_ENTITY = new Map<EqSlot, EntityClass<EqSlotEntity>>([
   [EqSlot.HEAD, HeadSlotEntity],
   [EqSlot.AMULET, AmuletSlotEntity],
