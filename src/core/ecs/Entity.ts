@@ -10,7 +10,7 @@ export type EntityProps = Partial<{
   components: Component[];
   entities: Entity[];
 }>;
-enum EntityRole {
+export enum EntityRole {
   DEFAULT = "DEFAULT",
   CONTAINER = "CONTAINER",
   BACKPACK = "BACKPACK",

@@ -1,11 +1,5 @@
-import type { Constructor } from "../Constructor";
-import type { Entity } from "../Entity";
-
-// TODO: to be used in this file
-export const isEntityType = <T extends Entity>(
-  entity: Entity,
-  entityClass: Constructor<T>,
-): entity is T => entity instanceof entityClass;
+import { isArray } from "lodash";
+import { EntityRole, type Entity } from "../Entity";
 
 export const getEntityById = (
   entity: Entity,
@@ -13,32 +7,41 @@ export const getEntityById = (
 ): Entity | undefined =>
   entity.entities.find((child) => child.id === childEntityId);
 
-export const getEntityByType = <T extends Entity>(
+export const getEntityByRole = (
   entity: Entity | undefined,
-  entityClass: Constructor<T>,
-): T | undefined => {
-  return entity?.entities?.find(
-    (entity): entity is T => entity instanceof entityClass,
-  );
+  entityRole: EntityRole,
+): Entity | undefined => {
+  return entity?.entities.get(entityRole)?.[0];
 };
 
-export const getEntitiesByType = <T extends Entity>(
+export const getEntitiesByRole = (
   entity: Entity | undefined,
-  entityClass: Constructor<T>,
-): T[] => {
-  return (
-    entity?.entities?.filter(
-      (entity): entity is T => entity instanceof entityClass,
-    ) ?? []
-  );
+  entityRole: EntityRole,
+): Entity[] => {
+  return entity?.entities.get(entityRole) ?? [];
 };
 
 export const hasEntityById = (entity: Entity, childEntityId: string): boolean =>
   entity.entities.some((child) => child.id === childEntityId);
 
-export const addEntities = (entity: Entity, ...children: Entity[]): Entity => {
-  entity.entities.push(...children);
-  return entity;
+export const addEntities = (
+  entity: Entity | undefined,
+  children: Record<EntityRole, Entity[]> | Entity[],
+): void => {
+  if (!entity) {
+    return;
+  }
+  if (isArray(children)) {
+    const nextEntities = entity.entities.get(EntityRole.DEFAULT) ?? [];
+    nextEntities.push(...children);
+    entity.entities.set(EntityRole.DEFAULT, nextEntities);
+    return;
+  }
+  for (const [entityRole, entities] of Object.entries(children)) {
+    const nextEntities = entity.entities.get(entityRole as EntityRole) ?? [];
+    nextEntities.push(...entities);
+    entity.entities.set(entityRole as EntityRole, nextEntities);
+  }
 };
 
 export const removeEntityById = (
