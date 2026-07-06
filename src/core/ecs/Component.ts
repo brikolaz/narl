@@ -1,26 +1,21 @@
 import { immerable } from "immer";
 import { getId } from "../../utils/getId";
-import type { Unique } from "./Unique";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
 
 export type ComponentType = symbol;
 
-export class Component implements Unique {
-  [immerable] = true;
-  id: Id = "";
-  readonly type: ComponentType;
-
-  constructor(type: ComponentType) {
-    this.id = getId();
-    this.type = type;
-  }
-}
+export type Component<Props extends object | undefined = object> = {
+  [immerable]: boolean;
+  id: Id;
+  type: ComponentType;
+  defaults: Props;
+} & Props;
 
 type ComponentCreator<Props extends object | undefined = undefined> =
   Props extends object
     ? {
-        (props?: Partial<Props>): Component & Props & { defaults: Props };
+        (props?: Partial<Props>): Component<Props>;
         type: ComponentType;
       }
     : {
@@ -43,16 +38,14 @@ export function getComponentCreator<Props extends object>(
     getEcsNamespace(Namespace.COMPONENT, type),
   );
 
-  const creator = (props?: Partial<Props>) => {
-    const component = new Component(componentType);
-
-    return {
-      ...component,
-      ...(defaults ?? {}),
-      ...(props ?? {}),
-      defaults,
-    };
-  };
+  const creator = (props?: Partial<Props>) => ({
+    [immerable]: true,
+    id: getId(),
+    type: componentType,
+    defaults: defaults ?? ({} as Props),
+    ...(defaults ?? {}),
+    ...(props ?? {}),
+  });
 
   creator.type = componentType;
 
