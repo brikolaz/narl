@@ -1,25 +1,35 @@
-import type { EntityProps } from "../../../../../core/ecs/Entity";
+import { Entity } from "../../../../../core/ecs/Entity";
+import { addComponents } from "../../../../../core/ecs/queries/components/add";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
+import { PantsComponent } from "../../../components/eq/PantsComponent";
 import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { ItemEntity } from "../ItemEntity";
+import { RingComponent } from "../../../components/eq/RingComponent";
+import { DroppableComponent } from "../../../components/items/DroppableComponent";
+import { PickupableComponent } from "../../../components/items/PickupableComponent";
+import { VariantComponent } from "../../../components/VariantComponent";
+import type { Factory } from "../../../Factory";
 
-export type RingEntityProps = EntityProps;
+export const RingEntityVariants = {
+  RING: Symbol.for("RING"),
+} as const;
 
-export enum RingEntityVariants {
-  RING = "Ring",
-}
+const RingEntity = Entity;
 
-export class RingEntity extends ItemEntity {
-  constructor(props?: RingEntityProps) {
-    const glyph = new GlyphComponent({
-      glyph: "o",
-    });
-    const name = new NameComponent({ name: RingEntityVariants.RING });
-    const removable = new RemovableComponent();
-    super({
-      ...props,
-      components: [...(props?.components ?? []), glyph, name, removable],
-    });
-  }
-}
+export const RingEntityFactory: Factory = {
+  getDefault: () => {
+    const ring = RingEntity();
+    addComponents(
+      ring,
+      GlyphComponent({ glyph: "o" }),
+      NameComponent({ name: "Ring" }),
+      RemovableComponent(),
+      RingComponent(),
+      PantsComponent(),
+      PickupableComponent(),
+      DroppableComponent(),
+      VariantComponent({ variant: RingEntityVariants.RING }),
+    );
+    return ring;
+  },
+};

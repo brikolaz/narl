@@ -1,7 +1,3 @@
-import { ItemSlotComponent } from "./ItemSlotComponent";
+import { Component } from "../../../../core/ecs/Component";
 
-export class RingComponent extends ItemSlotComponent {
-  constructor() {
-    super();
-  }
-}
+export const RingComponent = Component("RING");

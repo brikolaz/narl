@@ -1,7 +1,3 @@
 import { Component } from "../../../../core/ecs/Component";
 
-export class ItemSlotComponent extends Component {
-    constructor() {
-        super();
-    }
-}
+export const ItemSlotComponent = Component("ITEM_SLOT");

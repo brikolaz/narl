@@ -1,7 +1,3 @@
 import { Component } from "../../../core/ecs/Component";
 
-export class VisitedComponent extends Component {
-    constructor() {
-        super();
-    }
-}
+export const VisitedComponent = Component("VISITED");

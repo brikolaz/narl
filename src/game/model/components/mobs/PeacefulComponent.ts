@@ -1,3 +1,3 @@
 import { Component } from "../../../../core/ecs/Component";
 
-export class PeacefulComponent extends Component {}
+export const PeacefulComponent = Component("PEACEFUL");

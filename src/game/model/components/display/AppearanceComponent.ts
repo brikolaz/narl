@@ -4,12 +4,7 @@ export type AppearanceComponentProps = {
   background: string;
 };
 
-export class AppearanceComponent extends Component {
-  static DEFAULT_BACKGROUND = "#000000" as const;
-  background: string = AppearanceComponent.DEFAULT_BACKGROUND;
-
-  constructor(props: AppearanceComponentProps) {
-    super();
-    Object.assign(this, props);
-  }
-}
+export const AppearanceComponent =
+  Component<AppearanceComponentProps>("APPEARANCE", {
+    background: "#000000" as const,
+  });

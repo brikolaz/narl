@@ -6,7 +6,7 @@ import { HelmetEntity } from "./helmet/HelmetEntity";
 import { HornedHelmetEntityFactory } from "./helmet/HelmetEntityFactory";
 import type { ItemEntity } from "./ItemEntity";
 import { RingEntity } from "./ring/RingEntity";
-import { RingEntityFactory } from "./ring/RingEntityFactory";
+import { RingEntityFactory } from "./ring/RingEntity";
 import { SwordEntity, SwordEntityFactory } from "./SwordEntity";
 
 export const ITEM_FACTORIES = new Map<

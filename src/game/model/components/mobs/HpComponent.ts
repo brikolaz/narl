@@ -5,15 +5,7 @@ export type HpComponentProps = {
   maxHp?: number;
 };
 
-export class HpComponent extends Component {
-  static DEFAULT_HP = 0;
-  hp: number = HpComponent.DEFAULT_HP;
-  static DEFAULT_MAX_HP = 0;
-  maxHp: number = HpComponent.DEFAULT_MAX_HP;
-
-  constructor(props: HpComponentProps) {
-    super();
-    Object.assign(this, props);
-    this.maxHp ||= props.hp;
-  }
-}
+export const HpComponent = Component<HpComponentProps>("HP", {
+  hp: 0,
+  maxHp: 0,
+});

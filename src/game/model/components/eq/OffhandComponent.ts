@@ -1,7 +1,3 @@
-import { ItemSlotComponent } from "./ItemSlotComponent";
+import { Component } from "../../../../core/ecs/Component";
 
-export class OffhandComponent extends ItemSlotComponent {
-  constructor() {
-    super();
-  }
-}
+export const OffhandComponent = Component("OFFHAND");

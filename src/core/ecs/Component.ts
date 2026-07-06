@@ -2,6 +2,7 @@ import { immerable } from "immer";
 import { getId } from "../../utils/getId";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
+import type { WidenProps } from "../Widen";
 
 export type ComponentType = symbol;
 
@@ -23,14 +24,14 @@ type ComponentCreator<Props extends object | undefined = undefined> =
         type: ComponentType;
       };
 
-export function getComponentCreator(type: string): ComponentCreator;
+export function Component(type: string): ComponentCreator;
 
-export function getComponentCreator<Props extends object>(
+export function Component<Props extends object>(
   type: string,
   defaults: Props,
-): ComponentCreator<Props>;
+): ComponentCreator<WidenProps<Props>>;
 
-export function getComponentCreator<Props extends object>(
+export function Component<Props extends object>(
   type: string,
   defaults?: Props,
 ) {
@@ -38,7 +39,7 @@ export function getComponentCreator<Props extends object>(
     getEcsNamespace(Namespace.COMPONENT, type),
   );
 
-  const creator = (props?: Partial<Props>) => ({
+  const creator = (props?: Partial<WidenProps<Props>>) => ({
     [immerable]: true,
     id: getId(),
     type: componentType,

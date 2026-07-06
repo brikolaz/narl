@@ -8,6 +8,7 @@ export enum EntityRole {
   CONTAINER = "CONTAINER",
   BACKPACK = "BACKPACK",
   EQ = "EQ",
+  ITEM = "ITEM",
 }
 
 export type Entity = {
@@ -19,7 +20,7 @@ export type Entity = {
   entityByRole: Map<EntityRole, Id[]>;
 };
 
-export const createEntity = (): Entity => {
+export const Entity = (): Entity => {
   const entity: Entity = {
     [immerable]: true,
     id: getId(),

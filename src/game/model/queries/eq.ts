@@ -1,9 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import {
-  getEntitiesByType,
-  getEntityByType,
-  isEntityType,
-} from "../../../core/ecs/queries/entities";
+import { EntityRole, type Entity } from "../../../core/ecs/Entity";
 import { EqEntity } from "../entities/eq/EqEntity";
 import { EqSlotEntity } from "../entities/eq/EqSlotEntity";
 import type { ItemEntity } from "../entities/items/ItemEntity";
@@ -11,14 +6,18 @@ import { getContainerItemAt, getContainerItems } from "./containers";
 import { EqSlot } from "../../systems/eq/types";
 import { EQ_SLOT_TO_ENTITY } from "../entities/eq/mapping";
 import { RingSlotEntity } from "../entities/eq/slots/RingSlotEntity";
+import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
 
-export const getEq = (entity: Entity): EqEntity | undefined => {
-  return getEntityByType(entity, EqEntity);
+export const getEq = (entity: Entity): Entity | undefined => {
+  return getEntitiesByRole(entity, EntityRole.EQ)[0];
 };
 
 export const getEqSlots = (entity: Entity) => {
   const eq = getEq(entity);
-  return getEntitiesByType(eq, EqSlotEntity);
+  if (!eq) {
+    return [];
+  }
+  return getEntitiesByRole(eq, EntityRole.CONTAINER);
 };
 
 export const getEqItems = (entity: Entity) => {
@@ -44,6 +43,11 @@ export const getEqSlot = (entity: Entity, slot: EqSlot) => {
     throw new Error(`No EQ slot`);
   }
   return targetSlot;
+};
+
+export const getEqSlotItem = (entity: Entity, slot: EqSlot) => {
+  const eqSlot = getEqSlot(entity, slot);
+  return getContainerItemAt(eqSlot, 1);
 };
 
 export const getEquippedWeapon = (entity: Entity): ItemEntity | undefined => {
