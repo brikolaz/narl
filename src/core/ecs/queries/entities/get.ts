@@ -1,0 +1,23 @@
+import type { Entity, EntityRole } from "../../Entity";
+import type { Id } from "../../Id";
+import { getRegistryEntityById } from "../../registry/entityRegistry";
+
+export const getEntityById = (id: Id) => {
+  return getRegistryEntityById(id);
+};
+
+export const getEntitiesByRole = (
+  entity: Entity | Id | undefined,
+  entityRole: EntityRole,
+): Entity[] => {
+  if (!entity) {
+    return [];
+  }
+  const source = typeof entity === "string" ? getEntityById(entity) : entity;
+  const ids = source?.entityByRole.get(entityRole) ?? [];
+  return ids
+    .map((id) => source?.entityById.get(id))
+    .filter(
+      (targetEntity): targetEntity is Entity => targetEntity !== undefined,
+    );
+};

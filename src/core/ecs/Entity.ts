@@ -20,8 +20,10 @@ export enum EntityRole {
 export class Entity implements Unique {
   [immerable] = true;
   id: Id = "";
-  components = new Map<ComponentType, Component[]>();
-  entities = new Map<EntityRole, Entity[]>();
+  componentById = new Map<Id, Component>();
+  componentByType = new Map<ComponentType, Id[]>();
+  entityById = new Map<Id, Entity>();
+  entityByRole = new Map<EntityRole, Id[]>();
 
   constructor() {
     this.id = getId();
