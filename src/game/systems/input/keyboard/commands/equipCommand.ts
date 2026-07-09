@@ -1,8 +1,8 @@
+import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
+import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
 import type { GameState } from "../../../../state/state";
-import { getEqSlots } from "../../../../model/queries/eq";
 import type { EqSlot } from "../../../eq/types";
-import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import type { InvSlot } from "../../../inv/types";
 import { PlayerActionType } from "../../../player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
@@ -24,7 +24,7 @@ const getEquipNextSlotCommand = (
   backpackSize: number | undefined,
 ): KeyboardToAction => {
   const player = getPlayerEntity(gameState);
-  const eqSize = getEqSlots(player)?.length;
+  const eqSize = getEq(player)?.length;
 
   return createSlotNextCommands<InvSlot>(
     backpackSize,

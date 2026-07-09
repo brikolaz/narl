@@ -7,7 +7,7 @@ export const hasEntitiesByRole = (
   entityRole: EntityRole,
 ): boolean => {
   if (entity === undefined) return false;
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
+  const source = typeof entity === "number" ? getEntityById(entity) : entity;
 
   return (source?.entityByRole?.get(entityRole)?.length ?? 0) > 0;
 };
@@ -18,7 +18,7 @@ export const hasEntityById = (
 ): boolean => {
   if (!entity) return false;
 
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
+  const source = typeof entity === "number" ? getEntityById(entity) : entity;
 
   return source?.entityById?.has(id) ?? false;
 };

@@ -1,9 +1,9 @@
 import { useItem } from "../../game/hooks/useItem";
-import type { ItemEntity } from "../../game/model/entities/items/ItemEntity";
+import type { Entity } from "../../core/ecs/Entity";
 import { SlotIndex } from "./inv/SlotIndex";
 
 interface SlotProps {
-  item?: ItemEntity;
+  item?: Entity;
   index: number;
   isFirstColumn?: boolean;
   isLastColumn?: boolean;

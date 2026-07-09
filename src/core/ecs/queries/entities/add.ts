@@ -1,4 +1,4 @@
-import { Entity, EntityRole } from "../../Entity";
+import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { upsertRegistryEntities } from "../../registry/entityRegistry";
 import { getEntityById } from "./get";
@@ -39,7 +39,7 @@ const normalizeChildren = (
   return normalized;
 };
 
-const addDataEntities = (
+const upsertDataEntities = (
   entity: Entity,
   children: Partial<Record<EntityRole, Entity[]>>,
 ): void => {
@@ -51,9 +51,10 @@ const addDataEntities = (
     }
     entity.entityByRole.set(entityRole as EntityRole, nextIds);
   }
+
 };
 
-const _addEntities = (
+const _upsertEntities = (
   entity: Entity | Id | undefined,
   childrenEntities: ChildrenInput,
 ): void => {
@@ -62,22 +63,22 @@ const _addEntities = (
     return;
   }
   const children = normalizeChildren(childrenEntities);
-  addDataEntities(target, children);
+  upsertDataEntities(target, children);
   upsertRegistryEntities(target, children);
 };
 
-export const addEntities = (
+export const upsertEntities = (
   entity: Entity | Id | undefined,
   ...childrenEntities: (undefined | Entity)[]
 ): void => {
-  _addEntities(entity, childrenEntities);
+  _upsertEntities(entity, childrenEntities);
 };
 
-export const addRoleEntities = (
+export const upsertRoleEntities = (
   entity: Entity | Id | undefined,
   childrenEntities: Partial<
     Record<EntityRole, (Entity | undefined)[] | Entity>
   >,
 ): void => {
-  _addEntities(entity, childrenEntities);
+  _upsertEntities(entity, childrenEntities);
 };

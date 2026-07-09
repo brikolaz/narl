@@ -1,4 +1,4 @@
-import { Component, getComponentCreator } from "../../../../core/ecs/Component";
+import { getComponentCreator } from "../../../../core/ecs/Component";
 
 export type DmgModComponentProps = {
   dmgMod: number;

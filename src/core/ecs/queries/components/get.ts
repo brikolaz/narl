@@ -26,6 +26,19 @@ export const getComponentsByType = <P extends object>(
     .filter((component) => component !== undefined) ?? []) as Component<P>[];
 };
 
+export const getComponentsByTypes = (
+  entity: Entity | undefined,
+  componentTypes: (ComponentCreator | Component | ComponentType)[],
+): Component[] => {
+  if (!entity) return [];
+
+  return componentTypes.flatMap((componentType) => {
+    const type =
+      typeof componentType === "symbol" ? componentType : componentType.type;
+    return getComponentsByType(entity, type);
+  });
+};
+
 export const getComponentByType = <P extends object>(
   entity: Entity | undefined,
   componentType: ComponentCreator<P> | Component<P> | ComponentType,

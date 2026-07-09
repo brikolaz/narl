@@ -1,3 +1,5 @@
+import type { Id } from "../../../core/ecs/Id";
+
 export enum WorldActionType {
   DROP_ITEM = "WORLD_DROP_ITEM",
   GAIN_EXP = "WORLD_GAIN_EXP",
@@ -10,12 +12,12 @@ export enum WorldActionType {
 export type WorldDropItemAction = {
   type: WorldActionType.DROP_ITEM;
   targetPosition: number;
-  entityId: string;
-  itemId: string;
+  entityId: Id;
+  itemId: Id;
 };
 export type WorldKillAction = {
   type: WorldActionType.KILL;
-  entityId: string;
+  entityId: Id;
   position: number;
 };
 export type WorldGainExpAction = {
@@ -24,17 +26,17 @@ export type WorldGainExpAction = {
 };
 export type WorldRemoveEntityAction = {
   type: WorldActionType.REMOVE_ENTITY;
-  entityId: string;
+  entityId: Id;
   position: number;
 };
 export type WorldCurseItemAction = {
   type: WorldActionType.CURSE_ITEM;
-  itemId: string;
+  itemId: Id;
 };
 export type WorldAttackAction = {
   type: WorldActionType.ATTACK;
   sourcePos: number;
-  mobId: string;
+  mobId: Id;
 };
 
 export type WorldAction =

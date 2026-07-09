@@ -40,14 +40,17 @@ export function getComponentCreator<Props extends Component>(
     getEcsNamespace(Namespace.COMPONENT, type),
   );
 
-  const creator = (props?: Partial<Props>) => ({
-    [immerable]: true,
-    id: getId(),
-    type: componentType,
-    defaults: defaults ?? ({} as Props),
-    ...(defaults ?? {}),
-    ...(props ?? {}),
-  });
+  const creator = (props?: Partial<Props>) => {
+    const component = {
+      [immerable]: true,
+      id: getId(),
+      type: componentType,
+      defaults: defaults ?? ({} as Props),
+      ...(defaults ?? {}),
+      ...(props ?? {}),
+    };
+    return component;
+  };
 
   creator.type = componentType;
   creator.defaults = defaults;

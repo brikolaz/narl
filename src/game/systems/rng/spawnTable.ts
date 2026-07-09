@@ -1,14 +1,13 @@
-import type { Constructor } from "../../../core/ecs/Constructor";
+import type { Entity, EntityType } from "../../../core/ecs/Entity";
 import { getFactory } from "../../model/entities/getFactory";
-import type { MobEntity } from "../../model/entities/mobs/MobEntity";
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import { RNG } from "./rng";
 import { getZone, Zone } from "./zones";
 
-type SpawnTable = Map<Constructor<MobEntity>, number>;
+type SpawnTable = Map<EntityType, number>;
 const SPAWN_TABLE = {
   [Zone.START]: new Map(),
-  [Zone.EARLY]: new Map([[RageBaitEntity, 15]]),
+  [Zone.EARLY]: new Map([[RageBaitEntity.type, 15]]),
   [Zone.LOW]: new Map(),
   [Zone.MID]: new Map(),
   [Zone.HIGH]: new Map(),
@@ -32,11 +31,11 @@ const getSpawnTable = (zone: Zone): SpawnTable => {
   return table;
 };
 
-export const getRandomMob = (position: number): MobEntity | undefined => {
+export const getRandomMob = (position: number): Entity | undefined => {
   const zone = getZone(position);
   const table = getSpawnTable(zone);
 
-  let mob: MobEntity | undefined = undefined;
+  let mob: Entity | undefined = undefined;
   const roll = RNG.mobs.roll();
   let current = 0;
 

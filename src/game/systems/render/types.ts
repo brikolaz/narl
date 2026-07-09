@@ -1,8 +1,9 @@
 import { COLORS } from "../../../utils/colors";
+import type { Id } from "../../../core/ecs/Id";
 import { getId } from "../../../utils/getId";
 
 export type RenderedTileProps = {
-  id?: string;
+  id?: Id;
   char?: string;
   background?: string;
   color?: string;
@@ -12,7 +13,7 @@ export type RenderedTileProps = {
 export class RenderedTile {
   static MISSING_GLYPH = "#" as const;
 
-  id: string;
+  id: Id;
   char: string | undefined;
   background: string | undefined;
   color: string = COLORS.DEFAULT;

@@ -78,7 +78,9 @@ export const getFirstEmptyContainerSlot = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const index = getContainerItems(container).findIndex(isPlaceholderSlot);
+  const index = getEntitiesByRole(container, EntityRole.ITEM).findIndex(
+    isPlaceholderSlot,
+  );
 
   if (index === -1) {
     return undefined;

@@ -1,3 +1,4 @@
+import type { Id } from "../../../core/ecs/Id";
 import type { Tile } from "../../state/state";
 
 export const hasMobs = (tile: Tile) => {
@@ -8,7 +9,7 @@ export const getMob = (tile: Tile) => {
   return tile.mobs[0];
 };
 
-export const getMobById = (tile: Tile, id: string) => {
+export const getMobById = (tile: Tile, id: Id) => {
   return tile.mobs.find((mob) => mob.id === id);
 };
 

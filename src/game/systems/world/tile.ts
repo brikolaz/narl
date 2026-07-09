@@ -1,11 +1,13 @@
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
-import { FloorEntity } from "../../model/entities/FloorEntity";
+import {
+  FloorEntityFactory
+} from "../../model/entities/FloorEntity";
 import type { GameState, Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";
 
 const generateTile = (position: number): Tile => {
   const tile: Tile = {
-    floor: new FloorEntity(),
+    floor: FloorEntityFactory.getDefault(),
     items: [],
     mobs: [],
     position,

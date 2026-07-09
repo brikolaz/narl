@@ -1,10 +1,5 @@
 import type { Entity } from "../../../core/ecs/Entity";
-import {
-  getComponentByType,
-  getComponentsByType,
-  hasComponentByType,
-  upsertComponents,
-} from "../../../core/ecs/queries/component";
+
 import { InspectDescComponent } from "../../model/components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../model/components/inspect/InspectedComponent";
 import { DefComponent } from "../../model/components/items/DefComponent";
@@ -19,6 +14,9 @@ import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
 import { isWeapon } from "../../model/queries/weapons";
 import { getEntityName } from "./getEntityName";
+import { getComponentByType, getComponentsByType } from "../../../core/ecs/queries/components/get";
+import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 
 const getInspectDesc = (entity: Entity) => {
   const inspectedTimes = getInspectedTimes(entity);
@@ -43,7 +41,7 @@ export const getItemInspectText = (entity: Entity): string => {
     if (isWeapon(entity)) {
       stats.push(`${getDmg(entity)} DMG`);
     }
-    if (hasComponentByType(entity, DefComponent)) {
+    if (hasComponentsByType(entity, DefComponent)) {
       stats.push(`${getDef(entity)} DEF`);
     }
   }
@@ -58,7 +56,7 @@ export const getItemInspectText = (entity: Entity): string => {
 
 export const increaseInspected = (item: Entity) => {
   const inspected =
-    getComponentByType(item, InspectedComponent) ?? new InspectedComponent();
+    getComponentByType(item, InspectedComponent) ?? InspectedComponent();
   inspected.times = inspected.times + 1;
   upsertComponents(item, inspected);
 };

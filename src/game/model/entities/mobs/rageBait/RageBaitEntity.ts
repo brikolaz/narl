@@ -4,9 +4,7 @@ import {
   type Entity,
 } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import {
-  addRoleEntities
-} from "../../../../../core/ecs/queries/entities/add";
+import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import { EqSlot } from "../../../../systems/eq/types";
 import {
   addItemToContainer,
@@ -36,13 +34,14 @@ import {
   HelmetEntityFactory,
   HelmetEntityVariants,
 } from "../../items/helmet/HelmetEntity";
+import { getEqSlot } from "../../../queries/eq";
 import { SwordEntityFactory } from "../../items/SwordEntity";
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
-  if (RNG.items.chance(5)) {
+  if (RNG.items.chance(100)) {
     ContainerEntityFactory.setDroppable?.(backpack);
   }
   if (RNG.items.chance(20)) {
@@ -54,14 +53,14 @@ const addLoot = (entity: Entity) => {
       HelmetEntityFactory.getVariant?.(HelmetEntityVariants.HELMET),
     );
   }
-  addRoleEntities(entity, {
+  upsertRoleEntities(entity, {
     [EntityRole.BACKPACK]: backpack,
   });
 };
 
 // TODO: refactor EQ system
 const addEq = (entity: Entity) => {
-  addRoleEntities(entity, {
+  upsertRoleEntities(entity, {
     [EntityRole.EQ]: [
       HeadSlotEntityFactory.getDefault(),
       AmuletSlotEntityFactory.getDefault(),
@@ -75,7 +74,7 @@ const addEq = (entity: Entity) => {
     ],
   });
   const sword = SwordEntityFactory.getDefault();
-  setContainerItemAt(entity, EqSlot.MAIN_HAND, sword);
+  setContainerItemAt(getEqSlot(entity, EqSlot.MAIN_HAND), 1, sword);
 };
 
 export const RageBaitEntityFactory: MobFactory = {

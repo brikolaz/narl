@@ -3,10 +3,10 @@ import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
-import { HornedHelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntityFactory";
+import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity";
 import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity";
 import { SwordEntityFactory } from "../../model/entities/items/SwordEntity";
-import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/RageBaitEntityFactory";
+import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import type { WorldState } from "../../state/state";
 
 export const initWorld = (): WorldState => {
@@ -19,7 +19,7 @@ export const initWorld = (): WorldState => {
   }));
   world[3].items.push(RingEntityFactory.getDefault());
   world[3].items.push(SwordEntityFactory.getDefault());
-  world[4].items.push(HornedHelmetEntityFactory.getHornedHelmet());
+  world[4].items.push(HelmetEntityFactory.getHornedHelmet());
   addComponents(world[0].floor, VisitedComponent());
   world[5].mobs.push(RageBaitEntityFactory.getDefault());
   world[6].mobs.push(RageBaitEntityFactory.getDefault());

@@ -1,4 +1,4 @@
-import { Component, getComponentCreator } from "../../../../core/ecs/Component";
+import { getComponentCreator } from "../../../../core/ecs/Component";
 import { COLORS } from "../../../../utils/colors";
 
 export type ColorComponentProps = {

@@ -28,12 +28,19 @@ export const upsertEntityRegistryRecords = (
 
 export const upsertRegistryEntities = (
   entity: Entity | undefined,
-  childrenEntities: Partial<Record<EntityRole, Entity[]>> | Entity[],
+  childrenEntities: Partial<Record<EntityRole, Entity[]>> | Entity[] = [],
 ) => {
   if (!entity) {
     return;
   }
   const records: EntityRegistryRecord[] = [];
+  if (!hasEntityRegistryRecord(entity.id)) {
+    records.push({
+      entity,
+      parent: null,
+      role: null,
+    });
+  }
   const entitiesToRegister = Array.isArray(childrenEntities)
     ? { [EntityRole.DEFAULT]: childrenEntities }
     : childrenEntities;

@@ -1,9 +1,8 @@
-import { getEntityCreator, Entity, EntityRole } from "../../../../../core/ecs/Entity";
+import { EntityRole, getEntityCreator } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import { addRoleEntities } from "../../../../../core/ecs/queries/entities/add";
+import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { EqSlotComponent } from "../../../components/eq/EqSlotComponent";
 import { MainHandComponent } from "../../../components/eq/MainHandComponent";
 import type { ItemFactory } from "../../../Factory";
 import { PlaceholderEntityFactory } from "../../items/PlaceholderItemEntity";
@@ -18,11 +17,10 @@ export const MainHandSlotEntityFactory: ItemFactory = {
       eqSlot,
       NameComponent({ name: "Main Hand" }),
       MainHandComponent(),
-      EqSlotComponent(),
       ContainerComponent(),
     );
 
-    addRoleEntities(eqSlot, {
+    upsertRoleEntities(eqSlot, {
       [EntityRole.ITEM]: [PlaceholderEntityFactory.getDefault()],
     });
 

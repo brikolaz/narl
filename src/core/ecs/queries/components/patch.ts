@@ -3,7 +3,7 @@ import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { addComponents } from "./add";
 import { getComponentById, getComponentByType } from "./get";
-import { removeComponentById } from "./remove";
+import { removeComponentsByType } from "./remove";
 
 export const patchComponentById = <P extends object>(
   id: Id,
@@ -41,6 +41,6 @@ export const replaceComponentByType = <P extends object | undefined>(
     return;
   }
 
-  removeComponentById(component.id);
+  removeComponentsByType(entity, component.type);
   addComponents(entity, nextComponent);
 };

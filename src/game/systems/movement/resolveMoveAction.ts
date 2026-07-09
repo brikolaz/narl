@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import { upsertComponents } from "../../../core/ecs/queries/component";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import {
   getPlayerEntity,
@@ -14,9 +13,10 @@ import { PlayerActionType, type PlayerMoveAction } from "../player/types";
 import { getTile } from "../../model/queries/tile";
 import { discoverTiles } from "../world/tile";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 
 const markAsVisited = (state: GameState, position: number): void => {
-  upsertComponents(state.world[position].floor, new VisitedComponent());
+  upsertComponents(state.world[position].floor, VisitedComponent());
 };
 
 const getNextState = (state: GameState, nextPlayerPosition: number): void => {

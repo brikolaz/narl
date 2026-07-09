@@ -1,11 +1,7 @@
 import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import {
-  addRoleEntities
-} from "../../../core/ecs/queries/entities/add";
-import {
-  removeEntitiesByRole
-} from "../../../core/ecs/queries/entities/remove";
-import { PlaceholderEntity } from "../../model/entities/items/PlaceholderItemEntity";
+import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
+import { replaceEntityById } from "../../../core/ecs/queries/entities/patch";
+import { PlaceholderEntityFactory } from "../../model/entities/items/PlaceholderItemEntity";
 import {
   getBackpack,
   getContainerItemAt,
@@ -29,9 +25,15 @@ export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
 };
 
 // TODO: rewrite to itemS
-export const addItemToContainer = (container: Entity, item: Entity): void => {
+export const addItemToContainer = (
+  container: Entity,
+  item: Entity | undefined,
+): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
+  }
+  if (!item) {
+    return;
   }
   const slot = getFirstEmptyContainerSlot(container);
   if (!slot) {
@@ -57,7 +59,11 @@ export const swapContainerItems = (
     throw new Error("No target item to swap");
   }
   setContainerItemAt(container, targetSlot, sourceItem);
-  setContainerItemAt(container, sourceSlot, targetItem ?? PlaceholderEntity());
+  setContainerItemAt(
+    container,
+    sourceSlot,
+    targetItem ?? PlaceholderEntityFactory.getDefault(),
+  );
 };
 
 export const setContainerItemAt = (
@@ -68,15 +74,12 @@ export const setContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const nextItems = getContainerItems(container);
+  const nextItems = getEntitiesByRole(container, EntityRole.ITEM);
   if (!nextItems[slot - 1]) {
     throw new Error(`Container slot ${slot} doesn't exist`);
   }
-  nextItems[slot - 1] = entity;
-  removeEntitiesByRole(container, EntityRole.ITEM);
-  addRoleEntities(container, {
-    [EntityRole.ITEM]: nextItems,
-  });
+  const previousItem = nextItems[slot - 1];
+  replaceEntityById(previousItem.id, entity);
 };
 
 export const clearContainerItemAt = (
@@ -86,14 +89,20 @@ export const clearContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  setContainerItemAt(container, slot, PlaceholderEntity());
+  setContainerItemAt(container, slot, PlaceholderEntityFactory.getDefault());
 };
 
 export const clearContainerItemById = (container: Entity, id: number): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const slot = getContainerItems(container).findIndex((item) => item.id === id);
+  const slot =
+    getEntitiesByRole(container, EntityRole.ITEM).findIndex(
+      (item) => item.id === id,
+    ) + 1;
+  if (slot === 0) {
+    return;
+  }
   clearContainerItemAt(container, slot);
 };
 

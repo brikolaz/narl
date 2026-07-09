@@ -1,28 +1,28 @@
 import { produce } from "immer";
-import type { ItemSlotComponent } from "../../model/components/eq/ItemSlotComponent";
-import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { addItemToContainer, clearContainerItemById } from "../inv/containers";
+import type { Component } from "../../../core/ecs/Component";
 import {
   getBackpack,
   getContainerItemAt,
   getFirstContainerItem,
 } from "../../model/queries/containers";
-import { getItemSlots } from "../../model/queries/items";
-import type { PlayerEquipItemAction } from "../player/types";
 import { getEqSlot } from "../../model/queries/eq";
-import { getEntityName } from "../inspect/getEntityName";
+import { getItemSlots } from "../../model/queries/items";
+import { getPlayerEntity } from "../../model/queries/player";
+import type { GameState } from "../../state/state";
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
 import { curse } from "../curse/curse";
+import { getEntityName } from "../inspect/getEntityName";
+import { addItemToContainer, clearContainerItemById } from "../inv/containers";
+import type { PlayerEquipItemAction } from "../player/types";
 
 const canBeEquipped = (
-  itemSlots: ItemSlotComponent[],
-  eqSlots: ItemSlotComponent[],
+  itemSlots: Component[],
+  eqSlots: Component[],
 ): boolean => {
   const uniqueSlots = new Set([
-    ...itemSlots.map((slot) => Object.getPrototypeOf(slot)),
-    ...eqSlots.map((slot) => Object.getPrototypeOf(slot)),
+    ...itemSlots.map((slot) => slot.type),
+    ...eqSlots.map((slot) => slot.type),
   ]);
   return itemSlots.length + eqSlots.length > uniqueSlots.size;
 };

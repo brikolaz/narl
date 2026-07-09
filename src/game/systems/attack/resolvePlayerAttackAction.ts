@@ -1,6 +1,5 @@
 import { produce } from "immer";
 import { getManual } from "../../model/entities/getManual";
-import type { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
@@ -12,12 +11,13 @@ import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerAttackAction } from "../player/types";
 import { WorldActionType } from "../world/types";
+import type { Entity } from "../../../core/ecs/Entity";
 
 type AttackContext =
   | {
       ok: true;
       targetPosition: number;
-      weapon: ItemEntity;
+      weapon: Entity;
       dmg: number;
       mobName: string;
     }

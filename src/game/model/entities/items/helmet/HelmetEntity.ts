@@ -1,4 +1,4 @@
-import { getEntityCreator } from "../../../../../core/ecs/Entity";
+import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { RNG } from "../../../../systems/rng/rng";
@@ -19,7 +19,7 @@ export const HelmetEntityVariants = {
 } as const satisfies Symbols;
 
 type HelmetFactory = ItemFactory & {
-  getHornedHelmet: () => void;
+  getHornedHelmet: () => Entity;
 };
 
 export const HelmetEntity = getEntityCreator("HELMET");
@@ -67,5 +67,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       InspectDescComponent({ times: 5, text: "It has horns" }),
       InspectDescComponent({ times: 10, text: "Looks horny" }),
     );
+
+    return helmet
   },
 };

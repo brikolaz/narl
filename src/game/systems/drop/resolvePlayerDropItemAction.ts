@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import type { ItemEntity } from "../../model/entities/items/ItemEntity";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -16,6 +15,7 @@ import {
 } from "../player/types";
 import { getTile } from "../../model/queries/tile";
 import { getEntityName } from "../inspect/getEntityName";
+import type { Entity } from "../../../core/ecs/Entity";
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
@@ -34,7 +34,7 @@ export const resolvePlayerDropItemAction = (
       eqSlot ? getEqSlot(player, eqSlot) : invSlot ? backpack : undefined,
       "No source to drop item",
     );
-    let itemToDrop: ItemEntity | undefined = undefined;
+    let itemToDrop: Entity | undefined = undefined;
 
     if (eqSlot !== undefined) {
       itemToDrop = action.assert(

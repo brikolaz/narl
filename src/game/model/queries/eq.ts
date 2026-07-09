@@ -5,20 +5,12 @@ import { EQ_SLOT_TO_ENTITY } from "../entities/eq/mapping";
 import { RingSlotEntity } from "../entities/eq/slots/RingSlotEntity";
 import { getContainerItemAt, getContainerItems } from "./containers";
 
-export const getEq = (entity: Entity): Entity | undefined => {
-  return getEntitiesByRole(entity, EntityRole.EQ)[0];
-};
-
-export const getEqSlots = (entity: Entity) => {
-  const eq = getEq(entity);
-  if (!eq) {
-    return [];
-  }
-  return getEntitiesByRole(eq, EntityRole.CONTAINER);
+export const getEq = (entity: Entity): Entity[] => {
+  return getEntitiesByRole(entity, EntityRole.EQ);
 };
 
 export const getEqItems = (entity: Entity) => {
-  const eq = getEqSlots(entity);
+  const eq = getEq(entity);
   const items = eq.flatMap((item) => getContainerItems(item));
   return items;
 };
@@ -29,15 +21,15 @@ const isRingSlot = (entity: Entity) => {
 
 // TODO: get rid of this shit
 export const getEqSlot = (entity: Entity, slot: EqSlot) => {
-  const eqSlots = getEqSlots(entity);
+  const eqSlots = getEq(entity);
   let targetSlot = undefined;
   if (slot === EqSlot.RING1 || slot === EqSlot.RING2) {
     const targetSlots = eqSlots.filter((s) => isRingSlot(s));
     targetSlot = targetSlots[slot === EqSlot.RING1 ? 0 : 1];
   } else {
-    targetSlot = getEqSlots(entity).find((s) => {
+    targetSlot = getEq(entity).find((s) => {
       const slotEntity = EQ_SLOT_TO_ENTITY.get(slot);
-      return slotEntity ? isRingSlot(s) : false;
+      return slotEntity ? s.type === slotEntity : false;
     });
   }
   if (!targetSlot) {

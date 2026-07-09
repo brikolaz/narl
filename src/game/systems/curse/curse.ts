@@ -1,5 +1,5 @@
 import type { Entity } from "../../../core/ecs/Entity";
-import { upsertComponents } from "../../../core/ecs/queries/component";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 import { COLORS } from "../../../utils/colors";
 import { ColorComponent } from "../../model/components/display/ColorComponent";
 import { CursedComponent } from "../../model/components/items/CursedComponent";
@@ -16,8 +16,8 @@ export const curse = (item: Entity, gameState: GameState, action: Action) => {
     const itemName = getEntityName(item);
     manual?.curse?.(item, gameState);
     const curseComponents = [
-      new CursedComponent(),
-      new ColorComponent({ color: COLORS.CURSED }),
+      CursedComponent(),
+      ColorComponent({ color: COLORS.CURSED }),
     ];
     upsertComponents(item, ...curseComponents);
     action.info(`${itemName} got cursed`);

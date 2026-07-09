@@ -5,7 +5,7 @@ import {
 } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
 import { getComponentByType } from "../../../../../core/ecs/queries/components/get";
-import { addRoleEntities } from "../../../../../core/ecs/queries/entities/add";
+import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
 import { getDummyArray } from "../../../../../utils/getDummyArray";
@@ -42,7 +42,7 @@ const addPlaceholders = (container: Entity) => {
     throw new Error("No size component");
   }
 
-  addRoleEntities(container, {
+  upsertRoleEntities(container, {
     [EntityRole.ITEM]: getDummyArray(sizeComponent.size).map(() =>
       PlaceholderEntityFactory.getDefault(),
     ),
@@ -61,6 +61,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       SizeComponent({ size: RNG.items.range(2, 4) }),
       VariantComponent({ variant: ContainerVariants.DEFAULT }),
     );
+    addPlaceholders(container);
 
     return container;
   },
@@ -72,6 +73,8 @@ export const ContainerEntityFactory: ContainerFactory = {
       backpack,
       NameComponent({ name: "Backpack" }),
       GlyphComponent({ glyph: "*" }),
+      ContainerComponent(),
+      SizeComponent({ size: RNG.items.range(2, 4) }),
       NestDepthComponent({ nestDepth: RNG.items.range(1, 2) }),
       VariantComponent({ variant: ContainerVariants.BACKPACK }),
     );
@@ -87,6 +90,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       backpack,
       NameComponent({ name: "Backpack" }),
       GlyphComponent({ glyph: "*" }),
+      ContainerComponent(),
       SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),
       VariantComponent({ variant: ContainerVariants.PLAYER_BACKPACK }),
     );

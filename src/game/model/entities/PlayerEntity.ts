@@ -1,12 +1,7 @@
 import { EntityRole, getEntityCreator } from "../../../core/ecs/Entity";
 import { addComponents } from "../../../core/ecs/queries/components/add";
-import { patchComponentByType } from "../../../core/ecs/queries/components/patch";
-import { addRoleEntities } from "../../../core/ecs/queries/entities/add";
-import {
-  DEFAULT_PLAYER_BACKPACK_SIZE,
-  DEFAULT_PLAYER_GLYPH,
-} from "../../../utils/constants";
-import { SizeComponent } from "../components/containers/SizeComponent";
+import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
+import { DEFAULT_PLAYER_GLYPH } from "../../../utils/constants";
 import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
 import { NameComponent } from "../components/display/NameComponent";
@@ -54,11 +49,8 @@ export const PlayerEntityFactory: Factory = {
       HpComponent({ hp: 20 }),
     );
 
-    const backpack = ContainerEntityFactory.getDefault();
-    patchComponentByType(backpack, SizeComponent, (component) => {
-      component.size = DEFAULT_PLAYER_BACKPACK_SIZE;
-    });
-    addRoleEntities(player, {
+    const backpack = ContainerEntityFactory.getPlayerBackpack();
+    upsertRoleEntities(player, {
       [EntityRole.EQ]: getEq(),
       [EntityRole.BACKPACK]: backpack,
     });

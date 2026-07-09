@@ -21,14 +21,14 @@ export const removeDataEntityById = (id: Id): void => {
       record.role,
       siblings.filter((entity) => entity.id !== id).map((entity) => entity.id),
     );
-    parentRecord?.entity.componentById.delete(id);
+    parentRecord.entity.entityById.delete(id);
   }
 
   for (const componentId of record.entity.componentById.keys()) {
     removeComponentById(componentId);
   }
 
-  for (const childId of record.entity.entityById.keys()) {
+  for (const childId of [...record.entity.entityById.keys()]) {
     removeDataEntityById(childId);
   }
 };
@@ -40,11 +40,13 @@ export const removeEntityById = (id: Id) => {
 
 export const removeEntitiesByRole = (
   entity: Entity,
-  role: EntityRole,
+  ...roles: EntityRole[]
 ): void => {
-  const entities = getEntitiesByRole(entity, role);
+  for (const role of roles) {
+    const entities = getEntitiesByRole(entity, role);
 
-  for (const child of entities) {
-    removeEntityById(child.id);
+    for (const child of entities) {
+      removeEntityById(child.id);
+    }
   }
 };

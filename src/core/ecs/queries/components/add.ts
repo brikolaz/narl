@@ -1,8 +1,9 @@
 import type { Component } from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
-import { setComponentRegistryRecords } from "../../registry/componentRegistry";
+import { upsertComponentRegistryRecords } from "../../registry/componentRegistry";
 import { getEntityById } from "../entities/get";
+import { removeComponentsByType } from "./remove";
 
 const addDataComponents = (
   entity: Entity | undefined,
@@ -31,7 +32,7 @@ export const addComponents = (
     return;
   }
   addDataComponents(source, ...components);
-  setComponentRegistryRecords(
+  upsertComponentRegistryRecords(
     ...components.map((component) => ({
       component,
       parent: source.id,
@@ -70,10 +71,16 @@ export const upsertComponents = (
   }
 
   upsertDataComponents(source, ...components);
-  setComponentRegistryRecords(
+  upsertComponentRegistryRecords(
     ...components.map((component) => ({
       component,
       parent: source.id,
     })),
   );
+
+  removeComponentsByType(
+    source,
+    ...components.map((component) => component.type),
+  );
+  addComponents(entity, ...components);
 };

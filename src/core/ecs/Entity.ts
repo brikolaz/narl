@@ -3,6 +3,7 @@ import { getId } from "../../utils/getId";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
+import { upsertRegistryEntities } from "./registry/entityRegistry";
 
 export enum EntityRole {
   DEFAULT = "DEFAULT",
@@ -31,15 +32,19 @@ export const getEntityCreator = (type: string): EntityCreator => {
     getEcsNamespace(Namespace.ENTITY, type),
   );
 
-  const creator: EntityCreator = () => ({
-    [immerable]: true,
-    id: getId(),
-    componentById: new Map<Id, Component>(),
-    componentByType: new Map<ComponentType, Id[]>(),
-    entityById: new Map<Id, Entity>(),
-    entityByRole: new Map<EntityRole, Id[]>(),
-    type: entityType,
-  });
+  const creator: EntityCreator = () => {
+    const entity = {
+      [immerable]: true,
+      id: getId(),
+      componentById: new Map<Id, Component>(),
+      componentByType: new Map<ComponentType, Id[]>(),
+      entityById: new Map<Id, Entity>(),
+      entityByRole: new Map<EntityRole, Id[]>(),
+      type: entityType,
+    };
+    upsertRegistryEntities(entity);
+    return entity;
+  };
   creator.type = entityType;
 
   return creator;

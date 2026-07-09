@@ -14,9 +14,9 @@ export const areComponentTypesEqual = (...components: Component[]): boolean => {
   return components.every((component) => component.type === components[0].type);
 };
 
-export const hasComponentsByType = (
+export const hasComponentsByType = <P extends object | undefined>(
   entity: Entity | Id | undefined,
-  component: ComponentCreator | Component | ComponentType,
+  component: ComponentCreator<P> | Component<P> | ComponentType,
 ): boolean => {
   if (entity === undefined) return false;
   const source = typeof entity === "number" ? getEntityById(entity) : entity;
