@@ -1,23 +1,37 @@
-import type { Component, ComponentType } from "../../Component";
+import type {
+  Component,
+  ComponentCreator,
+  ComponentType,
+} from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { getComponentRegistryRecordById } from "../../registry/componentRegistry";
 
+// TODO: add common utils for resolving type/entity
 export const getComponentById = (id: Id) => {
   return getComponentRegistryRecordById(id)?.component;
 };
 
-export const getComponentsByType = (
+export const getComponentsByType = <P extends object>(
   entity: Entity | undefined,
-  componentType: ComponentType,
-): Component[] => {
+  componentType: ComponentCreator<P> | Component<P> | ComponentType,
+): Component<P>[] => {
   if (!entity) return [];
+  const type =
+    typeof componentType === "symbol" ? componentType : componentType.type;
 
-  return (
-    entity.componentByType
-      .get(componentType)
-      ?.map((componentId) => entity.componentById.get(componentId))
-      .filter((component): component is Component => component !== undefined) ??
-    []
-  );
+  return (entity.componentByType
+    .get(type)
+    ?.map((componentId) => entity.componentById.get(componentId))
+    .filter((component) => component !== undefined) ?? []) as Component<P>[];
+};
+
+export const getComponentByType = <P extends object>(
+  entity: Entity | undefined,
+  componentType: ComponentCreator<P> | Component<P> | ComponentType,
+): Component<P> | undefined => {
+  const type =
+    typeof componentType === "symbol" ? componentType : componentType.type;
+
+  return getComponentsByType(entity, type)[0] as Component<P>;
 };

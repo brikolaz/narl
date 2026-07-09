@@ -2,7 +2,6 @@ import { immerable } from "immer";
 import { getId } from "../../utils/getId";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
-import type { WidenProps } from "../Widen";
 
 export type ComponentType = symbol;
 
@@ -13,33 +12,35 @@ export type Component<Props extends object | undefined = object> = {
   defaults: Props;
 } & Props;
 
-type ComponentCreator<Props extends object | undefined = undefined> =
+export type ComponentCreator<Props extends object | undefined = undefined> =
   Props extends object
     ? {
         (props?: Partial<Props>): Component<Props>;
         type: ComponentType;
+        defaults: Props;
       }
     : {
         (): Component;
         type: ComponentType;
+        defaults: undefined
       };
 
-export function Component(type: string): ComponentCreator;
+export function getComponentCreator(type: string): ComponentCreator;
 
-export function Component<Props extends object>(
+export function getComponentCreator<Props extends object>(
   type: string,
   defaults: Props,
-): ComponentCreator<WidenProps<Props>>;
+): ComponentCreator<Props>;
 
-export function Component<Props extends object>(
+export function getComponentCreator<Props extends Component>(
   type: string,
   defaults?: Props,
 ) {
-  const componentType: ComponentType = Symbol.for(
+  const componentType: ComponentType = Symbol(
     getEcsNamespace(Namespace.COMPONENT, type),
   );
 
-  const creator = (props?: Partial<WidenProps<Props>>) => ({
+  const creator = (props?: Partial<Props>) => ({
     [immerable]: true,
     id: getId(),
     type: componentType,
@@ -49,6 +50,9 @@ export function Component<Props extends object>(
   });
 
   creator.type = componentType;
+  creator.defaults = defaults;
 
   return creator;
 }
+
+// TODO: REFACTOR USAGES

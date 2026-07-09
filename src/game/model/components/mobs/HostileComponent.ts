@@ -1,3 +1,3 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
-export const HostileComponent = Component("HOSTILE");
+export const HostileComponent = getComponentCreator("HOSTILE");

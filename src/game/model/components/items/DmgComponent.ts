@@ -1,7 +1,7 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
 export type DmgComponentProps = {
   dmg: number;
 };
 
-export const DmgComponent = Component<DmgComponentProps>("DMG", { dmg: 0 });
+export const DmgComponent = getComponentCreator<DmgComponentProps>("DMG", { dmg: 0 });

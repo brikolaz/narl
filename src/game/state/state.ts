@@ -1,20 +1,17 @@
-import { FloorEntity } from "../model/entities/FloorEntity";
-import { ItemEntity } from "../model/entities/items/ItemEntity";
-import type { MobEntity } from "../model/entities/mobs/MobEntity";
-import { PlayerEntity } from "../model/entities/PlayerEntity";
+import type { Entity } from "../../core/ecs/Entity";
 import type { ActionLog, LogEntry } from "../systems/log/types";
 
 export type Tile = {
-  floor: FloorEntity;
-  items: ItemEntity[];
-  mobs: MobEntity[];
+  floor: Entity;
+  items: Entity[];
+  mobs: Entity[];
   position: number;
 };
 
 export type WorldState = Tile[];
 
 export type PlayerState = {
-  player: PlayerEntity;
+  player: Entity;
   position: number;
 };
 

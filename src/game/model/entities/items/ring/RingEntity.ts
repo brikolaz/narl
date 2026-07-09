@@ -1,5 +1,6 @@
-import { Entity } from "../../../../../core/ecs/Entity";
+import { getEntityCreator } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { PantsComponent } from "../../../components/eq/PantsComponent";
@@ -8,15 +9,15 @@ import { RingComponent } from "../../../components/eq/RingComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
 import { VariantComponent } from "../../../components/VariantComponent";
-import type { Factory } from "../../../Factory";
+import type { ItemFactory } from "../../../Factory";
 
 export const RingEntityVariants = {
   RING: Symbol.for("RING"),
-} as const;
+} as const satisfies Symbols;
 
-const RingEntity = Entity;
+export const RingEntity = getEntityCreator("RING");
 
-export const RingEntityFactory: Factory = {
+export const RingEntityFactory: ItemFactory = {
   getDefault: () => {
     const ring = RingEntity();
     addComponents(

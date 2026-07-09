@@ -1,10 +1,10 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
 export type AppearanceComponentProps = {
   background: string;
 };
 
 export const AppearanceComponent =
-  Component<AppearanceComponentProps>("APPEARANCE", {
+  getComponentCreator<AppearanceComponentProps>("APPEARANCE", {
     background: "#000000" as const,
   });

@@ -1,9 +1,9 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
 export type DmgModComponentProps = {
   dmgMod: number;
 };
 
-export const DmgModComponent = Component<DmgModComponentProps>("DMG_MOD", {
-  dmgMod: 0,
+export const DmgModComponent = getComponentCreator<DmgModComponentProps>("DMG_MOD", {
+  dmgMod: 1,
 });

@@ -1,9 +1,10 @@
-import type { EntityClass } from "../../../../core/ecs/Entity";
-import type { Factory } from "../../Factory";
-import type { MobEntity } from "./MobEntity";
-import { RageBaitEntity } from "./rageBait/RageBaitEntity";
-import { RageBaitEntityFactory } from "./rageBait/RageBaitEntityFactory";
+import type { EntityType } from "../../../../core/ecs/Entity";
+import type { MobFactory } from "../../Factory";
+import {
+  RageBaitEntity,
+  RageBaitEntityFactory,
+} from "./rageBait/RageBaitEntity";
 
-export const MOB_FACTORIES = new Map<EntityClass<MobEntity>, Factory<MobEntity>>([
-  [RageBaitEntity, RageBaitEntityFactory],
+export const MOB_FACTORIES = new Map<EntityType, MobFactory>([
+  [RageBaitEntity.type, RageBaitEntityFactory],
 ]);

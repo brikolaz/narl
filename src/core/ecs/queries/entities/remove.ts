@@ -1,3 +1,4 @@
+import type { Entity, EntityRole } from "../../Entity";
 import type { Id } from "../../Id";
 import {
   getEntityRegistryRecordById,
@@ -35,4 +36,15 @@ export const removeDataEntityById = (id: Id): void => {
 export const removeEntityById = (id: Id) => {
   removeDataEntityById(id);
   removeEntityRegistryRecordById(id);
+};
+
+export const removeEntitiesByRole = (
+  entity: Entity,
+  role: EntityRole,
+): void => {
+  const entities = getEntitiesByRole(entity, role);
+
+  for (const child of entities) {
+    removeEntityById(child.id);
+  }
 };

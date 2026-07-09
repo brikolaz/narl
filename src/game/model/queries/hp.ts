@@ -1,9 +1,12 @@
-
+import type { Component } from "../../../core/ecs/Component";
 import type { Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/component";
-import { HpComponent } from "../components/mobs/HpComponent";
+import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import {
+  HpComponent,
+  type HpComponentProps,
+} from "../components/mobs/HpComponent";
 
-export const getHp = (entity: Entity): HpComponent => {
+export const getHp = (entity: Entity): Component<HpComponentProps> => {
   const hpComponent = getComponentByType(entity, HpComponent);
 
   if (!hpComponent) {

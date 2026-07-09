@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentByType } from "../../../core/ecs/queries/component";
+import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
 import { DmgComponent } from "../components/items/DmgComponent";
 
 export const isWeapon = (item: Entity) => {
-  return hasComponentByType(item, DmgComponent);
+  return hasComponentsByType(item, DmgComponent);
 };

@@ -1,13 +1,12 @@
 import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentByType } from "../../../core/ecs/queries/component";
-import { PickupableComponent } from "../components/items/PickupableComponent";
-import type { ItemEntity } from "../entities/items/ItemEntity";
+import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
 import type { Tile } from "../../state/state";
+import { PickupableComponent } from "../components/items/PickupableComponent";
 
-export const pickUpItem = (tile: Tile): ItemEntity | undefined => {
+export const pickUpItem = (tile: Tile): Entity | undefined => {
   return tile.items.at(-1);
 };
 
 export const isPickupable = (item: Entity) => {
-  return hasComponentByType(item, PickupableComponent);
+  return hasComponentsByType(item, PickupableComponent);
 };

@@ -1,10 +1,10 @@
-import { Component } from "../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../core/ecs/Component";
 
 type VariantComponentProps = {
   variant: symbol;
 };
 
-export const VariantComponent = Component<VariantComponentProps>(
+export const VariantComponent = getComponentCreator<VariantComponentProps>(
   "VARIANT",
   { variant: Symbol.for("VARIANT_UNDEFINED") },
 );

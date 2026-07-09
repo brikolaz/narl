@@ -1,4 +1,4 @@
-import type { PlayerEntity } from "../entities/PlayerEntity";
+import type { Entity } from "../../../core/ecs/Entity";
 import type { GameState, PlayerState } from "../../state/state";
 
 export const getPlayer = (state: GameState): PlayerState => {
@@ -8,7 +8,7 @@ export const getPlayer = (state: GameState): PlayerState => {
   return state.player;
 };
 
-export const getPlayerEntity = (state: GameState): PlayerEntity => {
+export const getPlayerEntity = (state: GameState): Entity => {
   if (!state.player) {
     throw new Error("Player state is not initialized");
   }

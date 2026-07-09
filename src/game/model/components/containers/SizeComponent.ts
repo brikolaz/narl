@@ -1,7 +1,7 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
 export type SizeComponentProps = {
   size: number;
 };
 
-export const SizeComponent = Component<SizeComponentProps>("SIZE", { size: 0 });
+export const SizeComponent = getComponentCreator<SizeComponentProps>("SIZE", { size: 0 });

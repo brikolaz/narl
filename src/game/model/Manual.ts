@@ -2,7 +2,7 @@ import type { Entity } from "../../core/ecs/Entity";
 import type { GameState } from "../state/state";
 import type { Action } from "../systems/actions/action";
 
-export type Manual<T> = {
+export type Manual<T = Entity> = {
   onAfterTakeDamage?: (
     entity: T,
     gameState: GameState,

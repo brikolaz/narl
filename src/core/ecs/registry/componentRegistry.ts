@@ -11,7 +11,7 @@ type ComponentRegistryById = {
 
 export const COMPONENT_REGISTRY_BY_ID: ComponentRegistryById = {};
 
-export const upsertComponentRegistryRecords = (
+export const setComponentRegistryRecords = (
   ...records: ComponentRegistryRecord[]
 ) => {
   for (const record of records) {

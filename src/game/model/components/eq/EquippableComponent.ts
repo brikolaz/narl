@@ -1,3 +1,3 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
-export const EquippableComponent = Component("EQUIPPABLE");
+export const EquippableComponent = getComponentCreator("EQUIPPABLE");

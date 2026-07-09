@@ -1,3 +1,3 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
-export const MainHandComponent = Component("MAIN_HAND");
+export const MainHandComponent = getComponentCreator("MAIN_HAND");

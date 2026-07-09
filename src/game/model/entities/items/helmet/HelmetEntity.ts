@@ -1,26 +1,71 @@
-import type { EntityProps } from "../../../../../core/ecs/Entity";
+import { getEntityCreator } from "../../../../../core/ecs/Entity";
+import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import type { Symbols } from "../../../../../core/ecs/Symbols";
+import { RNG } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
+import { HeadComponent } from "../../../components/eq/HeadComponent";
 import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { ItemEntity } from "../ItemEntity";
+import { InspectDescComponent } from "../../../components/inspect/InspectDescComponent";
+import { DefComponent } from "../../../components/items/DefComponent";
+import { DroppableComponent } from "../../../components/items/DroppableComponent";
+import { PickupableComponent } from "../../../components/items/PickupableComponent";
+import { VariantComponent } from "../../../components/VariantComponent";
+import type { ItemFactory } from "../../../Factory";
 
-export type HelmetEntityProps = EntityProps;
-export enum HelmetEntityVariants {
-  HELMET = "Helmet",
-  HORNED_HELMET = "Horned Helmet",
-}
+export const HelmetEntityVariants = {
+  HELMET: Symbol("Helmet"),
+  HORNED_HELMET: Symbol("Horned Helmet"),
+} as const satisfies Symbols;
 
-export class HelmetEntity extends ItemEntity {
-  constructor(props?: HelmetEntityProps) {
-    const glyph = new GlyphComponent({
-      glyph: "H" as string,
-    });
-    const name = new NameComponent({ name: HelmetEntityVariants.HELMET });
-    const removable = new RemovableComponent();
+type HelmetFactory = ItemFactory & {
+  getHornedHelmet: () => void;
+};
 
-    super({
-      ...props,
-      components: [...(props?.components ?? []), glyph, name, removable],
-    });
-  }
-}
+export const HelmetEntity = getEntityCreator("HELMET");
+
+export const HelmetEntityFactory: HelmetFactory = {
+  getDefault: () => {
+    const helmet = HelmetEntity();
+
+    addComponents(
+      helmet,
+      NameComponent({ name: "Helmet" }),
+      GlyphComponent({
+        glyph: "H",
+      }),
+      RemovableComponent(),
+      HeadComponent(),
+      DefComponent({ def: RNG.items.range(3, 4) }),
+      PickupableComponent(),
+      DroppableComponent(),
+      VariantComponent({
+        variant: HelmetEntityVariants.HELMET,
+      }),
+    );
+
+    return helmet;
+  },
+
+  getHornedHelmet: () => {
+    const helmet = HelmetEntity();
+
+    addComponents(
+      helmet,
+      NameComponent({ name: "Horned Helmet" }),
+      GlyphComponent({
+        glyph: "H",
+      }),
+      RemovableComponent(),
+      HeadComponent(),
+      DefComponent({ def: RNG.items.range(3, 4) }),
+      PickupableComponent(),
+      DroppableComponent(),
+      VariantComponent({
+        variant: HelmetEntityVariants.HORNED_HELMET,
+      }),
+      InspectDescComponent({ times: 5, text: "It has horns" }),
+      InspectDescComponent({ times: 10, text: "Looks horny" }),
+    );
+  },
+};

@@ -1,9 +1,9 @@
-import type { ItemEntity } from "../../../game/model/entities/items/ItemEntity";
+import type { Entity } from "../../../core/ecs/Entity";
 import { getDummyArray } from "../../../utils/getDummyArray";
 import { Slot } from "../Slot";
 
 type InvRowProps = {
-  items: (ItemEntity | undefined)[];
+  items: (Entity | undefined)[];
   startIndex: number;
   rowIndex: number;
   rowCount: number;

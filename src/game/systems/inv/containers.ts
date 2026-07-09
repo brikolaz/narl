@@ -1,6 +1,10 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { replaceEntityById } from "../../../core/ecs/queries/entities";
-import { ItemEntity } from "../../model/entities/items/ItemEntity";
+import { EntityRole, type Entity } from "../../../core/ecs/Entity";
+import {
+  addRoleEntities
+} from "../../../core/ecs/queries/entities/add";
+import {
+  removeEntitiesByRole
+} from "../../../core/ecs/queries/entities/remove";
 import { PlaceholderEntity } from "../../model/entities/items/PlaceholderItemEntity";
 import {
   getBackpack,
@@ -12,10 +16,7 @@ import {
 
 export type ContainerSlot = number;
 
-export const addItemToEntityBackpack = (
-  entity: Entity,
-  item: ItemEntity,
-): void => {
+export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
   const backpack = getBackpack(entity);
   if (!backpack) {
     throw new Error("No backpack");
@@ -27,10 +28,8 @@ export const addItemToEntityBackpack = (
   setContainerItemAt(backpack, slot, item);
 };
 
-export const addItemToContainer = (
-  container: Entity,
-  item: ItemEntity,
-): void => {
+// TODO: rewrite to itemS
+export const addItemToContainer = (container: Entity, item: Entity): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
@@ -40,7 +39,6 @@ export const addItemToContainer = (
   }
   setContainerItemAt(container, slot, item);
 };
-
 
 export const swapContainerItems = (
   container: Entity,
@@ -59,11 +57,7 @@ export const swapContainerItems = (
     throw new Error("No target item to swap");
   }
   setContainerItemAt(container, targetSlot, sourceItem);
-  setContainerItemAt(
-    container,
-    sourceSlot,
-    targetItem ?? new PlaceholderEntity(),
-  );
+  setContainerItemAt(container, sourceSlot, targetItem ?? PlaceholderEntity());
 };
 
 export const setContainerItemAt = (
@@ -74,21 +68,15 @@ export const setContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  if (!container.entities[slot - 1]) {
+  const nextItems = getContainerItems(container);
+  if (!nextItems[slot - 1]) {
     throw new Error(`Container slot ${slot} doesn't exist`);
   }
-  container.entities[slot - 1] = entity;
-};
-
-export const setContainerItemById = (
-  container: Entity,
-  id: string,
-  entity: Entity,
-): void => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  replaceEntityById(container, id, entity);
+  nextItems[slot - 1] = entity;
+  removeEntitiesByRole(container, EntityRole.ITEM);
+  addRoleEntities(container, {
+    [EntityRole.ITEM]: nextItems,
+  });
 };
 
 export const clearContainerItemAt = (
@@ -98,14 +86,15 @@ export const clearContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  setContainerItemAt(container, slot, new PlaceholderEntity());
+  setContainerItemAt(container, slot, PlaceholderEntity());
 };
 
-export const clearContainerItemById = (container: Entity, id: string): void => {
+export const clearContainerItemById = (container: Entity, id: number): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  replaceEntityById(container, id, new PlaceholderEntity());
+  const slot = getContainerItems(container).findIndex((item) => item.id === id);
+  clearContainerItemAt(container, slot);
 };
 
 export const clearContainerItems = (container: Entity): void => {
@@ -113,9 +102,5 @@ export const clearContainerItems = (container: Entity): void => {
     throw new Error("Entity is not a container");
   }
   const items = getContainerItems(container);
-  items.forEach((item) =>
-    replaceEntityById(container, item.id, new PlaceholderEntity()),
-  );
+  items.forEach((item) => clearContainerItemById(container, item.id));
 };
-
-

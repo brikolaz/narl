@@ -26,6 +26,8 @@ const removeDataComponentsByType = (
   return ids;
 };
 
+// TODO: component/entity types should be of Component | ComponentCreator / Entity | EntityCreator,
+// .type should be accessed inside
 export const removeComponentsByType = (
   entity: Entity | undefined,
   ...componentTypes: ComponentType[]

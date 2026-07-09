@@ -3,43 +3,81 @@ import type { Id } from "../../Id";
 import { upsertRegistryEntities } from "../../registry/entityRegistry";
 import { getEntityById } from "./get";
 
-const addDataEntities = (
+const getTargetEntity = (
   entity: Entity | Id | undefined,
-  children: Partial<Record<EntityRole, Entity[]>> | Entity[],
-): void => {
+): Entity | undefined => {
   if (entity === undefined) {
-    return;
+    return undefined;
   }
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
-  if (!source) {
-    return;
-  }
+
+  return typeof entity === "number" ? getEntityById(entity) : entity;
+};
+
+type ChildrenInput =
+  | (Entity | undefined)[]
+  | Partial<Record<EntityRole, (Entity | undefined)[] | Entity>>;
+
+const normalizeChildren = (
+  children: ChildrenInput,
+): Partial<Record<EntityRole, Entity[]>> => {
   if (Array.isArray(children)) {
-    const nextIds = source.entityByRole.get(EntityRole.DEFAULT) ?? [];
-    for (const child of children) {
-      nextIds.push(child.id);
-      source.entityById.set(child.id, child);
-    }
-    source.entityByRole.set(EntityRole.DEFAULT, nextIds);
-    return;
+    return {
+      [EntityRole.DEFAULT]: children.filter(
+        (child): child is Entity => child !== undefined,
+      ),
+    };
   }
+
+  const normalized: Partial<Record<EntityRole, Entity[]>> = {};
+
+  for (const [role, entities] of Object.entries(children)) {
+    normalized[role as EntityRole] = [entities]
+      .flat()
+      .filter((child): child is Entity => child !== undefined);
+  }
+
+  return normalized;
+};
+
+const addDataEntities = (
+  entity: Entity,
+  children: Partial<Record<EntityRole, Entity[]>>,
+): void => {
   for (const [entityRole, entities] of Object.entries(children)) {
-    const nextIds = source.entityByRole.get(entityRole as EntityRole) ?? [];
+    const nextIds = entity.entityByRole.get(entityRole as EntityRole) ?? [];
     for (const child of entities) {
       nextIds.push(child.id);
-      source.entityById.set(child.id, child);
+      entity.entityById.set(child.id, child);
     }
-    source.entityByRole.set(entityRole as EntityRole, nextIds);
+    entity.entityByRole.set(entityRole as EntityRole, nextIds);
   }
 };
 
-export const addEntities = (
-  entity: Entity | undefined,
-  childrenEntities: Record<EntityRole, Entity[]> | Entity[],
+const _addEntities = (
+  entity: Entity | Id | undefined,
+  childrenEntities: ChildrenInput,
 ): void => {
-  if (!entity) {
+  const target = getTargetEntity(entity);
+  if (!target) {
     return;
   }
-  addDataEntities(entity, childrenEntities);
-  upsertRegistryEntities(entity, childrenEntities);
+  const children = normalizeChildren(childrenEntities);
+  addDataEntities(target, children);
+  upsertRegistryEntities(target, children);
+};
+
+export const addEntities = (
+  entity: Entity | Id | undefined,
+  ...childrenEntities: (undefined | Entity)[]
+): void => {
+  _addEntities(entity, childrenEntities);
+};
+
+export const addRoleEntities = (
+  entity: Entity | Id | undefined,
+  childrenEntities: Partial<
+    Record<EntityRole, (Entity | undefined)[] | Entity>
+  >,
+): void => {
+  _addEntities(entity, childrenEntities);
 };

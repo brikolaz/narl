@@ -1,3 +1,3 @@
-import { Component } from "../../../../core/ecs/Component";
+import { Component, getComponentCreator } from "../../../../core/ecs/Component";
 
-export const EqSlotComponent = Component("EQ_SLOT");
+export const EqSlotComponent = getComponentCreator("EQ_SLOT");

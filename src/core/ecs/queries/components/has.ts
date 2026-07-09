@@ -1,4 +1,8 @@
-import type { Component, ComponentType } from "../../Component";
+import type {
+  Component,
+  ComponentCreator,
+  ComponentType,
+} from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { getEntityById } from "../entities/get";
@@ -12,12 +16,12 @@ export const areComponentTypesEqual = (...components: Component[]): boolean => {
 
 export const hasComponentsByType = (
   entity: Entity | Id | undefined,
-  componentType: ComponentType,
+  component: ComponentCreator | Component | ComponentType,
 ): boolean => {
   if (entity === undefined) return false;
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
-
-  return (source?.componentByType?.get(componentType)?.length ?? 0) > 0;
+  const source = typeof entity === "number" ? getEntityById(entity) : entity;
+  const type = typeof component === "symbol" ? component : component.type;
+  return (source?.componentByType?.get(type)?.length ?? 0) > 0;
 };
 
 export const hasComponentById = (
@@ -26,7 +30,7 @@ export const hasComponentById = (
 ): boolean => {
   if (!entity) return false;
 
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
+  const source = typeof entity === "number" ? getEntityById(entity) : entity;
 
   return source?.componentById?.has(id) ?? false;
 };

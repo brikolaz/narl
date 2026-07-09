@@ -1,11 +1,16 @@
+import { getEntityCreator } from "../../../../core/ecs/Entity";
+import { addComponents } from "../../../../core/ecs/queries/components/add";
 import { PlaceholderComponent } from "../../components/containers/PlaceholderComponent";
-import { ItemEntity } from "./ItemEntity";
+import type { ItemFactory } from "../../Factory";
 
-export class PlaceholderEntity extends ItemEntity {
-  constructor() {
-    const placeholder = new PlaceholderComponent();
-    super({
-      components: [placeholder],
-    });
-  }
-}
+export const PlaceholderEntity = getEntityCreator("PLACEHOLDER");
+
+export const PlaceholderEntityFactory: ItemFactory = {
+  getDefault: () => {
+    const placeholder = PlaceholderEntity();
+
+    addComponents(placeholder, PlaceholderComponent());
+
+    return placeholder;
+  },
+};

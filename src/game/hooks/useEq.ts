@@ -1,14 +1,12 @@
-import { Entity } from "../../core/ecs/Entity";
-import { getEntityByType } from "../../core/ecs/queries/entities";
-import { EqSlotEntity } from "../model/entities/eq/EqSlotEntity";
+import type { Entity } from "../../core/ecs/Entity";
 import { EQ_SLOT_TO_ENTITY } from "../model/entities/eq/mapping";
-import { ItemEntity } from "../model/entities/items/ItemEntity";
+import { getContainerItemAt } from "../model/queries/containers";
 import { getEqSlot } from "../model/queries/eq";
 import { EqSlot } from "../systems/eq/types";
 
 export type Eq = {
-  eqSlots: Record<EqSlot, EqSlotEntity>;
-  getItem: (slot: EqSlot) => ItemEntity | undefined;
+  eqSlots: Record<EqSlot, Entity>;
+  getItem: (slot: EqSlot) => Entity | undefined;
   eqColumnCount: number;
   eqRowCount: number;
 };
@@ -16,7 +14,7 @@ export type Eq = {
 export const useEq = (entity: Entity): Eq => {
   const getItem = (slot: EqSlot) => {
     const eqSlot = getEqSlot(entity, slot);
-    return getEntityByType(eqSlot, ItemEntity);
+    return getContainerItemAt(eqSlot, 1);
   };
 
   const eqSlots = [...EQ_SLOT_TO_ENTITY.entries()].reduce(
@@ -24,7 +22,7 @@ export const useEq = (entity: Entity): Eq => {
       ...prev,
       [eqSlot]: getEqSlot(entity, eqSlot),
     }),
-    {} as Record<EqSlot, EqSlotEntity>,
+    {} as Record<EqSlot, Entity>,
   );
 
   const eqColumnCount = 3;

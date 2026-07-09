@@ -1,14 +1,14 @@
-import { getComponentByType } from "../../core/ecs/queries/component";
+import type { Entity } from "../../core/ecs/Entity";
+import { getComponentByType } from "../../core/ecs/queries/components/get";
 import { ColorComponent } from "../model/components/display/ColorComponent";
 import { GlyphComponent } from "../model/components/display/GlyphComponent";
-import type { ItemEntity } from "../model/entities/items/ItemEntity";
 
 type Item = {
   glyph: string | undefined;
   color: string | undefined;
 };
 
-export const useItem = (item?: ItemEntity): Item => {
+export const useItem = (item?: Entity): Item => {
   if (!item) {
     return {} as Item;
   }

@@ -1,6 +1,5 @@
-import type { EntityClass } from "../../../../core/ecs/Entity";
+import type { EntityType } from "../../../../core/ecs/Entity";
 import { EqSlot } from "../../../systems/eq/types";
-import type { EqSlotEntity } from "./EqSlotEntity";
 import { AmuletSlotEntity } from "./slots/AmuletSlotEntity";
 import { ArmorSlotEntity } from "./slots/ArmorSlotEntity";
 import { BootsSlotEntity } from "./slots/BootsSlotEntity";
@@ -11,14 +10,14 @@ import { PantsSlotEntity } from "./slots/PantsSlotEntity";
 import { RingSlotEntity } from "./slots/RingSlotEntity";
 
 // ORDER IS IMPORTANT
-export const EQ_SLOT_TO_ENTITY = new Map<EqSlot, EntityClass<EqSlotEntity>>([
-  [EqSlot.HEAD, HeadSlotEntity],
-  [EqSlot.AMULET, AmuletSlotEntity],
-  [EqSlot.MAIN_HAND, MainHandSlotEntity],
-  [EqSlot.ARMOR, ArmorSlotEntity],
-  [EqSlot.OFFHAND, OffhandSlotEntity],
-  [EqSlot.RING1, RingSlotEntity],
-  [EqSlot.PANTS, PantsSlotEntity],
-  [EqSlot.RING2, RingSlotEntity],
-  [EqSlot.BOOTS, BootsSlotEntity],
+export const EQ_SLOT_TO_ENTITY = new Map<EqSlot, EntityType>([
+  [EqSlot.HEAD, HeadSlotEntity.type],
+  [EqSlot.AMULET, AmuletSlotEntity.type],
+  [EqSlot.MAIN_HAND, MainHandSlotEntity.type],
+  [EqSlot.ARMOR, ArmorSlotEntity.type],
+  [EqSlot.OFFHAND, OffhandSlotEntity.type],
+  [EqSlot.RING1, RingSlotEntity.type],
+  [EqSlot.PANTS, PantsSlotEntity.type],
+  [EqSlot.RING2, RingSlotEntity.type],
+  [EqSlot.BOOTS, BootsSlotEntity.type],
 ]);

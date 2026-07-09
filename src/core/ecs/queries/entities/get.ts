@@ -13,11 +13,18 @@ export const getEntitiesByRole = (
   if (!entity) {
     return [];
   }
-  const source = typeof entity === "string" ? getEntityById(entity) : entity;
+  const source = typeof entity === "number" ? getEntityById(entity) : entity;
   const ids = source?.entityByRole.get(entityRole) ?? [];
   return ids
     .map((id) => source?.entityById.get(id))
     .filter(
       (targetEntity): targetEntity is Entity => targetEntity !== undefined,
     );
+};
+
+export const getEntityByRole = (
+  entity: Entity | Id | undefined,
+  entityRole: EntityRole,
+): Entity => {
+  return getEntitiesByRole(entity, entityRole)[0];
 };
