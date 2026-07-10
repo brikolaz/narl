@@ -12,7 +12,6 @@ export const createWorldAttackAction = (
 ): WorldAction | undefined => {
   const mobPos = tile.position;
   const playerPos = getPlayerPosition(gameState);
-  console.log(mobPos, playerPos)
   if (isHostile(mob) && isAdjacent(mobPos, playerPos)) {
     return {
       type: WorldActionType.ATTACK,

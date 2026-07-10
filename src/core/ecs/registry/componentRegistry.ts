@@ -5,7 +5,8 @@ type ComponentRegistryRecord = {
   component: Component;
   parent: Id;
 };
-type ComponentRegistryById = {
+
+export type ComponentRegistryById = {
   [id: Id]: ComponentRegistryRecord;
 };
 

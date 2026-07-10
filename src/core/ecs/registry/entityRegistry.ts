@@ -12,7 +12,8 @@ export type EntityRegistryRecord =
       parent: Id;
       role: EntityRole;
     };
-type EntityRegistryById = {
+    
+export type EntityRegistryById = {
   [id: Id]: EntityRegistryRecord;
 };
 

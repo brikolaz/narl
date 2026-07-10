@@ -1,4 +1,3 @@
-import type { RefObject } from "react";
 import type { GameState } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
 import { getInternalLogAction } from "../../log/log";
@@ -7,20 +6,20 @@ import { createKeyboardToAction } from "./create";
 
 export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
-  keyboardChain: RefObject<KeyboardToActionChain>,
+  keyboardChain: KeyboardToActionChain,
   gameState: GameState,
 ): GameAction | undefined => {
-  if (event.key === "Escape" && keyboardChain.current) {
-    keyboardChain.current = undefined;
+  if (event.key === "Escape" && keyboardChain) {
+    keyboardChain = undefined;
     return getInternalLogAction("Action canceled");
   }
 
   const root = createKeyboardToAction(gameState);
-  const currentCommands = keyboardChain.current?.current ?? root;
+  const currentCommands = keyboardChain?.current ?? root;
   const command = currentCommands[event.key];
 
   if (!command) {
-    const fallback = getLastFallbackMessage(keyboardChain.current);
+    const fallback = getLastFallbackMessage(keyboardChain);
 
     if (fallback !== undefined) {
       return getInternalLogAction(fallback);
@@ -30,14 +29,14 @@ export const mapKeyboardEventToAction = (
   }
 
   if (command.action) {
-    keyboardChain.current = undefined;
+    keyboardChain = undefined;
     return command.action;
   }
 
-  if (command.next) {
-    keyboardChain.current = {
+  if (command.next && keyboardChain) {
+    keyboardChain = {
       current: command.next(),
-      history: [...(keyboardChain.current?.history ?? []), command],
+      history: [...(keyboardChain.history ?? []), command],
     };
     return command.message ? getInternalLogAction(command.message) : undefined;
   }
