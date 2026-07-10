@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -15,8 +14,8 @@ export const resolveInspectInvAction = (
   const { invSlot } = gameAction;
   const action: Action = new Action(gameAction);
 
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -30,8 +29,8 @@ export const resolveInspectInvAction = (
     increaseInspected(item);
 
     action.info(getItemInspectText(item));
-    curse(item, draft, action);
-  });
+    curse(item, state, action);
+  })();
 
-  return action.resolve(nextState, false);
+  return action.resolve(state, false);
 };

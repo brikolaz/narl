@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import {
   getPlayerEntity,
@@ -35,8 +34,8 @@ export const resolveMoveAction = (
 ): ActionResolution => {
   const { direction } = gameAction;
   const action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const currentPlayerPosition = getPlayerPosition(draft);
+  (() => {
+    const currentPlayerPosition = getPlayerPosition(state);
     const nextPlayerPosition = getNextPlayerPosition({
       currentPosition: currentPlayerPosition,
       direction,
@@ -45,8 +44,8 @@ export const resolveMoveAction = (
     if (nextPlayerPosition === null) {
       return action.fail(`Cannot move ${direction.toLowerCase()}`);
     }
-    discoverTiles(draft, nextPlayerPosition);
-    const nextTile = getTile(draft, nextPlayerPosition);
+    discoverTiles(state, nextPlayerPosition);
+    const nextTile = getTile(state, nextPlayerPosition);
     if (hasMobs(nextTile)) {
       return action.addPending({
         type: PlayerActionType.ATTACK,
@@ -54,9 +53,9 @@ export const resolveMoveAction = (
       });
     }
 
-    getNextState(draft, nextPlayerPosition);
+    getNextState(state, nextPlayerPosition);
     action.success(`Moved ${direction.toLowerCase()}`);
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

@@ -1,4 +1,3 @@
-import { immerable } from "immer";
 import { getId } from "../../utils/getId";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
@@ -16,7 +15,6 @@ export enum EntityRole {
 export type EntityType = symbol;
 
 export type Entity = {
-  [immerable]: boolean;
   id: Id;
   type: EntityType;
   componentById: Map<Id, Component>;
@@ -34,7 +32,6 @@ export const getEntityCreator = (type: string): EntityCreator => {
 
   const creator: EntityCreator = () => {
     const entity = {
-      [immerable]: true,
       id: getId(),
       componentById: new Map<Id, Component>(),
       componentByType: new Map<ComponentType, Id[]>(),

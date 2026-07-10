@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getBackpack } from "../../model/queries/containers";
 import { getExp } from "../../model/queries/exp";
 import { getMobById } from "../../model/queries/mobs";
@@ -15,8 +14,8 @@ export const resolveKillEntityAction = (
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
   const { entityId, position } = gameAction;
-  const nextState = produce(state, (draft) => {
-    const tile = getTile(draft, position);
+  (() => {
+    const tile = getTile(state, position);
     const mob = action.assert(getMobById(tile, entityId), "No mob to kill");
     const backpack = action.assert(getBackpack(mob), "Mob has no backpack");
     action.success(`${getEntityName(mob)} died`);
@@ -37,7 +36,7 @@ export const resolveKillEntityAction = (
       position,
     });
     return;
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

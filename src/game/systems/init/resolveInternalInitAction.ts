@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { INITIAL_TURN } from "../../../utils/constants";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -20,15 +19,15 @@ export const resolveInternalInitAction = (
 
   validateSpawnTables();
 
-  const nextState = produce(state, (draft) => {
-    draft.world = initWorld();
-    draft.turn = INITIAL_TURN;
-    draft.log = [];
-    draft.actionLog = [];
-    draft.initialized = true;
-    draft.player = initPlayer();
+  (() => {
+    state.world = initWorld();
+    state.turn = INITIAL_TURN;
+    state.log = [];
+    state.actionLog = [];
+    state.initialized = true;
+    state.player = initPlayer();
     action.info("You'd rather stay dead");
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

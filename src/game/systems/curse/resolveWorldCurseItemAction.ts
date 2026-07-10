@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -10,7 +9,7 @@ export const resolveCurseItemAction = (
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
 
-  const nextState = produce(state, () => {});
+  (() => {})();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

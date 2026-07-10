@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -14,12 +13,12 @@ export const resolveGainExpAction = (
   const action = new Action(gameAction);
   const { exp } = gameAction;
 
-  const nextState = produce(state, (draft) => {
-    const target = getPlayerEntity(draft);
+  (() => {
+    const target = getPlayerEntity(state);
 
     addExp(target, exp);
     action.info(`Gained ${exp} EXP`);
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

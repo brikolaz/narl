@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
@@ -18,10 +17,10 @@ export const resolveWorldAttackAction = (
 ): ActionResolution => {
   const { sourcePos, mobId } = gameAction;
   const action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const sourceTile = getTile(draft, sourcePos);
+  (() => {
+    const sourceTile = getTile(state, sourcePos);
     const mob = action.assert(getMobById(sourceTile, mobId), "No mob");
-    const player = getPlayerEntity(draft);
+    const player = getPlayerEntity(state);
     const mobWeapon =
       getManual(mob)?.getEquippedWeapon?.(mob) ?? getEquippedWeapon(mob);
     const mobName = getEntityName(mob);
@@ -33,7 +32,7 @@ export const resolveWorldAttackAction = (
     const playerHp = getHp(player);
     playerHp.hp = playerHp.hp - mobDmg;
     return action.success(`${mobName} hits you. You lose ${mobDmg} HP`);
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

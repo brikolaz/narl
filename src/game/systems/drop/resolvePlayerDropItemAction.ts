@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -24,8 +23,8 @@ export const resolvePlayerDropItemAction = (
 ): ActionResolution => {
   const { eqSlot, invSlot, targetPosition, reason } = gameAction;
   const action: Action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -48,7 +47,7 @@ export const resolvePlayerDropItemAction = (
       }
     }
     action.assertCondition(itemToDrop, "No item to drop");
-    const tile = getTile(draft, targetPosition);
+    const tile = getTile(state, targetPosition);
     tile.items.push(itemToDrop);
 
     clearContainerItemById(source, itemToDrop.id);
@@ -59,7 +58,7 @@ export const resolvePlayerDropItemAction = (
     return action.success(
       `Backpack is full. Dropped ${getEntityName(itemToDrop)} to the ground`,
     );
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

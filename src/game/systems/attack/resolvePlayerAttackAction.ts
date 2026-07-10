@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
@@ -69,11 +68,11 @@ export const resolvePlayerAttackAction = (
 ): ActionResolution => {
   const action = new Action(gameAction);
   const ctx = prepareAttack(state, gameAction);
-  const nextState = produce(state, (draft) => {
+  (() => {
     if (!ctx.ok) {
       return;
     }
-    const target = draft.world[ctx.targetPosition];
+    const target = state.world[ctx.targetPosition];
     if (!hasMobs(target)) {
       return action.fail("No mobs to attack in that direction.");
     }
@@ -106,8 +105,8 @@ export const resolvePlayerAttackAction = (
     }
     mobHp.hp = nextHp;
     action.success(`Dealt ${dmg} dmg to ${mobName}`);
-    getManual(mob)?.onAfterTakeDamage?.(mob, draft, action);
-  });
+    getManual(mob)?.onAfterTakeDamage?.(mob, state, action);
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

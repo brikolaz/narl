@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import {
   getBackpack,
   getContainerItemAt,
@@ -27,8 +26,8 @@ export const resolveUnequipAction = (
 ): ActionResolution => {
   const { eqSlot: eqSlotIndex } = gameAction;
   const action: Action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -49,7 +48,7 @@ export const resolveUnequipAction = (
     if (isFull) {
       action.addPending({
         type: PlayerActionType.DROP_ITEM,
-        targetPosition: getPlayerPosition(draft),
+        targetPosition: getPlayerPosition(state),
         eqSlot: eqSlotIndex,
         invSlot: undefined,
         reason: PlayerDropItemActionReason.BACKPACK_FULL,
@@ -62,7 +61,7 @@ export const resolveUnequipAction = (
     action.success(
       `Unequipped ${getEntityName(item)} from ${slotName} EQ slot`,
     );
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

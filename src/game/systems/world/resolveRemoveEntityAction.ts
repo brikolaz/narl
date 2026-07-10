@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getTile } from "../../model/queries/tile";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -13,10 +12,10 @@ export const resolveRemoveEntityAction = (
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
   const { entityId, position } = gameAction;
-  const nextState = produce(state, (draft) => {
-    const tile = getTile(draft, position);
+  (() => {
+    const tile = getTile(state, position);
     removeMobById(tile, entityId);
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

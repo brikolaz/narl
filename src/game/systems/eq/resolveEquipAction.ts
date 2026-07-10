@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import type { Component } from "../../../core/ecs/Component";
 import {
   getBackpack,
@@ -33,8 +32,8 @@ export const resolveEquipAction = (
 ): ActionResolution => {
   const { invSlot: invSlotIndex, eqSlot: eqSlotIndex } = gameAction;
   const action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -68,8 +67,8 @@ export const resolveEquipAction = (
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );
-    curse(itemToEquip, draft, action);
-  });
+    curse(itemToEquip, state, action);
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { removeById } from "../../../utils/removeById";
 import { getPlayer } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
@@ -27,9 +26,9 @@ export const resolvePickUpUnpack = (
   gameAction: PlayerPickUpUnpackAction,
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const { player, position: playerPosition } = getPlayer(draft);
-    getVisibleTiles(draft).forEach((tile) => {
+  (() => {
+    const { player, position: playerPosition } = getPlayer(state);
+    getVisibleTiles(state).forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;
       }
@@ -65,7 +64,7 @@ export const resolvePickUpUnpack = (
         );
       }
     });
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

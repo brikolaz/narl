@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { removeById } from "../../../utils/removeById";
 import { getPlayer } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
@@ -22,9 +21,9 @@ export const resolvePickUpAction = (
   gameAction: PlayerPickUpAction,
 ): ActionResolution => {
   const action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const { player, position: playerPosition } = getPlayer(draft);
-    getVisibleTiles(draft).forEach((tile) => {
+  (() => {
+    const { player, position: playerPosition } = getPlayer(state);
+    getVisibleTiles(state).forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;
       }
@@ -50,9 +49,9 @@ export const resolvePickUpAction = (
       addItemToEntityBackpack(player, itemToPickUp);
       removeById(tile.items, itemToPickUp.id);
       action.success(`Picked up ${getEntityName(itemToPickUp)}`);
-      curse(itemToPickUp, draft, action);
+      curse(itemToPickUp, state, action);
     });
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

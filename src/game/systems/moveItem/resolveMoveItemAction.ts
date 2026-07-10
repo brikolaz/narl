@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -25,8 +24,8 @@ export const resolveMoveItemAction = (
 ): ActionResolution => {
   const { fromSlot, toSlot } = gameAction;
   const action: Action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const backpack = action.assert(getBackpack(player), "No backpack");
     const fromItem = getContainerItemAt(backpack, fromSlot);
     const toItem = getContainerItemAt(backpack, toSlot);
@@ -57,7 +56,7 @@ export const resolveMoveItemAction = (
     action.success(
       `Moved ${getEntityName(fromItem)} from inv slot ${fromSlot} to ${getEntityName(toItem)} at slot ${toSlot}`,
     );
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };

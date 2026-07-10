@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
@@ -16,8 +15,8 @@ export const resolveInspectEqAction = (
   const { eqSlot } = gameAction;
   const action = new Action(gameAction);
 
-  const nextState = produce(state, (draft) => {
-    const player = getPlayerEntity(draft);
+  (() => {
+    const player = getPlayerEntity(state);
     const slot = getEqSlot(player, eqSlot);
     const item = getContainerItemAt(slot, 1);
 
@@ -27,8 +26,8 @@ export const resolveInspectEqAction = (
     increaseInspected(item);
 
     action.info(getItemInspectText(item));
-    curse(item, draft, action);
-  });
+    curse(item, state, action);
+  })();
 
-  return action.resolve(nextState, false);
+  return action.resolve(state, false);
 };

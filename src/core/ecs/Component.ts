@@ -1,4 +1,3 @@
-import { immerable } from "immer";
 import { getId } from "../../utils/getId";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
@@ -6,7 +5,6 @@ import { getEcsNamespace, Namespace } from "./namespaces";
 export type ComponentType = symbol;
 
 export type Component<Props extends object | undefined = object> = {
-  [immerable]: boolean;
   id: Id;
   type: ComponentType;
   defaults: Props;
@@ -42,7 +40,6 @@ export function getComponentCreator<Props extends Component>(
 
   const creator = (props?: Partial<Props>) => {
     const component = {
-      [immerable]: true,
       id: getId(),
       type: componentType,
       defaults: defaults ?? ({} as Props),

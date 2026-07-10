@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -17,8 +16,8 @@ export const resolveWorldDropItemAction = (
 ): ActionResolution => {
   const { entityId, targetPosition, itemId } = gameAction;
   const action = new Action(gameAction);
-  const nextState = produce(state, (draft) => {
-    const tile = getTile(draft, targetPosition);
+  (() => {
+    const tile = getTile(state, targetPosition);
     const source = action.assert(getMobById(tile, entityId), "No mob");
     const sourceEntityName = getEntityName(source);
 
@@ -43,7 +42,7 @@ export const resolveWorldDropItemAction = (
 
     const itemNames = itemsToDrop.map((item) => getEntityName(item)).join(", ");
     return action.success(`${sourceEntityName} dropped ${itemNames}`);
-  });
+  })();
 
-  return action.resolve(nextState);
+  return action.resolve(state);
 };
