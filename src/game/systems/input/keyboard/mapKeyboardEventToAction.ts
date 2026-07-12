@@ -4,14 +4,21 @@ import { getInternalLogAction } from "../../log/log";
 import { getLastFallbackMessage, type KeyboardToActionChain } from "./chain";
 import { createKeyboardToAction } from "./create";
 
+type KeyboardEventResult = {
+  action: GameAction | undefined;
+  keyboardChain: KeyboardToActionChain;
+};
+
 export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
   keyboardChain: KeyboardToActionChain,
   gameState: GameState,
-): GameAction | undefined => {
+): KeyboardEventResult => {
   if (event.key === "Escape" && keyboardChain) {
-    keyboardChain = undefined;
-    return getInternalLogAction("Action canceled");
+    return {
+      action: getInternalLogAction("Action canceled"),
+      keyboardChain: undefined,
+    };
   }
 
   const root = createKeyboardToAction(gameState);
@@ -22,24 +29,31 @@ export const mapKeyboardEventToAction = (
     const fallback = getLastFallbackMessage(keyboardChain);
 
     if (fallback !== undefined) {
-      return getInternalLogAction(fallback);
+      return {
+        action: getInternalLogAction(fallback),
+        keyboardChain,
+      };
     }
 
-    return undefined;
+    return { action: undefined, keyboardChain };
   }
 
   if (command.action) {
-    keyboardChain = undefined;
-    return command.action;
+    return { action: command.action, keyboardChain: undefined };
   }
 
-  if (command.next && keyboardChain) {
-    keyboardChain = {
+  if (command.next) {
+    const nextKeyboardChain: KeyboardToActionChain = {
       current: command.next(),
-      history: [...(keyboardChain.history ?? []), command],
+      history: [...(keyboardChain?.history ?? []), command],
     };
-    return command.message ? getInternalLogAction(command.message) : undefined;
+    return {
+      action: command.message
+        ? getInternalLogAction(command.message)
+        : undefined,
+      keyboardChain: nextKeyboardChain,
+    };
   }
 
-  return undefined;
+  return { action: undefined, keyboardChain };
 };

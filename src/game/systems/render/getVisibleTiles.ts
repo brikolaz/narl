@@ -8,7 +8,7 @@ import type { GameState, Tile } from "../../state/state";
 
 export const getVisibleTiles = (gameState: GameState): Tile[] => {
   const playerPosition = getPlayerPosition(gameState);
-  const half = Math.floor(MAP_SIZE / 2); // 4
+  const half = Math.floor(MAP_SIZE / 2);
 
   let start = playerPosition - half;
 
