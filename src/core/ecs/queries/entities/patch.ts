@@ -2,11 +2,11 @@ import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import {
   getEntityRegistryRecordById,
-  upsertEntityRegistryRecords
+  removeEntityRegistryRecordById,
+  upsertEntityRegistryRecords,
 } from "../../registry/entityRegistry";
 import { upsertEntities } from "./add";
 import { getEntityById } from "./get";
-import { removeEntityById } from "./remove";
 
 const patchDataEntityById = (
   id: Id,
@@ -55,7 +55,7 @@ export const replaceEntityById = (oldEntity: Id, nextEntity: Entity): void => {
       return sibling;
     }) ?? [],
   );
-  removeEntityById(oldEntity);
+  removeEntityRegistryRecordById(oldEntity);
   upsertEntityRegistryRecords({
     parent: parent.id,
     entity: nextEntity,
