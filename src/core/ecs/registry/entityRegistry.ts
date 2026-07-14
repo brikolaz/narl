@@ -12,7 +12,7 @@ export type EntityRegistryRecord =
       parent: Id;
       role: EntityRole;
     };
-    
+
 export type EntityRegistryById = {
   [id: Id]: EntityRegistryRecord;
 };
@@ -81,5 +81,9 @@ export const patchEntityRegistryRecordById = (
   if (!hasEntityRegistryRecord(id)) {
     return;
   }
-  ENTITY_REGISTRY_BY_ID[id] = patcher(ENTITY_REGISTRY_BY_ID[id]);
+  const nextRecord = patcher(ENTITY_REGISTRY_BY_ID[id]);
+  ENTITY_REGISTRY_BY_ID[nextRecord.entity.id] = nextRecord;
+  if (id !== nextRecord.entity.id) {
+    removeEntityRegistryRecordById(id);
+  }
 };

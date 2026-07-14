@@ -1,6 +1,8 @@
 import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
-import { upsertRegistryEntities } from "../../registry/entityRegistry";
+import {
+  upsertRegistryEntities,
+} from "../../registry/entityRegistry";
 import { getEntityById } from "./get";
 
 const getTargetEntity = (
@@ -51,7 +53,6 @@ const upsertDataEntities = (
     }
     entity.entityByRole.set(entityRole as EntityRole, nextIds);
   }
-
 };
 
 const _upsertEntities = (
@@ -81,4 +82,8 @@ export const upsertRoleEntities = (
   >,
 ): void => {
   _upsertEntities(entity, childrenEntities);
+};
+
+export const addRootEntity = (entity: Entity): void => {
+  upsertRegistryEntities(entity);
 };

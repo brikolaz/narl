@@ -81,7 +81,7 @@ export const getFirstEmptyContainerSlot = (
   const index = getEntitiesByRole(container, EntityRole.ITEM).findIndex(
     isPlaceholderSlot,
   );
-
+  
   if (index === -1) {
     return undefined;
   }
