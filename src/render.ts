@@ -43,7 +43,15 @@ const game = document.createElement("main");
 game.className = "game";
 game.append(stats, map, log);
 
-root.append(backpack, game, eq);
+const inventory = document.createElement("aside");
+inventory.className = "inventory";
+inventory.append(eq, backpack);
+
+const inventorySpacer = document.createElement("aside");
+inventorySpacer.className = "inventory-spacer";
+inventorySpacer.setAttribute("aria-hidden", "true");
+
+root.append(inventory, game, inventorySpacer);
 
 const renderAsciiGrid = (title: string, glyphs: string[]) => {
   const border = "+---+---+---+";

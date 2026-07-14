@@ -13,6 +13,7 @@ body {
 }
 
 #root {
+  --inventory-width: 13ch;
   display: flex;
   gap: 3rem;
   align-items: center;
@@ -23,6 +24,19 @@ body {
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+}
+
+.inventory {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: var(--inventory-width);
+  flex: 0 0 var(--inventory-width);
+}
+
+.inventory-spacer {
+  width: var(--inventory-width);
+  flex: 0 0 var(--inventory-width);
 }
 
 .backpack,
