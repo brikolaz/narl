@@ -9,6 +9,8 @@ import { getPlayerEntity } from "./game/model/queries/player";
 import type { GameState } from "./game/state/state";
 import { EqSlot } from "./game/systems/eq/types";
 import { getRenderedMap } from "./game/systems/render/getRenderedMap";
+import { getEqStats } from "./game/systems/stats/eqStats";
+import { getPlayerStats } from "./game/systems/stats/playerStats";
 import "./index.css";
 
 const root = document.querySelector<HTMLDivElement>("#root");
@@ -20,6 +22,10 @@ if (!root) {
 const map = document.createElement("pre");
 map.className = "map";
 map.setAttribute("aria-label", "Game map");
+
+const stats = document.createElement("pre");
+stats.className = "stats";
+stats.setAttribute("aria-label", "Player stats");
 
 const backpack = document.createElement("pre");
 backpack.className = "backpack";
@@ -35,7 +41,7 @@ log.setAttribute("aria-label", "Game log");
 
 const game = document.createElement("main");
 game.className = "game";
-game.append(map, log);
+game.append(stats, map, log);
 
 root.append(backpack, game, eq);
 
@@ -53,11 +59,20 @@ const renderAsciiGrid = (title: string, glyphs: string[]) => {
 };
 
 export const render = (state: GameState) => {
+  const player = getPlayerEntity(state);
+
+  stats.textContent = Object.entries({
+    ...getPlayerStats(player),
+    ...getEqStats(player),
+  })
+    .map(([stat, value]) => `${stat}: ${value}`)
+    .join("\n");
+
   map.textContent = getRenderedMap(state)
     .map((tile) => tile.char)
     .join("");
 
-  const playerBackpack = getBackpack(getPlayerEntity(state));
+  const playerBackpack = getBackpack(player);
   const backpackGlyphs = Array.from({ length: 9 }, (_, index) => {
     const item = playerBackpack
       ? getContainerItemAt(playerBackpack, index + 1)
@@ -66,7 +81,6 @@ export const render = (state: GameState) => {
   });
   backpack.textContent = renderAsciiGrid("BACKPACK", backpackGlyphs);
 
-  const player = getPlayerEntity(state);
   const eqGlyphs = Array.from({ length: 9 }, (_, index) => {
     const item = getEqSlotItem(player, (index + 1) as EqSlot);
     return getComponentByType(item, GlyphComponent)?.glyph ?? " ";
