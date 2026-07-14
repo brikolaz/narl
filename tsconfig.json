@@ -1,7 +1,4 @@
 {
-  "compilerOptions": {
-    "erasableSyntaxOnly": false
-  },
   "files": [],
   "references": [
     {
