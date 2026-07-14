@@ -12,6 +12,7 @@ let state = dispatchGameAction({ type: InternalActionType.INIT })(
 let keyboardChain: KeyboardToActionChain = undefined;
 
 render(state);
+console.log(state);
 const handleKeyDown = (event: KeyboardEvent) => {
   const result = mapKeyboardEventToAction(event, keyboardChain, state);
   keyboardChain = result.keyboardChain;
@@ -24,6 +25,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 
   state = dispatchGameAction(result.action)(state);
   render(state);
+  console.log(state);
 };
 
 window.addEventListener("keydown", handleKeyDown);
