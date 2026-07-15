@@ -33,6 +33,10 @@ export const resolveMoveItemAction = (
       return action.fail("Invalid item selection");
     }
 
+    if (fromItem.id === toItem.id) {
+      return action.fail("Source and target are the same item");
+    }
+
     if (!isContainer(toItem)) {
       return action.fail("Target item is not a container");
     }
