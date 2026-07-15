@@ -5,7 +5,6 @@ import {
   getComponentRegistryRecordById,
   removeComponentRegistryRecordsById,
 } from "../../registry/componentRegistry";
-import { getEntityById } from "../entities/get";
 
 const removeDataComponentsByType = (
   entity: Entity | undefined,
@@ -16,7 +15,9 @@ const removeDataComponentsByType = (
   }
   const ids: Id[] = [];
   for (const componentType of componentTypes) {
-    const nextIds = entity.componentByType.get(componentType) ?? [];
+    const nextIds = (entity.componentByType.get(componentType) ?? []).map(
+      (e) => e.id,
+    );
     ids.push(...nextIds);
     for (const id of nextIds) {
       entity.componentById.delete(id);
@@ -38,7 +39,7 @@ export const removeComponentsByType = (
 
 const removeDataComponentById = (id: Id): void => {
   const record = getComponentRegistryRecordById(id);
-  const parent = getEntityById(record.parent);
+  const parent = record.parent;
   const type = record.component.type;
   if (!record) return;
   if (!parent) {
@@ -47,7 +48,7 @@ const removeDataComponentById = (id: Id): void => {
 
   const ids = parent.componentByType.get(type);
   if (ids) {
-    const nextIds = ids.filter((componentId) => componentId !== id);
+    const nextIds = ids.filter((component) => component.id !== id);
 
     if (nextIds.length) {
       parent.componentByType.set(type, nextIds);

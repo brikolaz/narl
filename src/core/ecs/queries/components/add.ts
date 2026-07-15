@@ -13,9 +13,9 @@ const addDataComponents = (
     return;
   }
   for (const component of components) {
-    const ids = entity.componentByType.get(component.type) ?? [];
-    ids.push(component.id);
-    entity.componentByType.set(component.type, ids);
+    const nextComponents = entity.componentByType.get(component.type) ?? [];
+    nextComponents.push(component);
+    entity.componentByType.set(component.type, nextComponents);
     entity.componentById.set(component.id, component);
   }
 };
@@ -35,7 +35,7 @@ export const addComponents = (
   upsertComponentRegistryRecords(
     ...components.map((component) => ({
       component,
-      parent: source.id,
+      parent: source,
     })),
   );
 };
@@ -45,13 +45,13 @@ const upsertDataComponents = (
   ...components: Component[]
 ): void => {
   for (const component of components) {
-    const ids = entity.componentByType.get(component.type) ?? [];
-
+    const nextComponents = entity.componentByType.get(component.type) ?? [];
+    const ids = nextComponents.map((c) => c.id);
     if (!ids.includes(component.id)) {
-      ids.push(component.id);
+      nextComponents.push(component);
     }
 
-    entity.componentByType.set(component.type, ids);
+    entity.componentByType.set(component.type, nextComponents);
     entity.componentById.set(component.id, component);
   }
 };
@@ -74,7 +74,7 @@ export const upsertComponents = (
   upsertComponentRegistryRecords(
     ...components.map((component) => ({
       component,
-      parent: source.id,
+      parent: source,
     })),
   );
 

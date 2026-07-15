@@ -11,17 +11,14 @@ export const removeDataEntityById = (id: Id): void => {
   const record = getEntityRegistryRecordById(id);
   if (!record) return;
 
-  if (record.parent !== null && record.role !== null) {
-    const parentRecord = getEntityRegistryRecordById(record.parent);
-    if (!parentRecord) {
-      throw new Error(`No parent record in registry`);
-    }
-    const siblings = getEntitiesByRole(parentRecord.entity, record.role);
-    parentRecord?.entity.entityByRole.set(
+  const parent = record.parent;
+  if (parent !== null && record.role !== null) {
+    const siblings = getEntitiesByRole(parent, record.role);
+    parent.entityByRole.set(
       record.role,
-      siblings.filter((entity) => entity.id !== id).map((entity) => entity.id),
+      new Set(siblings.filter((entity) => entity.id !== id)),
     );
-    parentRecord.entity.entityById.delete(id);
+    parent.entityById.delete(id);
   }
 
   for (const componentId of record.entity.componentById.keys()) {

@@ -18,9 +18,9 @@ export type Entity = {
   id: Id;
   type: EntityType;
   componentById: Map<Id, Component>;
-  componentByType: Map<ComponentType, Id[]>;
+  componentByType: Map<ComponentType, Component[]>;
   entityById: Map<Id, Entity>;
-  entityByRole: Map<EntityRole, Id[]>;
+  entityByRole: Map<EntityRole, Set<Entity>>;
 };
 
 export type EntityCreator = { (): Entity; type: EntityType };
@@ -34,9 +34,9 @@ export const getEntityCreator = (type: string): EntityCreator => {
     const entity = {
       id: getId(),
       componentById: new Map<Id, Component>(),
-      componentByType: new Map<ComponentType, Id[]>(),
+      componentByType: new Map<ComponentType, Component[]>(),
       entityById: new Map<Id, Entity>(),
-      entityByRole: new Map<EntityRole, Id[]>(),
+      entityByRole: new Map<EntityRole, Set<Entity>>(),
       type: entityType,
     };
     upsertRegistryEntities(entity);

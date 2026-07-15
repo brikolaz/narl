@@ -9,7 +9,7 @@ export type EntityRegistryRecord =
     }
   | {
       entity: Entity;
-      parent: Id;
+      parent: Entity;
       role: EntityRole;
     };
 
@@ -48,7 +48,7 @@ export const upsertRegistryEntities = (
   for (const [role, children] of Object.entries(entitiesToRegister)) {
     for (const child of children) {
       records.push({
-        parent: entity.id,
+        parent: entity,
         entity: child,
         role: role as EntityRole,
       });
@@ -95,10 +95,7 @@ export const detachRegistryEntity = (id: Id) => {
     return;
   }
 
-  const parent =
-    record.parent === null
-      ? undefined
-      : getEntityRegistryRecordById(record.parent)?.entity;
+  const parent = record.parent === null ? undefined : record.parent;
 
   if (!parent) {
     return;
@@ -109,9 +106,8 @@ export const detachRegistryEntity = (id: Id) => {
   parent.entityById.delete(id);
   parent.entityByRole.set(
     role,
-    parent.entityByRole.get(role)?.filter((sibling) => {
-      return sibling !== id;
-    }) ?? [],
+    parent.entityByRole.get(role)?.difference(new Set([record.entity])) ??
+      new Set(),
   );
 
   patchEntityRegistryRecordById(id, (r) => ({

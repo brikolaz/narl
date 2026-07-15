@@ -9,7 +9,7 @@ export const hasEntitiesByRole = (
   if (entity === undefined) return false;
   const source = typeof entity === "number" ? getEntityById(entity) : entity;
 
-  return (source?.entityByRole?.get(entityRole)?.length ?? 0) > 0;
+  return (source?.entityByRole?.get(entityRole)?.size ?? 0) > 0;
 };
 
 export const hasEntityById = (

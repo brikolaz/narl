@@ -14,12 +14,10 @@ export const getEntitiesByRole = (
     return [];
   }
   const source = typeof entity === "number" ? getEntityById(entity) : entity;
-  const ids = source?.entityByRole.get(entityRole) ?? [];
-  return ids
-    .map((id) => source?.entityById.get(id))
-    .filter(
-      (targetEntity): targetEntity is Entity => targetEntity !== undefined,
-    );
+  const entities = [...(source?.entityByRole.get(entityRole) ?? [])];
+  return entities.filter(
+    (targetEntity): targetEntity is Entity => targetEntity !== undefined,
+  );
 };
 
 export const getEntityByRole = (

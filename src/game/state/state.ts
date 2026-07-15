@@ -43,7 +43,7 @@ export const getInitialState = (): GameState => ({
   log: [],
   actionLog: [],
   player: {
-    player: getEntityCreator("DUMMY")(),
+    player: getEntityCreator("DUMMY")(), // todo: needs to be removed on init!
     position: 0,
   },
   registry: {

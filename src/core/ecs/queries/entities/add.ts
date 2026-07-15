@@ -1,8 +1,6 @@
 import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
-import {
-  upsertRegistryEntities,
-} from "../../registry/entityRegistry";
+import { upsertRegistryEntities } from "../../registry/entityRegistry";
 import { getEntityById } from "./get";
 
 const getTargetEntity = (
@@ -46,12 +44,15 @@ const upsertDataEntities = (
   children: Partial<Record<EntityRole, Entity[]>>,
 ): void => {
   for (const [entityRole, entities] of Object.entries(children)) {
-    const nextIds = entity.entityByRole.get(entityRole as EntityRole) ?? [];
     for (const child of entities) {
-      nextIds.push(child.id);
       entity.entityById.set(child.id, child);
+      entity.entityByRole.set(
+        entityRole as EntityRole,
+        (entity.entityByRole.get(entityRole as EntityRole) ?? new Set())?.add(
+          child,
+        ),
+      );
     }
-    entity.entityByRole.set(entityRole as EntityRole, nextIds);
   }
 };
 

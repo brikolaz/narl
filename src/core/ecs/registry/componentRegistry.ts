@@ -1,9 +1,10 @@
 import type { Component } from "../Component";
+import type { Entity } from "../Entity";
 import type { Id } from "../Id";
 
 type ComponentRegistryRecord = {
   component: Component;
-  parent: Id;
+  parent: Entity;
 };
 
 export type ComponentRegistryById = {

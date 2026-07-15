@@ -22,8 +22,7 @@ export const getComponentsByType = <P extends object>(
 
   return (entity.componentByType
     .get(type)
-    ?.map((componentId) => entity.componentById.get(componentId))
-    .filter((component) => component !== undefined) ?? []) as Component<P>[];
+    ?.filter((component) => component !== undefined) ?? []) as Component<P>[];
 };
 
 export const getComponentsByTypes = (
