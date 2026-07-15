@@ -55,8 +55,22 @@ body {
 .map {
   margin: 0;
   font: 2rem/1 monospace;
-  letter-spacing: 0.15em;
   white-space: pre;
+}
+
+.map-row,
+.map-positions {
+  display: grid;
+  line-height: 1;
+  text-align: center;
+}
+
+.map-positions {
+  height: 2em;
+}
+
+.map-position {
+  font-size: 0.5em;
 }
 
 .log {

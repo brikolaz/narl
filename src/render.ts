@@ -75,9 +75,34 @@ const appendColoredGlyph = (
   target.append(coloredGlyph);
 };
 
-const renderColoredGlyphs = (target: HTMLElement, glyphs: ColoredGlyph[]) => {
+const renderMap = (
+  target: HTMLElement,
+  tiles: Array<ColoredGlyph & { position: number }>,
+) => {
   const fragment = document.createDocumentFragment();
-  glyphs.forEach((glyph) => appendColoredGlyph(fragment, glyph));
+  const glyphs = document.createElement("span");
+  glyphs.className = "map-row";
+  tiles.forEach((tile) => {
+    const glyph = document.createElement("span");
+    appendColoredGlyph(glyph, tile);
+    glyphs.append(glyph);
+  });
+
+  const positions = document.createElement("span");
+  positions.className = "map-positions";
+  [glyphs, positions].forEach((row) => {
+    row.style.gridTemplateColumns = `repeat(${tiles.length}, 1fr)`;
+    row.style.width = `${tiles.length * 1.15}em`;
+  });
+  tiles.forEach((tile) => {
+    const position = document.createElement("span");
+    position.className = "map-position";
+    position.textContent = String(tile.position).padEnd(4).split("").join("\n");
+    positions.append(position);
+  });
+
+  fragment.append(glyphs, "\n", positions);
+
   target.replaceChildren(fragment);
 };
 
@@ -117,11 +142,12 @@ export const render = (state: GameState) => {
     .map(([stat, value]) => `${stat}: ${value}`)
     .join("\n");
 
-  renderColoredGlyphs(
+  renderMap(
     map,
     getRenderedMap(state).map((tile) => ({
       char: tile.char ?? " ",
       color: tile.color,
+      position: tile.position,
     })),
   );
 
