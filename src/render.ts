@@ -48,14 +48,16 @@ const appendColoredGlyph = (
   target: DocumentFragment | HTMLElement,
   glyph: ColoredGlyphView,
 ) => {
+  const char = glyph.char || " ";
+
   if (!glyph.color) {
-    target.append(glyph.char);
+    target.append(char);
     return;
   }
 
   const coloredGlyph = document.createElement("span");
   coloredGlyph.style.color = glyph.color;
-  coloredGlyph.textContent = glyph.char;
+  coloredGlyph.textContent = char;
   target.append(coloredGlyph);
 };
 
