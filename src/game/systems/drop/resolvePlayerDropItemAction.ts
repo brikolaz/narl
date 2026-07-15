@@ -3,7 +3,7 @@ import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEqSlot } from "../../model/queries/eq";
-import { clearContainerItemById } from "../inv/containers";
+import { clearContainerItemById } from "../containers/containers";
 import {
   getBackpack,
   getContainerItemAt,
@@ -15,6 +15,7 @@ import {
 import { getTile } from "../../model/queries/tile";
 import { getEntityName } from "../inspect/getEntityName";
 import type { Entity } from "../../../core/ecs/Entity";
+import { detachRegistryEntity } from "../../../core/ecs/registry/entityRegistry";
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
@@ -50,7 +51,8 @@ export const resolvePlayerDropItemAction = (
     const tile = getTile(state, targetPosition);
     tile.items.push(itemToDrop);
 
-    clearContainerItemById(source, itemToDrop.id);
+    detachRegistryEntity(itemToDrop.id)
+    // clearContainerItemById(source, itemToDrop.id);
     if (reason === PlayerDropItemActionReason.MANUAL) {
       return action.success(`Dropped ${getEntityName(itemToDrop)}`);
     }

@@ -1,5 +1,5 @@
 import type { EqSlot } from "../eq/types";
-import type { InvSlot } from "../inv/types";
+import type { InvSlot } from "../containers/types";
 import type { Direction } from "../turn/types";
 
 export enum PlayerActionType {

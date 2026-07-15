@@ -1,7 +1,15 @@
 import { EntityRole, type Entity } from "../../../core/ecs/Entity";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
+import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import {
+  upsertEntities,
+  upsertRoleEntities,
+} from "../../../core/ecs/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
-import { replaceEntityById } from "../../../core/ecs/queries/entities/patch";
-import { PlaceholderEntityFactory } from "../../model/entities/items/PlaceholderItemEntity";
+import { removeEntityById } from "../../../core/ecs/queries/entities/remove";
+import { detachRegistryEntity } from "../../../core/ecs/registry/entityRegistry";
+import { SizeComponent } from "../../model/components/containers/SizeComponent";
+import { PositionComponent } from "../../model/components/PositionComponent";
 import {
   getBackpack,
   getContainerItemAt,
@@ -9,19 +17,14 @@ import {
   getFirstEmptyContainerSlot,
   isContainer,
 } from "../../model/queries/containers";
-
-export type ContainerSlot = number;
+import type { ContainerSlot } from "./types";
 
 export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
   const backpack = getBackpack(entity);
   if (!backpack) {
     throw new Error("No backpack");
   }
-  const slot = getFirstEmptyContainerSlot(backpack);
-  if (!slot) {
-    throw new Error("Backpack is full");
-  }
-  setContainerItemAt(backpack, slot, item);
+  addItemToContainer(backpack, item);
 };
 
 // TODO: rewrite to itemS
@@ -42,30 +45,6 @@ export const addItemToContainer = (
   setContainerItemAt(container, slot, item);
 };
 
-export const swapContainerItems = (
-  container: Entity,
-  sourceSlot: ContainerSlot,
-  targetSlot: ContainerSlot,
-): void => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  const sourceItem = getContainerItemAt(container, sourceSlot);
-  const targetItem = getContainerItemAt(container, targetSlot);
-  if (!sourceItem) {
-    throw new Error("No source item to swap");
-  }
-  if (!targetItem) {
-    throw new Error("No target item to swap");
-  }
-  setContainerItemAt(container, targetSlot, sourceItem);
-  setContainerItemAt(
-    container,
-    sourceSlot,
-    targetItem ?? PlaceholderEntityFactory.getDefault(),
-  );
-};
-
 export const setContainerItemAt = (
   container: Entity,
   slot: ContainerSlot,
@@ -74,12 +53,22 @@ export const setContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const nextItems = getEntitiesByRole(container, EntityRole.ITEM);
-  if (!nextItems[slot - 1]) {
-    throw new Error(`Container slot ${slot} doesn't exist`);
+  const size =
+    getComponentByType(container, SizeComponent)?.size ??
+    SizeComponent.defaults.size;
+  if (slot > size) {
+    return;
   }
-  const previousItem = nextItems[slot - 1];
-  replaceEntityById(previousItem.id, entity);
+
+  const existingItem = getContainerItemAt(container, slot);
+  if (existingItem) {
+    removeEntityById(existingItem.id);
+  }
+  detachRegistryEntity(entity.id);
+  upsertComponents(entity, PositionComponent({ position: slot }));
+  upsertRoleEntities(container, {
+    [EntityRole.ITEM]: entity,
+  });
 };
 
 export const clearContainerItemAt = (
@@ -89,21 +78,26 @@ export const clearContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  setContainerItemAt(container, slot, PlaceholderEntityFactory.getDefault());
+  const item = getContainerItems(container).find((item) => {
+    return getComponentByType(item, PositionComponent)?.position === slot;
+  });
+  if (!item) {
+    return;
+  }
+  removeEntityById(item.id);
 };
 
 export const clearContainerItemById = (container: Entity, id: number): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const slot =
-    getEntitiesByRole(container, EntityRole.ITEM).findIndex(
-      (item) => item.id === id,
-    ) + 1;
-  if (slot === 0) {
-    return;
+  const item = getEntitiesByRole(container, EntityRole.ITEM).find(
+    (item) => item.id === id,
+  );
+  if (!item) {
+    throw new Error("Item doesn't belong to the container");
   }
-  clearContainerItemAt(container, slot);
+  removeEntityById(id);
 };
 
 export const clearContainerItems = (container: Entity): void => {

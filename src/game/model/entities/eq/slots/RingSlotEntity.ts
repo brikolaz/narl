@@ -1,17 +1,12 @@
-import {
-  EntityRole,
-  getEntityCreator,
-  type Entity,
-} from "../../../../../core/ecs/Entity";
+import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
+import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { RingComponent } from "../../../components/eq/RingComponent";
 import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
-import { PlaceholderEntityFactory } from "../../items/PlaceholderItemEntity";
 
 export const RingSlotEntity = getEntityCreator("RING_SLOT");
 
@@ -35,11 +30,8 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       RingComponent(),
       ContainerComponent(),
       VariantComponent({ variant: RingSlotVariants.DEFAULT }),
+      SizeComponent({ size: 1 }),
     );
-
-    upsertRoleEntities(eqSlot, {
-      [EntityRole.ITEM]: [PlaceholderEntityFactory.getDefault()],
-    });
 
     return eqSlot;
   },
@@ -53,11 +45,8 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       RingComponent(),
       ContainerComponent(),
       VariantComponent({ variant: RingSlotVariants.RING1 }),
+      SizeComponent({ size: 1 }),
     );
-
-    upsertRoleEntities(eqSlot, {
-      [EntityRole.ITEM]: [PlaceholderEntityFactory.getDefault()],
-    });
 
     return eqSlot;
   },
@@ -71,11 +60,8 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       RingComponent(),
       ContainerComponent(),
       VariantComponent({ variant: RingSlotVariants.RING2 }),
+      SizeComponent({ size: 1 }),
     );
-
-    upsertRoleEntities(eqSlot, {
-      [EntityRole.ITEM]: [PlaceholderEntityFactory.getDefault()],
-    });
 
     return eqSlot;
   },

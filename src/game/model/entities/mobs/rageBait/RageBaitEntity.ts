@@ -9,7 +9,7 @@ import { EqSlot } from "../../../../systems/eq/types";
 import {
   addItemToContainer,
   setContainerItemAt,
-} from "../../../../systems/inv/containers";
+} from "../../../../systems/containers/containers";
 import { RNG } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";

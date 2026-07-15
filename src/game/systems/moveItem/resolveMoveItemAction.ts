@@ -5,7 +5,7 @@ import type { ActionResolution } from "../actions/types";
 import {
   addItemToContainer,
   clearContainerItemById,
-} from "../inv/containers";
+} from "../containers/containers";
 import {
   getBackpack,
   getContainerItemAt,
@@ -50,7 +50,7 @@ export const resolveMoveItemAction = (
       }
     }
 
-    clearContainerItemById(backpack, fromItem.id);
+    // clearContainerItemById(backpack, fromItem.id);
     addItemToContainer(toItem, fromItem);
 
     action.success(

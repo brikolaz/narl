@@ -13,7 +13,7 @@ import { getEntityName } from "../inspect/getEntityName";
 import {
   addItemToEntityBackpack,
   clearContainerItemAt,
-} from "../inv/containers";
+} from "../containers/containers";
 import {
   PlayerActionType,
   PlayerDropItemActionReason,

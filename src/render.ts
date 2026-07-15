@@ -1,4 +1,5 @@
 import { getComponentByType } from "./core/ecs/queries/components/get";
+import { ColorComponent } from "./game/model/components/display/ColorComponent";
 import { GlyphComponent } from "./game/model/components/display/GlyphComponent";
 import {
   getBackpack,
@@ -8,6 +9,7 @@ import { getEqSlotItem } from "./game/model/queries/eq";
 import { getPlayerEntity } from "./game/model/queries/player";
 import type { GameState } from "./game/state/state";
 import { EqSlot } from "./game/systems/eq/types";
+import { ALL_CONTAINER_SLOTS } from "./game/systems/containers/types";
 import { getRenderedMap } from "./game/systems/render/getRenderedMap";
 import { getEqStats } from "./game/systems/stats/eqStats";
 import { getPlayerStats } from "./game/systems/stats/playerStats";
@@ -53,17 +55,56 @@ inventorySpacer.setAttribute("aria-hidden", "true");
 
 root.append(inventory, game, inventorySpacer);
 
-const renderAsciiGrid = (title: string, glyphs: string[]) => {
+type ColoredGlyph = {
+  char: string;
+  color?: string;
+};
+
+const appendColoredGlyph = (
+  target: DocumentFragment | HTMLElement,
+  glyph: ColoredGlyph,
+) => {
+  if (!glyph.color) {
+    target.append(glyph.char);
+    return;
+  }
+
+  const coloredGlyph = document.createElement("span");
+  coloredGlyph.style.color = glyph.color;
+  coloredGlyph.textContent = glyph.char;
+  target.append(coloredGlyph);
+};
+
+const renderColoredGlyphs = (target: HTMLElement, glyphs: ColoredGlyph[]) => {
+  const fragment = document.createDocumentFragment();
+  glyphs.forEach((glyph) => appendColoredGlyph(fragment, glyph));
+  target.replaceChildren(fragment);
+};
+
+const renderAsciiGrid = (
+  target: HTMLElement,
+  title: string,
+  glyphs: ColoredGlyph[],
+) => {
   const border = "+---+---+---+";
-  const rows = Array.from({ length: 3 }, (_, row) => {
+  const fragment = document.createDocumentFragment();
+  fragment.append(`${title}\n${border}\n`);
+
+  Array.from({ length: 3 }, (_, row) => {
     const offset = row * 3;
-    return [
-      `| ${glyphs[offset]} | ${glyphs[offset + 1]} | ${glyphs[offset + 2]} |`,
-      `| ${offset + 1} | ${offset + 2} | ${offset + 3} |`,
-    ].join("\n");
+    fragment.append("| ");
+    appendColoredGlyph(fragment, glyphs[offset]);
+    fragment.append(" | ");
+    appendColoredGlyph(fragment, glyphs[offset + 1]);
+    fragment.append(" | ");
+    appendColoredGlyph(fragment, glyphs[offset + 2]);
+    fragment.append(
+      ` |\n| ${offset + 1} | ${offset + 2} | ${offset + 3} |\n${border}`,
+      row < 2 ? "\n" : "",
+    );
   });
 
-  return [title, border, ...rows.flatMap((row) => [row, border])].join("\n");
+  target.replaceChildren(fragment);
 };
 
 export const render = (state: GameState) => {
@@ -76,24 +117,37 @@ export const render = (state: GameState) => {
     .map(([stat, value]) => `${stat}: ${value}`)
     .join("\n");
 
-  map.textContent = getRenderedMap(state)
-    .map((tile) => tile.char)
-    .join("");
+  renderColoredGlyphs(
+    map,
+    getRenderedMap(state).map((tile) => ({
+      char: tile.char ?? " ",
+      color: tile.color,
+    })),
+  );
 
   const playerBackpack = getBackpack(player);
-  const backpackGlyphs = Array.from({ length: 9 }, (_, index) => {
+  const backpackGlyphs = [...ALL_CONTAINER_SLOTS].map((slot) => {
     const item = playerBackpack
-      ? getContainerItemAt(playerBackpack, index + 1)
+      ? getContainerItemAt(playerBackpack, slot)
       : undefined;
-    return getComponentByType(item, GlyphComponent)?.glyph ?? " ";
+    return {
+      char: getComponentByType(item, GlyphComponent)?.glyph ?? " ",
+      color: getComponentByType(item, ColorComponent)?.color,
+    };
   });
-  backpack.textContent = renderAsciiGrid("BACKPACK", backpackGlyphs);
+  renderAsciiGrid(backpack, "BACKPACK", backpackGlyphs);
 
-  const eqGlyphs = Array.from({ length: 9 }, (_, index) => {
-    const item = getEqSlotItem(player, (index + 1) as EqSlot);
-    return getComponentByType(item, GlyphComponent)?.glyph ?? " ";
+  const eqSlots = Object.values(EqSlot).filter(
+    (slot): slot is EqSlot => typeof slot === "number",
+  );
+  const eqGlyphs = eqSlots.map((slot) => {
+    const item = getEqSlotItem(player, slot);
+    return {
+      char: getComponentByType(item, GlyphComponent)?.glyph ?? " ",
+      color: getComponentByType(item, ColorComponent)?.color,
+    };
   });
-  eq.textContent = renderAsciiGrid("EQ", eqGlyphs);
+  renderAsciiGrid(eq, "EQ", eqGlyphs);
 
   log.textContent = state.log
     .map((entry) => `[${entry.turn}] ${entry.message}`)

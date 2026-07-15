@@ -6,7 +6,7 @@ import type { ActionResolution } from "../actions/types";
 import { isCursed } from "../../model/queries/curse";
 import {
   clearContainerItems,
-} from "../inv/containers";
+} from "../containers/containers";
 import {
   getBackpack,
   getContainerItems,

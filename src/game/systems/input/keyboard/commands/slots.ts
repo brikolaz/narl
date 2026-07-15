@@ -1,6 +1,6 @@
 import type { GameAction } from "../../../actions/types";
 import type { EqSlot } from "../../../eq/types";
-import type { InvSlot } from "../../../inv/types";
+import type { InvSlot } from "../../../containers/types";
 import type { KeyboardToAction } from "../chain";
 
 export const keyToInvSlot = (key: string): InvSlot => {

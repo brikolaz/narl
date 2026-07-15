@@ -87,3 +87,36 @@ export const patchEntityRegistryRecordById = (
     removeEntityRegistryRecordById(id);
   }
 };
+
+export const detachRegistryEntity = (id: Id) => {
+  const record = getEntityRegistryRecordById(id);
+
+  if (!record) {
+    return;
+  }
+
+  const parent =
+    record.parent === null
+      ? undefined
+      : getEntityRegistryRecordById(record.parent)?.entity;
+
+  if (!parent) {
+    return;
+  }
+
+  const role = record.role ?? EntityRole.DEFAULT;
+
+  parent.entityById.delete(id);
+  parent.entityByRole.set(
+    role,
+    parent.entityByRole.get(role)?.filter((sibling) => {
+      return sibling !== id;
+    }) ?? [],
+  );
+
+  patchEntityRegistryRecordById(id, (r) => ({
+    ...r,
+    parent: null,
+    role: null,
+  }));
+};

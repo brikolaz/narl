@@ -1,13 +1,12 @@
-import { EntityRole, getEntityCreator } from "../../../../../core/ecs/Entity";
+import { getEntityCreator } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
+import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { MainHandComponent } from "../../../components/eq/MainHandComponent";
 import type { ItemFactory } from "../../../Factory";
-import { PlaceholderEntityFactory } from "../../items/PlaceholderItemEntity";
 
-export const MainHandSlotEntity = getEntityCreator('MAIN_HAND_SLOT');
+export const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT");
 
 export const MainHandSlotEntityFactory: ItemFactory = {
   getDefault: () => {
@@ -18,11 +17,8 @@ export const MainHandSlotEntityFactory: ItemFactory = {
       NameComponent({ name: "Main Hand" }),
       MainHandComponent(),
       ContainerComponent(),
+      SizeComponent({ size: 1 }),
     );
-
-    upsertRoleEntities(eqSlot, {
-      [EntityRole.ITEM]: [PlaceholderEntityFactory.getDefault()],
-    });
 
     return eqSlot;
   },

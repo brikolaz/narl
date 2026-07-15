@@ -5,7 +5,7 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
   addItemToEntityBackpack,
-} from "../inv/containers";
+} from "../containers/containers";
 import {
   getBackpack,
   isContainerFull,

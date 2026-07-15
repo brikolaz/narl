@@ -10,9 +10,9 @@ import { getPlayerEntity } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { addItemToContainer } from "../containers/containers";
 import { curse } from "../curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
-import { addItemToContainer, clearContainerItemById } from "../inv/containers";
 import type { PlayerEquipItemAction } from "../player/types";
 
 const canBeEquipped = (
@@ -62,7 +62,7 @@ export const resolveEquipAction = (
     }
 
     addItemToContainer(eqSlot, itemToEquip);
-    clearContainerItemById(backpack, itemToEquip.id);
+    // clearContainerItemById(backpack, itemToEquip.id);
 
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,

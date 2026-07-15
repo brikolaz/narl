@@ -1,17 +1,18 @@
 import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import type { Id } from "../../../core/ecs/Id";
 import { getComponentByType } from "../../../core/ecs/queries/components/get";
 import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
 import {
   getEntitiesByRole,
-  getEntityById,
   getEntityByRole,
 } from "../../../core/ecs/queries/entities/get";
-import type { ContainerSlot } from "../../systems/inv/containers";
+import {
+  ALL_CONTAINER_SLOTS,
+  type ContainerSlot,
+} from "../../systems/containers/types";
 import { ContainerComponent } from "../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../components/containers/NestDepthComponent";
-import { PlaceholderComponent } from "../components/containers/PlaceholderComponent";
 import { SizeComponent } from "../components/containers/SizeComponent";
+import { PositionComponent } from "../components/PositionComponent";
 
 export const getBackpack = (entity: Entity): Entity | undefined => {
   return getEntityByRole(entity, EntityRole.BACKPACK);
@@ -31,13 +32,10 @@ export const getContainerItemAt = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const item = getEntitiesByRole(container, EntityRole.ITEM)[containerSlot - 1];
-  if (!item) {
-    throw new Error(`No container item at slot ${containerSlot}`);
-  }
-  if (isPlaceholderSlot(item)) {
-    return undefined;
-  }
+  const item = getEntitiesByRole(container, EntityRole.ITEM).find((item) => {
+    const position = getComponentByType(item, PositionComponent)?.position;
+    return position === containerSlot;
+  });
 
   return item;
 };
@@ -46,47 +44,31 @@ export const getContainerItems = (container: Entity): Entity[] => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const items = getEntitiesByRole(container, EntityRole.ITEM);
-  return items.filter((item) => !isPlaceholderSlot(item));
+  return getEntitiesByRole(container, EntityRole.ITEM);
 };
 
-export const getContainerItemById = (
-  container: Entity,
-  itemId: Id,
-): Entity | undefined => {
+const getEmptySlots = (container: Entity): ContainerSlot[] => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  const item = getEntityById(itemId);
-  if (!item) {
-    throw new Error("No item in container");
-  }
-  if (isPlaceholderSlot(item)) {
-    return undefined;
-  }
-
-  return item;
-};
-
-export const isPlaceholderSlot = (entity: Entity): boolean => {
-  return hasComponentsByType(entity, PlaceholderComponent);
+  const occupiedSlots = new Set(
+    getEntitiesByRole(container, EntityRole.ITEM).map((item) => {
+      const pos = getComponentByType(item, PositionComponent)?.position;
+      if (!pos) {
+        throw new Error("Container item has no position component");
+      }
+      return pos;
+    }),
+  );
+  return [...ALL_CONTAINER_SLOTS.difference(occupiedSlots)];
 };
 
 export const getFirstEmptyContainerSlot = (
   container: Entity,
 ): ContainerSlot | undefined => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  const index = getEntitiesByRole(container, EntityRole.ITEM).findIndex(
-    isPlaceholderSlot,
-  );
-  
-  if (index === -1) {
-    return undefined;
-  }
+  const emptySlots = getEmptySlots(container);
 
-  return index + 1;
+  return emptySlots.at(0);
 };
 
 export const getFirstContainerItem = (
@@ -95,7 +77,7 @@ export const getFirstContainerItem = (
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
-  return getContainerItems(container).find((item) => !isPlaceholderSlot(item));
+  return getContainerItemAt(container, 1);
 };
 
 export const isContainer = (entity: Entity) => {

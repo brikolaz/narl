@@ -3,7 +3,7 @@ import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
 import type { GameState } from "../../../../state/state";
 import type { EqSlot } from "../../../eq/types";
-import type { InvSlot } from "../../../inv/types";
+import type { InvSlot } from "../../../containers/types";
 import { PlayerActionType } from "../../../player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 import { createSlotActionCommands } from "./slots";

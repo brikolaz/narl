@@ -1,14 +1,10 @@
 import {
   getEntityCreator,
-  EntityRole,
   type Entity,
 } from "../../../../../core/ecs/Entity";
 import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import { getComponentByType } from "../../../../../core/ecs/queries/components/get";
-import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
-import { getDummyArray } from "../../../../../utils/getDummyArray";
 import { RNG } from "../../../../systems/rng/rng";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../../../components/containers/NestDepthComponent";
@@ -21,7 +17,6 @@ import { DroppableComponent } from "../../../components/items/DroppableComponent
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
 import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
-import { PlaceholderEntityFactory } from "../PlaceholderItemEntity";
 
 export const ContainerEntity = getEntityCreator("CONTAINER");
 
@@ -36,19 +31,6 @@ type ContainerFactory = ItemFactory & {
   getPlayerBackpack: () => Entity;
 };
 
-const addPlaceholders = (container: Entity) => {
-  const sizeComponent = getComponentByType(container, SizeComponent);
-  if (!sizeComponent) {
-    throw new Error("No size component");
-  }
-
-  upsertRoleEntities(container, {
-    [EntityRole.ITEM]: getDummyArray(sizeComponent.size).map(() =>
-      PlaceholderEntityFactory.getDefault(),
-    ),
-  });
-};
-
 export const ContainerEntityFactory: ContainerFactory = {
   getDefault() {
     const container = ContainerEntity();
@@ -61,8 +43,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       SizeComponent({ size: RNG.items.range(2, 4) }),
       VariantComponent({ variant: ContainerVariants.DEFAULT }),
     );
-    addPlaceholders(container);
-
     return container;
   },
 
@@ -78,8 +58,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       NestDepthComponent({ nestDepth: RNG.items.range(1, 2) }),
       VariantComponent({ variant: ContainerVariants.BACKPACK }),
     );
-    addPlaceholders(backpack);
-
     return backpack;
   },
 
@@ -94,8 +72,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),
       VariantComponent({ variant: ContainerVariants.PLAYER_BACKPACK }),
     );
-    addPlaceholders(backpack);
-
     return backpack;
   },
 
