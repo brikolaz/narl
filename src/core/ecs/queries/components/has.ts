@@ -21,7 +21,7 @@ export const hasComponentsByType = <P extends object | undefined>(
   if (entity === undefined) return false;
   const source = typeof entity === "number" ? getEntityById(entity) : entity;
   const type = typeof component === "symbol" ? component : component.type;
-  return (source?.componentByType?.get(type)?.length ?? 0) > 0;
+  return (source?.componentByType?.get(type)?.size ?? 0) > 0;
 };
 
 export const hasComponentById = (

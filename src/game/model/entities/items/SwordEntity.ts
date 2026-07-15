@@ -1,5 +1,5 @@
 import { getEntityCreator } from "../../../../core/ecs/Entity";
-import { addComponents } from "../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../core/ecs/queries/components/add";
 import { RNG } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";
@@ -16,7 +16,7 @@ export const SwordEntityFactory: ItemFactory = {
   getDefault: () => {
     const sword = SwordEntity();
 
-    addComponents(
+    upsertComponents(
       sword,
       GlyphComponent({
         glyph: "/" as string,

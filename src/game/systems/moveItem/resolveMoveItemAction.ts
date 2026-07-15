@@ -1,11 +1,3 @@
-import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import {
-  addItemToContainer,
-  clearContainerItemById,
-} from "../containers/containers";
 import {
   getBackpack,
   getContainerItemAt,
@@ -14,6 +6,13 @@ import {
   isContainer,
   isContainerFull,
 } from "../../model/queries/containers";
+import { getPlayerEntity } from "../../model/queries/player";
+import type { GameState } from "../../state/state";
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
+import {
+  addItemToContainer
+} from "../containers/containers";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerMoveItemAction } from "../player/types";
 
@@ -50,7 +49,6 @@ export const resolveMoveItemAction = (
       }
     }
 
-    // clearContainerItemById(backpack, fromItem.id);
     addItemToContainer(toItem, fromItem);
 
     action.success(

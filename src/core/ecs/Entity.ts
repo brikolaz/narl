@@ -18,7 +18,7 @@ export type Entity = {
   id: Id;
   type: EntityType;
   componentById: Map<Id, Component>;
-  componentByType: Map<ComponentType, Component[]>;
+  componentByType: Map<ComponentType, Map<Id, Component>>;
   entityById: Map<Id, Entity>;
   entityByRole: Map<EntityRole, Set<Entity>>;
 };
@@ -34,7 +34,7 @@ export const getEntityCreator = (type: string): EntityCreator => {
     const entity = {
       id: getId(),
       componentById: new Map<Id, Component>(),
-      componentByType: new Map<ComponentType, Component[]>(),
+      componentByType: new Map<ComponentType, Map<Id, Component>>(),
       entityById: new Map<Id, Entity>(),
       entityByRole: new Map<EntityRole, Set<Entity>>(),
       type: entityType,

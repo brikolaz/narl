@@ -2,7 +2,7 @@ import {
   getEntityCreator,
   type Entity,
 } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
 import { RNG } from "../../../../systems/rng/rng";
@@ -35,7 +35,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   getDefault() {
     const container = ContainerEntity();
 
-    addComponents(
+    upsertComponents(
       container,
       NameComponent({ name: "Container" }),
       GlyphComponent({ glyph: "C" }),
@@ -49,7 +49,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   getBackpack() {
     const backpack = ContainerEntity();
 
-    addComponents(
+    upsertComponents(
       backpack,
       NameComponent({ name: "Backpack" }),
       GlyphComponent({ glyph: "*" }),
@@ -64,7 +64,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   getPlayerBackpack() {
     const backpack = ContainerEntity();
 
-    addComponents(
+    upsertComponents(
       backpack,
       NameComponent({ name: "Backpack" }),
       GlyphComponent({ glyph: "*" }),
@@ -87,7 +87,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   },
 
   setDroppable: (entity: Entity) => {
-    addComponents(
+    upsertComponents(
       entity,
       DroppableComponent(),
       PickupableComponent(),

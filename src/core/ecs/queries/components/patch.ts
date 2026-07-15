@@ -1,7 +1,7 @@
 import type { Component, ComponentCreator } from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
-import { addComponents } from "./add";
+import { upsertComponents } from "./add";
 import { getComponentById, getComponentByType } from "./get";
 import { removeComponentsByType } from "./remove";
 
@@ -42,5 +42,5 @@ export const replaceComponentByType = <P extends object | undefined>(
   }
 
   removeComponentsByType(entity, component.type);
-  addComponents(entity, nextComponent);
+  upsertComponents(entity, nextComponent);
 };

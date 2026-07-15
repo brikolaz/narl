@@ -3,8 +3,8 @@ import {
   getEntityCreator,
   type Entity,
 } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
-import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertEntities, upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import { EqSlot } from "../../../../systems/eq/types";
 import {
   addItemToContainer,
@@ -39,6 +39,7 @@ export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
+
   if (RNG.items.chance(100)) {
     ContainerEntityFactory.setDroppable?.(backpack);
   }
@@ -79,7 +80,7 @@ export const RageBaitEntityFactory: MobFactory = {
   getDefault: () => {
     const rageBait = RageBaitEntity();
 
-    addComponents(
+    upsertComponents(
       rageBait,
       HpComponent({ hp: 10, maxHp: 10 }),
       ExpComponent({ exp: 20 }),

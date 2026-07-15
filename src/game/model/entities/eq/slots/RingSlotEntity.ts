@@ -1,5 +1,5 @@
 import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
@@ -24,7 +24,7 @@ export const RingSlotEntityFactory: RingSlotFactory = {
   getDefault: () => {
     const eqSlot = RingSlotEntity();
 
-    addComponents(
+    upsertComponents(
       eqSlot,
       NameComponent({ name: "Ring" }),
       RingComponent(),
@@ -39,7 +39,7 @@ export const RingSlotEntityFactory: RingSlotFactory = {
   getRing1: () => {
     const eqSlot = RingSlotEntity();
 
-    addComponents(
+    upsertComponents(
       eqSlot,
       NameComponent({ name: "Ring 1" }),
       RingComponent(),
@@ -54,7 +54,7 @@ export const RingSlotEntityFactory: RingSlotFactory = {
   getRing2: () => {
     const eqSlot = RingSlotEntity();
 
-    addComponents(
+    upsertComponents(
       eqSlot,
       NameComponent({ name: "Ring 2" }),
       RingComponent(),

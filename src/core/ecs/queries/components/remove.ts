@@ -15,9 +15,9 @@ const removeDataComponentsByType = (
   }
   const ids: Id[] = [];
   for (const componentType of componentTypes) {
-    const nextIds = (entity.componentByType.get(componentType) ?? []).map(
-      (e) => e.id,
-    );
+    const nextIds =
+      entity.componentByType.get(componentType)?.keys().toArray() ?? [];
+
     ids.push(...nextIds);
     for (const id of nextIds) {
       entity.componentById.delete(id);
@@ -46,16 +46,7 @@ const removeDataComponentById = (id: Id): void => {
     throw new Error("No parent entity in registry");
   }
 
-  const ids = parent.componentByType.get(type);
-  if (ids) {
-    const nextIds = ids.filter((component) => component.id !== id);
-
-    if (nextIds.length) {
-      parent.componentByType.set(type, nextIds);
-    } else {
-      parent.componentByType.delete(type);
-    }
-  }
+  parent.componentByType.get(type)?.delete(id);
 };
 
 const removeDataComponentsById = (...ids: Id[]): void => {

@@ -1,5 +1,5 @@
 import { getEntityCreator } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -12,7 +12,7 @@ export const HeadSlotEntityFactory: ItemFactory = {
   getDefault: () => {
     const eqSlot = HeadSlotEntity();
 
-    addComponents(
+    upsertComponents(
       eqSlot,
       NameComponent({ name: "Head" }),
       HeadComponent(),

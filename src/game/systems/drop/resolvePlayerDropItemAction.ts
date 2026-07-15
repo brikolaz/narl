@@ -1,21 +1,19 @@
-import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { getEqSlot } from "../../model/queries/eq";
-import { clearContainerItemById } from "../containers/containers";
+import type { Entity } from "../../../core/ecs/Entity";
 import {
   getBackpack,
   getContainerItemAt,
 } from "../../model/queries/containers";
+import { getEqSlot } from "../../model/queries/eq";
+import { getPlayerEntity } from "../../model/queries/player";
+import type { GameState } from "../../state/state";
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
+import { getEntityName } from "../inspect/getEntityName";
 import {
   PlayerDropItemActionReason,
   type PlayerDropItemAction,
 } from "../player/types";
-import { getTile } from "../../model/queries/tile";
-import { getEntityName } from "../inspect/getEntityName";
-import type { Entity } from "../../../core/ecs/Entity";
-import { detachRegistryEntity } from "../../../core/ecs/registry/entityRegistry";
+import { dropItem } from "./drop";
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
@@ -48,11 +46,8 @@ export const resolvePlayerDropItemAction = (
       }
     }
     action.assertCondition(itemToDrop, "No item to drop");
-    const tile = getTile(state, targetPosition);
-    tile.items.push(itemToDrop);
+    dropItem(state, itemToDrop, targetPosition);
 
-    detachRegistryEntity(itemToDrop.id)
-    // clearContainerItemById(source, itemToDrop.id);
     if (reason === PlayerDropItemActionReason.MANUAL) {
       return action.success(`Dropped ${getEntityName(itemToDrop)}`);
     }

@@ -1,4 +1,4 @@
-import { addComponents } from "../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
@@ -20,7 +20,7 @@ export const initWorld = (): WorldState => {
   world[3].items.push(RingEntityFactory.getDefault());
   world[3].items.push(SwordEntityFactory.getDefault());
   world[4].items.push(HelmetEntityFactory.getHornedHelmet());
-  addComponents(world[0].floor, VisitedComponent());
+  upsertComponents(world[0].floor, VisitedComponent());
   world[5].mobs.push(RageBaitEntityFactory.getDefault());
   world[6].mobs.push(RageBaitEntityFactory.getDefault());
   world[7].mobs.push(RageBaitEntityFactory.getDefault());

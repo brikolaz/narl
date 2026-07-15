@@ -1,5 +1,5 @@
 import { getEntityCreator } from "../../../core/ecs/Entity";
-import { addComponents } from "../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 import { AppearanceComponent } from "../components/display/AppearanceComponent";
 import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
@@ -9,7 +9,7 @@ export const FloorEntity = getEntityCreator("FLOOR");
 export const FloorEntityFactory: Factory = {
   getDefault: () => {
     const floor = FloorEntity();
-    addComponents(
+    upsertComponents(
       floor,
       ColorComponent({ color: "gray" }),
       AppearanceComponent(),

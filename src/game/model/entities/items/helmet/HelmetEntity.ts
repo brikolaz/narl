@@ -1,5 +1,5 @@
 import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { RNG } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
@@ -28,7 +28,7 @@ export const HelmetEntityFactory: HelmetFactory = {
   getDefault: () => {
     const helmet = HelmetEntity();
 
-    addComponents(
+    upsertComponents(
       helmet,
       NameComponent({ name: "Helmet" }),
       GlyphComponent({
@@ -50,7 +50,7 @@ export const HelmetEntityFactory: HelmetFactory = {
   getHornedHelmet: () => {
     const helmet = HelmetEntity();
 
-    addComponents(
+    upsertComponents(
       helmet,
       NameComponent({ name: "Horned Helmet" }),
       GlyphComponent({

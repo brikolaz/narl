@@ -1,5 +1,5 @@
 import { getEntityCreator } from "../../../../../core/ecs/Entity";
-import { addComponents } from "../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -20,7 +20,7 @@ export const RingEntity = getEntityCreator("RING");
 export const RingEntityFactory: ItemFactory = {
   getDefault: () => {
     const ring = RingEntity();
-    addComponents(
+    upsertComponents(
       ring,
       GlyphComponent({ glyph: "o" }),
       NameComponent({ name: "Ring" }),

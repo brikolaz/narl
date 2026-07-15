@@ -19,10 +19,9 @@ export const getComponentsByType = <P extends object>(
   if (!entity) return [];
   const type =
     typeof componentType === "symbol" ? componentType : componentType.type;
-
-  return (entity.componentByType
-    .get(type)
-    ?.filter((component) => component !== undefined) ?? []) as Component<P>[];
+  
+  return (entity.componentByType.get(type)?.values().toArray() ??
+    []) as Component<P>[];
 };
 
 export const getComponentsByTypes = (

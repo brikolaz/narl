@@ -1,5 +1,5 @@
 import { EntityRole, getEntityCreator } from "../../../core/ecs/Entity";
-import { addComponents } from "../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../core/ecs/queries/components/add";
 import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
 import { DEFAULT_PLAYER_GLYPH } from "../../../utils/constants";
 import { ColorComponent } from "../components/display/ColorComponent";
@@ -38,7 +38,7 @@ export const PlayerEntityFactory: Factory = {
   getDefault: () => {
     const player = PlayerEntity();
 
-    addComponents(
+    upsertComponents(
       player,
       GlyphComponent({
         glyph: DEFAULT_PLAYER_GLYPH,

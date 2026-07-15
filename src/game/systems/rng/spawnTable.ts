@@ -17,7 +17,10 @@ const SPAWN_TABLE = {
 
 export const validateSpawnTables = (): void => {
   const validateSpawnTable = (table: SpawnTable): void => {
-    const total = [...table.values()].reduce((sum, chance) => sum + chance, 0);
+    const total = table
+      .values()
+      .toArray()
+      .reduce((sum, chance) => sum + chance, 0);
 
     if (total > 100) {
       throw new Error(`Spawn table exceeds 100%. Got ${total}%.`);
