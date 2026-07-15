@@ -46,7 +46,7 @@ export const PlayerEntityFactory: Factory = {
       ExpComponent(),
       ColorComponent(),
       NameComponent({ name: "Player" }),
-      HpComponent({ hp: 20 }),
+      HpComponent({ hp: 20, maxHp: 20 }),
     );
 
     const backpack = ContainerEntityFactory.getPlayerBackpack();

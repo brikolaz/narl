@@ -11,10 +11,10 @@ enum PlayerStat {
 export type PlayerStats = Record<PlayerStat, string | number>;
 
 export const getPlayerStats = (player: Entity): PlayerStats => {
-  const hpCompoment = getHp(player);
+  const hpComponent = getHp(player);
 
   return {
-    [PlayerStat.HP]: `${hpCompoment?.hp ?? HpComponent.defaults.hp} / ${hpCompoment?.maxHp ?? HpComponent.defaults.maxHp}`,
+    [PlayerStat.HP]: `${hpComponent?.hp ?? HpComponent.defaults.hp} / ${hpComponent?.maxHp ?? HpComponent.defaults.maxHp}`,
     [PlayerStat.EXP]: getExp(player),
   };
 };

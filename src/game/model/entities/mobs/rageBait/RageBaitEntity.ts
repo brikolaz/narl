@@ -22,9 +22,7 @@ import type { MobFactory } from "../../../Factory";
 import { AmuletSlotEntityFactory } from "../../eq/slots/AmuletSlotEntity";
 import { ArmorSlotEntityFactory } from "../../eq/slots/ArmorSlotEntity";
 import { BootsSlotEntityFactory } from "../../eq/slots/BootsSlotEntity";
-import {
-  HeadSlotEntityFactory
-} from "../../eq/slots/HeadSlotEntity";
+import { HeadSlotEntityFactory } from "../../eq/slots/HeadSlotEntity";
 import { MainHandSlotEntityFactory } from "../../eq/slots/MainHandSlotEntity";
 import { OffhandSlotEntityFactory } from "../../eq/slots/OffhandSlotEntity";
 import { PantsSlotEntityFactory } from "../../eq/slots/PantsSlotEntity";
@@ -83,7 +81,7 @@ export const RageBaitEntityFactory: MobFactory = {
 
     addComponents(
       rageBait,
-      HpComponent({ hp: 10 }),
+      HpComponent({ hp: 10, maxHp: 10 }),
       ExpComponent({ exp: 20 }),
       GlyphComponent({
         glyph: "r",
