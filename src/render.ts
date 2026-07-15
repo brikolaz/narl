@@ -1,18 +1,7 @@
-import { getComponentByType } from "./core/ecs/queries/components/get";
-import { ColorComponent } from "./game/model/components/display/ColorComponent";
-import { GlyphComponent } from "./game/model/components/display/GlyphComponent";
-import {
-  getBackpack,
-  getContainerItemAt,
-} from "./game/model/queries/containers";
-import { getEqSlotItem } from "./game/model/queries/eq";
-import { getPlayerEntity } from "./game/model/queries/player";
-import type { GameState } from "./game/state/state";
-import { EqSlot } from "./game/systems/eq/types";
-import { ALL_CONTAINER_SLOTS } from "./game/systems/containers/types";
-import { getRenderedMap } from "./game/systems/render/getRenderedMap";
-import { getEqStats } from "./game/systems/stats/eqStats";
-import { getPlayerStats } from "./game/systems/stats/playerStats";
+import type {
+  ColoredGlyphView,
+  GameViewModel,
+} from "./game/view/getGameViewModel";
 import "./index.css";
 
 const root = document.querySelector<HTMLDivElement>("#root");
@@ -55,14 +44,9 @@ inventorySpacer.setAttribute("aria-hidden", "true");
 
 root.append(inventory, game, inventorySpacer);
 
-type ColoredGlyph = {
-  char: string;
-  color?: string;
-};
-
 const appendColoredGlyph = (
   target: DocumentFragment | HTMLElement,
-  glyph: ColoredGlyph,
+  glyph: ColoredGlyphView,
 ) => {
   if (!glyph.color) {
     target.append(glyph.char);
@@ -77,7 +61,7 @@ const appendColoredGlyph = (
 
 const renderMap = (
   target: HTMLElement,
-  tiles: Array<ColoredGlyph & { position: number }>,
+  tiles: Array<ColoredGlyphView & { position: number }>,
 ) => {
   const fragment = document.createDocumentFragment();
   const glyphs = document.createElement("span");
@@ -109,7 +93,7 @@ const renderMap = (
 const renderAsciiGrid = (
   target: HTMLElement,
   title: string,
-  glyphs: ColoredGlyph[],
+  glyphs: ColoredGlyphView[],
 ) => {
   const border = "+---+---+---+";
   const fragment = document.createDocumentFragment();
@@ -132,50 +116,13 @@ const renderAsciiGrid = (
   target.replaceChildren(fragment);
 };
 
-export const render = (state: GameState) => {
-  const player = getPlayerEntity(state);
-
-  stats.textContent = Object.entries({
-    ...getPlayerStats(player),
-    ...getEqStats(player),
-  })
+export const render = (viewModel: GameViewModel) => {
+  stats.textContent = Object.entries(viewModel.playerStats)
     .map(([stat, value]) => `${stat}: ${value}`)
     .join("\n");
 
-  renderMap(
-    map,
-    getRenderedMap(state).map((tile) => ({
-      char: tile.char ?? " ",
-      color: tile.color,
-      position: tile.position,
-    })),
-  );
-
-  const playerBackpack = getBackpack(player);
-  const backpackGlyphs = [...ALL_CONTAINER_SLOTS].map((slot) => {
-    const item = playerBackpack
-      ? getContainerItemAt(playerBackpack, slot)
-      : undefined;
-    return {
-      char: getComponentByType(item, GlyphComponent)?.glyph ?? " ",
-      color: getComponentByType(item, ColorComponent)?.color,
-    };
-  });
-  renderAsciiGrid(backpack, "BACKPACK", backpackGlyphs);
-
-  const eqSlots = Object.values(EqSlot).filter(
-    (slot): slot is EqSlot => typeof slot === "number",
-  );
-  const eqGlyphs = eqSlots.map((slot) => {
-    const item = getEqSlotItem(player, slot);
-    return {
-      char: getComponentByType(item, GlyphComponent)?.glyph ?? " ",
-      color: getComponentByType(item, ColorComponent)?.color,
-    };
-  });
-  renderAsciiGrid(eq, "EQ", eqGlyphs);
-
-  log.textContent = state.log
-    .map((entry) => `[${entry.turn}] ${entry.message}`)
-    .join("\n");
+  renderMap(map, viewModel.map);
+  renderAsciiGrid(backpack, "BACKPACK", viewModel.backpack);
+  renderAsciiGrid(eq, "EQ", viewModel.equipment);
+  log.textContent = viewModel.logs.map((entry) => entry.text).join("\n");
 };
