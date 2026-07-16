@@ -5,7 +5,7 @@ import {
   patchEntityRegistryRecordById,
   removeEntityRegistryRecordById,
 } from "../../registry/entityRegistry";
-import { removeComponentById } from "../components/remove";
+import { removeComponents } from "../components/remove";
 import { getEntitiesByRole } from "./get";
 import { resolveEntity, type EntityArgument } from "./normalize";
 
@@ -24,7 +24,7 @@ export const removeDataEntity = (id: Id): void => {
   }
 
   for (const componentId of record.entity.componentById.keys()) {
-    removeComponentById(componentId);
+    removeComponents(componentId);
   }
 
   for (const childId of [...record.entity.entityById.keys()]) {

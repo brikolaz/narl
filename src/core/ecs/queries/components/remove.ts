@@ -1,39 +1,51 @@
-import type { ComponentType } from "../../Component";
-import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import {
   getComponentRegistryRecord,
   removeComponentRegistryRecords,
 } from "../../registry/componentRegistry";
+import { resolveEntity, type EntityArgument } from "../entities/normalize";
+import {
+  resolveComponent,
+  resolveComponentType,
+  type ComponentArgument,
+  type ComponentTypeArgument,
+} from "./normalize";
 
 const removeDataComponentsByType = (
-  entity: Entity | undefined,
-  ...componentTypes: ComponentType[]
+  entity: EntityArgument,
+  ...componentTypes: ComponentTypeArgument[]
 ) => {
-  if (!entity) {
+  const source = resolveEntity(entity);
+  if (!source) {
     return [];
   }
   const ids: Id[] = [];
-  for (const componentType of componentTypes) {
+  const resolvedComponentTypes = componentTypes.map((componentType) =>
+    resolveComponentType(componentType),
+  );
+  for (const componentType of resolvedComponentTypes) {
     const nextIds =
-      entity.componentByType.get(componentType)?.keys().toArray() ?? [];
+      source.componentByType.get(componentType)?.keys().toArray() ?? [];
 
     ids.push(...nextIds);
     for (const id of nextIds) {
-      entity.componentById.delete(id);
+      source.componentById.delete(id);
     }
-    entity.componentByType.delete(componentType);
+    source.componentByType.delete(componentType);
   }
   return ids;
 };
 
-// TODO: component/entity types should be of Component | ComponentCreator / Entity | EntityCreator,
-// .type should be accessed inside
 export const removeComponentsByType = (
-  entity: Entity | undefined,
-  ...componentTypes: ComponentType[]
+  entity: EntityArgument,
+  ...componentTypes: ComponentTypeArgument[]
 ) => {
-  const ids = removeDataComponentsByType(entity, ...componentTypes);
+  const ids = removeDataComponentsByType(
+    resolveEntity(entity),
+    ...componentTypes.map((componentType) =>
+      resolveComponentType(componentType),
+    ),
+  );
   removeComponentRegistryRecords(...ids);
 };
 
@@ -55,7 +67,8 @@ const removeDataComponentsById = (...ids: Id[]): void => {
   }
 };
 
-export const removeComponentById = (...ids: Id[]): void => {
+export const removeComponents = (...components: ComponentArgument[]): void => {
+  const ids = components.map((component) => resolveComponent(component).id);
   removeDataComponentsById(...ids);
   removeComponentRegistryRecords(...ids);
 };

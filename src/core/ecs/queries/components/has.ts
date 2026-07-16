@@ -1,36 +1,40 @@
-import type {
-  Component,
-  ComponentCreator,
-  ComponentType,
-} from "../../Component";
-import type { Entity } from "../../Entity";
-import type { Id } from "../../Id";
-import { getEntityById } from "../entities/get";
+import { resolveEntity, type EntityArgument } from "../entities/normalize";
+import {
+  resolveComponent,
+  resolveComponentType,
+  type ComponentArgument,
+  type ComponentTypeArgument,
+} from "./normalize";
 
-export const areComponentTypesEqual = (...components: Component[]): boolean => {
+export const areComponentTypesEqual = <P extends object | undefined>(
+  ...components: ComponentTypeArgument<P>[]
+): boolean => {
   if (components.length === 0) {
     return true;
   }
-  return components.every((component) => component.type === components[0].type);
+  return components.every(
+    (component) =>
+      resolveComponentType(component) === resolveComponentType(components[0]),
+  );
 };
 
 export const hasComponentsByType = <P extends object | undefined>(
-  entity: Entity | Id | undefined,
-  component: ComponentCreator<P> | Component<P> | ComponentType,
+  entity: EntityArgument,
+  componentType: ComponentTypeArgument<P>,
 ): boolean => {
-  if (entity === undefined) return false;
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
-  const type = typeof component === "symbol" ? component : component.type;
+  const source = resolveEntity(entity);
+  if (!source) return false;
+  const type = resolveComponentType(componentType);
   return (source?.componentByType?.get(type)?.size ?? 0) > 0;
 };
 
-export const hasComponentById = (
-  entity: Entity | Id | undefined,
-  id: Id,
+export const hasComponent = <P extends object | undefined>(
+  entity: EntityArgument,
+  component: ComponentArgument<P>,
 ): boolean => {
-  if (!entity) return false;
+  const source = resolveEntity(entity);
+  if (!source) return false;
+  const resolvedComponent = resolveComponent(component);
 
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
-
-  return source?.componentById?.has(id) ?? false;
+  return source?.componentById?.has(resolvedComponent.id) ?? false;
 };

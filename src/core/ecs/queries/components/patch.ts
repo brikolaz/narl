@@ -1,27 +1,33 @@
-import type { Component, ComponentCreator } from "../../Component";
-import type { Entity } from "../../Entity";
-import type { Id } from "../../Id";
+import type { Component } from "../../Component";
+import type { EntityArgument } from "../entities/normalize";
 import { upsertComponents } from "./add";
-import { getComponentById, getComponentByType } from "./get";
+import { getComponentByType } from "./get";
+import {
+  resolveComponent,
+  resolveComponentType,
+  type ComponentArgument,
+  type ComponentTypeArgument,
+} from "./normalize";
 import { removeComponentsByType } from "./remove";
 
-export const patchComponentById = <P extends object>(
-  id: Id,
-  patcher: (child: Component<P>) => void,
-): void => {
-  const component = getComponentById(id);
-  if (!component) {
-    return;
-  }
-  patcher(component as Component<P>);
-};
-
-export const patchComponentByType = <P extends object | undefined>(
-  entity: Entity,
-  type: ComponentCreator<P>,
+export const patchComponent = <P extends object>(
+  component: ComponentArgument,
   patcher: (component: Component<P>) => void,
 ): void => {
-  const component = getComponentByType(entity, type.type);
+  const resolvedComponent = resolveComponent(component);
+  if (!resolvedComponent) {
+    return;
+  }
+  patcher(resolvedComponent as Component<P>);
+};
+
+export const patchComponentByType = <P extends object>(
+  entity: EntityArgument,
+  componentType: ComponentTypeArgument<P>,
+  patcher: (component: Component<P>) => void,
+): void => {
+  const type = resolveComponentType(componentType);
+  const component = getComponentByType(entity, type);
 
   if (!component) {
     return;
@@ -30,12 +36,12 @@ export const patchComponentByType = <P extends object | undefined>(
   patcher(component as Component<P>);
 };
 
-export const replaceComponentByType = <P extends object | undefined>(
-  entity: Entity,
-  type: ComponentCreator<P>,
+export const replaceComponentsByType = <P extends object | undefined>(
+  entity: EntityArgument,
+  componentType: ComponentTypeArgument<P>,
   nextComponent: Component,
 ): void => {
-  const component = getComponentByType(entity, type.type);
+  const component = getComponentByType(entity, componentType);
 
   if (!component) {
     return;

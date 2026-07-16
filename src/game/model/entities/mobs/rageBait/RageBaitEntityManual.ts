@@ -1,6 +1,6 @@
 import type { Entity } from "../../../../../core/ecs/Entity";
 import {
-  replaceComponentByType
+  replaceComponentsByType
 } from "../../../../../core/ecs/queries/components/patch";
 import type { GameState } from "../../../../state/state";
 import type { Action } from "../../../../systems/actions/action";
@@ -19,7 +19,7 @@ export class RageBaitEntityManual {
     if (isHostile(rageBait) || !RNG.mobs.chance(50)) {
       return;
     }
-    replaceComponentByType(rageBait, PeacefulComponent, HostileComponent());
+    replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
     const name = getEntityName(rageBait);
     gameAction.info(`${name} is hostile`);
   }
@@ -37,7 +37,7 @@ export class RageBaitEntityManual {
     if (!RNG.mobs.chance(20)) {
       return;
     }
-    replaceComponentByType(rageBait, PeacefulComponent, HostileComponent());
+    replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
     gameAction.info(`${name} is hostile`);
   }
 }

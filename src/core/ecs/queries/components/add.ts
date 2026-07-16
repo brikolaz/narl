@@ -1,11 +1,10 @@
 import type { Component } from "../../Component";
 import type { Entity } from "../../Entity";
-import type { Id } from "../../Id";
 import { upsertComponentRegistryRecords } from "../../registry/componentRegistry";
-import { getEntityById } from "../entities/get";
+import { resolveEntity, type EntityArgument } from "../entities/normalize";
 
 const upsertDataComponents = (
-  entity: Entity | undefined,
+  entity: Entity,
   ...components: Component[]
 ): void => {
   if (!entity) {
@@ -25,13 +24,13 @@ const upsertDataComponents = (
 };
 
 export const upsertComponents = (
-  entity: Entity | Id | undefined,
+  entity: EntityArgument,
   ...components: Component[]
 ): void => {
   if (entity === undefined) {
     return;
   }
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
+  const source = resolveEntity(entity);
   if (!source) {
     return;
   }

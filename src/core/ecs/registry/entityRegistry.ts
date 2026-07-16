@@ -60,6 +60,7 @@ export const upsertRegistryEntities = (
 export const hasEntityRegistryRecord = (id: Id) => {
   return ENTITY_REGISTRY_BY_ID[id] !== undefined;
 };
+
 export const getEntityRegistryRecordById = (
   id: Id,
 ): EntityRegistryRecord | undefined => {
