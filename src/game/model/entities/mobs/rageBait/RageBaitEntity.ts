@@ -46,18 +46,19 @@ const addLoot = (entity: Entity) => {
   if (RNG.items.chance(20)) {
     addItemToContainer(backpack, SwordEntityFactory.getDefault());
   }
-  if (RNG.items.chance(50)) {
+  if (RNG.items.chance(100)) {
     addItemToContainer(
       backpack,
-      HelmetEntityFactory.getVariant?.(HelmetEntityVariants.HELMET),
+      HelmetEntityFactory.getVariant?.(HelmetEntityVariants.DEFAULT),
     );
   }
+  
   upsertRoleEntities(entity, {
     [EntityRole.BACKPACK]: backpack,
   });
 };
 
-// TODO: refactor EQ system
+
 const addEq = (entity: Entity) => {
   upsertRoleEntities(entity, {
     [EntityRole.EQ]: [
@@ -95,5 +96,5 @@ export const RageBaitEntityFactory: MobFactory = {
     addEq(rageBait);
 
     return rageBait;
-  },
+  }, 
 };

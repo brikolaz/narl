@@ -14,7 +14,7 @@ import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const HelmetEntityVariants = {
-  HELMET: Symbol("Helmet"),
+  DEFAULT: Symbol("Helmet"),
   HORNED_HELMET: Symbol("Horned Helmet"),
 } as const satisfies Symbols;
 
@@ -40,7 +40,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       PickupableComponent(),
       DroppableComponent(),
       VariantComponent({
-        variant: HelmetEntityVariants.HELMET,
+        variant: HelmetEntityVariants.DEFAULT,
       }),
     );
 
@@ -68,6 +68,15 @@ export const HelmetEntityFactory: HelmetFactory = {
       InspectDescComponent({ times: 10, text: "Looks horny" }),
     );
 
-    return helmet
+    return helmet;
+  },
+
+  getVariant: (variant: symbol) => {
+    switch (variant) {
+      case HelmetEntityVariants.HORNED_HELMET:
+        return HelmetEntityFactory.getHornedHelmet();
+      default:
+        return HelmetEntityFactory.getDefault();
+    }
   },
 };

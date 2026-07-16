@@ -52,7 +52,6 @@ export const resolvePickUpUnpack = (
         });
       }
       const containerItems = getContainerItems(itemToPickUp);
-      clearContainerItems(itemToPickUp);
       removeById(tile.items, itemToPickUp.id);
       tile.items.push(...containerItems, itemToPickUp);
       action.addPending({
