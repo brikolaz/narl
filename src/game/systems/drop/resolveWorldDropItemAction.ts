@@ -1,6 +1,4 @@
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
 import { getEntityById } from "../../../core/ecs/queries/entities/get";
-import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { getContainerItems } from "../../model/queries/containers";
 import { getMobById } from "../../model/queries/mobs";
 import { getTile } from "../../model/queries/tile";

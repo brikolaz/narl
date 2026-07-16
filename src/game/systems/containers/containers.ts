@@ -41,7 +41,7 @@ export const addItemToContainer = (
     return;
   }
   const slot = getFirstEmptyContainerSlot(container);
-  debugger
+  
   if (!slot) {
     throw new Error("Container is full");
   }

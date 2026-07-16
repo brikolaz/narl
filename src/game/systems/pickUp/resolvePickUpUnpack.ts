@@ -1,25 +1,22 @@
 import { removeById } from "../../../utils/removeById";
-import { getPlayer } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { isCursed } from "../../model/queries/curse";
-import {
-  clearContainerItems,
-} from "../containers/containers";
 import {
   getBackpack,
   getContainerItems,
   isContainer,
   isContainerFull,
 } from "../../model/queries/containers";
+import { isCursed } from "../../model/queries/curse";
+import { pickUpItem } from "../../model/queries/pickUp";
+import { getPlayer } from "../../model/queries/player";
+import type { GameState } from "../../state/state";
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
+import { getEntityName } from "../inspect/getEntityName";
+import { getVisibleTiles } from "../player/getVisibleTiles";
 import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
 } from "../player/types";
-import { getVisibleTiles } from "../player/getVisibleTiles";
-import { pickUpItem } from "../../model/queries/pickUp";
-import { getEntityName } from "../inspect/getEntityName";
 
 export const resolvePickUpUnpack = (
   state: GameState,

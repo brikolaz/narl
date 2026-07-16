@@ -23,14 +23,14 @@ export const getComponentsByType = <P extends object | undefined>(
 export const getComponentsByTypes = <P extends object | undefined>(
   entity: EntityArgument,
   componentTypes: ComponentTypeArgument<P>[],
-): Component<P>[] => {
+): Component[] => {
   const source = resolveEntity(entity);
   if (!source) return [];
 
   return componentTypes.flatMap((componentType) => {
     const type = resolveComponentType(componentType);
     return getComponentsByType(source, type);
-  }) as Component<P>[];
+  }) as Component[];
 };
 
 export const getComponentByType = <P extends object | undefined>(
