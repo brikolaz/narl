@@ -1,22 +1,14 @@
-import { VisitedComponent } from "../../model/components/VisitedComponent";
-import {
-  getPlayerEntity,
-  getPlayerPosition,
-} from "../../model/queries/player";
+import { hasMobs } from "../../model/queries/mobs";
+import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
+import { getTile } from "../../model/queries/tile";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { hasMobs } from "../../model/queries/mobs";
 import { addExplorationExp } from "../exp/exp";
 import { PlayerActionType, type PlayerMoveAction } from "../player/types";
-import { getTile } from "../../model/queries/tile";
 import { discoverTiles } from "../world/tile";
+import { markAsVisited } from "./exploration";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
-
-const markAsVisited = (state: GameState, position: number): void => {
-  upsertComponents(state.world[position].floor, VisitedComponent());
-};
 
 const getNextState = (state: GameState, nextPlayerPosition: number): void => {
   const world = state.world;

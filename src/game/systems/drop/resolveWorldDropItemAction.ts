@@ -1,14 +1,15 @@
+import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import { getEntityById } from "../../../core/ecs/queries/entities/get";
+import { DroppableComponent } from "../../model/components/items/DroppableComponent";
+import { getContainerItems } from "../../model/queries/containers";
+import { getMobById } from "../../model/queries/mobs";
+import { getTile } from "../../model/queries/tile";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getMobById } from "../../model/queries/mobs";
-import { getTile } from "../../model/queries/tile";
-import { type WorldDropItemAction } from "../world/types";
-import { DroppableComponent } from "../../model/components/items/DroppableComponent";
-import { getContainerItems } from "../../model/queries/containers";
 import { getEntityName } from "../inspect/getEntityName";
-import { getEntityById } from "../../../core/ecs/queries/entities/get";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import { type WorldDropItemAction } from "../world/types";
+import { isDroppable } from "./drop";
 
 export const resolveWorldDropItemAction = (
   state: GameState,
@@ -26,13 +27,11 @@ export const resolveWorldDropItemAction = (
     if (!item) {
       return action.fail(`Nothing to drop`);
     }
-    if (hasComponentsByType(item, DroppableComponent)) {
+    if (isDroppable(item)) {
       itemsToDrop.push(item);
     } else {
       itemsToDrop.push(
-        ...getContainerItems(item).filter((item) =>
-          hasComponentsByType(item, DroppableComponent),
-        ),
+        ...getContainerItems(item).filter((item) => isDroppable(item)),
       );
     }
     if (!itemsToDrop.length) {

@@ -48,7 +48,3 @@ export const upsertRoleEntities = (
 ): void => {
   _upsertEntities(entity, childrenEntities);
 };
-
-export const addRootEntity = (entity: Entity): void => {
-  upsertRegistryEntities(entity);
-};

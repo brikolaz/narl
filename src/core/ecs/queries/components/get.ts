@@ -4,7 +4,6 @@ import { getComponentRegistryRecord } from "../../registry/componentRegistry";
 import { resolveEntity, type EntityArgument } from "../entities/normalize";
 import { resolveComponentType, type ComponentTypeArgument } from "./normalize";
 
-// TODO: add common utils for resolving type/entity
 export const getComponentById = (id: Id) => {
   return getComponentRegistryRecord(id)?.component;
 };
