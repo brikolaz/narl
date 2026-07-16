@@ -4,7 +4,7 @@ import {
   type Entity,
 } from "../../../../../core/ecs/Entity";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import { upsertEntities, upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
+import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
 import { EqSlot } from "../../../../systems/eq/types";
 import {
   addItemToContainer,

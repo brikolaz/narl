@@ -6,8 +6,10 @@ import {
   upsertRoleEntities
 } from "../../../core/ecs/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
-import { removeEntityById } from "../../../core/ecs/queries/entities/remove";
-import { detachRegistryEntity } from "../../../core/ecs/registry/entityRegistry";
+import {
+  detachEntity,
+  removeEntity,
+} from "../../../core/ecs/queries/entities/remove";
 import { SizeComponent } from "../../model/components/containers/SizeComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import {
@@ -62,9 +64,9 @@ export const setContainerItemAt = (
 
   const existingItem = getContainerItemAt(container, slot);
   if (existingItem) {
-    removeEntityById(existingItem.id);
+    removeEntity(existingItem.id);
   }
-  detachRegistryEntity(entity.id);
+  detachEntity(entity.id);
   removeComponentsByType(entity, PositionComponent.type);
   upsertComponents(entity, PositionComponent({ position: slot }));
   upsertRoleEntities(container, {
@@ -85,7 +87,7 @@ export const clearContainerItemAt = (
   if (!item) {
     return;
   }
-  removeEntityById(item.id);
+  removeEntity(item.id);
 };
 
 export const clearContainerItemById = (container: Entity, id: number): void => {
@@ -98,7 +100,7 @@ export const clearContainerItemById = (container: Entity, id: number): void => {
   if (!item) {
     throw new Error("Item doesn't belong to the container");
   }
-  removeEntityById(id);
+  removeEntity(id);
 };
 
 export const clearContainerItems = (container: Entity): void => {

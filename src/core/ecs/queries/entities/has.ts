@@ -1,24 +1,26 @@
-import type { Entity, EntityRole } from "../../Entity";
-import type { Id } from "../../Id";
-import { getEntityById } from "../entities/get";
+import type { EntityRole } from "../../Entity";
+import { resolveEntity, type EntityArgument } from "./normalize";
 
 export const hasEntitiesByRole = (
-  entity: Entity | Id | undefined,
+  parentEntity: EntityArgument,
   entityRole: EntityRole,
 ): boolean => {
-  if (entity === undefined) return false;
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
+  if (parentEntity === undefined) return false;
 
-  return (source?.entityByRole?.get(entityRole)?.size ?? 0) > 0;
+  return (
+    (resolveEntity(parentEntity)?.entityByRole?.get(entityRole)?.size ?? 0) >
+    0
+  );
 };
 
-export const hasEntityById = (
-  entity: Entity | Id | undefined,
-  id: Id,
+export const hasEntity = (
+  parentEntity: EntityArgument,
+  childEntity: EntityArgument,
 ): boolean => {
-  if (!entity) return false;
+  const source = resolveEntity(parentEntity);
+  const child = resolveEntity(childEntity);
 
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
+  if (!source || !child) return false;
 
-  return source?.entityById?.has(id) ?? false;
+  return source?.entityById?.has(child?.id) ?? false;
 };

@@ -1,43 +1,7 @@
 import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { upsertRegistryEntities } from "../../registry/entityRegistry";
-import { getEntityById } from "./get";
-
-const getTargetEntity = (
-  entity: Entity | Id | undefined,
-): Entity | undefined => {
-  if (entity === undefined) {
-    return undefined;
-  }
-
-  return typeof entity === "number" ? getEntityById(entity) : entity;
-};
-
-type ChildrenInput =
-  | (Entity | undefined)[]
-  | Partial<Record<EntityRole, (Entity | undefined)[] | Entity>>;
-
-const normalizeChildren = (
-  children: ChildrenInput,
-): Partial<Record<EntityRole, Entity[]>> => {
-  if (Array.isArray(children)) {
-    return {
-      [EntityRole.DEFAULT]: children.filter(
-        (child): child is Entity => child !== undefined,
-      ),
-    };
-  }
-
-  const normalized: Partial<Record<EntityRole, Entity[]>> = {};
-
-  for (const [role, entities] of Object.entries(children)) {
-    normalized[role as EntityRole] = [entities]
-      .flat()
-      .filter((child): child is Entity => child !== undefined);
-  }
-
-  return normalized;
-};
+import { resolveEntity, normalizeChildrenEntityRecords, type ChildrenInput } from "./normalize";
 
 const upsertDataEntities = (
   entity: Entity,
@@ -60,11 +24,11 @@ const _upsertEntities = (
   entity: Entity | Id | undefined,
   childrenEntities: ChildrenInput,
 ): void => {
-  const target = getTargetEntity(entity);
+  const target = resolveEntity(entity);
   if (!target) {
     return;
   }
-  const children = normalizeChildren(childrenEntities);
+  const children = normalizeChildrenEntityRecords(childrenEntities);
   upsertDataEntities(target, children);
   upsertRegistryEntities(target, children);
 };

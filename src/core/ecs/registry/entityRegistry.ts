@@ -28,16 +28,16 @@ export const upsertEntityRegistryRecords = (
 };
 
 export const upsertRegistryEntities = (
-  entity: Entity | undefined,
+  parentEntity: Entity | undefined,
   childrenEntities: Partial<Record<EntityRole, Entity[]>> | Entity[] = [],
 ) => {
-  if (!entity) {
+  if (!parentEntity) {
     return;
   }
   const records: EntityRegistryRecord[] = [];
-  if (!hasEntityRegistryRecord(entity.id)) {
+  if (!hasEntityRegistryRecord(parentEntity.id)) {
     records.push({
-      entity,
+      entity: parentEntity,
       parent: null,
       role: null,
     });
@@ -48,7 +48,7 @@ export const upsertRegistryEntities = (
   for (const [role, children] of Object.entries(entitiesToRegister)) {
     for (const child of children) {
       records.push({
-        parent: entity,
+        parent: parentEntity,
         entity: child,
         role: role as EntityRole,
       });
@@ -75,44 +75,15 @@ export const removeEntityRegistryRecordById = (id: Id): void => {
 };
 
 export const patchEntityRegistryRecordById = (
-  id: Id,
+  entity: Id,
   patcher: (record: EntityRegistryRecord) => EntityRegistryRecord,
 ): void => {
-  if (!hasEntityRegistryRecord(id)) {
+  if (!hasEntityRegistryRecord(entity)) {
     return;
   }
-  const nextRecord = patcher(ENTITY_REGISTRY_BY_ID[id]);
+  const nextRecord = patcher(ENTITY_REGISTRY_BY_ID[entity]);
   ENTITY_REGISTRY_BY_ID[nextRecord.entity.id] = nextRecord;
-  if (id !== nextRecord.entity.id) {
-    removeEntityRegistryRecordById(id);
+  if (entity !== nextRecord.entity.id) {
+    removeEntityRegistryRecordById(entity);
   }
-};
-
-export const detachRegistryEntity = (id: Id) => {
-  const record = getEntityRegistryRecordById(id);
-
-  if (!record) {
-    return;
-  }
-
-  const parent = record.parent === null ? undefined : record.parent;
-
-  if (!parent) {
-    return;
-  }
-
-  const role = record.role ?? EntityRole.DEFAULT;
-
-  parent.entityById.delete(id);
-  parent.entityByRole.set(
-    role,
-    parent.entityByRole.get(role)?.difference(new Set([record.entity])) ??
-      new Set(),
-  );
-
-  patchEntityRegistryRecordById(id, (r) => ({
-    ...r,
-    parent: null,
-    role: null,
-  }));
 };

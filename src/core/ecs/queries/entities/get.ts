@@ -1,19 +1,20 @@
 import type { Entity, EntityRole } from "../../Entity";
 import type { Id } from "../../Id";
 import { getRegistryEntityById } from "../../registry/entityRegistry";
+import { resolveEntity, type EntityArgument } from "./normalize";
 
 export const getEntityById = (id: Id) => {
   return getRegistryEntityById(id);
 };
 
 export const getEntitiesByRole = (
-  entity: Entity | Id | undefined,
+  parentEntity: EntityArgument,
   entityRole: EntityRole,
 ): Entity[] => {
-  if (!entity) {
+  if (!parentEntity) {
     return [];
   }
-  const source = typeof entity === "number" ? getEntityById(entity) : entity;
+  const source = resolveEntity(parentEntity);
   const entities = [...(source?.entityByRole.get(entityRole) ?? [])];
   return entities.filter(
     (targetEntity): targetEntity is Entity => targetEntity !== undefined,
@@ -21,8 +22,8 @@ export const getEntitiesByRole = (
 };
 
 export const getEntityByRole = (
-  entity: Entity | Id | undefined,
+  parentEntity: EntityArgument,
   entityRole: EntityRole,
 ): Entity => {
-  return getEntitiesByRole(entity, entityRole)[0];
+  return getEntitiesByRole(parentEntity, entityRole)[0];
 };

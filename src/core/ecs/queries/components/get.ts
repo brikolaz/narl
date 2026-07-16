@@ -5,11 +5,11 @@ import type {
 } from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
-import { getComponentRegistryRecordById } from "../../registry/componentRegistry";
+import { getComponentRegistryRecord } from "../../registry/componentRegistry";
 
 // TODO: add common utils for resolving type/entity
 export const getComponentById = (id: Id) => {
-  return getComponentRegistryRecordById(id)?.component;
+  return getComponentRegistryRecord(id)?.component;
 };
 
 export const getComponentsByType = <P extends object>(

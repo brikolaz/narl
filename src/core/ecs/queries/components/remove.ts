@@ -2,8 +2,8 @@ import type { ComponentType } from "../../Component";
 import type { Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import {
-  getComponentRegistryRecordById,
-  removeComponentRegistryRecordsById,
+  getComponentRegistryRecord,
+  removeComponentRegistryRecords,
 } from "../../registry/componentRegistry";
 
 const removeDataComponentsByType = (
@@ -34,11 +34,11 @@ export const removeComponentsByType = (
   ...componentTypes: ComponentType[]
 ) => {
   const ids = removeDataComponentsByType(entity, ...componentTypes);
-  removeComponentRegistryRecordsById(...ids);
+  removeComponentRegistryRecords(...ids);
 };
 
 const removeDataComponentById = (id: Id): void => {
-  const record = getComponentRegistryRecordById(id);
+  const record = getComponentRegistryRecord(id);
   const parent = record.parent;
   const type = record.component.type;
   if (!record) return;
@@ -57,5 +57,5 @@ const removeDataComponentsById = (...ids: Id[]): void => {
 
 export const removeComponentById = (...ids: Id[]): void => {
   removeDataComponentsById(...ids);
-  removeComponentRegistryRecordsById(...ids);
+  removeComponentRegistryRecords(...ids);
 };

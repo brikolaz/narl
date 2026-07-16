@@ -1,21 +1,20 @@
 import { type Entity } from "../../Entity";
-import type { Id } from "../../Id";
-import { getEntityById } from "./get";
+import { resolveEntity, type EntityArgument } from "./normalize";
 
-const patchDataEntityById = (
-  id: Id,
-  patcher: (child: Entity) => void,
+const patchDataEntity = (
+  entity: Entity,
+  patcher: (entity: Entity) => void,
 ): void => {
-  const entity = getEntityById(id);
-  if (!entity) {
-    return;
-  }
   patcher(entity);
 };
 
-export const patchEntityById = (
-  id: Id,
-  patcher: (child: Entity) => void,
+export const patchEntity = (
+  entity: EntityArgument,
+  patcher: (entity: Entity) => void,
 ): void => {
-  patchDataEntityById(id, patcher);
+  const target = resolveEntity(entity);
+  if (!target) {
+    return;
+  }
+  patchDataEntity(target, patcher);
 };

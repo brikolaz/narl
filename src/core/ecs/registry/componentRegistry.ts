@@ -21,27 +21,27 @@ export const upsertComponentRegistryRecords = (
   }
 };
 
-const removeComponentRegistryRecordById = (id: Id) => {
-  delete COMPONENT_REGISTRY_BY_ID[id];
+const removeComponentRegistryRecord = (component: Id) => {
+  delete COMPONENT_REGISTRY_BY_ID[component];
 };
 
-export const removeComponentRegistryRecordsById = (...ids: Id[]) => {
-  for (const id of ids) {
-    removeComponentRegistryRecordById(id);
+export const removeComponentRegistryRecords = (...components: Id[]) => {
+  for (const id of components) {
+    removeComponentRegistryRecord(id);
   }
 };
 
-export const getComponentRegistryRecordById = (id: Id) => {
-  return COMPONENT_REGISTRY_BY_ID[id];
+export const getComponentRegistryRecord = (component: Id) => {
+  return COMPONENT_REGISTRY_BY_ID[component];
 };
 
-export const patchRegistryComponentById = (
-  id: Id,
+export const patchRegistryComponent = (
+  component: Id,
   patcher: (record: ComponentRegistryRecord) => ComponentRegistryRecord,
 ) => {
-  const record = getComponentRegistryRecordById(id);
+  const record = getComponentRegistryRecord(component);
   if (!record) {
     return;
   }
-  COMPONENT_REGISTRY_BY_ID[id] = patcher(record);
+  COMPONENT_REGISTRY_BY_ID[component] = patcher(record);
 };
