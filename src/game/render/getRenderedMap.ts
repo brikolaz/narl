@@ -1,14 +1,14 @@
-import { COLORS } from "../utils/colors";
-import { AppearanceComponent } from "../game/model/components/display/AppearanceComponent";
-import { ColorComponent } from "../game/model/components/display/ColorComponent";
-import { GlyphComponent } from "../game/model/components/display/GlyphComponent";
-import { getPlayer } from "../game/model/queries/player";
-import type { GameState, Tile } from "../game/state/state";
-import { pickUpItem } from "../game/model/queries/pickUp";
-import { getVisibleTiles } from "../game/systems/player/getVisibleTiles";
+import type { Entity } from "../../core/ecs/Entity";
+import { getComponentByType } from "../../core/ecs/queries/components/get";
+import { COLORS } from "../../utils/colors";
+import { AppearanceComponent } from "../model/components/display/AppearanceComponent";
+import { ColorComponent } from "../model/components/display/ColorComponent";
+import { GlyphComponent } from "../model/components/display/GlyphComponent";
+import { pickUpItem } from "../model/queries/pickUp";
+import { getPlayer } from "../model/queries/player";
+import type { GameState, Tile } from "../state/state";
+import { getVisibleTiles } from "../systems/player/getVisibleTiles";
 import { RenderedTile } from "./types";
-import type { Entity } from "../core/ecs/Entity";
-import { getComponentByType } from "../core/ecs/queries/components/get";
 
 const resolveGlyph = (tile: Tile, player: Entity | undefined) => {
   const playerGlyph = getComponentByType(player, GlyphComponent)?.glyph;
@@ -49,7 +49,7 @@ const resolveColor = (tile: Tile, player: Entity | undefined) => {
   return playerColor ?? mobColor ?? itemColor ?? floorColor ?? COLORS.DEFAULT;
 };
 
-const getRenderedTilePosition = (tile) => {
+const getRenderedTilePosition = (tile: Tile) => {
   return tile.position + 1;
 };
 

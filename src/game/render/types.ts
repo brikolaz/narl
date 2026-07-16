@@ -1,6 +1,7 @@
-import { COLORS } from "../utils/colors";
-import type { Id } from "../core/ecs/Id";
-import { getId } from "../utils/getId";
+import type { Id } from "../../core/ecs/Id";
+import { COLORS } from "../../utils/colors";
+import { getId } from "../../utils/getId";
+
 
 export type RenderedTileProps = {
   id?: Id;

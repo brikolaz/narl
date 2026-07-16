@@ -1,11 +1,11 @@
+import { render } from "./game/render/render";
 import { getInitialState } from "./game/state/state";
 import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
 import type { KeyboardToActionChain } from "./game/systems/input/keyboard/chain";
 import { mapKeyboardEventToAction } from "./game/systems/input/keyboard/mapKeyboardEventToAction";
 import { InternalActionType } from "./game/systems/internal/type";
-import { getGameViewModel } from "./game/view/getGameViewModel";
-import "./render/index.css";
-import { render } from "./render/render";
+import { getGameViewModel } from "./game/render/getGameViewModel";
+import "./game/render/index.css";
 
 let state = dispatchGameAction({ type: InternalActionType.INIT })(
   getInitialState(),
