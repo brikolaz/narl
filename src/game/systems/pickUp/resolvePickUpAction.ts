@@ -12,7 +12,7 @@ import {
 } from "../../model/queries/containers";
 import type { PlayerPickUpAction } from "../player/types";
 import { isPickupable, pickUpItem } from "../../model/queries/pickUp";
-import { getVisibleTiles } from "../render/getVisibleTiles";
+import { getVisibleTiles } from "../player/getVisibleTiles";
 import { curse } from "../curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
 

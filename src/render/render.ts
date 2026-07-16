@@ -1,8 +1,7 @@
 import type {
   ColoredGlyphView,
   GameViewModel,
-} from "./game/view/getGameViewModel";
-import "./index.css";
+} from "../game/view/getGameViewModel";
 
 const root = document.querySelector<HTMLDivElement>("#root");
 

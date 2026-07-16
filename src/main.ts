@@ -4,8 +4,8 @@ import type { KeyboardToActionChain } from "./game/systems/input/keyboard/chain"
 import { mapKeyboardEventToAction } from "./game/systems/input/keyboard/mapKeyboardEventToAction";
 import { InternalActionType } from "./game/systems/internal/type";
 import { getGameViewModel } from "./game/view/getGameViewModel";
-import "./index.css";
-import { render } from "./render";
+import "./render/index.css";
+import { render } from "./render/render";
 
 let state = dispatchGameAction({ type: InternalActionType.INIT })(
   getInitialState(),

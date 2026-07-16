@@ -1,6 +1,6 @@
 import type { GameState } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
-import { getVisibleTiles } from "../../render/getVisibleTiles";
+import { getVisibleTiles } from "../../player/getVisibleTiles";
 import { pickMobWorldAction } from "./pickMobWorldAction";
 
 // routing

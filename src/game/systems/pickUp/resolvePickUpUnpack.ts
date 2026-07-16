@@ -17,7 +17,7 @@ import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
 } from "../player/types";
-import { getVisibleTiles } from "../render/getVisibleTiles";
+import { getVisibleTiles } from "../player/getVisibleTiles";
 import { pickUpItem } from "../../model/queries/pickUp";
 import { getEntityName } from "../inspect/getEntityName";
 

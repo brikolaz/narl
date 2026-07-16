@@ -7,7 +7,7 @@ import { getPlayerEntity } from "../model/queries/player";
 import type { GameState } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
 import { EqSlot } from "../systems/eq/types";
-import { getRenderedMap } from "../systems/render/getRenderedMap";
+import { getRenderedMap } from "../../render/getRenderedMap";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
 

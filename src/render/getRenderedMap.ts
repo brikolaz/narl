@@ -1,14 +1,14 @@
-import { COLORS } from "../../../utils/colors";
-import { AppearanceComponent } from "../../model/components/display/AppearanceComponent";
-import { ColorComponent } from "../../model/components/display/ColorComponent";
-import { GlyphComponent } from "../../model/components/display/GlyphComponent";
-import { getPlayer } from "../../model/queries/player";
-import type { GameState, Tile } from "../../state/state";
-import { pickUpItem } from "../../model/queries/pickUp";
-import { getVisibleTiles } from "./getVisibleTiles";
+import { COLORS } from "../utils/colors";
+import { AppearanceComponent } from "../game/model/components/display/AppearanceComponent";
+import { ColorComponent } from "../game/model/components/display/ColorComponent";
+import { GlyphComponent } from "../game/model/components/display/GlyphComponent";
+import { getPlayer } from "../game/model/queries/player";
+import type { GameState, Tile } from "../game/state/state";
+import { pickUpItem } from "../game/model/queries/pickUp";
+import { getVisibleTiles } from "../game/systems/player/getVisibleTiles";
 import { RenderedTile } from "./types";
-import type { Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import type { Entity } from "../core/ecs/Entity";
+import { getComponentByType } from "../core/ecs/queries/components/get";
 
 const resolveGlyph = (tile: Tile, player: Entity | undefined) => {
   const playerGlyph = getComponentByType(player, GlyphComponent)?.glyph;
@@ -49,6 +49,10 @@ const resolveColor = (tile: Tile, player: Entity | undefined) => {
   return playerColor ?? mobColor ?? itemColor ?? floorColor ?? COLORS.DEFAULT;
 };
 
+const getRenderedTilePosition = (tile) => {
+  return tile.position + 1;
+};
+
 export const getRenderedMap = (gameState: GameState) => {
   const renderedMap: RenderedTile[] = getVisibleTiles(gameState).map((tile) => {
     const floorAppearance = getComponentByType(tile.floor, AppearanceComponent);
@@ -60,7 +64,7 @@ export const getRenderedMap = (gameState: GameState) => {
       char: resolveGlyph(tile, player),
       background: floorAppearance?.background ?? COLORS.MISSING_COLOR,
       color: resolveColor(tile, player),
-      position: tile.position,
+      position: getRenderedTilePosition(tile),
     });
   });
 
