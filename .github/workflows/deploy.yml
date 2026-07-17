@@ -1,0 +1,56 @@
+name: Deploy Playable Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Save build
+        run: |
+          mkdir /tmp/build
+          cp -R dist/. /tmp/build
+
+      - name: Deploy to gh-pages/play
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout gh-pages
+
+          mkdir -p play
+          rm -rf play/*
+          cp -R /tmp/build/. play/
+
+          git add play
+
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+            exit 0
+          fi
+
+          git commit -m "Update playable build"
+          git push origin gh-pages
