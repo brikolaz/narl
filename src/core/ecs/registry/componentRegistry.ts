@@ -1,3 +1,4 @@
+import { COMPONENT_REGISTRY_BY_ID } from "../../../game/state/state";
 import type { Component } from "../Component";
 import type { Entity } from "../Entity";
 import type { Id } from "../Id";
@@ -10,8 +11,6 @@ type ComponentRegistryRecord = {
 export type ComponentRegistryById = {
   [id: Id]: ComponentRegistryRecord;
 };
-
-export const COMPONENT_REGISTRY_BY_ID: ComponentRegistryById = {};
 
 export const upsertComponentRegistryRecords = (
   ...records: ComponentRegistryRecord[]

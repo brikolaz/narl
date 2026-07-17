@@ -1,21 +1,43 @@
 import { render } from "./game/render/render";
-import { getInitialState } from "./game/state/state";
+import { getInitialState, type GameState } from "./game/state/state";
 import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
 import type { KeyboardToActionChain } from "./game/systems/input/keyboard/chain";
 import { mapKeyboardEventToAction } from "./game/systems/input/keyboard/mapKeyboardEventToAction";
 import { InternalActionType } from "./game/systems/internal/type";
 import { getGameViewModel } from "./game/render/getGameViewModel";
 import "./game/render/index.css";
+import type { GameAction } from "./game/systems/actions/types";
 
-let state = dispatchGameAction({ type: InternalActionType.INIT })(
-  getInitialState(),
-);
+type Game = {
+  readonly state: GameState;
+  dispatch: (action: GameAction) => void;
+};
+
+const createGame = (initialState: GameState = getInitialState()): Game => {
+  let state = initialState;
+
+  return {
+    get state() {
+      return state;
+    },
+
+    dispatch(action) {
+      state = dispatchGameAction(state)(action);
+    },
+  };
+};
+
+const game = createGame();
+
+game.dispatch({ type: InternalActionType.INIT });
+
 let keyboardChain: KeyboardToActionChain = undefined;
 
-render(getGameViewModel(state));
-console.log(state);
+render(getGameViewModel(game.state));
+console.log(game.state);
+
 const handleKeyDown = (event: KeyboardEvent) => {
-  const result = mapKeyboardEventToAction(event, keyboardChain, state);
+  const result = mapKeyboardEventToAction(event, keyboardChain, game.state);
   keyboardChain = result.keyboardChain;
 
   if (!result.action) {
@@ -24,9 +46,9 @@ const handleKeyDown = (event: KeyboardEvent) => {
 
   event.preventDefault();
 
-  state = dispatchGameAction(result.action)(state);
-  render(getGameViewModel(state));
-  console.log(state);
+  game.dispatch(result.action);
+  render(getGameViewModel(game.state));
+  console.log(game.state);
 };
 
 window.addEventListener("keydown", handleKeyDown);

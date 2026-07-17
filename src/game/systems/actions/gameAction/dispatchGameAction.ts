@@ -30,8 +30,8 @@ const drainAction = (
 };
 
 export const dispatchGameAction =
-  (action: GameAction) =>
-  (state: GameState): GameState => {
+  (state: GameState) =>
+  (action: GameAction): GameState => {
     let nextState = state;
     let consumesTurn = false;
     const pendingLogs: PendingLog[] = [];

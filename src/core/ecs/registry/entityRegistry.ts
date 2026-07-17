@@ -1,3 +1,4 @@
+import { ENTITY_REGISTRY_BY_ID } from "../../../game/state/state";
 import { EntityRole, type Entity } from "../Entity";
 import type { Id } from "../Id";
 
@@ -16,8 +17,6 @@ export type EntityRegistryRecord =
 export type EntityRegistryById = {
   [id: Id]: EntityRegistryRecord;
 };
-
-export const ENTITY_REGISTRY_BY_ID: EntityRegistryById = {};
 
 export const upsertEntityRegistryRecords = (
   ...records: EntityRegistryRecord[]
