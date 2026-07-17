@@ -1,9 +1,7 @@
-import { removeById } from "../../../utils/removeById";
 import {
   getBackpack,
-  getContainerItems,
   isContainer,
-  isContainerFull,
+  isContainerFull
 } from "../../model/queries/containers";
 import { isCursed } from "../../model/queries/curse";
 import { pickUpItem } from "../../model/queries/pickUp";
@@ -11,12 +9,14 @@ import { getPlayer } from "../../model/queries/player";
 import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { unpackContainer } from "../containers/containers";
 import { getEntityName } from "../inspect/getEntityName";
 import { getVisibleTiles } from "../player/getVisibleTiles";
 import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
 } from "../player/types";
+import { replaceFloorItem } from "./pickUp";
 
 export const resolvePickUpUnpack = (
   state: GameState,
@@ -48,13 +48,12 @@ export const resolvePickUpUnpack = (
           type: PlayerActionType.PICK_UP,
         });
       }
-      const containerItems = getContainerItems(itemToPickUp);
-      removeById(tile.items, itemToPickUp.id);
-      tile.items.push(...containerItems, itemToPickUp);
+      const unpackedContainer = unpackContainer(itemToPickUp);
+      replaceFloorItem(tile, itemToPickUp.id, ...unpackedContainer);
       action.addPending({
         type: PlayerActionType.PICK_UP,
       });
-      if (containerItems.length) {
+      if (unpackedContainer.length > 1) {
         return action.info(
           `Dropped ${getEntityName(itemToPickUp)} items to the floor`,
         );

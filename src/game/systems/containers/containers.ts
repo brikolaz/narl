@@ -2,9 +2,7 @@ import { EntityRole, type Entity } from "../../../core/ecs/Entity";
 import { upsertComponents } from "../../../core/ecs/queries/components/add";
 import { getComponentByType } from "../../../core/ecs/queries/components/get";
 import { removeComponentsByType } from "../../../core/ecs/queries/components/remove";
-import {
-  upsertRoleEntities
-} from "../../../core/ecs/queries/entities/add";
+import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
 import {
   detachEntity,
@@ -41,7 +39,7 @@ export const addItemToContainer = (
     return;
   }
   const slot = getFirstEmptyContainerSlot(container);
-  
+
   if (!slot) {
     throw new Error("Container is full");
   }
@@ -110,4 +108,10 @@ export const clearContainerItems = (container: Entity): void => {
   }
   const items = getContainerItems(container);
   items.forEach((item) => clearContainerItemById(container, item.id));
+};
+
+export const unpackContainer = (container: Entity) => {
+  const items = getContainerItems(container);
+  items.forEach((item) => detachEntity(item));
+  return [...items, container];
 };
