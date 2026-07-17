@@ -1,3 +1,4 @@
+import "./patches";
 import { render } from "./game/render/render";
 import { getInitialState, type GameState } from "./game/state/state";
 import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
