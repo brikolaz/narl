@@ -34,7 +34,7 @@ game.dispatch({ type: InternalActionType.INIT });
 let keyboardChain: KeyboardToActionChain = undefined;
 
 render(getGameViewModel(game.state));
-console.log(game.state);
+console.debug(game.state);
 
 const handleKeyDown = (event: KeyboardEvent) => {
   const result = mapKeyboardEventToAction(event, keyboardChain, game.state);
@@ -48,7 +48,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 
   game.dispatch(result.action);
   render(getGameViewModel(game.state));
-  console.log(game.state);
+  console.debug(game.state);
 };
 
 window.addEventListener("keydown", handleKeyDown);
