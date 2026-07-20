@@ -1,4 +1,4 @@
-import { getId } from "../../utils/getId";
+import { getId } from "../../game/state/state";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";

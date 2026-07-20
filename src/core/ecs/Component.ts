@@ -1,4 +1,4 @@
-import { getId } from "../../utils/getId";
+import { getId } from "../../game/state/state";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
 
@@ -54,5 +54,3 @@ export function getComponentCreator<Props extends Component>(
 
   return creator;
 }
-
-// TODO: REFACTOR USAGES
