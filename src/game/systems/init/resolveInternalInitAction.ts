@@ -25,7 +25,7 @@ export const resolveInternalInitAction = (
     state.log = [];
     state.actionLog = [];
     state.initialized = true;
-    state.player = initPlayer();
+    state.player = initPlayer(state);
     action.info("You'd rather stay dead");
   })();
 

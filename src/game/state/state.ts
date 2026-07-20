@@ -25,6 +25,8 @@ export type GameState = {
   log: LogEntry[];
   actionLog: ActionLog[];
   player: PlayerState;
+  entityRegistryById: EntityRegistryById;
+  componentRegistryById: ComponentRegistryById;
 };
 
 export let ENTITY_REGISTRY_BY_ID: EntityRegistryById = {};
@@ -44,8 +46,16 @@ export const getInitialState = (): GameState => {
     log: [],
     actionLog: [],
     player: {
-      player: getEntityCreator("DUMMY")(), // todo: needs to be removed on init!
+      player: getEntityCreator("DUMMY")(),
       position: 0,
+    },
+
+    get entityRegistryById() {
+      return ENTITY_REGISTRY_BY_ID;
+    },
+
+    get componentRegistryById() {
+      return COMPONENT_REGISTRY_BY_ID;
     },
   };
 };
