@@ -1,14 +1,13 @@
 import { getBackpack } from "../../../../model/queries/containers";
 import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
-import type { GameState } from "../../../../state/state";
 import type { EqSlot } from "../../../eq/types";
 import { PlayerActionType } from "../../../player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 import { createSlotActionCommands } from "./slots";
 
-const getTargetSlotCommand = (gameState: GameState): KeyboardToAction => {
-  const player = getPlayerEntity(gameState);
+const getTargetSlotCommand = (): KeyboardToAction => {
+  const player = getPlayerEntity();
   const eqSize = getEq(player)?.length;
 
   return createSlotActionCommands<EqSlot>(eqSize, (slot) => ({
@@ -17,10 +16,8 @@ const getTargetSlotCommand = (gameState: GameState): KeyboardToAction => {
   }));
 };
 
-export const getUnequipCommand = (
-  gameState: GameState,
-): KeyboardToActionCommand => {
-  const player = getPlayerEntity(gameState);
+export const getUnequipCommand = (): KeyboardToActionCommand => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");
@@ -28,7 +25,7 @@ export const getUnequipCommand = (
   const eqSize = getEq(player)?.length;
 
   return {
-    next: () => getTargetSlotCommand(gameState),
+    next: () => getTargetSlotCommand(),
     message: `Select EQ slot to unequip (1-${eqSize})`,
     fallback: "Invalid slot",
   };

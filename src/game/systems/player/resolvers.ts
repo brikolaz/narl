@@ -1,4 +1,3 @@
-import type { GameState } from "../../state/state";
 import type { ActionResolution } from "../actions/types";
 import { resolvePlayerAttackAction } from "../attack/resolvePlayerAttackAction";
 import { resolvePlayerCurseItemAction } from "../curse/resolvePlayerCurseItemAction";
@@ -14,7 +13,7 @@ import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 
 import { PlayerActionType } from "./types";
 
-type AnyPlayerResolver = (state: GameState, action: any) => ActionResolution;
+type AnyPlayerResolver = (action: any) => ActionResolution;
 
 export const playerActionResolvers = {
   [PlayerActionType.MOVE]: resolveMoveAction,

@@ -1,4 +1,3 @@
-import type { GameState } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
 import { getInternalLogAction } from "../../log/log";
 import { getLastFallbackMessage, type KeyboardToActionChain } from "./chain";
@@ -12,7 +11,6 @@ type KeyboardEventResult = {
 export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
   keyboardChain: KeyboardToActionChain,
-  gameState: GameState,
 ): KeyboardEventResult => {
   if (event.key === "Escape" && keyboardChain) {
     return {
@@ -21,7 +19,7 @@ export const mapKeyboardEventToAction = (
     };
   }
 
-  const root = createKeyboardToAction(gameState);
+  const root = createKeyboardToAction();
   const currentCommands = keyboardChain?.current ?? root;
   const command = currentCommands[event.key];
 

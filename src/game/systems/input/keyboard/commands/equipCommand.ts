@@ -1,7 +1,6 @@
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
-import type { GameState } from "../../../../state/state";
 import type { EqSlot } from "../../../eq/types";
 import type { InvSlot } from "../../../containers/types";
 import { PlayerActionType } from "../../../player/types";
@@ -20,10 +19,9 @@ const getEquipActionSlotCommand = (
 };
 
 const getEquipNextSlotCommand = (
-  gameState: GameState,
   backpackSize: number | undefined,
 ): KeyboardToAction => {
-  const player = getPlayerEntity(gameState);
+  const player = getPlayerEntity();
   const eqSize = getEq(player)?.length;
 
   return createSlotNextCommands<InvSlot>(
@@ -36,10 +34,8 @@ const getEquipNextSlotCommand = (
   );
 };
 
-export const getEquipCommand = (
-  gameState: GameState,
-): KeyboardToActionCommand => {
-  const player = getPlayerEntity(gameState);
+export const getEquipCommand = (): KeyboardToActionCommand => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");
@@ -48,7 +44,7 @@ export const getEquipCommand = (
 
   return {
     next: () => {
-      return getEquipNextSlotCommand(gameState, backpackSize);
+      return getEquipNextSlotCommand(backpackSize);
     },
     message: `Select INV item to equip (1-${backpackSize})`,
     fallback: "Invalid item",

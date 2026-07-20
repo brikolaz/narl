@@ -6,7 +6,6 @@ import {
 import { getEqSlot } from "../../model/queries/eq";
 import { isRemovable } from "../../model/queries/items";
 import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -21,13 +20,12 @@ import {
 } from "../player/types";
 
 export const resolveUnequipAction = (
-  state: GameState,
   gameAction: PlayerUnequipItemAction,
 ): ActionResolution => {
   const { eqSlot: eqSlotIndex } = gameAction;
   const action: Action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -48,7 +46,7 @@ export const resolveUnequipAction = (
     if (isFull) {
       action.addPending({
         type: PlayerActionType.DROP_ITEM,
-        targetPosition: getPlayerPosition(state),
+        targetPosition: getPlayerPosition(),
         eqSlot: eqSlotIndex,
         invSlot: undefined,
         reason: PlayerDropItemActionReason.BACKPACK_FULL,
@@ -63,5 +61,5 @@ export const resolveUnequipAction = (
     );
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

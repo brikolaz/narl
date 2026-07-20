@@ -2,7 +2,6 @@ import {
   getPlayerEntity,
   getPlayerPosition,
 } from "../../../../model/queries/player";
-import type { GameState } from "../../../../state/state";
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import type { InvSlot } from "../../../containers/types";
 import {
@@ -12,8 +11,8 @@ import {
 import type { KeyboardToActionCommand } from "../chain";
 import { createSlotActionCommands } from "./slots";
 
-const getDropActionCommands = (gameState: GameState) => {
-  const player = getPlayerEntity(gameState);
+const getDropActionCommands = () => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");
@@ -26,16 +25,14 @@ const getDropActionCommands = (gameState: GameState) => {
       type: PlayerActionType.DROP_ITEM,
       invSlot,
       eqSlot: undefined,
-      targetPosition: getPlayerPosition(gameState),
+      targetPosition: getPlayerPosition(),
       reason: PlayerDropItemActionReason.MANUAL,
     }),
   );
 };
 
-export const getDropCommand = (
-  gameState: GameState,
-): KeyboardToActionCommand => {
-  const player = getPlayerEntity(gameState);
+export const getDropCommand = (): KeyboardToActionCommand => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");
@@ -43,7 +40,7 @@ export const getDropCommand = (
   const backpackSize = getContainerSize(backpack);
 
   return {
-    next: () => getDropActionCommands(gameState),
+    next: () => getDropActionCommands(),
     message: `Select INV item to drop (1-${backpackSize})`,
     fallback: "Invalid item",
   };

@@ -1,4 +1,4 @@
-import { getId } from "../../game/state/state";
+import { STATE } from "../../game/state/state";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
@@ -32,7 +32,7 @@ export const getEntityCreator = (type: string): EntityCreator => {
 
   const creator: EntityCreator = () => {
     const entity = {
-      id: getId(),
+      id: STATE.getId(),
       componentById: new Map<Id, Component>(),
       componentByType: new Map<ComponentType, Map<Id, Component>>(),
       entityById: new Map<Id, Entity>(),

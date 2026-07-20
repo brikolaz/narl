@@ -4,10 +4,10 @@ import {
   MIN_WORLD_POSITION,
 } from "../../../utils/constants";
 import { getPlayerPosition } from "../../model/queries/player";
-import type { GameState, Tile } from "../../state/state";
+import { STATE, type Tile } from "../../state/state";
 
-export const getVisibleTiles = (gameState: GameState): Tile[] => {
-  const playerPosition = getPlayerPosition(gameState);
+export const getVisibleTiles = (): Tile[] => {
+  const playerPosition = getPlayerPosition();
   const half = Math.floor(MAP_SIZE / 2);
 
   let start = playerPosition - half;
@@ -22,5 +22,5 @@ export const getVisibleTiles = (gameState: GameState): Tile[] => {
     start = maxStart;
   }
 
-  return gameState.world.slice(start, start + MAP_SIZE);
+  return STATE.world.slice(start, start + MAP_SIZE);
 };

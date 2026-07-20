@@ -1,4 +1,4 @@
-import type { GameState } from "../../../state/state";
+import { STATE, type GameState } from "../../../state/state";
 import { flushLogs, recordPlayerAction } from "../../log/log";
 import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
@@ -8,56 +8,46 @@ import type { GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
 
 const drainAction = (
-  state: GameState,
   action: GameAction,
   pendingLogs: PendingLog[],
-): { nextState: GameState; consumesTurn: boolean } => {
-  const resolution = resolveGameAction(state, action);
+): { consumesTurn: boolean } => {
+  const resolution = resolveGameAction(action);
 
-  let nextState = resolution.nextState;
   let consumesTurn = resolution.consumesTurn;
 
   pendingLogs.push(...resolution.pendingLogs);
 
   for (const pendingAction of resolution.pendingActions) {
-    const childResult = drainAction(nextState, pendingAction, pendingLogs);
+    const childResult = drainAction(pendingAction, pendingLogs);
 
-    nextState = childResult.nextState;
     consumesTurn = consumesTurn || childResult.consumesTurn;
   }
 
-  return { nextState, consumesTurn };
+  return { consumesTurn };
 };
 
-export const dispatchGameAction =
-  (state: GameState) =>
-  (action: GameAction): GameState => {
-    let nextState = state;
-    let consumesTurn = false;
-    const pendingLogs: PendingLog[] = [];
+export const dispatchGameAction = (action: GameAction): GameState => {
+  let consumesTurn = false;
+  const pendingLogs: PendingLog[] = [];
 
-    if (isPlayerAction(action)) {
-      nextState = recordPlayerAction(nextState, action);
+  if (isPlayerAction(action)) {
+    recordPlayerAction(action);
+  }
+
+  const actionResult = drainAction(action, pendingLogs);
+  consumesTurn = consumesTurn || actionResult.consumesTurn;
+
+  if (consumesTurn) {
+    const worldActions = runWorldTurn();
+
+    for (const worldAction of worldActions) {
+      const worldResult = drainAction(worldAction, pendingLogs);
+      consumesTurn = consumesTurn || worldResult.consumesTurn;
     }
+  }
 
-    const actionResult = drainAction(nextState, action, pendingLogs);
-    nextState = actionResult.nextState;
-    consumesTurn = consumesTurn || actionResult.consumesTurn;
+  flushLogs(pendingLogs, consumesTurn);
+  STATE.turn = consumesTurn ? increaseTurn(STATE.turn) : STATE.turn;
 
-    if (consumesTurn) {
-      const worldActions = runWorldTurn(nextState);
-
-      for (const worldAction of worldActions) {
-        const worldResult = drainAction(nextState, worldAction, pendingLogs);
-        nextState = worldResult.nextState;
-        consumesTurn = consumesTurn || worldResult.consumesTurn;
-      }
-    }
-
-    const afterFlushLogs = flushLogs(nextState, pendingLogs, consumesTurn);
-
-    return {
-      ...afterFlushLogs,
-      turn: consumesTurn ? increaseTurn(nextState.turn) : nextState.turn,
-    };
-  };
+  return STATE;
+};

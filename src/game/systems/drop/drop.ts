@@ -5,14 +5,12 @@ import { detachEntity } from "../../../core/ecs/queries/entities/remove";
 import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { getTile } from "../../model/queries/tile";
-import type { GameState } from "../../state/state";
 
 export const dropItem = (
-  gameState: GameState,
   item: Entity,
   targetPosition: number,
 ) => {
-  const tile = getTile(gameState, targetPosition);
+  const tile = getTile(targetPosition);
   detachEntity(item.id);
   removeComponentsByType(item, PositionComponent.type);
   tile.items.push(item);

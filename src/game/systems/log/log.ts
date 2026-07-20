@@ -1,5 +1,5 @@
 import { MAX_VISIBLE_LOGS } from "../../../utils/constants";
-import type { GameState } from "../../state/state";
+import { STATE, type GameState } from "../../state/state";
 import type { GameAction } from "../actions/types";
 import { InternalActionType } from "../internal/type";
 import { type PlayerAction } from "../player/types";
@@ -7,45 +7,41 @@ import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
 const addLog = (
-  gameState: GameState,
   action: GameAction,
   message: string,
 ): LogEntry[] => {
   return [
-    ...gameState.log,
+    ...STATE.log,
     {
       message,
       action,
-      turn: gameState.turn,
+      turn: STATE.turn,
     },
   ].slice(-MAX_VISIBLE_LOGS);
 };
 
 export const addLogImmutable = (
-  gameState: GameState,
   action: GameAction,
   message: string,
 ): GameState => {
   return {
-    ...gameState,
-    log: addLog(gameState, action, message),
+    ...STATE,
+    log: addLog(action, message),
   };
 };
 
 export const addLogMutable = (
-  gameState: GameState,
   action: GameAction,
   message: string,
 ): void => {
-  gameState.log = addLog(gameState, action, message);
+  STATE.log = addLog(action, message);
 };
 
 export const flushLogs = (
-  gameState: GameState,
   logs: PendingLog[],
   consumesTurn: boolean,
 ): GameState => {
-  const lastestTurn = gameState.turn;
+  const lastestTurn = STATE.turn;
   const nextTurn = consumesTurn ? increaseTurn(lastestTurn) : lastestTurn;
   const nextLogs = logs.reduce<LogEntry[]>((next, log) => {
     next.push({
@@ -54,10 +50,8 @@ export const flushLogs = (
     });
     return next;
   }, []);
-  return {
-    ...gameState,
-    log: [...gameState.log, ...nextLogs].slice(-MAX_VISIBLE_LOGS),
-  };
+  STATE.log = [...STATE.log, ...nextLogs].slice(-MAX_VISIBLE_LOGS);
+  return STATE;
 };
 
 export const getPendingLogs = (action: GameAction, messages: string[]) => {
@@ -76,17 +70,14 @@ export const getInternalLogAction = (message: string): GameAction => ({
 });
 
 export const recordPlayerAction = (
-  gameState: GameState,
   action: PlayerAction,
 ): GameState => {
-  return {
-    ...gameState,
-    actionLog: [
-      ...gameState.actionLog,
-      {
-        action,
-        timestamp: Date.now(),
-      },
-    ],
-  };
+  STATE.actionLog = [
+    ...STATE.actionLog,
+    {
+      action,
+      timestamp: Date.now(),
+    },
+  ];
+  return STATE;
 };

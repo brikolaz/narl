@@ -2,7 +2,7 @@ import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
 import {
   FloorEntityFactory
 } from "../../model/entities/FloorEntity";
-import type { GameState, Tile } from "../../state/state";
+import { STATE, type Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";
 
 const generateTile = (position: number): Tile => {
@@ -20,7 +20,6 @@ const generateTile = (position: number): Tile => {
 };
 
 export const discoverTiles = (
-  gameState: GameState,
   centerPosition: number,
 ): void => {
   const half = Math.floor(MAP_SIZE / 2);
@@ -29,8 +28,8 @@ export const discoverTiles = (
   const end = Math.min(MAX_WORLD_SIZE - 1, centerPosition + half);
 
   for (let position = start; position <= end; position++) {
-    if (!gameState.world[position]) {
-      gameState.world[position] = generateTile(position);
+    if (!STATE.world[position]) {
+      STATE.world[position] = generateTile(position);
     }
   }
 };

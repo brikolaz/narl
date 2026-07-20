@@ -7,7 +7,6 @@ import {
   isContainerFull,
 } from "../../model/queries/containers";
 import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
@@ -18,13 +17,12 @@ import type { PlayerMoveItemAction } from "../player/types";
 
 // TODO: add swap (new resolver)
 export const resolveMoveItemAction = (
-  state: GameState,
   gameAction: PlayerMoveItemAction,
 ): ActionResolution => {
   const { fromSlot, toSlot } = gameAction;
   const action: Action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const backpack = action.assert(getBackpack(player), "No backpack");
     const fromItem = getContainerItemAt(backpack, fromSlot);
     const toItem = getContainerItemAt(backpack, toSlot);
@@ -60,5 +58,5 @@ export const resolveMoveItemAction = (
     );
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

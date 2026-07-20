@@ -5,7 +5,6 @@ import {
 } from "../../model/queries/containers";
 import { getEqSlot } from "../../model/queries/eq";
 import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -17,13 +16,12 @@ import { dropItem } from "./drop";
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
-  state: GameState,
   gameAction: PlayerDropItemAction,
 ): ActionResolution => {
   const { eqSlot, invSlot, targetPosition, reason } = gameAction;
   const action: Action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -46,7 +44,7 @@ export const resolvePlayerDropItemAction = (
       }
     }
     action.assertCondition(itemToDrop, "No item to drop");
-    dropItem(state, itemToDrop, targetPosition);
+    dropItem(itemToDrop, targetPosition);
 
     if (reason === PlayerDropItemActionReason.MANUAL) {
       return action.success(`Dropped ${getEntityName(itemToDrop)}`);
@@ -57,5 +55,5 @@ export const resolvePlayerDropItemAction = (
     );
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

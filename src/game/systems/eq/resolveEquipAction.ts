@@ -7,7 +7,6 @@ import {
 import { getEqSlot } from "../../model/queries/eq";
 import { getItemSlots } from "../../model/queries/items";
 import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
@@ -27,13 +26,12 @@ const canBeEquipped = (
 };
 
 export const resolveEquipAction = (
-  state: GameState,
   gameAction: PlayerEquipItemAction,
 ): ActionResolution => {
   const { invSlot: invSlotIndex, eqSlot: eqSlotIndex } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const backpack = action.assert(
       getBackpack(player),
       "Player has no backpack",
@@ -67,8 +65,8 @@ export const resolveEquipAction = (
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );
-    curse(itemToEquip, state, action);
+    curse(itemToEquip, action);
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

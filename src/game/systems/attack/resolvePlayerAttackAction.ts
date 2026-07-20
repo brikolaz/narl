@@ -4,7 +4,7 @@ import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
+import { STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -32,10 +32,9 @@ type AttackContext =
 
 // TODO: can be deleted
 export const prepareAttack = (
-  state: GameState,
   { targetPosition }: PlayerAttackAction,
 ): AttackContext => {
-  const target = state.world[targetPosition];
+  const target = STATE.world[targetPosition];
 
   if (!target || !hasMobs(target)) {
     return { ok: false, message: "No mobs to attack in that direction." };
@@ -46,7 +45,7 @@ export const prepareAttack = (
     return { ok: false, message: "No mobs to attack in that direction." };
   }
 
-  const player = getPlayerEntity(state);
+  const player = getPlayerEntity();
 
   const weapon = getEquippedWeapon(player);
 
@@ -63,16 +62,15 @@ export const prepareAttack = (
 };
 
 export const resolvePlayerAttackAction = (
-  state: GameState,
   gameAction: PlayerAttackAction,
 ): ActionResolution => {
   const action = new Action(gameAction);
-  const ctx = prepareAttack(state, gameAction);
+  const ctx = prepareAttack(gameAction);
   (() => {
     if (!ctx.ok) {
       return;
     }
-    const target = state.world[ctx.targetPosition];
+    const target = STATE.world[ctx.targetPosition];
     if (!hasMobs(target)) {
       return action.fail("No mobs to attack in that direction.");
     }
@@ -105,8 +103,8 @@ export const resolvePlayerAttackAction = (
     }
     mobHp.hp = nextHp;
     action.success(`Dealt ${dmg} dmg to ${mobName}`);
-    getManual(mob)?.onAfterTakeDamage?.(mob, state, action);
+    getManual(mob)?.onAfterTakeDamage?.(mob, action);
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

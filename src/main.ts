@@ -1,6 +1,6 @@
 import "./patches";
 import { render } from "./game/render/render";
-import { getInitialState, type GameState } from "./game/state/state";
+import { getInitialState, STATE, type GameState } from "./game/state/state";
 import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
 import type { KeyboardToActionChain } from "./game/systems/input/keyboard/chain";
 import { mapKeyboardEventToAction } from "./game/systems/input/keyboard/mapKeyboardEventToAction";
@@ -10,20 +10,17 @@ import "./game/render/index.css";
 import type { GameAction } from "./game/systems/actions/types";
 
 type Game = {
-  readonly state: GameState;
+  state: GameState;
   dispatch: (action: GameAction) => void;
 };
 
-const createGame = (initialState: GameState = getInitialState()): Game => {
-  let state = initialState;
+const createGame = (): Game => {
+  const state = getInitialState();
 
   return {
-    get state() {
-      return state;
-    },
-
+    state,
     dispatch(action) {
-      state = dispatchGameAction(state)(action);
+      dispatchGameAction(action);
     },
   };
 };
@@ -34,11 +31,11 @@ game.dispatch({ type: InternalActionType.INIT });
 
 let keyboardChain: KeyboardToActionChain = undefined;
 
-render(getGameViewModel(game.state));
-console.debug(game.state);
+render(getGameViewModel());
+console.debug(STATE);
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  const result = mapKeyboardEventToAction(event, keyboardChain, game.state);
+  const result = mapKeyboardEventToAction(event, keyboardChain);
   keyboardChain = result.keyboardChain;
 
   if (!result.action) {
@@ -48,8 +45,8 @@ const handleKeyDown = (event: KeyboardEvent) => {
   event.preventDefault();
 
   game.dispatch(result.action);
-  render(getGameViewModel(game.state));
-  console.debug(game.state);
+  render(getGameViewModel());
+  console.debug(STATE);
 };
 
 window.addEventListener("keydown", handleKeyDown);

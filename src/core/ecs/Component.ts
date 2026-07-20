@@ -1,4 +1,4 @@
-import { getId } from "../../game/state/state";
+import { STATE } from "../../game/state/state";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
 
@@ -20,7 +20,7 @@ export type ComponentCreator<Props extends object | undefined = undefined> =
     : {
         (): Component;
         type: ComponentType;
-        defaults: undefined
+        defaults: undefined;
       };
 
 export function getComponentCreator(type: string): ComponentCreator;
@@ -40,7 +40,7 @@ export function getComponentCreator<Props extends Component>(
 
   const creator = (props?: Partial<Props>) => {
     const component = {
-      id: getId(),
+      id: STATE.getId(),
       type: componentType,
       defaults: defaults ?? ({} as Props),
       ...(defaults ?? {}),

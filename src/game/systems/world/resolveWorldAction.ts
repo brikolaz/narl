@@ -1,17 +1,14 @@
-import type { GameState } from "../../state/state";
 import type { WorldAction } from "./types";
 import type { ActionResolution } from "../actions/types";
 import { worldActionResolvers } from "./resolvers";
 
 export const resolveWorldAction = (
-  state: GameState,
   gameAction: WorldAction,
 ): ActionResolution => {
   const actionResolution = (
     worldActionResolvers[gameAction.type] as (
-      state: GameState,
       worldAction: typeof gameAction,
     ) => ActionResolution
-  )(state, gameAction);
+  )(gameAction);
   return actionResolution;
 };

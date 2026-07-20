@@ -5,7 +5,7 @@ import { getBackpack, getContainerItemAt } from "../model/queries/containers";
 import { getEqSlotItem } from "../model/queries/eq";
 import { getPlayerEntity } from "../model/queries/player";
 import { getRenderedMap } from "./getRenderedMap";
-import type { GameState } from "../state/state";
+import { STATE } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
 import { EqSlot } from "../systems/eq/types";
 import { getEqStats } from "../systems/stats/eqStats";
@@ -37,8 +37,8 @@ const getGlyphView = (entity: Parameters<typeof getComponentByType>[0]) => ({
   color: getComponentByType(entity, ColorComponent)?.color,
 });
 
-export const getPlayerStatsView = (state: GameState): PlayerStatsView => {
-  const player = getPlayerEntity(state);
+export const getPlayerStatsView = (): PlayerStatsView => {
+  const player = getPlayerEntity();
 
   return {
     ...getPlayerStats(player),
@@ -46,8 +46,8 @@ export const getPlayerStatsView = (state: GameState): PlayerStatsView => {
   };
 };
 
-export const getEquipmentView = (state: GameState): EquipmentView => {
-  const player = getPlayerEntity(state);
+export const getEquipmentView = (): EquipmentView => {
+  const player = getPlayerEntity();
   const slots = Object.values(EqSlot).filter(
     (slot): slot is EqSlot => typeof slot === "number",
   );
@@ -55,27 +55,27 @@ export const getEquipmentView = (state: GameState): EquipmentView => {
   return slots.map((slot) => getGlyphView(getEqSlotItem(player, slot)));
 };
 
-export const getBackpackView = (state: GameState): BackpackView => {
-  const backpack = getBackpack(getPlayerEntity(state));
+export const getBackpackView = (): BackpackView => {
+  const backpack = getBackpack(getPlayerEntity());
 
   return [...ALL_CONTAINER_SLOTS].map((slot) =>
     getGlyphView(backpack ? getContainerItemAt(backpack, slot) : undefined),
   );
 };
 
-export const getLogsView = (state: GameState): LogEntryView[] =>
-  state.log.map((entry) => ({
+export const getLogsView = (): LogEntryView[] =>
+  STATE.log.map((entry) => ({
     text: `[${entry.turn}] ${entry.message}`,
   }));
 
-export const getGameViewModel = (state: GameState): GameViewModel => ({
-  map: getRenderedMap(state).map((tile) => ({
+export const getGameViewModel = (): GameViewModel => ({
+  map: getRenderedMap().map((tile) => ({
     char: tile.char ?? " ",
     color: tile.color,
     position: tile.position,
   })),
-  playerStats: getPlayerStatsView(state),
-  equipment: getEquipmentView(state),
-  backpack: getBackpackView(state),
-  logs: getLogsView(state),
+  playerStats: getPlayerStatsView(),
+  equipment: getEquipmentView(),
+  backpack: getBackpackView(),
+  logs: getLogsView(),
 });

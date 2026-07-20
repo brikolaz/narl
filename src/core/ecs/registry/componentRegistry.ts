@@ -1,4 +1,4 @@
-import { COMPONENT_REGISTRY_BY_ID } from "../../../game/state/state";
+import { STATE } from "../../../game/state/state";
 import type { Component } from "../Component";
 import type { Entity } from "../Entity";
 import type { Id } from "../Id";
@@ -16,12 +16,12 @@ export const upsertComponentRegistryRecords = (
   ...records: ComponentRegistryRecord[]
 ) => {
   for (const record of records) {
-    COMPONENT_REGISTRY_BY_ID[record.component.id] = record;
+    STATE.componentRegistryById[record.component.id] = record;
   }
 };
 
 const removeComponentRegistryRecord = (component: Id) => {
-  delete COMPONENT_REGISTRY_BY_ID[component];
+  delete STATE.componentRegistryById[component];
 };
 
 export const removeComponentRegistryRecords = (...components: Id[]) => {
@@ -31,7 +31,7 @@ export const removeComponentRegistryRecords = (...components: Id[]) => {
 };
 
 export const getComponentRegistryRecord = (component: Id) => {
-  return COMPONENT_REGISTRY_BY_ID[component];
+  return STATE.componentRegistryById[component];
 };
 
 export const patchRegistryComponent = (
@@ -42,5 +42,5 @@ export const patchRegistryComponent = (
   if (!record) {
     return;
   }
-  COMPONENT_REGISTRY_BY_ID[component] = patcher(record);
+  STATE.componentRegistryById[component] = patcher(record);
 };

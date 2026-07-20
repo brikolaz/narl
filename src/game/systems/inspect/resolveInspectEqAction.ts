@@ -1,5 +1,4 @@
 import { getPlayerEntity } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { curse } from "../curse/curse";
@@ -9,14 +8,13 @@ import { type PlayerInspectEqAction } from "../player/types";
 import { getItemInspectText, increaseInspected } from "./inspect";
 
 export const resolveInspectEqAction = (
-  state: GameState,
   gameAction: PlayerInspectEqAction,
 ): ActionResolution => {
   const { eqSlot } = gameAction;
   const action = new Action(gameAction);
 
   (() => {
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const slot = getEqSlot(player, eqSlot);
     const item = getContainerItemAt(slot, 1);
 
@@ -26,8 +24,8 @@ export const resolveInspectEqAction = (
     increaseInspected(item);
 
     action.info(getItemInspectText(item));
-    curse(item, state, action);
+    curse(item, action);
   })();
 
-  return action.resolve(state, false);
+  return action.resolve(false);
 };

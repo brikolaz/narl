@@ -2,7 +2,6 @@ import { getEntityById } from "../../../core/ecs/queries/entities/get";
 import { getContainerItems } from "../../model/queries/containers";
 import { getMobById } from "../../model/queries/mobs";
 import { getTile } from "../../model/queries/tile";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -10,13 +9,12 @@ import { type WorldDropItemAction } from "../world/types";
 import { isDroppable } from "./drop";
 
 export const resolveWorldDropItemAction = (
-  state: GameState,
   gameAction: WorldDropItemAction,
 ): ActionResolution => {
   const { entityId, targetPosition, itemId } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const tile = getTile(state, targetPosition);
+    const tile = getTile(targetPosition);
     const source = action.assert(getMobById(tile, entityId), "No mob");
     const sourceEntityName = getEntityName(source);
 
@@ -41,5 +39,5 @@ export const resolveWorldDropItemAction = (
     return action.success(`${sourceEntityName} dropped ${itemNames}`);
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

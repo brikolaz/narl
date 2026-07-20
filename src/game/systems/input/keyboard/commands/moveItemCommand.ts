@@ -1,5 +1,4 @@
 import { getPlayerEntity } from "../../../../model/queries/player";
-import type { GameState } from "../../../../state/state";
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import type { InvSlot } from "../../../containers/types";
 import { PlayerActionType } from "../../../player/types";
@@ -25,10 +24,8 @@ const getMoveItemNextCommand = (backpackSize: number): KeyboardToAction => {
   );
 };
 
-export const getMoveItemCommand = (
-  gameState: GameState,
-): KeyboardToActionCommand => {
-  const player = getPlayerEntity(gameState);
+export const getMoveItemCommand = (): KeyboardToActionCommand => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");

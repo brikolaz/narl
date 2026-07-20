@@ -1,6 +1,6 @@
 import type { Id } from "../../core/ecs/Id";
 import { COLORS } from "../../utils/colors";
-import { getId } from "../state/state";
+import { STATE } from "../state/state";
 
 
 export type RenderedTileProps = {
@@ -11,6 +11,7 @@ export type RenderedTileProps = {
   position: number;
 };
 
+// TODO: recreate as game entity?
 export class RenderedTile {
   static MISSING_GLYPH = "#" as const;
 
@@ -22,6 +23,6 @@ export class RenderedTile {
 
   constructor(props: RenderedTileProps) {
     Object.assign(this, props);
-    this.id ??= getId();
+    this.id ??= STATE.getId();
   }
 }

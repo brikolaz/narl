@@ -1,7 +1,7 @@
 import { hasMobs } from "../../model/queries/mobs";
 import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
 import { getTile } from "../../model/queries/tile";
-import type { GameState } from "../../state/state";
+import { STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addExplorationExp } from "../exp/exp";
@@ -10,24 +10,23 @@ import { discoverTiles } from "../world/tile";
 import { markAsVisited } from "./exploration";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
 
-const getNextState = (state: GameState, nextPlayerPosition: number): void => {
-  const world = state.world;
-  const player = getPlayerEntity(state);
-  state.player = {
+const getNextState = (nextPlayerPosition: number): void => {
+  const world = STATE.world;
+  const player = getPlayerEntity();
+  STATE.player = {
     player: addExplorationExp(world[nextPlayerPosition].floor, player),
     position: nextPlayerPosition,
   };
-  markAsVisited(state, nextPlayerPosition);
+  markAsVisited(nextPlayerPosition);
 };
 
 export const resolveMoveAction = (
-  state: GameState,
   gameAction: PlayerMoveAction,
 ): ActionResolution => {
   const { direction } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const currentPlayerPosition = getPlayerPosition(state);
+    const currentPlayerPosition = getPlayerPosition();
     const nextPlayerPosition = getNextPlayerPosition({
       currentPosition: currentPlayerPosition,
       direction,
@@ -36,8 +35,8 @@ export const resolveMoveAction = (
     if (nextPlayerPosition === null) {
       return action.fail(`Cannot move ${direction.toLowerCase()}`);
     }
-    discoverTiles(state, nextPlayerPosition);
-    const nextTile = getTile(state, nextPlayerPosition);
+    discoverTiles(nextPlayerPosition);
+    const nextTile = getTile(nextPlayerPosition);
     if (hasMobs(nextTile)) {
       return action.addPending({
         type: PlayerActionType.ATTACK,
@@ -45,9 +44,9 @@ export const resolveMoveAction = (
       });
     }
 
-    getNextState(state, nextPlayerPosition);
+    getNextState(nextPlayerPosition);
     action.success(`Moved ${direction.toLowerCase()}`);
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

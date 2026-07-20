@@ -1,4 +1,4 @@
-import type { GameState } from "../../state/state";
+import { STATE } from "../../state/state";
 import { getPendingLogs } from "../log/log";
 import type { ActionResolution, GameAction } from "./types";
 
@@ -21,12 +21,8 @@ export class Action {
     this.consumesTurn = true;
   };
 
-  resolve = (
-    nextState: GameState,
-    consumesTurn?: boolean,
-  ): ActionResolution => {
+  resolve = (consumesTurn?: boolean): ActionResolution => {
     return {
-      nextState,
       consumesTurn: consumesTurn ?? this.consumesTurn,
       pendingLogs: getPendingLogs(this.gameAction, this.pendingLogMessages),
       pendingActions: this.pendingActions,

@@ -1,4 +1,4 @@
-import { ENTITY_REGISTRY_BY_ID } from "../../../game/state/state";
+import { STATE } from "../../../game/state/state";
 import { EntityRole, type Entity } from "../Entity";
 import type { Id } from "../Id";
 
@@ -22,7 +22,7 @@ export const upsertEntityRegistryRecords = (
   ...records: EntityRegistryRecord[]
 ) => {
   for (const record of records) {
-    ENTITY_REGISTRY_BY_ID[record.entity.id] = record;
+    STATE.entityRegistryById[record.entity.id] = record;
   }
 };
 
@@ -57,21 +57,21 @@ export const upsertRegistryEntities = (
 };
 
 export const hasEntityRegistryRecord = (id: Id) => {
-  return ENTITY_REGISTRY_BY_ID[id] !== undefined;
+  return STATE.entityRegistryById[id] !== undefined;
 };
 
 export const getEntityRegistryRecordById = (
   id: Id,
 ): EntityRegistryRecord | undefined => {
-  return ENTITY_REGISTRY_BY_ID[id];
+  return STATE.entityRegistryById[id];
 };
 
 export const getRegistryEntityById = (id: Id): Entity | undefined => {
-  return ENTITY_REGISTRY_BY_ID[id]?.entity;
+  return STATE.entityRegistryById[id]?.entity;
 };
 
 export const removeEntityRegistryRecordById = (id: Id): void => {
-  delete ENTITY_REGISTRY_BY_ID[id];
+  delete STATE.entityRegistryById[id];
 };
 
 export const patchEntityRegistryRecordById = (
@@ -81,8 +81,8 @@ export const patchEntityRegistryRecordById = (
   if (!hasEntityRegistryRecord(entity)) {
     return;
   }
-  const nextRecord = patcher(ENTITY_REGISTRY_BY_ID[entity]);
-  ENTITY_REGISTRY_BY_ID[nextRecord.entity.id] = nextRecord;
+  const nextRecord = patcher(STATE.entityRegistryById[entity]);
+  STATE.entityRegistryById[nextRecord.entity.id] = nextRecord;
   if (entity !== nextRecord.entity.id) {
     removeEntityRegistryRecordById(entity);
   }

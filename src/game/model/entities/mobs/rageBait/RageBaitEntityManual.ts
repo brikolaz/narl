@@ -2,7 +2,6 @@ import type { Entity } from "../../../../../core/ecs/Entity";
 import {
   replaceComponentsByType
 } from "../../../../../core/ecs/queries/components/patch";
-import type { GameState } from "../../../../state/state";
 import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";
@@ -13,7 +12,6 @@ import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 export class RageBaitEntityManual {
   static onAfterTakeDamage(
     rageBait: Entity,
-    _gameState: GameState,
     gameAction: Action,
   ) {
     if (isHostile(rageBait) || !RNG.mobs.chance(50)) {

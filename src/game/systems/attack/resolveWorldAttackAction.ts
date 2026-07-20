@@ -5,22 +5,20 @@ import { getHp } from "../../model/queries/hp";
 import { getMobById } from "../../model/queries/mobs";
 import { getPlayerEntity } from "../../model/queries/player";
 import { getTile } from "../../model/queries/tile";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 
 export const resolveWorldAttackAction = (
-  state: GameState,
   gameAction: WorldAttackAction,
 ): ActionResolution => {
   const { sourcePos, mobId } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const sourceTile = getTile(state, sourcePos);
+    const sourceTile = getTile(sourcePos);
     const mob = action.assert(getMobById(sourceTile, mobId), "No mob");
-    const player = getPlayerEntity(state);
+    const player = getPlayerEntity();
     const mobWeapon =
       getManual(mob)?.getEquippedWeapon?.(mob) ?? getEquippedWeapon(mob);
     const mobName = getEntityName(mob);
@@ -34,5 +32,5 @@ export const resolveWorldAttackAction = (
     return action.success(`${mobName} hits you. You lose ${mobDmg} HP`);
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

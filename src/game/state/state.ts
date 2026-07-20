@@ -1,5 +1,4 @@
 import { getEntityCreator, type Entity } from "../../core/ecs/Entity";
-import type { Id } from "../../core/ecs/Id";
 import { type ComponentRegistryById } from "../../core/ecs/registry/componentRegistry";
 import { type EntityRegistryById } from "../../core/ecs/registry/entityRegistry";
 import type { ActionLog, LogEntry } from "../systems/log/types";
@@ -27,35 +26,40 @@ export type GameState = {
   player: PlayerState;
   entityRegistryById: EntityRegistryById;
   componentRegistryById: ComponentRegistryById;
+  getId: () => number;
 };
 
-export let ENTITY_REGISTRY_BY_ID: EntityRegistryById = {};
-export let COMPONENT_REGISTRY_BY_ID: ComponentRegistryById = {};
-let ID = 0;
-export const getId = (): Id => ++ID;
+export let STATE: GameState;
 
 export const getInitialState = (): GameState => {
-  ENTITY_REGISTRY_BY_ID = {};
-  COMPONENT_REGISTRY_BY_ID = {};
-  ID = 0;
+  const entityRegistryById: EntityRegistryById = {};
+  const componentRegistryById: ComponentRegistryById = {};
+  let id = 0;
 
-  return {
+  STATE = {
     initialized: false,
     world: [],
     turn: 0,
     log: [],
     actionLog: [],
-    player: {
-      player: getEntityCreator("DUMMY")(),
-      position: 0,
-    },
 
     get entityRegistryById() {
-      return ENTITY_REGISTRY_BY_ID;
+      return entityRegistryById;
+    },
+    get componentRegistryById() {
+      return componentRegistryById;
     },
 
-    get componentRegistryById() {
-      return COMPONENT_REGISTRY_BY_ID;
+    player: undefined as unknown as PlayerState,
+    getId() {
+      return id++;
     },
   };
+
+  STATE.player = {
+    player: getEntityCreator("DUMMY")(),
+    position: 0,
+  };
+
+  return STATE;
 };

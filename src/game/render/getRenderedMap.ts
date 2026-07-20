@@ -6,7 +6,7 @@ import { ColorComponent } from "../model/components/display/ColorComponent";
 import { GlyphComponent } from "../model/components/display/GlyphComponent";
 import { pickUpItem } from "../model/queries/pickUp";
 import { getPlayer } from "../model/queries/player";
-import type { GameState, Tile } from "../state/state";
+import type { Tile } from "../state/state";
 import { getVisibleTiles } from "../systems/player/getVisibleTiles";
 import { RenderedTile } from "./types";
 
@@ -53,11 +53,11 @@ const getRenderedTilePosition = (tile: Tile) => {
   return tile.position + 1;
 };
 
-export const getRenderedMap = (gameState: GameState) => {
-  const renderedMap: RenderedTile[] = getVisibleTiles(gameState).map((tile) => {
+export const getRenderedMap = () => {
+  const renderedMap: RenderedTile[] = getVisibleTiles().map((tile) => {
     const floorAppearance = getComponentByType(tile.floor, AppearanceComponent);
     const { player: playerEntity, position: playerPosition } =
-      getPlayer(gameState);
+      getPlayer();
     const player = playerPosition === tile.position ? playerEntity : undefined;
 
     return new RenderedTile({

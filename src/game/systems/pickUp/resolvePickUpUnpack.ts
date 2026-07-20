@@ -6,7 +6,6 @@ import {
 import { isCursed } from "../../model/queries/curse";
 import { pickUpItem } from "../../model/queries/pickUp";
 import { getPlayer } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { unpackContainer } from "../containers/containers";
@@ -19,13 +18,12 @@ import {
 import { replaceFloorItem } from "./pickUp";
 
 export const resolvePickUpUnpack = (
-  state: GameState,
   gameAction: PlayerPickUpUnpackAction,
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
   (() => {
-    const { player, position: playerPosition } = getPlayer(state);
-    getVisibleTiles(state).forEach((tile) => {
+    const { player, position: playerPosition } = getPlayer();
+    getVisibleTiles().forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;
       }
@@ -61,5 +59,5 @@ export const resolvePickUpUnpack = (
     });
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

@@ -8,3 +8,7 @@
 ## Curses
 
 - Cursed Backpacks can't be opened
+
+## Bootstrap
+
+- Initialize `STATE` before invoking any game logic

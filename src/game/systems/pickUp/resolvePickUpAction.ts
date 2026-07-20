@@ -1,6 +1,5 @@
 import { removeById } from "../../../utils/removeById";
 import { getPlayer } from "../../model/queries/player";
-import type { GameState } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
@@ -17,13 +16,12 @@ import { curse } from "../curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
 
 export const resolvePickUpAction = (
-  state: GameState,
   gameAction: PlayerPickUpAction,
 ): ActionResolution => {
   const action = new Action(gameAction);
   (() => {
-    const { player, position: playerPosition } = getPlayer(state);
-    getVisibleTiles(state).forEach((tile) => {
+    const { player, position: playerPosition } = getPlayer();
+    getVisibleTiles().forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;
       }
@@ -49,9 +47,9 @@ export const resolvePickUpAction = (
       addItemToEntityBackpack(player, itemToPickUp);
       removeById(tile.items, itemToPickUp.id);
       action.success(`Picked up ${getEntityName(itemToPickUp)}`);
-      curse(itemToPickUp, state, action);
+      curse(itemToPickUp, action);
     });
   })();
 
-  return action.resolve(state);
+  return action.resolve();
 };

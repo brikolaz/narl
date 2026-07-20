@@ -1,7 +1,6 @@
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
-import type { GameState } from "../../../../state/state";
 import type { EqSlot } from "../../../eq/types";
 import type { InvSlot } from "../../../containers/types";
 import { PlayerActionType } from "../../../player/types";
@@ -22,10 +21,8 @@ const getInspectEqCommand = (eqSize: number): KeyboardToAction => {
   }));
 };
 
-const getInspectNextCommand = (
-  gameState: GameState,
-): KeyboardToAction => {
-  const player = getPlayerEntity(gameState);
+const getInspectNextCommand = (): KeyboardToAction => {
+  const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
     throw new Error("No player backpack");
@@ -47,11 +44,9 @@ const getInspectNextCommand = (
   };
 };
 
-export const getInspectCommand = (
-  gameState: GameState,
-): KeyboardToActionCommand => {
+export const getInspectCommand = (): KeyboardToActionCommand => {
   return {
-    next: () => getInspectNextCommand(gameState),
+    next: () => getInspectNextCommand(),
     message: `Inspect what (1 for INV, 2 for EQ)`,
     fallback: "Invalid source",
   };

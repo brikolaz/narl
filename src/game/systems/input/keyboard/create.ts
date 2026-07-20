@@ -1,4 +1,3 @@
-import type { GameState } from "../../../state/state";
 import { Direction } from "../../turn/types";
 import type { KeyboardToAction } from "./chain";
 import { getDropCommand } from "./commands/dropCommand";
@@ -9,27 +8,25 @@ import { getMoveItemCommand } from "./commands/moveItemCommand";
 import { getPickUpCommand } from "./commands/pickupCommand";
 import { getUnequipCommand } from "./commands/unequipCommand";
 
-export const createKeyboardToAction = (
-  gameState: GameState,
-): KeyboardToAction => ({
+export const createKeyboardToAction = (): KeyboardToAction => ({
   ArrowLeft: getMoveCommand(Direction.LEFT),
   ArrowRight: getMoveCommand(Direction.RIGHT),
 
   g: getPickUpCommand(),
   G: getPickUpCommand(),
 
-  i: getInspectCommand(gameState),
-  I: getInspectCommand(gameState),
+  i: getInspectCommand(),
+  I: getInspectCommand(),
 
-  e: getEquipCommand(gameState),
-  E: getEquipCommand(gameState),
+  e: getEquipCommand(),
+  E: getEquipCommand(),
 
-  u: getUnequipCommand(gameState),
-  U: getUnequipCommand(gameState),
+  u: getUnequipCommand(),
+  U: getUnequipCommand(),
 
-  m: getMoveItemCommand(gameState),
-  M: getMoveItemCommand(gameState),
+  m: getMoveItemCommand(),
+  M: getMoveItemCommand(),
 
-  d: getDropCommand(gameState),
-  D: getDropCommand(gameState),
+  d: getDropCommand(),
+  D: getDropCommand(),
 });

@@ -1,4 +1,3 @@
-import type { GameState } from "../../state/state";
 import type { ActionResolution } from "../actions/types";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
 import { resolveCurseItemAction } from "../curse/resolveWorldCurseItemAction";
@@ -8,7 +7,7 @@ import { resolveKillEntityAction } from "./resolveKillEntityAction";
 import { resolveRemoveEntityAction } from "./resolveRemoveEntityAction";
 import { WorldActionType } from "./types";
 
-type AnyWorldResolver = (state: GameState, action: any) => ActionResolution;
+type AnyWorldResolver = (action: any) => ActionResolution;
 
 export const worldActionResolvers = {
   [WorldActionType.CURSE_ITEM]: resolveCurseItemAction,
