@@ -1,16 +1,15 @@
 import type { ActionResolution } from "../actions/types";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
-import { resolveCurseItemAction } from "../curse/resolveWorldCurseItemAction";
+import { resolveCurseItemAction } from "../effects/curse/resolveWorldCurseItemAction";
 import { resolveWorldDropItemAction } from "../drop/resolveWorldDropItemAction";
 import { resolveGainExpAction } from "../exp/resolveGainExpAction";
 import { resolveKillEntityAction } from "./resolveKillEntityAction";
 import { resolveRemoveEntityAction } from "./resolveRemoveEntityAction";
 import { WorldActionType } from "./types";
 
-type AnyWorldResolver = (action: any) => ActionResolution;
+export type AnyWorldResolver = (action: any) => ActionResolution;
 
 export const worldActionResolvers = {
-  [WorldActionType.CURSE_ITEM]: resolveCurseItemAction,
   [WorldActionType.DROP_ITEM]: resolveWorldDropItemAction,
   [WorldActionType.GAIN_EXP]: resolveGainExpAction,
   [WorldActionType.KILL]: resolveKillEntityAction,

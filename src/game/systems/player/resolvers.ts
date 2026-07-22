@@ -1,6 +1,5 @@
 import type { ActionResolution } from "../actions/types";
 import { resolvePlayerAttackAction } from "../attack/resolvePlayerAttackAction";
-import { resolvePlayerCurseItemAction } from "../curse/resolvePlayerCurseItemAction";
 import { resolvePlayerDropItemAction } from "../drop/resolvePlayerDropItemAction";
 import { resolveEquipAction } from "../eq/resolveEquipAction";
 import { resolveUnequipAction } from "../eq/resolveUnequipAction";
@@ -13,7 +12,7 @@ import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 
 import { PlayerActionType } from "./types";
 
-type AnyPlayerResolver = (action: any) => ActionResolution;
+export type AnyPlayerResolver = (action: any) => ActionResolution;
 
 export const playerActionResolvers = {
   [PlayerActionType.MOVE]: resolveMoveAction,
@@ -26,5 +25,4 @@ export const playerActionResolvers = {
   [PlayerActionType.DROP_ITEM]: resolvePlayerDropItemAction,
   [PlayerActionType.INSPECT_INV]: resolveInspectInvAction,
   [PlayerActionType.INSPECT_EQ]: resolveInspectEqAction,
-  [PlayerActionType.CURSE_ITEM]: resolvePlayerCurseItemAction,
 } satisfies Record<PlayerActionType, AnyPlayerResolver>;

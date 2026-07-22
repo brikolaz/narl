@@ -5,7 +5,7 @@ import { MOB_MANUALS } from "./mobs/manuals";
 
 const manuals: Map<EntityType, Manual<Entity>>[] = [MOB_MANUALS, ITEM_MANUALS];
 
-export const getManual = (entity: Entity) => {
+export const getManual = (entity: Entity | undefined) => {
   for (const manual of manuals) {
     const target = manual.get(entity.type);
     if (target) {

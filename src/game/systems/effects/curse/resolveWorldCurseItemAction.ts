@@ -1,6 +1,6 @@
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import type { WorldCurseItemAction } from "../world/types";
+import { Action } from "../../actions/action";
+import type { ActionResolution } from "../../actions/types";
+import type { WorldCurseItemAction } from "../../world/types";
 
 export const resolveCurseItemAction = (
   gameAction: WorldCurseItemAction,

@@ -1,11 +1,11 @@
 import type { Id } from "../../../core/ecs/Id";
 
+// todo: use Symbols
 export enum WorldActionType {
   DROP_ITEM = "WORLD_DROP_ITEM",
   GAIN_EXP = "WORLD_GAIN_EXP",
   KILL = "WORLD_KILL",
   REMOVE_ENTITY = "WORLD_REMOVE_ENTITY",
-  CURSE_ITEM = "WORLD_CURSE_ITEM",
   ATTACK = "WORLD_ATTACK",
 }
 
@@ -29,10 +29,6 @@ export type WorldRemoveEntityAction = {
   entityId: Id;
   position: number;
 };
-export type WorldCurseItemAction = {
-  type: WorldActionType.CURSE_ITEM;
-  itemId: Id;
-};
 export type WorldAttackAction = {
   type: WorldActionType.ATTACK;
   sourcePos: number;
@@ -44,5 +40,4 @@ export type WorldAction =
   | WorldGainExpAction
   | WorldKillAction
   | WorldRemoveEntityAction
-  | WorldCurseItemAction
   | WorldAttackAction;

@@ -20,16 +20,6 @@ const addLog = (
   ].slice(-MAX_VISIBLE_LOGS);
 };
 
-export const addLogImmutable = (
-  action: GameAction,
-  message: string,
-): GameState => {
-  return {
-    ...STATE,
-    log: addLog(action, message),
-  };
-};
-
 export const addLogMutable = (
   action: GameAction,
   message: string,

@@ -95,7 +95,7 @@ export const resolvePlayerAttackAction = (
     if (nextHp <= 0) {
       action.info(`Dealt ${dmg} dmg to ${mobName}`);
 
-      action.addPending({
+      action.addPendingAction({
         type: WorldActionType.KILL,
         entityId: mob.id,
         position: ctx.targetPosition,

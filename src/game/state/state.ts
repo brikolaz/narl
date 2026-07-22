@@ -26,6 +26,7 @@ export type GameState = {
   player: PlayerState;
   entityRegistryById: EntityRegistryById;
   componentRegistryById: ComponentRegistryById;
+  effects: Effect[]
   getId: () => number;
 };
 
