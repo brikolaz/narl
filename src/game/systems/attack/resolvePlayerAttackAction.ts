@@ -1,16 +1,16 @@
+import type { Entity } from "../../../core/ecs/Entity";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayerEntity } from "../../model/queries/player";
-import { STATE } from "../../state/state";
+import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerAttackAction } from "../player/types";
 import { WorldActionType } from "../world/types";
-import type { Entity } from "../../../core/ecs/Entity";
 
 type AttackContext =
   | {
@@ -34,7 +34,7 @@ type AttackContext =
 export const prepareAttack = (
   { targetPosition }: PlayerAttackAction,
 ): AttackContext => {
-  const target = STATE.world[targetPosition];
+  const target = getTile(targetPosition);
 
   if (!target || !hasMobs(target)) {
     return { ok: false, message: "No mobs to attack in that direction." };
@@ -70,7 +70,7 @@ export const resolvePlayerAttackAction = (
     if (!ctx.ok) {
       return;
     }
-    const target = STATE.world[ctx.targetPosition];
+    const target = getTile(ctx.targetPosition);
     if (!hasMobs(target)) {
       return action.fail("No mobs to attack in that direction.");
     }

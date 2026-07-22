@@ -11,10 +11,9 @@ import { markAsVisited } from "./exploration";
 import { getNextPlayerPosition } from "./getNextPlayerPosition";
 
 const getNextState = (nextPlayerPosition: number): void => {
-  const world = STATE.world;
   const player = getPlayerEntity();
   STATE.player = {
-    player: addExplorationExp(world[nextPlayerPosition].floor, player),
+    player: addExplorationExp(getTile(nextPlayerPosition).floor, player),
     position: nextPlayerPosition,
   };
   markAsVisited(nextPlayerPosition);
