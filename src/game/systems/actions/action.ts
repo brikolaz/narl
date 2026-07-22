@@ -1,4 +1,3 @@
-import { STATE } from "../../state/state";
 import { getPendingLogs } from "../log/log";
 import type { ActionResolution, GameAction } from "./types";
 

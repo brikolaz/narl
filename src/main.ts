@@ -1,6 +1,6 @@
 import "./patches";
 import { render } from "./game/render/render";
-import { getInitialState, STATE, type GameState } from "./game/state/state";
+import { createInitialState, STATE, type GameState } from "./game/state/state";
 import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
 import type { KeyboardToActionChain } from "./game/systems/input/keyboard/chain";
 import { mapKeyboardEventToAction } from "./game/systems/input/keyboard/mapKeyboardEventToAction";
@@ -15,7 +15,7 @@ type Game = {
 };
 
 const createGame = (): Game => {
-  const state = getInitialState();
+  const state = createInitialState();
 
   return {
     state,

@@ -31,7 +31,7 @@ export type GameState = {
 
 export let STATE: GameState;
 
-export const getInitialState = (): GameState => {
+export const createInitialState = (): GameState => {
   const entityRegistryById: EntityRegistryById = {};
   const componentRegistryById: ComponentRegistryById = {};
   let id = 0;

@@ -2,6 +2,7 @@ import type { Component } from "../../Component";
 import type { Entity } from "../../Entity";
 import { upsertComponentRegistryRecords } from "../../registry/componentRegistry";
 import { resolveEntity, type EntityArgument } from "../entities/normalize";
+import { removeComponents } from "./remove";
 
 const upsertDataComponents = (
   entity: Entity,
@@ -35,6 +36,7 @@ export const upsertComponents = (
     return;
   }
 
+  removeComponents(...components);
   upsertDataComponents(source, ...components);
 
   upsertComponentRegistryRecords(
