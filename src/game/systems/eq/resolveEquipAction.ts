@@ -65,7 +65,7 @@ export const resolveEquipAction = (
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );
-    curse(itemToEquip, action);
+    curse(action, itemToEquip);
   })();
 
   return action.resolve();

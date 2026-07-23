@@ -1,6 +1,5 @@
 import type { ActionResolution } from "../actions/types";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
-import { resolveCurseItemAction } from "../effects/curse/resolveWorldCurseItemAction";
 import { resolveWorldDropItemAction } from "../drop/resolveWorldDropItemAction";
 import { resolveGainExpAction } from "../exp/resolveGainExpAction";
 import { resolveKillEntityAction } from "./resolveKillEntityAction";

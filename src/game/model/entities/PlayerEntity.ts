@@ -14,7 +14,7 @@ import { BootsSlotEntityFactory } from "./eq/slots/BootsSlotEntity";
 import { HeadSlotEntityFactory } from "./eq/slots/HeadSlotEntity";
 import { MainHandSlotEntityFactory } from "./eq/slots/MainHandSlotEntity";
 import { OffhandSlotEntityFactory } from "./eq/slots/OffhandSlotEntity";
-import { PantsSlotEntityFactory } from "./eq/slots/PantsSlotEntity";
+import { PantsSlotEntityFactory } from "./eq/slots/pantsSlot/PantsSlotEntity";
 import { RingSlotEntityFactory } from "./eq/slots/RingSlotEntity";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";
 

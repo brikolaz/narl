@@ -1,6 +1,7 @@
 import { getEntityCreator, type Entity } from "../../core/ecs/Entity";
 import { type ComponentRegistryById } from "../../core/ecs/registry/componentRegistry";
 import { type EntityRegistryById } from "../../core/ecs/registry/entityRegistry";
+import type { TimedEffect } from "../systems/effects/types";
 import type { ActionLog, LogEntry } from "../systems/log/types";
 
 export type Tile = {
@@ -26,7 +27,7 @@ export type GameState = {
   player: PlayerState;
   entityRegistryById: EntityRegistryById;
   componentRegistryById: ComponentRegistryById;
-  effects: Effect[]
+  timedEffects: TimedEffect[]
   getId: () => number;
 };
 
@@ -52,6 +53,7 @@ export const createInitialState = (): GameState => {
     },
 
     player: undefined as unknown as PlayerState,
+    timedEffects: [],
     getId() {
       return id++;
     },

@@ -42,13 +42,13 @@ export const resolvePickUpUnpack = (
       }
 
       if (!isContainer(itemToPickUp) || isCursed(itemToPickUp)) {
-        return action.addPendingAction({
+        return action.addPendingActions({
           type: PlayerActionType.PICK_UP,
         });
       }
       const unpackedContainer = unpackContainer(itemToPickUp);
       replaceFloorItem(tile, itemToPickUp.id, ...unpackedContainer);
-      action.addPendingAction({
+      action.addPendingActions({
         type: PlayerActionType.PICK_UP,
       });
       if (unpackedContainer.length > 1) {

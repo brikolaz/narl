@@ -1,4 +1,5 @@
-import type { Effect } from "../effects/effects";
+import { STATE } from "../../state/state";
+import type { Effect, TimedEffect } from "../effects/types";
 import { getPendingLogs } from "../log/log";
 import type { ActionResolution, GameAction } from "./types";
 
@@ -6,7 +7,7 @@ export class Action {
   public consumesTurn = false;
   private pendingLogMessages: string[] = []; // TODO: add log object: message, increaseTurn
   private pendingActions: GameAction[] = [];
-  private pendingEffects: Effect[] = [];
+  private pendingEffects: TimedEffect[] = [];
   public readonly gameAction: GameAction;
 
   constructor(gameAction: GameAction) {
@@ -32,12 +33,24 @@ export class Action {
     };
   };
 
-  addPendingAction = (...pendingAction: GameAction[]): void => {
+  addPendingActions = (...pendingAction: GameAction[]): void => {
     this.pendingActions.push(...pendingAction);
   };
 
-  addPendingEffect = (...pendingEffects: Effect[]): void => {
-    this.pendingEffects.push(...pendingEffects);
+  addPendingEffect = (
+    effect: Effect,
+    immediate: boolean = true,
+    turns: number = 1,
+  ): void => {
+    this.assert(turns >= 1, "Effects must have at least 1 turn");
+
+    this.pendingEffects.push({
+      id: STATE.getId(),
+      action: this.gameAction,
+      effect,
+      immediate,
+      turns: turns - 1,
+    });
   };
 
   info(message: string) {

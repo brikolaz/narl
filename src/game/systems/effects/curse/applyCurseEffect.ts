@@ -7,7 +7,7 @@ import { getManual } from "../../../model/entities/getManual";
 import { Action } from "../../actions/action";
 import type { ActionResolution, GameAction } from "../../actions/types";
 import { getEntityName } from "../../inspect/getEntityName";
-import type { CurseEffect } from "../effects";
+import type { CurseEffect } from "../types";
 
 export const applyCurseEffect = (
   gameAction: GameAction,

@@ -1,4 +1,4 @@
-import type { Effect } from "../effects/effects";
+import type { TimedEffect } from "../effects/types";
 import type { InternalAction } from "../internal/type";
 import type { PendingLog } from "../log/types";
 import type { PlayerAction, PlayerActionType } from "../player/types";
@@ -13,6 +13,6 @@ export type ActionResolution = {
   consumesTurn: boolean;
   pendingLogs: PendingLog[];
   pendingActions: GameAction[];
-  pendingEffects: Effect[];
+  pendingEffects: TimedEffect[];
   action?: Action;
 };

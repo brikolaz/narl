@@ -6,7 +6,7 @@ import { BootsSlotEntity } from "./slots/BootsSlotEntity";
 import { HeadSlotEntity } from "./slots/HeadSlotEntity";
 import { MainHandSlotEntity } from "./slots/MainHandSlotEntity";
 import { OffhandSlotEntity } from "./slots/OffhandSlotEntity";
-import { PantsSlotEntity } from "./slots/PantsSlotEntity";
+import { PantsSlotEntity } from "./slots/pantsSlot/PantsSlotEntity";
 import { RingSlotEntity } from "./slots/RingSlotEntity";
 
 // ORDER IS IMPORTANT

@@ -47,7 +47,7 @@ export const resolvePickUpAction = (
       addItemToEntityBackpack(player, itemToPickUp);
       removeById(tile.items, itemToPickUp.id);
       action.success(`Picked up ${getEntityName(itemToPickUp)}`);
-      curse(itemToPickUp, action);
+      curse(action, itemToPickUp);
     });
   })();
 

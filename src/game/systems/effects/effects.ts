@@ -1,15 +1,74 @@
+import { STATE } from "../../state/state";
+import type { ActionResolution, GameAction } from "../actions/types";
+import type { Effect, TimedEffect } from "./types";
+import { effectResolvers } from "./resolvers";
 import type { Id } from "../../../core/ecs/Id";
-import type { Symbols } from "../../../core/ecs/Symbols";
 
-export const EffectType = {
-  REMOVE_SLOT: Symbol("REMOVE_SLOT_EFFECT"),
-  CURSE: Symbol("CURSE_EFFECT"),
-} satisfies Symbols;
-
-export type CurseEffect = {
-  type: typeof EffectType.CURSE;
-  entityId: Id;
+export const applyEffect = (
+  action: GameAction,
+  gameEffect: Effect,
+): ActionResolution => {
+  const actionResolution = (
+    effectResolvers[gameEffect.type] as (
+      action: GameAction,
+      effect: typeof gameEffect,
+    ) => ActionResolution
+  )(action, gameEffect);
+  if (!actionResolution) {
+    throw new Error("Invalid effect");
+  }
+  return actionResolution;
 };
 
-export type Effect = CurseEffect;
+export const enqueueEffect = (pendingEffect: TimedEffect): void => {
+  if (pendingEffect.turns === undefined) {
+    throw new Error("Can't schedule effect with no delay");
+  }
+  STATE.timedEffects.push(pendingEffect);
+};
 
+export const applyPendingEffect = (
+  pendingEffect: TimedEffect,
+): ActionResolution | undefined => {
+  if (!pendingEffect.immediate) {
+    enqueueEffect(pendingEffect);
+    return;
+  }
+  let actionResolution: ActionResolution | undefined = undefined;
+
+  actionResolution = applyEffect(pendingEffect.action, pendingEffect.effect);
+
+  if (pendingEffect.turns === 0) {
+    return actionResolution;
+  }
+  enqueueEffect({ ...pendingEffect, turns: pendingEffect.turns - 1 });
+  return actionResolution;
+};
+
+export const dequeueEffects = (processedEffects: Id[]): void => {
+  STATE.timedEffects = STATE.timedEffects
+    .map((timedEffect) => {
+      if (processedEffects.includes(timedEffect.id)) {
+        return timedEffect;
+      }
+      const { id, action, effect, immediate, turns } = timedEffect;
+      if (immediate) {
+        applyEffect(action, effect);
+        if (turns === 0) {
+          return undefined;
+        }
+      } else if (turns === 0) {
+        applyEffect(action, effect);
+        return undefined;
+      }
+
+      return {
+        id,
+        action,
+        effect,
+        immediate,
+        turns: turns - 1,
+      };
+    })
+    .filter((timedEffect) => timedEffect !== undefined);
+};

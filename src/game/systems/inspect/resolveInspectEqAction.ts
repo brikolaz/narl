@@ -24,7 +24,7 @@ export const resolveInspectEqAction = (
     increaseInspected(item);
 
     action.info(getItemInspectText(item));
-    curse(item, action);
+    curse(action, item);
   })();
 
   return action.resolve(false);
