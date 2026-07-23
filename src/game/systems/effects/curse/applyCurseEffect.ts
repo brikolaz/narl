@@ -25,13 +25,13 @@ export const applyCurseEffect = (
     if (!manual) {
       return;
     }
-    manual?.curse?.(entity);
+    manual?.curse?.(action, entity);
     const curseComponents = [
       CursedComponent(),
       ColorComponent({ color: COLORS.CURSED }),
     ];
     upsertComponents(entity, ...curseComponents);
-    action.success(`${name} got cursed`);
+    action.info(`${name} got cursed`);
   })();
 
   return action.resolve();

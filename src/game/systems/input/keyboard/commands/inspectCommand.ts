@@ -38,7 +38,7 @@ const getInspectNextCommand = (): KeyboardToAction => {
     },
     "2": {
       next: () => getInspectEqCommand(eqSlotsCount),
-      message: `Select EQ item to inspect (1-${eqSlotsCount})`,
+      message: `Select EQ slot to inspect (1-${eqSlotsCount})`,
       fallback: "Invalid EQ slot",
     },
   };

@@ -16,7 +16,7 @@ export const applyDisableSlotEffect = (
       "No slot to disable",
     );
     const manual = getManual(entity);
-    manual?.disable?.(entity, action);
+    manual?.disable?.(action, entity);
   })();
 
   return action.resolve();

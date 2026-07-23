@@ -31,13 +31,16 @@ export const applyPendingEffect = (
   pendingEffect: TimedEffect,
 ): ActionResolution | undefined => {
   if (!pendingEffect.immediate) {
+    if (pendingEffect.turns === 0) {
+      return applyEffect(pendingEffect.action, pendingEffect.effect);
+    }
     enqueueEffect(pendingEffect);
     return;
   }
-  let actionResolution: ActionResolution | undefined = undefined;
-
-  actionResolution = applyEffect(pendingEffect.action, pendingEffect.effect);
-
+  const actionResolution: ActionResolution = applyEffect(
+    pendingEffect.action,
+    pendingEffect.effect,
+  );
   if (pendingEffect.turns === 0) {
     return actionResolution;
   }
@@ -45,7 +48,8 @@ export const applyPendingEffect = (
   return actionResolution;
 };
 
-export const dequeueEffects = (processedEffects: Id[]): void => {
+export const dequeueEffects = (processedEffects: Id[] = []): TimedEffect[] => {
+  const effectsToApply: TimedEffect[] = [];
   STATE.timedEffects = STATE.timedEffects
     .map((timedEffect) => {
       if (processedEffects.includes(timedEffect.id)) {
@@ -53,12 +57,12 @@ export const dequeueEffects = (processedEffects: Id[]): void => {
       }
       const { id, action, effect, immediate, turns } = timedEffect;
       if (immediate) {
-        applyEffect(action, effect);
+        effectsToApply.push(timedEffect);
         if (turns === 0) {
           return undefined;
         }
       } else if (turns === 0) {
-        applyEffect(action, effect);
+        effectsToApply.push(timedEffect);
         return undefined;
       }
 
@@ -71,4 +75,6 @@ export const dequeueEffects = (processedEffects: Id[]): void => {
       };
     })
     .filter((timedEffect) => timedEffect !== undefined);
+
+  return effectsToApply;
 };

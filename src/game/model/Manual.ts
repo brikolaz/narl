@@ -2,10 +2,11 @@ import type { Entity } from "../../core/ecs/Entity";
 import type { Action } from "../systems/actions/action";
 
 export type Manual<T = Entity> = {
-  onAfterTakeDamage?: (entity: T, gameAction: Action) => void;
+  onAfterTakeDamage?: (gameAction: Action, entity: T) => void;
   getEquippedWeapon?: (entity: T) => Entity;
-  curse?: (item: T) => void;
+  curse?: (gameAction: Action, item: T) => void;
   shouldBeCursed?: (item: T) => boolean;
-  poke?: (entity: T, gameAction: Action) => void;
-  disable?: (entity: T, gameAction: Action) => void;
+  poke?: (gameAction: Action, entity: T, ) => void;
+  disable?: (gameAction: Action, entity: T) => void;
+  canAdd?: (parent: T, child: T) => boolean;
 };

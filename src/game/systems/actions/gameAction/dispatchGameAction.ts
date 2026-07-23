@@ -15,47 +15,65 @@ type DrainedResolution = {
   processedEffects: Id[];
 };
 
+const drainEffects = (
+  action: GameAction,
+  effects: TimedEffect[],
+  pendingLogs: PendingLog[],
+): DrainedResolution => {
+  let consumesTurn = false;
+  const processedEffects: Id[] = [];
+
+  for (const pendingEffect of effects) {
+    const effectResolution = applyPendingEffect(pendingEffect);
+
+    processedEffects.push(pendingEffect.id);
+
+    if (!effectResolution) {
+      continue;
+    }
+
+    const result = drainResolution(action, effectResolution, pendingLogs);
+
+    consumesTurn ||= result.consumesTurn;
+    processedEffects.push(...result.processedEffects);
+  }
+
+  return {
+    consumesTurn,
+    processedEffects,
+  };
+};
+
 const drainResolution = (
   action: GameAction,
   resolution: ActionResolution,
   pendingLogs: PendingLog[],
 ): DrainedResolution => {
   let consumesTurn = resolution.consumesTurn;
+  const processedEffects: Id[] = [];
 
   pendingLogs.push(...resolution.pendingLogs);
 
-  let effectIndex = 0;
-  const processedEffects: Id[] = [];
+  const effectsResult = drainEffects(
+    action,
+    resolution.pendingEffects,
+    pendingLogs,
+  );
 
-  while (effectIndex < resolution.pendingEffects.length) {
-    const pendingEffect = resolution.pendingEffects[effectIndex];
-    const effectResolution = applyPendingEffect(pendingEffect);
+  consumesTurn ||= effectsResult.consumesTurn;
+  processedEffects.push(...effectsResult.processedEffects);
 
-    if (effectResolution) {
-      const effectResult = drainResolution(
-        action,
-        effectResolution,
-        pendingLogs,
-      );
-
-      consumesTurn ||= effectResult.consumesTurn;
-    }
-    effectIndex++;
-    processedEffects.push(pendingEffect.id);
-  }
-
-  let actionIndex = 0;
-
-  while (actionIndex < resolution.pendingActions.length) {
-    const pendingAction = resolution.pendingActions[actionIndex];
-
+  for (const pendingAction of resolution.pendingActions) {
     const actionResult = drainAction(pendingAction, pendingLogs);
 
     consumesTurn ||= actionResult.consumesTurn;
-    actionIndex++;
+    processedEffects.push(...actionResult.processedEffects);
   }
 
-  return { consumesTurn, processedEffects };
+  return {
+    consumesTurn,
+    processedEffects,
+  };
 };
 
 const drainAction = (
@@ -68,7 +86,6 @@ const drainAction = (
 };
 
 export const dispatchGameAction = (action: GameAction): GameState => {
-  let consumesTurn = false;
   const pendingLogs: PendingLog[] = [];
 
   if (isPlayerAction(action)) {
@@ -76,26 +93,28 @@ export const dispatchGameAction = (action: GameAction): GameState => {
   }
 
   const actionResult = drainAction(action, pendingLogs);
-
-  consumesTurn ||= actionResult.consumesTurn;
+  let consumesTurn = actionResult.consumesTurn;
 
   if (actionResult.consumesTurn) {
-    dequeueEffects(actionResult.processedEffects);
+    const effectsToApply = dequeueEffects(actionResult.processedEffects);
+
+    const effectsResult = drainEffects(action, effectsToApply, pendingLogs);
+
+    consumesTurn ||= effectsResult.consumesTurn;
   }
 
   if (consumesTurn) {
-    const worldActions = runWorldTurn();
-
-    for (const worldAction of worldActions) {
+    for (const worldAction of runWorldTurn()) {
       const worldResult = drainAction(worldAction, pendingLogs);
-
       consumesTurn ||= worldResult.consumesTurn;
     }
   }
 
   flushLogs(pendingLogs, consumesTurn);
 
-  STATE.turn = consumesTurn ? increaseTurn(STATE.turn) : STATE.turn;
+  if (consumesTurn) {
+    STATE.turn = increaseTurn(STATE.turn);
+  }
 
   return STATE;
 };

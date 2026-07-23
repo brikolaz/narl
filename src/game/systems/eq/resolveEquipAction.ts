@@ -1,4 +1,5 @@
 import type { Component } from "../../../core/ecs/Component";
+import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,
   getContainerItemAt,
@@ -11,6 +12,7 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
 import { curse } from "../effects/curse/curse";
+import { isDisabled } from "../effects/disableSlot/disabled";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
 
@@ -48,6 +50,12 @@ export const resolveEquipAction = (
     const itemInSlot = getFirstContainerItem(eqSlot);
     const eqSlotName = getEntityName(eqSlot);
 
+    if (
+      isDisabled(eqSlot) &&
+      !getManual(eqSlot)?.canAdd?.(eqSlot, itemToEquip)
+    ) {
+      return action.fail(`Can't equip. ${eqSlotName} slot is disabled`);
+    }
     if (itemInSlot) {
       return action.fail(
         `Can't equip. ${getEntityName(itemInSlot)} in ${eqSlotName} EQ slot`,
@@ -60,7 +68,6 @@ export const resolveEquipAction = (
     }
 
     addItemToContainer(eqSlot, itemToEquip);
-    // clearContainerItemById(backpack, itemToEquip.id);
 
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,

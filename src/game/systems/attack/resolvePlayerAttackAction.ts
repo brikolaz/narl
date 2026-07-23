@@ -31,9 +31,9 @@ type AttackContext =
     };
 
 // TODO: can be deleted
-export const prepareAttack = (
-  { targetPosition }: PlayerAttackAction,
-): AttackContext => {
+export const prepareAttack = ({
+  targetPosition,
+}: PlayerAttackAction): AttackContext => {
   const target = getTile(targetPosition);
 
   if (!target || !hasMobs(target)) {
@@ -84,7 +84,7 @@ export const resolvePlayerAttackAction = (
     // TODO: add Poke resolver, add keybinding
     if (!weapon || !dmg) {
       if (getManual(mob)?.poke) {
-        getManual(mob)?.poke?.(mob, action);
+        getManual(mob)?.poke?.(action, mob);
         return;
       }
       return action.success(`Poked ${mobName}`);
@@ -103,7 +103,7 @@ export const resolvePlayerAttackAction = (
     }
     mobHp.hp = nextHp;
     action.success(`Dealt ${dmg} dmg to ${mobName}`);
-    getManual(mob)?.onAfterTakeDamage?.(mob, action);
+    getManual(mob)?.onAfterTakeDamage?.(action, mob);
   })();
 
   return action.resolve();

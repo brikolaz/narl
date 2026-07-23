@@ -18,11 +18,8 @@ import { getComponentByType, getComponentsByType } from "../../../core/ecs/queri
 import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
 import { upsertComponents } from "../../../core/ecs/queries/components/add";
 
-const getInspectDesc = (entity: Entity) => {
+export const getInspectDesc = (entity: Entity) => {
   const inspectedTimes = getInspectedTimes(entity);
-  if (!inspectedTimes) {
-    return "";
-  }
   const inspectDesc = (getComponentsByType(entity, InspectDescComponent) ?? [])
     .filter(({ times: requiredTimes }) => inspectedTimes >= requiredTimes)
     .sort((a, b) => a.times - b.times);

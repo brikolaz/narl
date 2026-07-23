@@ -5,7 +5,12 @@ import { curse } from "../effects/curse/curse";
 import { getEqSlot } from "../../model/queries/eq";
 import { getContainerItemAt } from "../../model/queries/containers";
 import { type PlayerInspectEqAction } from "../player/types";
-import { getItemInspectText, increaseInspected } from "./inspect";
+import {
+  getInspectDesc,
+  getItemInspectText,
+  increaseInspected,
+} from "./inspect";
+import { getEntityName } from "./getEntityName";
 
 export const resolveInspectEqAction = (
   gameAction: PlayerInspectEqAction,
@@ -19,7 +24,7 @@ export const resolveInspectEqAction = (
     const item = getContainerItemAt(slot, 1);
 
     if (!item) {
-      return action.info(`EQ slot ${eqSlot} is empty`);
+      return action.info(getInspectDesc(slot) || `${getEntityName(slot)} slot is empty`);
     }
     increaseInspected(item);
 
