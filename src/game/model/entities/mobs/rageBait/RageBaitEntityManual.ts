@@ -1,28 +1,24 @@
 import type { Entity } from "../../../../../core/ecs/Entity";
-import {
-  replaceComponentsByType
-} from "../../../../../core/ecs/queries/components/patch";
+import { replaceComponentsByType } from "../../../../../core/ecs/queries/components/patch";
 import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";
 import { RNG } from "../../../../systems/rng/rng";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
+import type { Manual } from "../../../Manual";
 
-export class RageBaitEntityManual {
-  static onAfterTakeDamage(
-    rageBait: Entity,
-    gameAction: Action,
-  ) {
+export const RageBaitEntityManual: Manual = {
+  onAfterTakeDamage(gameAction: Action, rageBait: Entity) {
     if (isHostile(rageBait) || !RNG.mobs.chance(50)) {
       return;
     }
     replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
     const name = getEntityName(rageBait);
     gameAction.info(`${name} is hostile`);
-  }
+  },
 
-  static poke(rageBait: Entity, gameAction: Action) {
+  poke(gameAction: Action, rageBait: Entity) {
     const name = getEntityName(rageBait);
 
     if (isHostile(rageBait)) {
@@ -37,5 +33,5 @@ export class RageBaitEntityManual {
     }
     replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
     gameAction.info(`${name} is hostile`);
-  }
-}
+  },
+};

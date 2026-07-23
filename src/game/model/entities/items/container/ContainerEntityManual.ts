@@ -4,18 +4,19 @@ import { RNG } from "../../../../systems/rng/rng";
 import { EquippableComponent } from "../../../components/eq/EquippableComponent";
 import { DmgComponent } from "../../../components/items/DmgComponent";
 import { DmgModComponent } from "../../../components/items/DmgModComponent";
+import type { Manual } from "../../../Manual";
 
-export class ContainerEntityManual {
-  static curse(item: Entity) {
+export const ContainerEntityManual: Manual = {
+   curse(gameAction, item) {
     upsertComponents(
       item,
       DmgModComponent({ dmgMod: 0.5 }),
       EquippableComponent(),
       DmgComponent({ dmg: RNG.items.range(1, 3) }),
     );
-  }
+  },
 
-  static shouldBeCursed(item: Entity): boolean {
+   shouldBeCursed(item: Entity): boolean {
     return !!item;
   }
 }
