@@ -8,7 +8,7 @@ import { getInspectedTimes } from "../../../queries/inspect";
 import { HelmetEntity, HelmetEntityVariants } from "./HelmetEntity";
 
 export const HelmetEntityManual: Manual = {
-  curse(gameAction, item) {
+  curse(_gameAction, item) {
     upsertComponents(item, PantsComponent());
   },
 

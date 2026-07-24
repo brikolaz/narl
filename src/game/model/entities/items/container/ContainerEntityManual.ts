@@ -7,7 +7,7 @@ import { DmgModComponent } from "../../../components/items/DmgModComponent";
 import type { Manual } from "../../../Manual";
 
 export const ContainerEntityManual: Manual = {
-   curse(gameAction, item) {
+  curse(_gameAction, item) {
     upsertComponents(
       item,
       DmgModComponent({ dmgMod: 0.5 }),
@@ -16,7 +16,7 @@ export const ContainerEntityManual: Manual = {
     );
   },
 
-   shouldBeCursed(item: Entity): boolean {
+  shouldBeCursed(item: Entity): boolean {
     return !!item;
-  }
-}
+  },
+};

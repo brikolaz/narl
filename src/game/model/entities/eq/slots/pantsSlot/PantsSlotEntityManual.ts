@@ -1,8 +1,7 @@
 import { upsertComponents } from "../../../../../../core/ecs/queries/components/add";
 import { getComponentByType } from "../../../../../../core/ecs/queries/components/get";
 import {
-  hasComponent,
-  hasComponentsByType,
+  hasComponentsByType
 } from "../../../../../../core/ecs/queries/components/has";
 import { removeComponentsByType } from "../../../../../../core/ecs/queries/components/remove";
 import { detachEntity } from "../../../../../../core/ecs/queries/entities/remove";
