@@ -17,4 +17,4 @@ export const NAMESPACE_SEPARATOR = "." as const;
 export const MOBS_RNG_NAMESPACE = "mobs" as const;
 export const ITEMS_RNG_NAMESPACE = "items" as const;
 
-export const MAX_VISIBLE_LOGS = 5 as const;
+export const MAX_VISIBLE_LOGS = 10 as const;

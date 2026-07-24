@@ -28,17 +28,13 @@ log.setAttribute("aria-label", "Game log");
 
 const game = document.createElement("main");
 game.className = "game";
-game.append(stats, map, log);
+game.append(stats, map);
 
 const inventory = document.createElement("aside");
 inventory.className = "inventory";
 inventory.append(eq, backpack);
 
-const inventorySpacer = document.createElement("aside");
-inventorySpacer.className = "inventory-spacer";
-inventorySpacer.setAttribute("aria-hidden", "true");
-
-root.append(inventory, game, inventorySpacer);
+root.append(inventory, game, log);
 
 const appendColoredGlyph = (
   target: DocumentFragment | HTMLElement,

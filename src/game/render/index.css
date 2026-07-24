@@ -34,11 +34,6 @@ body {
   flex: 0 0 var(--inventory-width);
 }
 
-.inventory-spacer {
-  width: var(--inventory-width);
-  flex: 0 0 var(--inventory-width);
-}
-
 .backpack,
 .eq {
   margin: 0;
@@ -74,9 +69,9 @@ body {
 }
 
 .log {
-  min-height: 5em;
+  min-height: 20em;
   margin: 0;
   font: 1rem/1.5 monospace;
   white-space: pre-wrap;
-  width: 400px;
+  width: 300px;
 }
