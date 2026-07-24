@@ -5,7 +5,6 @@ import { ContainerComponent } from "../../../components/containers/ContainerComp
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { RingComponent } from "../../../components/eq/RingComponent";
-import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const RingSlotEntity = getEntityCreator("RING_SLOT");
@@ -29,7 +28,6 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       NameComponent({ name: "Ring" }),
       RingComponent(),
       ContainerComponent(),
-      VariantComponent({ variant: RingSlotVariants.DEFAULT }),
       SizeComponent({ size: 1 }),
     );
 
@@ -44,7 +42,6 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       NameComponent({ name: "Ring 1" }),
       RingComponent(),
       ContainerComponent(),
-      VariantComponent({ variant: RingSlotVariants.RING1 }),
       SizeComponent({ size: 1 }),
     );
 
@@ -59,7 +56,6 @@ export const RingSlotEntityFactory: RingSlotFactory = {
       NameComponent({ name: "Ring 2" }),
       RingComponent(),
       ContainerComponent(),
-      VariantComponent({ variant: RingSlotVariants.RING2 }),
       SizeComponent({ size: 1 }),
     );
 

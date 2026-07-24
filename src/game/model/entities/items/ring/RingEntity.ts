@@ -8,7 +8,6 @@ import { RemovableComponent } from "../../../components/eq/RemovableComponent";
 import { RingComponent } from "../../../components/eq/RingComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
-import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const RingEntityVariants = {
@@ -29,7 +28,6 @@ export const RingEntityFactory: ItemFactory = {
       PantsComponent(),
       PickupableComponent(),
       DroppableComponent(),
-      VariantComponent({ variant: RingEntityVariants.RING }),
     );
     return ring;
   },

@@ -15,7 +15,6 @@ import { MainHandComponent } from "../../../components/eq/MainHandComponent";
 import { RemovableComponent } from "../../../components/eq/RemovableComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
-import { VariantComponent } from "../../../components/VariantComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const ContainerEntity = getEntityCreator("CONTAINER");
@@ -41,7 +40,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "C" }),
       ContainerComponent(),
       SizeComponent({ size: RNG.items.range(2, 4) }),
-      VariantComponent({ variant: ContainerVariants.DEFAULT }),
     );
     return container;
   },
@@ -56,7 +54,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       ContainerComponent(),
       SizeComponent({ size: RNG.items.range(2, 4) }),
       NestDepthComponent({ nestDepth: RNG.items.range(1, 2) }),
-      VariantComponent({ variant: ContainerVariants.BACKPACK }),
     );
     return backpack;
   },
@@ -70,7 +67,6 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "*" }),
       ContainerComponent(),
       SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),
-      VariantComponent({ variant: ContainerVariants.PLAYER_BACKPACK }),
     );
     return backpack;
   },

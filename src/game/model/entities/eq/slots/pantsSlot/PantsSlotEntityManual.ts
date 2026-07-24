@@ -1,5 +1,4 @@
 import { upsertComponents } from "../../../../../../core/ecs/queries/components/add";
-import { getComponentByType } from "../../../../../../core/ecs/queries/components/get";
 import {
   hasComponentsByType
 } from "../../../../../../core/ecs/queries/components/has";
@@ -7,17 +6,16 @@ import { removeComponentsByType } from "../../../../../../core/ecs/queries/compo
 import { detachEntity } from "../../../../../../core/ecs/queries/entities/remove";
 import { dropItem } from "../../../../../systems/drop/drop";
 import { DisabledComponent } from "../../../../components/DisabledComponent";
+import { RingComponent } from "../../../../components/eq/RingComponent";
 import { InspectDescComponent } from "../../../../components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../../../components/inspect/InspectedComponent";
-import { VariantComponent } from "../../../../components/VariantComponent";
+import { SpikeComponent } from "../../../../components/items/SpikeComponent";
 import type { Manual } from "../../../../Manual";
 import { getContainerItemAt } from "../../../../queries/containers";
 import { isCursed } from "../../../../queries/curse";
 import { isDisabled } from "../../../../queries/disabled";
 import { getPlayerPosition } from "../../../../queries/player";
 import { DickEntityFactory } from "../../../items/DickEntity";
-import { HelmetEntityVariants } from "../../../items/helmet/HelmetEntity";
-import { RingEntity } from "../../../items/ring/RingEntity";
 
 export const PantsSlotEntityManual: Manual = {
   disable(gameAction, entity) {
@@ -27,7 +25,7 @@ export const PantsSlotEntityManual: Manual = {
     const itemAtSlot = getContainerItemAt(entity, 1);
     if (
       itemAtSlot &&
-      itemAtSlot.type === RingEntity.type &&
+      hasComponentsByType(itemAtSlot, RingComponent) &&
       isCursed(itemAtSlot)
     ) {
       gameAction.info("You lost your dignity");
@@ -49,8 +47,7 @@ export const PantsSlotEntityManual: Manual = {
   canAdd(pantsSlot, entity) {
     if (isDisabled(pantsSlot)) {
       if (
-        getComponentByType(entity, VariantComponent)?.variant ===
-        HelmetEntityVariants.HORNED_HELMET
+        hasComponentsByType(entity, SpikeComponent)
       ) {
         return true;
       }

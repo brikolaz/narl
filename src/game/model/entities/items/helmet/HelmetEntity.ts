@@ -10,7 +10,7 @@ import { InspectDescComponent } from "../../../components/inspect/InspectDescCom
 import { DefComponent } from "../../../components/items/DefComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
-import { VariantComponent } from "../../../components/VariantComponent";
+import { SpikeComponent } from "../../../components/items/SpikeComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const HelmetEntityVariants = {
@@ -39,9 +39,6 @@ export const HelmetEntityFactory: HelmetFactory = {
       DefComponent({ def: RNG.items.range(3, 4) }),
       PickupableComponent(),
       DroppableComponent(),
-      VariantComponent({
-        variant: HelmetEntityVariants.DEFAULT,
-      }),
     );
 
     return helmet;
@@ -61,11 +58,10 @@ export const HelmetEntityFactory: HelmetFactory = {
       DefComponent({ def: RNG.items.range(3, 4) }),
       PickupableComponent(),
       DroppableComponent(),
-      VariantComponent({
-        variant: HelmetEntityVariants.HORNED_HELMET,
-      }),
       InspectDescComponent({ times: 5, text: "It has horns" }),
       InspectDescComponent({ times: 10, text: "Looks horny" }),
+      SpikeComponent(),
+      SpikeComponent(),
     );
 
     return helmet;
