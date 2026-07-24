@@ -34,6 +34,7 @@ import {
 } from "../../items/helmet/HelmetEntity";
 import { getEqSlot } from "../../../queries/eq";
 import { SwordEntityFactory } from "../../items/SwordEntity";
+import { initEq } from "../../eq/eq";
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 
@@ -52,27 +53,14 @@ const addLoot = (entity: Entity) => {
       HelmetEntityFactory.getVariant?.(HelmetEntityVariants.DEFAULT),
     );
   }
-  
+
   upsertRoleEntities(entity, {
     [EntityRole.BACKPACK]: backpack,
   });
 };
 
-
 const addEq = (entity: Entity) => {
-  upsertRoleEntities(entity, {
-    [EntityRole.EQ]: [
-      HeadSlotEntityFactory.getDefault(),
-      AmuletSlotEntityFactory.getDefault(),
-      MainHandSlotEntityFactory.getDefault(),
-      ArmorSlotEntityFactory.getDefault(),
-      OffhandSlotEntityFactory.getDefault(),
-      RingSlotEntityFactory.getDefault(),
-      PantsSlotEntityFactory.getDefault(),
-      RingSlotEntityFactory.getDefault(),
-      BootsSlotEntityFactory.getDefault(),
-    ],
-  });
+  initEq(entity);
   const sword = SwordEntityFactory.getDefault();
   setContainerItemAt(getEqSlot(entity, EqSlot.MAIN_HAND), 1, sword);
 };
@@ -96,5 +84,5 @@ export const RageBaitEntityFactory: MobFactory = {
     addEq(rageBait);
 
     return rageBait;
-  }, 
+  },
 };

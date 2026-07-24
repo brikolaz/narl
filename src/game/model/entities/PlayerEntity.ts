@@ -8,31 +8,10 @@ import { NameComponent } from "../components/display/NameComponent";
 import { ExpComponent } from "../components/mobs/ExpComponent";
 import { HpComponent } from "../components/mobs/HpComponent";
 import type { Factory } from "../Factory";
-import { AmuletSlotEntityFactory } from "./eq/slots/AmuletSlotEntity";
-import { ArmorSlotEntityFactory } from "./eq/slots/ArmorSlotEntity";
-import { BootsSlotEntityFactory } from "./eq/slots/BootsSlotEntity";
-import { HeadSlotEntityFactory } from "./eq/slots/HeadSlotEntity";
-import { MainHandSlotEntityFactory } from "./eq/slots/MainHandSlotEntity";
-import { OffhandSlotEntityFactory } from "./eq/slots/OffhandSlotEntity";
-import { PantsSlotEntityFactory } from "./eq/slots/pantsSlot/PantsSlotEntity";
-import { RingSlotEntityFactory } from "./eq/slots/RingSlotEntity";
+import { initEq } from "./eq/eq";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";
 
 const PlayerEntity = getEntityCreator("PLAYER");
-
-const getEq = () => {
-  return [
-    HeadSlotEntityFactory.getDefault(),
-    AmuletSlotEntityFactory.getDefault(),
-    MainHandSlotEntityFactory.getDefault(),
-    ArmorSlotEntityFactory.getDefault(),
-    OffhandSlotEntityFactory.getDefault(),
-    RingSlotEntityFactory.getDefault(),
-    PantsSlotEntityFactory.getDefault(),
-    RingSlotEntityFactory.getDefault(),
-    BootsSlotEntityFactory.getDefault(),
-  ];
-};
 
 export const PlayerEntityFactory: Factory = {
   getDefault: () => {
@@ -50,8 +29,8 @@ export const PlayerEntityFactory: Factory = {
     );
 
     const backpack = ContainerEntityFactory.getPlayerBackpack();
+    initEq(player);
     upsertRoleEntities(player, {
-      [EntityRole.EQ]: getEq(),
       [EntityRole.BACKPACK]: backpack,
     });
 
