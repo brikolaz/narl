@@ -26,14 +26,12 @@ const createGame = (): Game => {
 };
 
 const game = createGame();
-
 game.dispatch({ type: InternalActionType.INIT });
-
-let keyboardChain: KeyboardToActionChain = undefined;
 
 render(getGameViewModel());
 console.debug(STATE);
 
+let keyboardChain: KeyboardToActionChain = undefined;
 const handleKeyDown = (event: KeyboardEvent) => {
   const result = mapKeyboardEventToAction(event, keyboardChain);
   keyboardChain = result.keyboardChain;
