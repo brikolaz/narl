@@ -1,5 +1,9 @@
 import { upsertComponents } from "../../../../../../core/ecs/queries/components/add";
 import { getComponentByType } from "../../../../../../core/ecs/queries/components/get";
+import {
+  hasComponent,
+  hasComponentsByType,
+} from "../../../../../../core/ecs/queries/components/has";
 import { removeComponentsByType } from "../../../../../../core/ecs/queries/components/remove";
 import { detachEntity } from "../../../../../../core/ecs/queries/entities/remove";
 import { dropItem } from "../../../../../systems/drop/drop";
@@ -12,11 +16,15 @@ import { getContainerItemAt } from "../../../../queries/containers";
 import { isCursed } from "../../../../queries/curse";
 import { isDisabled } from "../../../../queries/disabled";
 import { getPlayerPosition } from "../../../../queries/player";
+import { DickEntityFactory } from "../../../items/DickEntity";
 import { HelmetEntityVariants } from "../../../items/helmet/HelmetEntity";
 import { RingEntity } from "../../../items/ring/RingEntity";
 
 export const PantsSlotEntityManual: Manual = {
   disable(gameAction, entity) {
+    if (hasComponentsByType(entity, DisabledComponent)) {
+      return;
+    }
     const itemAtSlot = getContainerItemAt(entity, 1);
     if (
       itemAtSlot &&
@@ -25,6 +33,7 @@ export const PantsSlotEntityManual: Manual = {
     ) {
       gameAction.info("You lost your dignity");
       detachEntity(itemAtSlot);
+      dropItem(DickEntityFactory.getDefault(), getPlayerPosition());
       dropItem(itemAtSlot, getPlayerPosition());
     }
     upsertComponents(entity, DisabledComponent());
