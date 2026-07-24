@@ -5,7 +5,7 @@ import { InspectedComponent } from "../../model/components/inspect/InspectedComp
 import { DefComponent } from "../../model/components/items/DefComponent";
 import { getDef } from "../../model/queries/def";
 import {
-  getChildrenDmg,
+  getChildrenDmg, 
   getDmg,
   getDmgMod,
   getOwnDmg,

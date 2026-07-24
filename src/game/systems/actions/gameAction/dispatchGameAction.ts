@@ -1,116 +1,99 @@
 import type { Id } from "../../../../core/ecs/Id";
 import { STATE, type GameState } from "../../../state/state";
-import { applyPendingEffect, dequeueEffects } from "../../effects/effects";
-import type { TimedEffect } from "../../effects/types";
 import { flushLogs, recordPlayerAction } from "../../log/log";
 import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
 import { increaseTurn } from "../../turn/turn";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
+import { applyTimedAction, dequeueTimedActions } from "../timedActions/timedActions";
+import type { TimedAction } from "../timedActions/types";
 import type { ActionResolution, GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
 
 type DrainedResolution = {
   consumesTurn: boolean;
-  processedEffects: Id[];
 };
 
-const drainEffects = (
-  action: GameAction,
-  effects: TimedEffect[],
-  pendingLogs: PendingLog[],
-): DrainedResolution => {
-  let consumesTurn = false;
-  const processedEffects: Id[] = [];
-
-  for (const pendingEffect of effects) {
-    const effectResolution = applyPendingEffect(pendingEffect);
-
-    processedEffects.push(pendingEffect.id);
-
-    if (!effectResolution) {
-      continue;
-    }
-
-    const result = drainResolution(action, effectResolution, pendingLogs);
-
-    consumesTurn ||= result.consumesTurn;
-    processedEffects.push(...result.processedEffects);
-  }
-
-  return {
-    consumesTurn,
-    processedEffects,
-  };
+type DrainContext = {
+  pendingLogs: PendingLog[];
+  processedActions: Set<Id>;
 };
 
 const drainResolution = (
-  action: GameAction,
   resolution: ActionResolution,
-  pendingLogs: PendingLog[],
+  context: DrainContext,
 ): DrainedResolution => {
   let consumesTurn = resolution.consumesTurn;
-  const processedEffects: Id[] = [];
 
-  pendingLogs.push(...resolution.pendingLogs);
-
-  const effectsResult = drainEffects(
-    action,
-    resolution.pendingEffects,
-    pendingLogs,
-  );
-
-  consumesTurn ||= effectsResult.consumesTurn;
-  processedEffects.push(...effectsResult.processedEffects);
+  context.pendingLogs.push(...resolution.pendingLogs);
 
   for (const pendingAction of resolution.pendingActions) {
-    const actionResult = drainAction(pendingAction, pendingLogs);
+    context.processedActions.add(pendingAction.id);
 
-    consumesTurn ||= actionResult.consumesTurn;
-    processedEffects.push(...actionResult.processedEffects);
+    const pendingResolution = applyTimedAction(pendingAction);
+
+    if (!pendingResolution) {
+      continue;
+    }
+
+    const result = drainResolution(pendingResolution, context);
+
+    consumesTurn ||= result.consumesTurn;
   }
 
   return {
     consumesTurn,
-    processedEffects,
   };
 };
 
 const drainAction = (
   action: GameAction,
-  pendingLogs: PendingLog[],
+  context: DrainContext,
 ): DrainedResolution => {
   const resolution = resolveGameAction(action);
 
-  return drainResolution(action, resolution, pendingLogs);
+  return drainResolution(resolution, context);
+};
+
+const drainDequeuedAction = (
+  timedAction: TimedAction,
+  context: DrainContext,
+): DrainedResolution => {
+  context.processedActions.add(timedAction.id);
+
+  return drainAction(timedAction.action, context);
 };
 
 export const dispatchGameAction = (action: GameAction): GameState => {
-  const pendingLogs: PendingLog[] = [];
+  const context: DrainContext = {
+    pendingLogs: [],
+    processedActions: new Set(),
+  };
 
   if (isPlayerAction(action)) {
     recordPlayerAction(action);
   }
 
-  const actionResult = drainAction(action, pendingLogs);
+  const actionResult = drainAction(action, context);
   let consumesTurn = actionResult.consumesTurn;
-
-  if (actionResult.consumesTurn) {
-    const effectsToApply = dequeueEffects(actionResult.processedEffects);
-
-    const effectsResult = drainEffects(action, effectsToApply, pendingLogs);
-
-    consumesTurn ||= effectsResult.consumesTurn;
-  }
 
   if (consumesTurn) {
     for (const worldAction of runWorldTurn()) {
-      const worldResult = drainAction(worldAction, pendingLogs);
+      const worldResult = drainAction(worldAction, context);
+
       consumesTurn ||= worldResult.consumesTurn;
+    }
+
+    const dequeuedActions = dequeueTimedActions([...context.processedActions]);
+
+    for (const timedAction of dequeuedActions) {
+      const timedResult = drainDequeuedAction(timedAction, context);
+
+      consumesTurn ||= timedResult.consumesTurn;
     }
   }
 
-  flushLogs(pendingLogs, consumesTurn);
+  flushLogs(context.pendingLogs, consumesTurn);
 
   if (consumesTurn) {
     STATE.turn = increaseTurn(STATE.turn);

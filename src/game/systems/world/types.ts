@@ -1,38 +1,53 @@
 import type { Id } from "../../../core/ecs/Id";
+import type { Symbols } from "../../../core/ecs/Symbols";
 
-// todo: use Symbols
-export enum WorldActionType {
-  DROP_ITEM = "WORLD_DROP_ITEM",
-  GAIN_EXP = "WORLD_GAIN_EXP",
-  KILL = "WORLD_KILL",
-  REMOVE_ENTITY = "WORLD_REMOVE_ENTITY",
-  ATTACK = "WORLD_ATTACK",
-}
+export const WorldActionType = {
+  DROP_ITEM: Symbol("DROP_ITEM"),
+  GAIN_EXP: Symbol("GAIN_EXP"),
+  KILL: Symbol("KILL"),
+  REMOVE_ENTITY: Symbol("REMOVE_ENTITY"),
+  ATTACK: Symbol("ATTACK"),
+  CURSE: Symbol("CURSE"),
+  DISABLE: Symbol("DISABLE"),
+} as const satisfies Symbols;
+
+export type WorldActionType =
+  (typeof WorldActionType)[keyof typeof WorldActionType];
 
 export type WorldDropItemAction = {
-  type: WorldActionType.DROP_ITEM;
+  type: typeof WorldActionType.DROP_ITEM;
   targetPosition: number;
   entityId: Id;
   itemId: Id;
 };
 export type WorldKillAction = {
-  type: WorldActionType.KILL;
+  type: typeof WorldActionType.KILL;
   entityId: Id;
   position: number;
 };
 export type WorldGainExpAction = {
-  type: WorldActionType.GAIN_EXP;
+  type: typeof WorldActionType.GAIN_EXP;
   exp: number;
 };
 export type WorldRemoveEntityAction = {
-  type: WorldActionType.REMOVE_ENTITY;
+  type: typeof WorldActionType.REMOVE_ENTITY;
   entityId: Id;
   position: number;
 };
 export type WorldAttackAction = {
-  type: WorldActionType.ATTACK;
+  type: typeof WorldActionType.ATTACK;
   sourcePos: number;
   mobId: Id;
+};
+
+export type WorldCurseAction = {
+  type: typeof WorldActionType.CURSE;
+  entityId: Id;
+};
+
+export type WorldDisableAction = {
+  type: typeof WorldActionType.DISABLE;
+  entityId: Id;
 };
 
 export type WorldAction =
@@ -40,4 +55,6 @@ export type WorldAction =
   | WorldGainExpAction
   | WorldKillAction
   | WorldRemoveEntityAction
-  | WorldAttackAction;
+  | WorldAttackAction
+  | WorldCurseAction
+  | WorldDisableAction;

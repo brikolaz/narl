@@ -44,7 +44,7 @@ export const resolveUnequipAction = (
     }
 
     if (isFull) {
-      action.addPendingActions({
+      action.addPendingAction({
         type: PlayerActionType.DROP_ITEM,
         targetPosition: getPlayerPosition(),
         eqSlot: eqSlotIndex,

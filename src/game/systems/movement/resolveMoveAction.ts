@@ -37,7 +37,7 @@ export const resolveMoveAction = (
     discoverTiles(nextPlayerPosition);
     const nextTile = getTile(nextPlayerPosition);
     if (hasMobs(nextTile)) {
-      return action.addPendingActions({
+      return action.addPendingAction({
         type: PlayerActionType.ATTACK,
         targetPosition: nextPlayerPosition,
       });

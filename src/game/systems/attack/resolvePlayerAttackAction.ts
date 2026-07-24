@@ -93,7 +93,7 @@ export const resolvePlayerAttackAction = (
     const nextHp = mobHp?.hp - dmg;
 
     if (nextHp <= 0) {
-      action.addPendingActions({
+      action.addPendingAction({
         type: WorldActionType.KILL,
         entityId: mob.id,
         position: ctx.targetPosition,

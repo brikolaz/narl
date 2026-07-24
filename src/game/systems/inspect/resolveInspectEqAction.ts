@@ -1,7 +1,6 @@
 import { getPlayerEntity } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { curse } from "../effects/curse/curse";
 import { getEqSlot } from "../../model/queries/eq";
 import { getContainerItemAt } from "../../model/queries/containers";
 import { type PlayerInspectEqAction } from "../player/types";
@@ -11,6 +10,7 @@ import {
   increaseInspected,
 } from "./inspect";
 import { getEntityName } from "./getEntityName";
+import { curse } from "../curse/curse";
 
 export const resolveInspectEqAction = (
   gameAction: PlayerInspectEqAction,

@@ -11,8 +11,8 @@ import { getPlayerEntity } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
-import { curse } from "../effects/curse/curse";
-import { isDisabled } from "../effects/disableSlot/disabled";
+import { curse } from "../curse/curse";
+import { isDisabled } from "../../model/queries/disabled";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
 

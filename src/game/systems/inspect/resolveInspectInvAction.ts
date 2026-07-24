@@ -1,10 +1,10 @@
 import { getPlayerEntity } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { curse } from "../effects/curse/curse";
 import { getBackpack, getContainerItemAt } from "../../model/queries/containers";
 import { type PlayerInspectInvAction } from "../player/types";
 import { getItemInspectText, increaseInspected } from "./inspect";
+import { curse } from "../curse/curse";
 
 export const resolveInspectInvAction = (
   gameAction: PlayerInspectInvAction,

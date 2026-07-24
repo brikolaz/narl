@@ -1,5 +1,7 @@
 import type { ActionResolution } from "../actions/types";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
+import { resolveCurseAction } from "../curse/resolveCurseAction";
+import { resolveDisableAction } from "../disable/resolveDisableAction";
 import { resolveWorldDropItemAction } from "../drop/resolveWorldDropItemAction";
 import { resolveGainExpAction } from "../exp/resolveGainExpAction";
 import { resolveKillEntityAction } from "./resolveKillEntityAction";
@@ -14,4 +16,6 @@ export const worldActionResolvers = {
   [WorldActionType.KILL]: resolveKillEntityAction,
   [WorldActionType.REMOVE_ENTITY]: resolveRemoveEntityAction,
   [WorldActionType.ATTACK]: resolveWorldAttackAction,
+  [WorldActionType.CURSE]: resolveCurseAction,
+  [WorldActionType.DISABLE]: resolveDisableAction,
 } satisfies Record<WorldActionType, AnyWorldResolver>;

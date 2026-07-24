@@ -3,7 +3,6 @@ import { getComponentByType } from "../../../../../../core/ecs/queries/component
 import { removeComponentsByType } from "../../../../../../core/ecs/queries/components/remove";
 import { detachEntity } from "../../../../../../core/ecs/queries/entities/remove";
 import { dropItem } from "../../../../../systems/drop/drop";
-import { isDisabled } from "../../../../../systems/effects/disableSlot/disabled";
 import { DisabledComponent } from "../../../../components/DisabledComponent";
 import { InspectDescComponent } from "../../../../components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../../../components/inspect/InspectedComponent";
@@ -11,6 +10,7 @@ import { VariantComponent } from "../../../../components/VariantComponent";
 import type { Manual } from "../../../../Manual";
 import { getContainerItemAt } from "../../../../queries/containers";
 import { isCursed } from "../../../../queries/curse";
+import { isDisabled } from "../../../../queries/disabled";
 import { getPlayerPosition } from "../../../../queries/player";
 import { HelmetEntityVariants } from "../../../items/helmet/HelmetEntity";
 import { RingEntity } from "../../../items/ring/RingEntity";

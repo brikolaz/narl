@@ -12,8 +12,8 @@ import {
 import type { PlayerPickUpAction } from "../player/types";
 import { isPickupable, pickUpItem } from "../../model/queries/pickUp";
 import { getVisibleTiles } from "../player/getVisibleTiles";
-import { curse } from "../effects/curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
+import { curse } from "../curse/curse";
 
 export const resolvePickUpAction = (
   gameAction: PlayerPickUpAction,
