@@ -1,8 +1,9 @@
 import type { Entity } from "../../core/ecs/Entity";
+import type { Enum } from "../../core/ecs/Enum";
 
-export type Factory = {
-  getDefault: () => Entity;
-  getVariant?: (variant: symbol) => Entity;
+export type Factory<V extends Enum = Enum> = {
+  getDefault(): Entity;
+  getVariant?(variant: V[keyof V]): Entity;
 };
 
 export type ItemFactory = Factory & {

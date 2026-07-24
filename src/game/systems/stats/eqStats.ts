@@ -1,4 +1,5 @@
 import type { Entity } from "../../../core/ecs/Entity";
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 import { getDef } from "../../model/queries/def";
 import {
   getChildrenDmg,
@@ -8,13 +9,14 @@ import {
 } from "../../model/queries/dmg";
 import { getEqItems } from "../../model/queries/eq";
 
-enum EqStat {
-  TOTAL_DMG = "TOTAL DMG",
-  OWN_DMG = "OWN DMG",
-  CHILDREN_DMG = "CHILDREN DMG",
-  DMG_MOD = "DMG MOD",
-  DEF = "DEF",
-}
+const EqStat = {
+  TOTAL_DMG: "TOTAL DMG",
+  OWN_DMG: "OWN DMG",
+  CHILDREN_DMG: "CHILDREN DMG",
+  DMG_MOD: "DMG MOD",
+  DEF: "DEF",
+} as const satisfies Enum;
+type EqStat = EnumType<typeof EqStat>;
 
 // TODO: resolve stats based on slots/item types
 // TODO; remove duplication in Inspect action

@@ -1,14 +1,16 @@
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 import { MAX_WORLD_SIZE } from "../../../utils/constants";
 
-export enum Zone {
-    START = "start",
-    EARLY = "early",
-    LOW = "low",
-    MID = "mid",
-    HIGH = "high",
-    LATE = "late",
-    FINAL = "final",
-}
+export const Zone = {
+  START: "start",
+  EARLY: "early",
+  LOW: "low",
+  MID: "mid",
+  HIGH: "high",
+  LATE: "late",
+  FINAL: "final",
+} as const satisfies Enum;
+export type Zone = EnumType<typeof Zone>;
 
 export const getZone = (position: number): Zone => {
   if (position === 0) return Zone.START;

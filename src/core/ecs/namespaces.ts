@@ -3,17 +3,19 @@ import {
   ECS_NAMESPACE,
   NAMESPACE_SEPARATOR,
 } from "../../utils/constants";
+import type { Enum, EnumType } from "./Enum";
 
-export enum Namespace {
-  COMPONENT = "COMPONENT",
-  ENTITY = "ENTITY",
-}
+export const Namespace = {
+  COMPONENT: "COMPONENT",
+  ENTITY: "ENTITY",
+} as const as Enum;
+type Namespace = EnumType<typeof Namespace>;
 
 export const getEcsNamespace = (namespace: Namespace, type: string) => {
   return [
     BASE_NAMESPACE,
     ECS_NAMESPACE,
-    namespace.toLowerCase(),
+    namespace.toString().toLowerCase(),
     type.toLowerCase(),
   ].join(NAMESPACE_SEPARATOR);
 };

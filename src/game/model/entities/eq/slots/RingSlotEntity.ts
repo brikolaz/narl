@@ -1,6 +1,6 @@
 import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
+import type { Enum, EnumType } from "../../../../../core/ecs/Enum";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -10,10 +10,11 @@ import type { ItemFactory } from "../../../Factory";
 export const RingSlotEntity = getEntityCreator("RING_SLOT");
 
 export const RingSlotVariants = {
-  DEFAULT: Symbol("DEFAULT"),
-  RING1: Symbol("RING1"),
-  RING2: Symbol("RING2"),
-} as const satisfies Symbols;
+  DEFAULT: "DEFAULT",
+  RING1: "RING1",
+  RING2: "RING2",
+} as const satisfies Enum;
+type RingSlotVariants = EnumType<typeof RingSlotVariants>;
 
 type RingSlotFactory = ItemFactory & {
   getRing1: () => Entity;
@@ -62,7 +63,7 @@ export const RingSlotEntityFactory: RingSlotFactory = {
     return eqSlot;
   },
 
-  getVariant: (variant: symbol) => {
+  getVariant: (variant: RingSlotVariants) => {
     switch (variant) {
       case RingSlotVariants.RING1:
         return RingSlotEntityFactory.getRing1();

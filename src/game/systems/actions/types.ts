@@ -5,7 +5,7 @@ import type { WorldAction, WorldActionType } from "../world/types";
 import type { Action } from "./action";
 import type { TimedAction } from "./timedActions/types";
 
-export type GameActionType = PlayerActionType | typeof WorldActionType;
+export type GameActionType = PlayerActionType | WorldActionType;
 
 export type GameAction = PlayerAction | WorldAction | InternalAction;
 

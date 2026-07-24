@@ -1,20 +1,23 @@
+import { typedEntries } from "../../../../utils/typedEntries";
 import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { upsertRegistryEntities } from "../../registry/entityRegistry";
-import { resolveEntity, normalizeChildrenEntityRecords, type ChildrenInput } from "./normalize";
+import {
+  resolveEntity,
+  normalizeChildrenEntityRecords,
+  type ChildrenInput,
+} from "./normalize";
 
 const upsertDataEntities = (
   entity: Entity,
   children: Partial<Record<EntityRole, Entity[]>>,
 ): void => {
-  for (const [entityRole, entities] of Object.entries(children)) {
+  for (const [entityRole, entities] of typedEntries(children)) {
     for (const child of entities) {
       entity.entityById.set(child.id, child);
       entity.entityByRole.set(
-        entityRole as EntityRole,
-        (entity.entityByRole.get(entityRole as EntityRole) ?? new Set())?.add(
-          child,
-        ),
+        entityRole,
+        (entity.entityByRole.get(entityRole) ?? new Set())?.add(child),
       );
     }
   }

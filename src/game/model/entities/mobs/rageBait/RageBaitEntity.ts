@@ -5,11 +5,11 @@ import {
 } from "../../../../../core/ecs/Entity";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
 import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
-import { EqSlot } from "../../../../systems/eq/types";
 import {
   addItemToContainer,
   setContainerItemAt,
 } from "../../../../systems/containers/containers";
+import { EqSlot } from "../../../../systems/eq/types";
 import { RNG } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
@@ -19,22 +19,14 @@ import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { HpComponent } from "../../../components/mobs/HpComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import type { MobFactory } from "../../../Factory";
-import { AmuletSlotEntityFactory } from "../../eq/slots/AmuletSlotEntity";
-import { ArmorSlotEntityFactory } from "../../eq/slots/ArmorSlotEntity";
-import { BootsSlotEntityFactory } from "../../eq/slots/BootsSlotEntity";
-import { HeadSlotEntityFactory } from "../../eq/slots/HeadSlotEntity";
-import { MainHandSlotEntityFactory } from "../../eq/slots/MainHandSlotEntity";
-import { OffhandSlotEntityFactory } from "../../eq/slots/OffhandSlotEntity";
-import { PantsSlotEntityFactory } from "../../eq/slots/pantsSlot/PantsSlotEntity";
-import { RingSlotEntityFactory } from "../../eq/slots/RingSlotEntity";
+import { getEqSlot } from "../../../queries/eq";
+import { initEq } from "../../eq/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {
   HelmetEntityFactory,
   HelmetEntityVariants,
 } from "../../items/helmet/HelmetEntity";
-import { getEqSlot } from "../../../queries/eq";
 import { SwordEntityFactory } from "../../items/SwordEntity";
-import { initEq } from "../../eq/eq";
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 

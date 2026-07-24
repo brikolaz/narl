@@ -1,4 +1,5 @@
 import { STATE } from "../../../game/state/state";
+import { typedEntries } from "../../../utils/typedEntries";
 import { EntityRole, type Entity } from "../Entity";
 import type { Id } from "../Id";
 
@@ -44,7 +45,7 @@ export const upsertRegistryEntities = (
   const entitiesToRegister = Array.isArray(childrenEntities)
     ? { [EntityRole.DEFAULT]: childrenEntities }
     : childrenEntities;
-  for (const [role, children] of Object.entries(entitiesToRegister)) {
+  for (const [role, children] of typedEntries(entitiesToRegister)) {
     for (const child of children) {
       records.push({
         parent: parentEntity,

@@ -1,3 +1,4 @@
+import { typedEntries } from "../../../../utils/typedEntries";
 import { EntityRole, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { getEntityById } from "./get";
@@ -21,8 +22,8 @@ export const normalizeChildrenEntityRecords = (
 
   const normalized: Partial<Record<EntityRole, Entity[]>> = {};
 
-  for (const [role, entities] of Object.entries(children)) {
-    normalized[role as EntityRole] = [entities]
+  for (const [role, entities] of typedEntries(children)) {
+    normalized[role] = [entities]
       .flat()
       .filter((child): child is Entity => child !== undefined);
   }
@@ -30,9 +31,7 @@ export const normalizeChildrenEntityRecords = (
   return normalized;
 };
 
-export const resolveEntity = (
-  entity: EntityArgument,
-): Entity | undefined => {
+export const resolveEntity = (entity: EntityArgument): Entity | undefined => {
   if (entity === undefined) {
     return undefined;
   }

@@ -4,13 +4,15 @@ import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
 import { upsertRegistryEntities } from "./registry/entityRegistry";
 
-export enum EntityRole {
-  DEFAULT = "DEFAULT",
-  CONTAINER = "CONTAINER",
-  BACKPACK = "BACKPACK",
-  EQ = "EQ",
-  ITEM = "ITEM",
-}
+export const EntityRole = {
+  DEFAULT: "DEFAULT",
+  CONTAINER: "CONTAINER",
+  BACKPACK: "BACKPACK",
+  EQ: "EQ",
+  ITEM: "ITEM",
+} as const;
+
+export type EntityRole = (typeof EntityRole)[keyof typeof EntityRole];
 
 export type EntityType = symbol;
 

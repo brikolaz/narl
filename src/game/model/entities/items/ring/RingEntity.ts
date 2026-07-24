@@ -1,6 +1,5 @@
 import { getEntityCreator } from "../../../../../core/ecs/Entity";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { PantsComponent } from "../../../components/eq/PantsComponent";
@@ -9,10 +8,6 @@ import { RingComponent } from "../../../components/eq/RingComponent";
 import { DroppableComponent } from "../../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../../components/items/PickupableComponent";
 import type { ItemFactory } from "../../../Factory";
-
-export const RingEntityVariants = {
-  RING: Symbol.for("RING"),
-} as const satisfies Symbols;
 
 export const RingEntity = getEntityCreator("RING");
 

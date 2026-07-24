@@ -1,6 +1,6 @@
 import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
+import type { Enum, EnumType } from "../../../../../core/ecs/Enum";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { RNG } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -14,9 +14,10 @@ import { SpikeComponent } from "../../../components/items/SpikeComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const HelmetEntityVariants = {
-  DEFAULT: Symbol("Helmet"),
-  HORNED_HELMET: Symbol("Horned Helmet"),
-} as const satisfies Symbols;
+  DEFAULT: "Helmet",
+  HORNED_HELMET: "Horned Helmet",
+} as const satisfies Enum;
+type HelmetEntityVariants = EnumType<typeof HelmetEntityVariants>;
 
 type HelmetFactory = ItemFactory & {
   getHornedHelmet: () => Entity;
@@ -67,7 +68,7 @@ export const HelmetEntityFactory: HelmetFactory = {
     return helmet;
   },
 
-  getVariant: (variant: symbol) => {
+  getVariant: (variant: HelmetEntityVariants) => {
     switch (variant) {
       case HelmetEntityVariants.HORNED_HELMET:
         return HelmetEntityFactory.getHornedHelmet();

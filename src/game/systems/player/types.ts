@@ -1,19 +1,21 @@
 import type { EqSlot } from "../eq/types";
 import type { InvSlot } from "../containers/types";
 import type { Direction } from "../turn/types";
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 
-export enum PlayerActionType {
-  MOVE = "PLAYER_MOVE",
-  PICK_UP = "PLAYER_PICK_UP",
-  PICK_UP_UNPACK = "PLAYER_PICK_UP_UNPACK",
-  EQUIP_ITEM = "PLAYER_EQUIP_ITEM",
-  UNEQUIP_ITEM = "PLAYER_UNEQUIP_ITEM",
-  ATTACK = "PLAYER_ATTACK",
-  MOVE_ITEM = "PLAYER_MOVE_ITEM",
-  DROP_ITEM = "PLAYER_DROP_ITEM",
-  INSPECT_INV = "PLAYER_INSPECT_INV",
-  INSPECT_EQ = "PLAYER_INSPECT_EQ",
-}
+export const PlayerActionType = {
+  MOVE: "PLAYER_MOVE",
+  PICK_UP: "PLAYER_PICK_UP",
+  PICK_UP_UNPACK: "PLAYER_PICK_UP_UNPACK",
+  EQUIP_ITEM: "PLAYER_EQUIP_ITEM",
+  UNEQUIP_ITEM: "PLAYER_UNEQUIP_ITEM",
+  ATTACK: "PLAYER_ATTACK",
+  MOVE_ITEM: "PLAYER_MOVE_ITEM",
+  DROP_ITEM: "PLAYER_DROP_ITEM",
+  INSPECT_INV: "PLAYER_INSPECT_INV",
+  INSPECT_EQ: "PLAYER_INSPECT_EQ",
+} as const satisfies Enum;
+export type PlayerActionType = EnumType<typeof PlayerActionType>;
 
 export enum PlayerDropItemActionReason {
   MANUAL = "MANUAL",
@@ -21,43 +23,43 @@ export enum PlayerDropItemActionReason {
 }
 
 export type PlayerDropItemAction = {
-  type: PlayerActionType.DROP_ITEM;
+  type: typeof PlayerActionType.DROP_ITEM;
   targetPosition: number;
   invSlot: InvSlot | undefined;
   eqSlot: EqSlot | undefined;
   reason: PlayerDropItemActionReason;
 };
 export type PlayerMoveAction = {
-  type: PlayerActionType.MOVE;
+  type: typeof PlayerActionType.MOVE;
   direction: Direction;
 };
-export type PlayerPickUpAction = { type: PlayerActionType.PICK_UP };
+export type PlayerPickUpAction = { type: typeof PlayerActionType.PICK_UP };
 export type PlayerPickUpUnpackAction = {
-  type: PlayerActionType.PICK_UP_UNPACK;
+  type: typeof PlayerActionType.PICK_UP_UNPACK;
 };
 export type PlayerEquipItemAction = {
-  type: PlayerActionType.EQUIP_ITEM;
+  type: typeof PlayerActionType.EQUIP_ITEM;
   invSlot: InvSlot;
   eqSlot: EqSlot;
 };
 export type PlayerUnequipItemAction = {
-  type: PlayerActionType.UNEQUIP_ITEM;
+  type: typeof PlayerActionType.UNEQUIP_ITEM;
   eqSlot: EqSlot;
 };
 export type PlayerAttackAction = {
-  type: PlayerActionType.ATTACK;
+  type: typeof PlayerActionType.ATTACK;
   targetPosition: number;
 };
 export type PlayerInspectInvAction = {
-  type: PlayerActionType.INSPECT_INV;
+  type: typeof PlayerActionType.INSPECT_INV;
   invSlot: InvSlot;
 };
 export type PlayerInspectEqAction = {
-  type: PlayerActionType.INSPECT_EQ;
+  type: typeof PlayerActionType.INSPECT_EQ;
   eqSlot: EqSlot;
 };
 export type PlayerMoveItemAction = {
-  type: PlayerActionType.MOVE_ITEM;
+  type: typeof PlayerActionType.MOVE_ITEM;
   fromSlot: InvSlot;
   toSlot: InvSlot;
 };

@@ -1,3 +1,4 @@
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 import type { GameAction } from "../actions/types";
 import type { PlayerAction } from "../player/types";
 
@@ -17,9 +18,10 @@ export type ActionLog = {
   timestamp: number;
 };
 
-export enum PendingActionType {
-  Attack,
-}
+export const PendingActionType = {
+  Attack: "ATTACK",
+} as const satisfies Enum;
+export type PendingActionType = EnumType<typeof PendingActionType>;
 export type PendingAction = {
-  type: PendingActionType;
+  type: typeof PendingActionType;
 };

@@ -1,9 +1,6 @@
-import {
-  getEntityCreator,
-  type Entity,
-} from "../../../../../core/ecs/Entity";
+import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
+import type { Enum, EnumType } from "../../../../../core/ecs/Enum";
 import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import type { Symbols } from "../../../../../core/ecs/Symbols";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
 import { RNG } from "../../../../systems/rng/rng";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
@@ -20,10 +17,11 @@ import type { ItemFactory } from "../../../Factory";
 export const ContainerEntity = getEntityCreator("CONTAINER");
 
 const ContainerVariants = {
-  DEFAULT: Symbol("DEFAULT"),
-  BACKPACK: Symbol("BACKPACK"),
-  PLAYER_BACKPACK: Symbol("PLAYER_BACKPACK"),
-} as const satisfies Symbols;
+  DEFAULT: "DEFAULT",
+  BACKPACK: "BACKPACK",
+  PLAYER_BACKPACK: "PLAYER_BACKPACK",
+} as const satisfies Enum;
+type ContainerVariants = EnumType<typeof ContainerVariants>;
 
 type ContainerFactory = ItemFactory & {
   getBackpack: () => Entity;
@@ -71,7 +69,7 @@ export const ContainerEntityFactory: ContainerFactory = {
     return backpack;
   },
 
-  getVariant(variant: symbol) {
+  getVariant(variant: ContainerVariants) {
     switch (variant) {
       case ContainerVariants.BACKPACK:
         return this.getBackpack();

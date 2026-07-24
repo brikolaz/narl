@@ -1,12 +1,14 @@
 import type { Entity } from "../../../core/ecs/Entity";
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 import { HpComponent } from "../../model/components/mobs/HpComponent";
 import { getExp } from "../../model/queries/exp";
 import { getHp } from "../../model/queries/hp";
 
-enum PlayerStat {
-  HP = "HP",
-  EXP = "EXP",
-}
+const PlayerStat = {
+  HP: "HP",
+  EXP: "EXP",
+} as const satisfies Enum;
+type PlayerStat = EnumType<typeof PlayerStat>;
 
 export type PlayerStats = Record<PlayerStat, string | number>;
 

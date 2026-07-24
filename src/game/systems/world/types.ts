@@ -1,18 +1,16 @@
+import type { Enum, EnumType } from "../../../core/ecs/Enum";
 import type { Id } from "../../../core/ecs/Id";
-import type { Symbols } from "../../../core/ecs/Symbols";
 
 export const WorldActionType = {
-  DROP_ITEM: Symbol("DROP_ITEM"),
-  GAIN_EXP: Symbol("GAIN_EXP"),
-  KILL: Symbol("KILL"),
-  REMOVE_ENTITY: Symbol("REMOVE_ENTITY"),
-  ATTACK: Symbol("ATTACK"),
-  CURSE: Symbol("CURSE"),
-  DISABLE: Symbol("DISABLE"),
-} as const satisfies Symbols;
-
-export type WorldActionType =
-  (typeof WorldActionType)[keyof typeof WorldActionType];
+  DROP_ITEM: "DROP_ITEM",
+  GAIN_EXP: "GAIN_EXP",
+  KILL: "KILL",
+  REMOVE_ENTITY: "REMOVE_ENTITY",
+  ATTACK: "ATTACK",
+  CURSE: "CURSE",
+  DISABLE: "DISABLE",
+} as const satisfies Enum;
+type WorldActionType = EnumType<typeof WorldActionType>;
 
 export type WorldDropItemAction = {
   type: typeof WorldActionType.DROP_ITEM;
