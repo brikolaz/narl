@@ -1,7 +1,7 @@
-import type { EqSlot } from "../eq/types";
 import type { InvSlot } from "../containers/types";
 import type { Direction } from "../turn/types";
 import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { EqSlot } from "../eq/eq";
 
 export const PlayerActionType = {
   MOVE: "PLAYER_MOVE",
@@ -56,7 +56,7 @@ export type PlayerInspectInvAction = {
 };
 export type PlayerInspectEqAction = {
   type: typeof PlayerActionType.INSPECT_EQ;
-  eqSlot: EqSlot;
+  eqSlot: EqSlot
 };
 export type PlayerMoveItemAction = {
   type: typeof PlayerActionType.MOVE_ITEM;

@@ -9,18 +9,17 @@ import {
   addItemToContainer,
   setContainerItemAt,
 } from "../../../../systems/containers/containers";
-import { EqSlot } from "../../../../systems/eq/types";
 import { RNG } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
+import { MainHandSlotComponent } from "../../../components/eq/slots/MainHandSlotComponent";
 import { ExpComponent } from "../../../components/mobs/ExpComponent";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { HpComponent } from "../../../components/mobs/HpComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import type { MobFactory } from "../../../Factory";
-import { getEqSlot } from "../../../queries/eq";
-import { initEq } from "../../eq/eq";
+import { getEqSlotByType, initEq } from "../../../queries/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {
   HelmetEntityFactory,
@@ -54,7 +53,7 @@ const addLoot = (entity: Entity) => {
 const addEq = (entity: Entity) => {
   initEq(entity);
   const sword = SwordEntityFactory.getDefault();
-  setContainerItemAt(getEqSlot(entity, EqSlot.MAIN_HAND), 1, sword);
+  setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
 };
 
 export const RageBaitEntityFactory: MobFactory = {

@@ -2,12 +2,11 @@ import { getComponentByType } from "../../core/ecs/queries/components/get";
 import { ColorComponent } from "../model/components/display/ColorComponent";
 import { GlyphComponent } from "../model/components/display/GlyphComponent";
 import { getBackpack, getContainerItemAt } from "../model/queries/containers";
-import { getEqSlotItem } from "../model/queries/eq";
+import { getEq } from "../model/queries/eq";
 import { getPlayerEntity } from "../model/queries/player";
 import { getRenderedMap } from "./getRenderedMap";
 import { STATE } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
-import { EqSlot } from "../systems/eq/types";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
 
@@ -48,11 +47,9 @@ export const getPlayerStatsView = (): PlayerStatsView => {
 
 export const getEquipmentView = (): EquipmentView => {
   const player = getPlayerEntity();
-  const slots = Object.values(EqSlot).filter(
-    (slot): slot is EqSlot => typeof slot === "number",
-  );
+  const slots = getEq(player);
 
-  return slots.map((slot) => getGlyphView(getEqSlotItem(player, slot)));
+  return slots.map((slot) => getGlyphView(getContainerItemAt(slot, 1)));
 };
 
 export const getBackpackView = (): BackpackView => {
@@ -71,7 +68,7 @@ export const getLogsView = (): LogEntryView[] =>
 export const getGameViewModel = (): GameViewModel => ({
   map: getRenderedMap().map((tile) => ({
     char: tile.char ?? " ",
-    color: tile.color,
+    color: tile.color, 
     position: tile.position,
   })),
   playerStats: getPlayerStatsView(),

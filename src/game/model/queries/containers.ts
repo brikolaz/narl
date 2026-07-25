@@ -12,7 +12,7 @@ import {
 import { ContainerComponent } from "../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../components/containers/NestDepthComponent";
 import { SizeComponent } from "../components/containers/SizeComponent";
-import { PositionComponent } from "../components/PositionComponent";
+import { getPosition } from "./position";
 
 export const getBackpack = (entity: Entity): Entity | undefined => {
   return getEntityByRole(entity, EntityRole.BACKPACK);
@@ -33,8 +33,7 @@ export const getContainerItemAt = (
     throw new Error("Entity is not a container");
   }
   const item = getEntitiesByRole(container, EntityRole.ITEM).find((item) => {
-    const position = getComponentByType(item, PositionComponent)?.position;
-    return position === containerSlot;
+    return getPosition(item) === containerSlot;
   });
 
   return item;
@@ -53,7 +52,7 @@ const getEmptySlots = (container: Entity): ContainerSlot[] => {
   }
   const occupiedSlots = new Set(
     getEntitiesByRole(container, EntityRole.ITEM).map((item) => {
-      const pos = getComponentByType(item, PositionComponent)?.position;
+      const pos = getPosition(item);
       if (!pos) {
         throw new Error("Container item has no position component");
       }

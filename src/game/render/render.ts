@@ -40,15 +40,15 @@ const appendColoredGlyph = (
   target: DocumentFragment | HTMLElement,
   glyph: ColoredGlyphView,
 ) => {
-  const char = glyph.char || " ";
+  const char = glyph?.char || " ";
 
-  if (!glyph.color) {
+  if (!glyph?.color) {
     target.append(char);
     return;
   }
 
   const coloredGlyph = document.createElement("span");
-  coloredGlyph.style.color = glyph.color;
+  coloredGlyph.style.color = glyph?.color;
   coloredGlyph.textContent = char;
   target.append(coloredGlyph);
 };
@@ -110,13 +110,62 @@ const renderAsciiGrid = (
   target.replaceChildren(fragment);
 };
 
+const renderEqGrid = (target: HTMLElement, glyphs: ColoredGlyphView[]) => {
+  const fragment = document.createDocumentFragment();
+
+  const appendText = (text: string) => {
+    fragment.append(text);
+  };
+
+  appendText(`
+     E Q
+    +---+
+    | `);
+
+  appendColoredGlyph(fragment, glyphs[0]);
+
+  appendText(` |
+    | 1 |
++---+---+---+
+| `);
+
+  appendColoredGlyph(fragment, glyphs[1]);
+
+  appendText(` | `);
+
+  appendColoredGlyph(fragment, glyphs[2]);
+
+  appendText(` | `);
+
+  appendColoredGlyph(fragment, glyphs[3]);
+
+  appendText(` |
+| 2 | 3 | 4 |
++---+---+---+
+    | `);
+
+  appendColoredGlyph(fragment, glyphs[4]);
+
+  appendText(` |
+    | 5 |
+    +---+
+    | `);
+
+  appendColoredGlyph(fragment, glyphs[5]);
+
+  appendText(` |
+    | 6 |
+    +---+`);
+
+  target.replaceChildren(fragment);
+};
+
 export const render = (viewModel: GameViewModel) => {
   stats.textContent = Object.entries(viewModel.playerStats)
     .map(([stat, value]) => `${stat}: ${value}`)
     .join("\n");
-
   renderMap(map, viewModel.map);
   renderAsciiGrid(backpack, "BACKPACK", viewModel.backpack);
-  renderAsciiGrid(eq, "EQ", viewModel.equipment);
+  renderEqGrid(eq, viewModel.equipment);
   log.textContent = viewModel.logs.map((entry) => entry.text).join("\n");
 };

@@ -17,6 +17,7 @@ import {
   getFirstEmptyContainerSlot,
   isContainer,
 } from "../../model/queries/containers";
+import { getPosition } from "../../model/queries/position";
 import type { ContainerSlot } from "./types";
 
 export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
@@ -81,7 +82,7 @@ export const clearContainerItemAt = (
     throw new Error("Entity is not a container");
   }
   const item = getContainerItems(container).find((item) => {
-    return getComponentByType(item, PositionComponent)?.position === slot;
+    return getPosition(item) === slot;
   });
   if (!item) {
     return;

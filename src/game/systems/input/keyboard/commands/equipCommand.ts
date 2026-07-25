@@ -1,7 +1,6 @@
 import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
 import { getEq } from "../../../../model/queries/eq";
 import { getPlayerEntity } from "../../../../model/queries/player";
-import type { EqSlot } from "../../../eq/types";
 import type { InvSlot } from "../../../containers/types";
 import { PlayerActionType } from "../../../player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
@@ -11,7 +10,7 @@ const getEquipActionSlotCommand = (
   eqSize: number | undefined,
   invSlot: InvSlot,
 ): KeyboardToAction => {
-  return createSlotActionCommands<EqSlot>(eqSize, (eqSlot) => ({
+  return createSlotActionCommands(eqSize, (eqSlot) => ({
     type: PlayerActionType.EQUIP_ITEM,
     invSlot,
     eqSlot,

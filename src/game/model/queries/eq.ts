@@ -1,12 +1,62 @@
 import { EntityRole, type Entity } from "../../../core/ecs/Entity";
+import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import {
+  resolveComponentType,
+  type ComponentTypeArgument,
+} from "../../../core/ecs/queries/components/normalize";
+import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
-import { EqSlot } from "../../systems/eq/types";
-import { EQ_SLOT_TO_ENTITY } from "../entities/eq/mapping";
-import { RingSlotEntity } from "../entities/eq/slots/RingSlotEntity";
+import { MainHandSlotComponent } from "../components/eq/slots/MainHandSlotComponent";
+import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
+import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";
+import { BootsSlotEntityFactory } from "../entities/eq/slots/BootsSlotEntity";
+import { HeadSlotEntityFactory } from "../entities/eq/slots/HeadSlotEntity";
+import { MainHandSlotEntityFactory } from "../entities/eq/slots/MainHandSlotEntity";
+import { OffhandSlotEntityFactory } from "../entities/eq/slots/OffhandSlotEntity";
+import { PantsSlotEntityFactory } from "../entities/eq/slots/pantsSlot/PantsSlotEntity";
 import { getContainerItemAt, getContainerItems } from "./containers";
+import { getPosition } from "./position";
 
 export const getEq = (entity: Entity): Entity[] => {
-  return getEntitiesByRole(entity, EntityRole.EQ);
+  return [...getEntitiesByRole(entity, EntityRole.EQ)].sort(
+    (a, b) => getPosition(a) - getPosition(b),
+  );
+};
+
+export const getEqSlotsByType = (
+  entity: Entity,
+  componentType: ComponentTypeArgument,
+) => {
+  if (!isEqSlot(componentType)) {
+    throw new Error("Not an EQ component");
+  }
+  const eq = getEq(entity);
+  return eq.filter((eqSlot) => hasComponentsByType(eqSlot, componentType));
+};
+
+export const getEqSlotByType = (
+  entity: Entity,
+  componentType: ComponentTypeArgument,
+) => {
+  return getEqSlotsByType(entity, componentType)[0];
+};
+
+export const isEqSlot = (component: ComponentTypeArgument) => {
+  const target = resolveComponentType(component);
+  return EQ_SLOT_COMPONENTS.has(target);
+};
+
+export const initEq = (entity: Entity) => {
+  upsertRoleEntities(entity, {
+    [EntityRole.EQ]: [
+      HeadSlotEntityFactory.getDefault(),
+      MainHandSlotEntityFactory.getDefault(),
+      ArmorSlotEntityFactory.getDefault(),
+      OffhandSlotEntityFactory.getDefault(),
+      PantsSlotEntityFactory.getDefault(),
+      BootsSlotEntityFactory.getDefault(),
+    ],
+  });
 };
 
 export const getEqItems = (entity: Entity) => {
@@ -15,35 +65,12 @@ export const getEqItems = (entity: Entity) => {
   return items;
 };
 
-const isRingSlot = (entity: Entity) => {
-  return entity.type === RingSlotEntity.type;
-};
-
-// TODO: get rid of this shit
-export const getEqSlot = (entity: Entity, slot: EqSlot) => {
-  const eqSlots = getEq(entity);
-  let targetSlot = undefined;
-  if (slot === EqSlot.RING1 || slot === EqSlot.RING2) {
-    const targetSlots = eqSlots.filter((s) => isRingSlot(s));
-    targetSlot = targetSlots[slot === EqSlot.RING1 ? 0 : 1];
-  } else {
-    targetSlot = getEq(entity).find((s) => {
-      const slotEntity = EQ_SLOT_TO_ENTITY.get(slot);
-      return slotEntity ? s.type === slotEntity : false;
-    });
-  }
-  if (!targetSlot) {
-    throw new Error(`No EQ slot`);
-  }
-  return targetSlot;
-};
-
-export const getEqSlotItem = (entity: Entity, slot: EqSlot) => {
-  const eqSlot = getEqSlot(entity, slot);
-  return getContainerItemAt(eqSlot, 1);
-};
-
 export const getEquippedWeapon = (entity: Entity): Entity | undefined => {
-  const slot = getEqSlot(entity, EqSlot.MAIN_HAND);
+  const slot = getEqSlotByType(entity, MainHandSlotComponent);
   return getContainerItemAt(slot, 1);
+};
+
+export const getEqSlotByPosition = (entity: Entity, position: number) => {
+  const eq = getEq(entity);
+  return eq.find((slot) => getPosition(slot) === position);
 };

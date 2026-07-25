@@ -8,7 +8,7 @@ import { NameComponent } from "../components/display/NameComponent";
 import { ExpComponent } from "../components/mobs/ExpComponent";
 import { HpComponent } from "../components/mobs/HpComponent";
 import type { Factory } from "../Factory";
-import { initEq } from "./eq/eq";
+import { initEq } from "../queries/eq";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";
 
 const PlayerEntity = getEntityCreator("PLAYER");

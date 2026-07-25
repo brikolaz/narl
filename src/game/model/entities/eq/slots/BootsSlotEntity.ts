@@ -4,6 +4,8 @@ import { ContainerComponent } from "../../../components/containers/ContainerComp
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { BootsComponent } from "../../../components/eq/BootsComponent";
+import { BootsSlotComponent } from "../../../components/eq/slots/BootsSlotComponent";
+import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const BootsSlotEntity = getEntityCreator("BOOTS_SLOT");
@@ -15,9 +17,11 @@ export const BootsSlotEntityFactory: ItemFactory = {
     upsertComponents(
       eqSlot,
       NameComponent({ name: "Boots" }),
+      BootsSlotComponent(),
       BootsComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
+      PositionComponent({ position: 6 }),
     );
 
     return eqSlot;

@@ -4,6 +4,8 @@ import { ContainerComponent } from "../../../components/containers/ContainerComp
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { OffhandComponent } from "../../../components/eq/OffhandComponent";
+import { OffhandSlotComponent } from "../../../components/eq/slots/OffhandSlotComponent";
+import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const OffhandSlotEntity = getEntityCreator("OFFHAND_SLOT");
@@ -15,10 +17,11 @@ export const OffhandSlotEntityFactory: ItemFactory = {
     upsertComponents(
       eqSlot,
       NameComponent({ name: "Offhand" }),
+      OffhandSlotComponent(),
       OffhandComponent(),
       ContainerComponent(),
-            SizeComponent({ size: 1 }),
-      
+      SizeComponent({ size: 1 }),
+      PositionComponent({ position: 4 }),
     );
 
     return eqSlot;

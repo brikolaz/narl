@@ -5,6 +5,8 @@ import { SizeComponent } from "../../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../../components/display/NameComponent";
 import { PantsComponent } from "../../../../components/eq/PantsComponent";
 import { RingComponent } from "../../../../components/eq/RingComponent";
+import { PantsSlotComponent } from "../../../../components/eq/slots/PantsSlotComponent";
+import { PositionComponent } from "../../../../components/PositionComponent";
 import type { ItemFactory } from "../../../../Factory";
 
 export const PantsSlotEntity = getEntityCreator("PANTS_SLOT");
@@ -16,10 +18,12 @@ export const PantsSlotEntityFactory: ItemFactory = {
     upsertComponents(
       eqSlot,
       NameComponent({ name: "Pants" }),
+      PantsSlotComponent(),
       PantsComponent(),
       RingComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
+      PositionComponent({ position: 5 }),
     );
 
     return eqSlot;

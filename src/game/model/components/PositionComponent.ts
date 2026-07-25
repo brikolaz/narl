@@ -6,5 +6,5 @@ type PositionComponentProps = {
 
 export const PositionComponent = getComponentCreator<PositionComponentProps>(
   "POSITION",
-  { position: 0 },
+  { position: -1 },
 );

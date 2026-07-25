@@ -5,7 +5,6 @@ import {
   getContainerItemAt,
   getFirstContainerItem,
 } from "../../model/queries/containers";
-import { getEqSlot } from "../../model/queries/eq";
 import { getItemSlots } from "../../model/queries/items";
 import { getPlayerEntity } from "../../model/queries/player";
 import { Action } from "../actions/action";
@@ -15,6 +14,7 @@ import { curse } from "../curse/curse";
 import { isDisabled } from "../../model/queries/disabled";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
+import { getEqSlotByPosition } from "../../model/queries/eq";
 
 const canBeEquipped = (
   itemSlots: Component[],
@@ -44,7 +44,10 @@ export const resolveEquipAction = (
       return action.fail(`No item in INV slot ${invSlotIndex} to equip`);
     }
 
-    const eqSlot = getEqSlot(player, eqSlotIndex);
+    const eqSlot = action.assert(
+      getEqSlotByPosition(player, eqSlotIndex),
+      "No EQ slot",
+    );
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
     const itemInSlot = getFirstContainerItem(eqSlot);
