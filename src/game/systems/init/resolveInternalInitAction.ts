@@ -1,3 +1,4 @@
+import { removeEntity } from "../../../core/ecs/queries/entities/remove";
 import { INITIAL_TURN } from "../../../utils/constants";
 import { STATE } from "../../state/state";
 import { Action } from "../actions/action";
@@ -19,12 +20,17 @@ export const resolveInternalInitAction = (
   validateSpawnTables();
 
   (() => {
+    const oldPlayer = STATE.player.player;
+
     STATE.world = initWorld();
     STATE.turn = INITIAL_TURN;
     STATE.log = [];
     STATE.actionLog = [];
     STATE.initialized = true;
     STATE.player = initPlayer();
+
+    removeEntity(oldPlayer);
+
     action.info("You'd rather stay dead");
   })();
 
