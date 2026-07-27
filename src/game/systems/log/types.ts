@@ -14,6 +14,7 @@ export type PendingLog = {
 };
 
 export type ActionLog = {
+  turn: number;
   action: PlayerAction;
   timestamp: number;
 };

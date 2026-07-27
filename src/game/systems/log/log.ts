@@ -6,10 +6,7 @@ import { type PlayerAction } from "../player/types";
 import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
-const addLog = (
-  action: GameAction,
-  message: string,
-): LogEntry[] => {
+const addLog = (action: GameAction, message: string): LogEntry[] => {
   return [
     ...STATE.log,
     {
@@ -20,10 +17,7 @@ const addLog = (
   ].slice(-MAX_VISIBLE_LOGS);
 };
 
-export const addLogMutable = (
-  action: GameAction,
-  message: string,
-): void => {
+export const addLogMutable = (action: GameAction, message: string): void => {
   STATE.log = addLog(action, message);
 };
 
@@ -59,15 +53,11 @@ export const getInternalLogAction = (message: string): GameAction => ({
   message,
 });
 
-export const recordPlayerAction = (
-  action: PlayerAction,
-): GameState => {
-  STATE.actionLog = [
-    ...STATE.actionLog,
-    {
-      action,
-      timestamp: Date.now(),
-    },
-  ];
+export const recordPlayerAction = (action: PlayerAction): GameState => {
+  STATE.actionLog.push({
+    turn: STATE.turn,
+    action,
+    timestamp: Date.now(),
+  });
   return STATE;
 };
