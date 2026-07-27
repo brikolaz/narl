@@ -1,7 +1,7 @@
-import { getPlayerEntity } from "../../../../model/queries/player";
-import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
-import type { InvSlot } from "../../../containers/types";
-import { PlayerActionType } from "../../../player/types";
+import { getPlayerEntity } from "../../../model/queries/player";
+import { getBackpack, getContainerSize } from "../../../model/queries/containers";
+import type { InvSlot } from "../../../systems/containers/types";
+import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 import { createSlotActionCommands, createSlotNextCommands } from "./slots";
 

@@ -1,4 +1,4 @@
-import { Direction } from "../../turn/types";
+import { Direction } from "../../systems/turn/types";
 import type { KeyboardToAction } from "./chain";
 import { getDropCommand } from "./commands/dropCommand";
 import { getEquipCommand } from "./commands/equipCommand";

@@ -1,4 +1,4 @@
-import { PlayerActionType, type PlayerPickUpUnpackAction } from "../../../player/types";
+import { PlayerActionType, type PlayerPickUpUnpackAction } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
 
 export const getPickUpCommand = (

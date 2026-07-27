@@ -1,13 +1,13 @@
 import {
   getPlayerEntity,
   getPlayerPosition,
-} from "../../../../model/queries/player";
-import { getBackpack, getContainerSize } from "../../../../model/queries/containers";
-import type { InvSlot } from "../../../containers/types";
+} from "../../../model/queries/player";
+import { getBackpack, getContainerSize } from "../../../model/queries/containers";
+import type { InvSlot } from "../../../systems/containers/types";
 import {
   PlayerActionType,
   PlayerDropItemActionReason,
-} from "../../../player/types";
+} from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
 import { createSlotActionCommands } from "./slots";
 

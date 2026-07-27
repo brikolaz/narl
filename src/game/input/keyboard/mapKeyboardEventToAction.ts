@@ -1,5 +1,5 @@
-import type { GameAction } from "../../actions/types";
-import { getInternalLogAction } from "../../log/log";
+import type { GameAction } from "../../systems/actions/types";
+import { getInternalLogAction } from "../../systems/log/log";
 import { getLastFallbackMessage, type KeyboardToActionChain } from "./chain";
 import { createKeyboardToAction } from "./create";
 

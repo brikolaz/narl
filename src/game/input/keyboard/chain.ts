@@ -1,4 +1,4 @@
-import type { GameAction } from "../../actions/types";
+import type { GameAction } from "../../systems/actions/types";
 
 export type KeyboardToActionCommand = {
   action?: GameAction;
