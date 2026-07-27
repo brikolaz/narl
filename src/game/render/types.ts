@@ -1,28 +1,14 @@
-import type { Id } from "../../core/ecs/Id";
-import { COLORS } from "../../utils/colors";
-import { STATE } from "../state/state";
-
-
 export type RenderedTileProps = {
-  id?: Id;
-  char?: string;
-  background?: string;
-  color?: string;
+  char: string;
+  background: string;
+  color: string;
   position: number;
 };
 
-// TODO: recreate as game entity?
 export class RenderedTile {
-  static MISSING_GLYPH = "#" as const;
-
-  id: Id;
-  char: string | undefined;
-  background: string | undefined;
-  color: string = COLORS.DEFAULT;
-  position = 0;
+  static DEFAULT_CHAR = '#'
 
   constructor(props: RenderedTileProps) {
     Object.assign(this, props);
-    this.id ??= STATE.getId();
   }
 }

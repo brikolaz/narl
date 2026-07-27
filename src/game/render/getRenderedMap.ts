@@ -29,7 +29,7 @@ const resolveGlyph = (tile: Tile, player: Entity | undefined) => {
     mobGlyph ??
     itemGlyph ??
     floorGlyph ??
-    RenderedTile.MISSING_GLYPH
+    RenderedTile.DEFAULT_CHAR
   );
 };
 
@@ -56,8 +56,7 @@ const getRenderedTilePosition = (tile: Tile) => {
 export const getRenderedMap = () => {
   const renderedMap: RenderedTile[] = getVisibleTiles().map((tile) => {
     const floorAppearance = getComponentByType(tile.floor, AppearanceComponent);
-    const { player: playerEntity, position: playerPosition } =
-      getPlayer();
+    const { player: playerEntity, position: playerPosition } = getPlayer();
     const player = playerPosition === tile.position ? playerEntity : undefined;
 
     return new RenderedTile({
