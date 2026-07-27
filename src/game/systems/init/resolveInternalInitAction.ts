@@ -14,7 +14,7 @@ export const resolveInternalInitAction = (
   const action = new Action(gameAction);
 
   if (STATE.initialized) {
-    return action.resolve();
+    throw new Error("Can't reinitialize the game");
   }
 
   validateSpawnTables();
