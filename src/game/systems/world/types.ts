@@ -10,7 +10,7 @@ export const WorldActionType = {
   CURSE: "CURSE",
   DISABLE: "DISABLE",
 } as const satisfies Enum;
-type WorldActionType = EnumType<typeof WorldActionType>;
+export type WorldActionType = EnumType<typeof WorldActionType>;
 
 export type WorldDropItemAction = {
   type: typeof WorldActionType.DROP_ITEM;
