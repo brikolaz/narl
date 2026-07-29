@@ -1,5 +1,5 @@
-import type { Entity } from "../../core/ecs/Entity";
-import { getComponentByType } from "../../core/ecs/queries/components/get";
+import type { Entity } from "../../core/model/Entity";
+import { getComponentByType } from "../../core/model/queries/components/get";
 import { COLORS } from "../../utils/colors";
 import { AppearanceComponent } from "../model/components/display/AppearanceComponent";
 import { ColorComponent } from "../model/components/display/ColorComponent";

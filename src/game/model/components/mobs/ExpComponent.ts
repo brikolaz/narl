@@ -1,4 +1,4 @@
-import { getComponentCreator } from "../../../../core/ecs/Component";
+import { getComponentCreator } from "../../../../core/model/Component";
 
 export type ExpComponentProps = {
   exp: number;

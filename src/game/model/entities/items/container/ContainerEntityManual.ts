@@ -1,5 +1,5 @@
-import type { Entity } from "../../../../../core/ecs/Entity";
-import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
+import type { Entity } from "../../../../../core/model/Entity";
+import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { RNG } from "../../../../systems/rng/rng";
 import { EquippableComponent } from "../../../components/eq/EquippableComponent";
 import { DmgComponent } from "../../../components/items/DmgComponent";

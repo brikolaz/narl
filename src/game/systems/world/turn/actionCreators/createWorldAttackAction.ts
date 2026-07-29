@@ -1,4 +1,4 @@
-import type { Entity } from "../../../../../core/ecs/Entity";
+import type { Entity } from "../../../../../core/model/Entity";
 import { isAdjacent } from "../../../../../utils/adjacent";
 import { getPlayerPosition } from "../../../../model/queries/player";
 import type { Tile } from "../../../../state/state";

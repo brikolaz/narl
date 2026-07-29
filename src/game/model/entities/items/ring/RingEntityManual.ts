@@ -1,5 +1,5 @@
-import type { Entity } from "../../../../../core/ecs/Entity";
-import { removeComponentsByType } from "../../../../../core/ecs/queries/components/remove";
+import type { Entity } from "../../../../../core/model/Entity";
+import { removeComponentsByType } from "../../../../../core/model/queries/components/remove";
 import { WorldActionType } from "../../../../systems/world/types";
 import { RemovableComponent } from "../../../components/eq/RemovableComponent";
 import { PantsSlotComponent } from "../../../components/eq/slots/PantsSlotComponent";

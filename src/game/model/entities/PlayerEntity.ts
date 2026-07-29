@@ -1,6 +1,6 @@
-import { EntityRole, getEntityCreator } from "../../../core/ecs/Entity";
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
-import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
+import { EntityRole, getEntityCreator } from "../../../core/model/Entity";
+import { upsertComponents } from "../../../core/model/queries/components/add";
+import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { DEFAULT_PLAYER_GLYPH } from "../../../utils/constants";
 import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";

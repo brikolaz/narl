@@ -1,4 +1,4 @@
-import type { EntityType } from "../../../../core/ecs/Entity";
+import type { EntityType } from "../../../../core/model/Entity";
 import type { MobFactory } from "../../Factory";
 import {
   RageBaitEntity,

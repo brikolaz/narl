@@ -1,4 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
+import type { Entity } from "../../../core/model/Entity";
 
 import { InspectDescComponent } from "../../model/components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../model/components/inspect/InspectedComponent";
@@ -14,9 +14,9 @@ import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
 import { isWeapon } from "../../model/queries/weapons";
 import { getEntityName } from "./getEntityName";
-import { getComponentByType, getComponentsByType } from "../../../core/ecs/queries/components/get";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
+import { getComponentByType, getComponentsByType } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
+import { upsertComponents } from "../../../core/model/queries/components/add";
 
 export const getInspectDesc = (entity: Entity) => {
   const inspectedTimes = getInspectedTimes(entity);

@@ -1,4 +1,4 @@
-import type { Entity } from "../../core/ecs/Entity";
+import type { Entity } from "../../core/model/Entity";
 import type { Action } from "../systems/actions/action";
 
 export type Manual<T = Entity> = {

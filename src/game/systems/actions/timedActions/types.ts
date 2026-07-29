@@ -1,4 +1,4 @@
-import type { Id } from "../../../../core/ecs/Id";
+import type { Id } from "../../../../core/model/Id";
 import type { GameAction } from "../types";
 
 export type TimedAction = {

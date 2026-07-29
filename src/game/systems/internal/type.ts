@@ -1,4 +1,4 @@
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
 
 export const InternalActionType = {
   INIT: "INTERNAL_INIT",

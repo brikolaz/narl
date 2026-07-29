@@ -1,5 +1,5 @@
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
-import { getEntityById } from "../../../core/ecs/queries/entities/get";
+import { upsertComponents } from "../../../core/model/queries/components/add";
+import { getEntityById } from "../../../core/model/queries/entities/get";
 import { COLORS } from "../../../utils/colors";
 import { ColorComponent } from "../../model/components/display/ColorComponent";
 import { CursedComponent } from "../../model/components/items/CursedComponent";

@@ -1,4 +1,4 @@
-import type { EntityType } from "../../../core/ecs/Entity";
+import type { EntityType } from "../../../core/model/Entity";
 import type { Factory } from "../Factory";
 import { ITEM_FACTORIES } from "./items/factories";
 import { MOB_FACTORIES } from "./mobs/factories";

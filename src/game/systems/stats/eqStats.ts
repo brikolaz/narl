@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { Entity } from "../../../core/model/Entity";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
 import { getDef } from "../../model/queries/def";
 import {
   getChildrenDmg,

@@ -1,4 +1,4 @@
-import { removeEntity } from "../../../core/ecs/queries/entities/remove";
+import { removeEntity } from "../../../core/model/queries/entities/remove";
 import { INITIAL_TURN } from "../../../utils/constants";
 import { STATE } from "../../state/state";
 import { Action } from "../actions/action";

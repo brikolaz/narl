@@ -1,4 +1,4 @@
-import type { Entity, EntityType } from "../../../core/ecs/Entity";
+import type { Entity, EntityType } from "../../../core/model/Entity";
 import type { Manual } from "../Manual";
 import { EQ_SLOTS_MANUALS } from "./eq/slots/manuals";
 import { ITEM_MANUALS } from "./items/manuals";

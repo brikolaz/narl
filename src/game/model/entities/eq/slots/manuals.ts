@@ -1,4 +1,4 @@
-import type { EntityType } from "../../../../../core/ecs/Entity";
+import type { EntityType } from "../../../../../core/model/Entity";
 import type { Manual } from "../../../Manual";
 import { PantsSlotEntity } from "./pantsSlot/PantsSlotEntity";
 import { PantsSlotEntityManual } from "./pantsSlot/PantsSlotEntityManual";

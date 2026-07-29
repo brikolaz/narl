@@ -1,4 +1,4 @@
-import { getEntityById } from "../../../core/ecs/queries/entities/get";
+import { getEntityById } from "../../../core/model/queries/entities/get";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

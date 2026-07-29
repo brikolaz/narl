@@ -1,9 +1,9 @@
-import { upsertComponents } from "../../../../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../../../../core/model/queries/components/add";
 import {
   hasComponentsByType
-} from "../../../../../../core/ecs/queries/components/has";
-import { removeComponentsByType } from "../../../../../../core/ecs/queries/components/remove";
-import { detachEntity } from "../../../../../../core/ecs/queries/entities/remove";
+} from "../../../../../../core/model/queries/components/has";
+import { removeComponentsByType } from "../../../../../../core/model/queries/components/remove";
+import { detachEntity } from "../../../../../../core/model/queries/entities/remove";
 import { dropItem } from "../../../../../systems/drop/drop";
 import { DisabledComponent } from "../../../../components/DisabledComponent";
 import { RingComponent } from "../../../../components/eq/RingComponent";

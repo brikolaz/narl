@@ -1,4 +1,4 @@
-import { getEntityById } from "../../../core/ecs/queries/entities/get";
+import { getEntityById } from "../../../core/model/queries/entities/get";
 import { getContainerItems } from "../../model/queries/containers";
 import { getMobById } from "../../model/queries/mobs";
 import { getTile } from "../../model/queries/tile";

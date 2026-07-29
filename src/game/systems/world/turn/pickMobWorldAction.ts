@@ -1,4 +1,4 @@
-import type { Entity } from "../../../../core/ecs/Entity";
+import type { Entity } from "../../../../core/model/Entity";
 import type { Tile } from "../../../state/state";
 import type { WorldAction } from "../types";
 import { createWorldAttackAction } from "./actionCreators/createWorldAttackAction";

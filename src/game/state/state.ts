@@ -1,6 +1,6 @@
-import { getEntityCreator, type Entity } from "../../core/ecs/Entity";
-import { type ComponentRegistryById } from "../../core/ecs/registry/componentRegistry";
-import { type EntityRegistryById } from "../../core/ecs/registry/entityRegistry";
+import { getEntityCreator, type Entity } from "../../core/model/Entity";
+import { type ComponentRegistryById } from "../../core/model/registry/componentRegistry";
+import { type EntityRegistryById } from "../../core/model/registry/entityRegistry";
 import type { TimedAction } from "../systems/actions/timedActions/types";
 import type { ActionLog, LogEntry } from "../systems/log/types";
 

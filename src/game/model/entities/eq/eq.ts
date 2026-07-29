@@ -1,4 +1,4 @@
-import type { ComponentType } from "../../../../core/ecs/Component";
+import type { ComponentType } from "../../../../core/model/Component";
 import { ArmorSlotComponent } from "../../components/eq/slots/ArmorSlotComponent";
 import { BootsSlotComponent } from "../../components/eq/slots/BootsSlotComponent";
 import { HeadSlotComponent } from "../../components/eq/slots/HeadSlotComponent";

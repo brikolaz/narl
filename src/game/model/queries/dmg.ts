@@ -1,6 +1,6 @@
-import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
-import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
+import { EntityRole, type Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
+import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { DmgComponent } from "../components/items/DmgComponent";
 import { DmgModComponent } from "../components/items/DmgModComponent";
 import { isContainer } from "./containers";

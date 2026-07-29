@@ -1,4 +1,4 @@
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
 import { MAX_WORLD_SIZE } from "../../../utils/constants";
 
 export const Zone = {

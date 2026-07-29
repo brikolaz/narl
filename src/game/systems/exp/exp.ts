@@ -1,6 +1,6 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
-import { patchComponentByType } from "../../../core/ecs/queries/components/patch";
+import type { Entity } from "../../../core/model/Entity";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
+import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { ExpComponent } from "../../model/components/mobs/ExpComponent";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { EXP } from "./expTable";

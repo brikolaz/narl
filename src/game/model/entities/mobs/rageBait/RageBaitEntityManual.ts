@@ -1,5 +1,5 @@
-import type { Entity } from "../../../../../core/ecs/Entity";
-import { replaceComponentsByType } from "../../../../../core/ecs/queries/components/patch";
+import type { Entity } from "../../../../../core/model/Entity";
+import { replaceComponentsByType } from "../../../../../core/model/queries/components/patch";
 import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";

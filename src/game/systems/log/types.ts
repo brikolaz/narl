@@ -1,4 +1,4 @@
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
 import type { GameAction } from "../actions/types";
 import type { PlayerAction } from "../player/types";
 

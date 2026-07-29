@@ -1,4 +1,4 @@
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
+import { upsertComponents } from "../../../core/model/queries/components/add";
 import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
 import { VisitedComponent } from "../../model/components/VisitedComponent";

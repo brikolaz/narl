@@ -1,4 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
+import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";

@@ -1,13 +1,13 @@
-import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import { upsertComponents } from "../../../core/ecs/queries/components/add";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
-import { removeComponentsByType } from "../../../core/ecs/queries/components/remove";
-import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
-import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
+import { EntityRole, type Entity } from "../../../core/model/Entity";
+import { upsertComponents } from "../../../core/model/queries/components/add";
+import { getComponentByType } from "../../../core/model/queries/components/get";
+import { removeComponentsByType } from "../../../core/model/queries/components/remove";
+import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
+import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import {
   detachEntity,
   removeEntity,
-} from "../../../core/ecs/queries/entities/remove";
+} from "../../../core/model/queries/entities/remove";
 import { SizeComponent } from "../../model/components/containers/SizeComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import {

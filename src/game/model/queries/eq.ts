@@ -1,11 +1,11 @@
-import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import { EntityRole, type Entity } from "../../../core/model/Entity";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import {
   resolveComponentType,
   type ComponentTypeArgument,
-} from "../../../core/ecs/queries/components/normalize";
-import { upsertRoleEntities } from "../../../core/ecs/queries/entities/add";
-import { getEntitiesByRole } from "../../../core/ecs/queries/entities/get";
+} from "../../../core/model/queries/components/normalize";
+import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
+import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { MainHandSlotComponent } from "../components/eq/slots/MainHandSlotComponent";
 import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
 import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";

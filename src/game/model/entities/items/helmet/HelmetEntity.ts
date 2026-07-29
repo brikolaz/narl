@@ -1,6 +1,6 @@
-import { getEntityCreator, type Entity } from "../../../../../core/ecs/Entity";
-import type { Enum, EnumType } from "../../../../../core/ecs/Enum";
-import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
+import { getEntityCreator, type Entity } from "../../../../../core/model/Entity";
+import type { Enum, EnumType } from "../../../../../utils/types/Enum";
+import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { RNG } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";

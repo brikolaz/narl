@@ -1,4 +1,4 @@
-import type { Id } from "../core/ecs/Id";
+import type { Id } from "../core/model/Id";
 
 export const removeById = <T extends { id: Id }>(arr: T[], id: Id) => {
   const index = arr.findIndex((el) => el.id === id);

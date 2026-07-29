@@ -1,7 +1,7 @@
-import type { Component } from "../../../core/ecs/Component";
-import { type Entity } from "../../../core/ecs/Entity";
-import { getComponentsByTypes } from "../../../core/ecs/queries/components/get";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import type { Component } from "../../../core/model/Component";
+import { type Entity } from "../../../core/model/Entity";
+import { getComponentsByTypes } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { AmuletComponent } from "../components/eq/AmuletComponent";
 import { ArmorComponent } from "../components/eq/ArmorComponent";
 import { BootsComponent } from "../components/eq/BootsComponent";

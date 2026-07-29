@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../../core/ecs/Component";
+import { getComponentCreator } from "../../../../../core/model/Component";
 
 export const BootsSlotComponent = getComponentCreator("BOOTS_SLOT");

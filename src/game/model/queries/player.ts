@@ -1,4 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
+import type { Entity } from "../../../core/model/Entity";
 import { STATE, type PlayerState } from "../../state/state";
 
 export const getPlayer = (): PlayerState => {

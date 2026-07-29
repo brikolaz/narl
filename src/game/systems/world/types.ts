@@ -1,5 +1,5 @@
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
-import type { Id } from "../../../core/ecs/Id";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
+import type { Id } from "../../../core/model/Id";
 
 export const WorldActionType = {
   DROP_ITEM: "DROP_ITEM",

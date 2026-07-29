@@ -1,10 +1,10 @@
-import { EntityRole, type Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import { EntityRole, type Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import {
   getEntitiesByRole,
   getEntityByRole,
-} from "../../../core/ecs/queries/entities/get";
+} from "../../../core/model/queries/entities/get";
 import {
   ALL_CONTAINER_SLOTS,
   type ContainerSlot,

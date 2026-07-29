@@ -1,4 +1,4 @@
-import type { Component } from "../../../core/ecs/Component";
+import type { Component } from "../../../core/model/Component";
 import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,

@@ -1,6 +1,6 @@
 import type { InvSlot } from "../containers/types";
 import type { Direction } from "../turn/types";
-import type { Enum, EnumType } from "../../../core/ecs/Enum";
+import type { Enum, EnumType } from "../../../utils/types/Enum";
 import type { EqSlot } from "../eq/eq";
 
 export const PlayerActionType = {

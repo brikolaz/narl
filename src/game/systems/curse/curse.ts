@@ -1,4 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
+import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
 import { isCursed } from "../../model/queries/curse";
 import type { Action } from "../actions/action";

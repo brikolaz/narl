@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import type { Entity } from "../../../core/model/Entity";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import type { Tile } from "../../state/state";
 import { PickupableComponent } from "../components/items/PickupableComponent";
 

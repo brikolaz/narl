@@ -3,7 +3,7 @@ import {
   ECS_NAMESPACE,
   NAMESPACE_SEPARATOR,
 } from "../../utils/constants";
-import type { Enum, EnumType } from "./Enum";
+import type { Enum, EnumType } from "../../utils/types/Enum";
 
 export const Namespace = {
   COMPONENT: "COMPONENT",

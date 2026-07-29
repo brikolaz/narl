@@ -2,9 +2,9 @@ import {
   EntityRole,
   getEntityCreator,
   type Entity,
-} from "../../../../../core/ecs/Entity";
-import { upsertComponents } from "../../../../../core/ecs/queries/components/add";
-import { upsertRoleEntities } from "../../../../../core/ecs/queries/entities/add";
+} from "../../../../../core/model/Entity";
+import { upsertComponents } from "../../../../../core/model/queries/components/add";
+import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
 import {
   addItemToContainer,
   setContainerItemAt,

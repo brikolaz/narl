@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import type { Id } from "../../../core/ecs/Id";
+import type { Entity } from "../../../core/model/Entity";
+import type { Id } from "../../../core/model/Id";
 import { removeById } from "../../../utils/removeById";
 import type { Tile } from "../../state/state";
 

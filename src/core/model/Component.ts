@@ -1,14 +1,13 @@
 import { STATE } from "../../game/state/state";
-import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
+import type { Unique } from "./Unique";
 
 export type ComponentType = symbol;
 
 export type Component<Props extends object | undefined = object> = {
-  id: Id;
   type: ComponentType;
   defaults: Props;
-} & Props;
+} & Unique & Props;
 
 export type ComponentCreator<Props extends object | undefined = undefined> =
   Props extends object

@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
+import type { Entity } from "../../../core/model/Entity";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { HostileComponent } from "../../model/components/mobs/HostileComponent";
 import { PeacefulComponent } from "../../model/components/mobs/PeacefulComponent";
 

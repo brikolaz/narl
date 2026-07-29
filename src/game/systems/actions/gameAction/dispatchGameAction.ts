@@ -1,4 +1,4 @@
-import type { Id } from "../../../../core/ecs/Id";
+import type { Id } from "../../../../core/model/Id";
 import { STATE, type GameState } from "../../../state/state";
 import { flushLogs, recordPlayerAction } from "../../log/log";
 import type { PendingLog } from "../../log/types";

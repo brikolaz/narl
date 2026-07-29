@@ -1,5 +1,5 @@
-import { getEntityCreator } from "../../../../core/ecs/Entity";
-import { upsertComponents } from "../../../../core/ecs/queries/components/add";
+import { getEntityCreator } from "../../../../core/model/Entity";
+import { upsertComponents } from "../../../../core/model/queries/components/add";
 import { RNG } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";

@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import type { Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
 import { PositionComponent } from "../components/PositionComponent";
 
 export const getPosition = (entity: Entity) => {

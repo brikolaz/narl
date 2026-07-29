@@ -1,5 +1,5 @@
-import { getEntityCreator } from "../../../../../../core/ecs/Entity";
-import { upsertComponents } from "../../../../../../core/ecs/queries/components/add";
+import { getEntityCreator } from "../../../../../../core/model/Entity";
+import { upsertComponents } from "../../../../../../core/model/queries/components/add";
 import { ContainerComponent } from "../../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../../components/display/NameComponent";

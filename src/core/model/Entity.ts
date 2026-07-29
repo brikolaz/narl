@@ -3,6 +3,7 @@ import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
 import { upsertRegistryEntities } from "./registry/entityRegistry";
+import type { Unique } from "./Unique";
 
 export const EntityRole = {
   DEFAULT: "DEFAULT",
@@ -17,13 +18,12 @@ export type EntityRole = (typeof EntityRole)[keyof typeof EntityRole];
 export type EntityType = symbol;
 
 export type Entity = {
-  id: Id;
   type: EntityType;
   componentById: Map<Id, Component>;
   componentByType: Map<ComponentType, Map<Id, Component>>;
   entityById: Map<Id, Entity>;
   entityByRole: Map<EntityRole, Set<Entity>>;
-};
+} & Unique;
 
 export type EntityCreator = { (): Entity; type: EntityType };
 

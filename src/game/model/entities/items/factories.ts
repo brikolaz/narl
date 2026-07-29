@@ -1,4 +1,4 @@
-import type { EntityType } from "../../../../core/ecs/Entity";
+import type { EntityType } from "../../../../core/model/Entity";
 import type { ItemFactory } from "../../Factory";
 import {
   ContainerEntity,

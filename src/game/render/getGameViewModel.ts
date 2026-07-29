@@ -1,4 +1,4 @@
-import { getComponentByType } from "../../core/ecs/queries/components/get";
+import { getComponentByType } from "../../core/model/queries/components/get";
 import { ColorComponent } from "../model/components/display/ColorComponent";
 import { GlyphComponent } from "../model/components/display/GlyphComponent";
 import { getBackpack, getContainerItemAt } from "../model/queries/containers";

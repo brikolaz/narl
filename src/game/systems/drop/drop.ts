@@ -1,7 +1,7 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { hasComponentsByType } from "../../../core/ecs/queries/components/has";
-import { removeComponentsByType } from "../../../core/ecs/queries/components/remove";
-import { detachEntity } from "../../../core/ecs/queries/entities/remove";
+import type { Entity } from "../../../core/model/Entity";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
+import { removeComponentsByType } from "../../../core/model/queries/components/remove";
+import { detachEntity } from "../../../core/model/queries/entities/remove";
 import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { getTile } from "../../model/queries/tile";

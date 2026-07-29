@@ -1,4 +1,4 @@
-import type { Entity } from "../../../core/ecs/Entity";
+import type { Entity } from "../../../core/model/Entity";
 import type { Action } from "../actions/action";
 import { WorldActionType } from "../world/types";
 

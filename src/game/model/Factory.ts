@@ -1,5 +1,5 @@
-import type { Entity } from "../../core/ecs/Entity";
-import type { Enum } from "../../core/ecs/Enum";
+import type { Entity } from "../../core/model/Entity";
+import type { Enum } from "../../utils/types/Enum";
 
 export type Factory<V extends Enum = Enum> = {
   getDefault(): Entity;

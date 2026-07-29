@@ -1,5 +1,5 @@
-import type { Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import type { Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
 import { CURSED_PREFIX } from "../../../utils/constants";
 import { NameComponent } from "../../model/components/display/NameComponent";
 import { isCursed } from "../../model/queries/curse";

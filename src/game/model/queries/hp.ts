@@ -1,6 +1,6 @@
-import type { Component } from "../../../core/ecs/Component";
-import type { Entity } from "../../../core/ecs/Entity";
-import { getComponentByType } from "../../../core/ecs/queries/components/get";
+import type { Component } from "../../../core/model/Component";
+import type { Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
 import {
   HpComponent,
   type HpComponentProps,
