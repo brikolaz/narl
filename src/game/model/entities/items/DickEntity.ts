@@ -1,6 +1,6 @@
 import { getEntityCreator } from "../../../../core/model/Entity";
 import { upsertComponents } from "../../../../core/model/queries/components/add";
-import { RNG } from "../../../systems/rng/rng";
+import { getRng } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";
 import { MainHandComponent } from "../../components/eq/MainHandComponent";
@@ -19,7 +19,7 @@ export const DickEntityFactory: ItemFactory = {
       dick,
       GlyphComponent({ glyph: "=" }),
       NameComponent({ name: "Dick" }),
-      DmgComponent({dmg: RNG.items.range(1,3)}),
+      DmgComponent({ dmg: getRng(dick).range(1, 3) }),
       RemovableComponent(),
       MainHandComponent(),
       PickupableComponent(),

@@ -1,7 +1,7 @@
 import { getEntityCreator, type Entity } from "../../../../../core/model/Entity";
-import type { Enum, EnumType } from "../../../../../utils/types/Enum";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import { RNG } from "../../../../systems/rng/rng";
+import type { Enum, EnumType } from "../../../../../utils/types/Enum";
+import { getRng } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { HeadComponent } from "../../../components/eq/HeadComponent";
@@ -37,7 +37,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       }),
       RemovableComponent(),
       HeadComponent(),
-      DefComponent({ def: RNG.items.range(3, 4) }),
+      DefComponent({ def: getRng(helmet).range(3, 4) }),
       PickupableComponent(),
       DroppableComponent(),
     );
@@ -56,7 +56,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       }),
       RemovableComponent(),
       HeadComponent(),
-      DefComponent({ def: RNG.items.range(3, 4) }),
+      DefComponent({ def: getRng(helmet).range(3, 4) }),
       PickupableComponent(),
       DroppableComponent(),
       InspectDescComponent({ times: 5, text: "It has horns" }),

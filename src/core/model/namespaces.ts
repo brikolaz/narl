@@ -11,11 +11,10 @@ export const Namespace = {
 } as const as Enum;
 type Namespace = EnumType<typeof Namespace>;
 
-export const getEcsNamespace = (namespace: Namespace, type: string) => {
+export const getEcsNamespace = (...segments: (string | number)[]) => {
   return [
     BASE_NAMESPACE,
     ECS_NAMESPACE,
-    namespace.toString().toLowerCase(),
-    type.toLowerCase(),
+    ...segments.map((segment) => segment.toString().toLowerCase()),
   ].join(NAMESPACE_SEPARATOR);
 };

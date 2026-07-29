@@ -3,14 +3,14 @@ import { replaceComponentsByType } from "../../../../../core/model/queries/compo
 import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";
-import { RNG } from "../../../../systems/rng/rng";
+import { getRng } from "../../../../systems/rng/rng";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import type { Manual } from "../../../Manual";
 
 export const RageBaitEntityManual: Manual = {
   onAfterTakeDamage(gameAction: Action, rageBait: Entity) {
-    if (isHostile(rageBait) || !RNG.mobs.chance(50)) {
+    if (isHostile(rageBait) || !getRng(rageBait).chance(50)) {
       return;
     }
     replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
@@ -28,7 +28,7 @@ export const RageBaitEntityManual: Manual = {
 
     gameAction.success(`You poked ${name}. It looks cute`);
 
-    if (!RNG.mobs.chance(20)) {
+    if (!getRng(rageBait).chance(20)) {
       return;
     }
     replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());

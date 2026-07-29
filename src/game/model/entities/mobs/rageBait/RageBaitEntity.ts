@@ -9,7 +9,7 @@ import {
   addItemToContainer,
   setContainerItemAt,
 } from "../../../../systems/containers/containers";
-import { RNG } from "../../../../systems/rng/rng";
+import { getRng } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -32,13 +32,13 @@ export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
 
-  if (RNG.items.chance(100)) {
+  if (getRng(entity).chance(100)) {
     ContainerEntityFactory.setDroppable?.(backpack);
   }
-  if (RNG.items.chance(20)) {
+  if (getRng(entity).chance(20)) {
     addItemToContainer(backpack, SwordEntityFactory.getDefault());
   }
-  if (RNG.items.chance(100)) {
+  if (getRng(entity).chance(100)) {
     addItemToContainer(
       backpack,
       HelmetEntityFactory.getVariant?.(HelmetEntityVariants.DEFAULT),
@@ -69,7 +69,7 @@ export const RageBaitEntityFactory: MobFactory = {
       }),
       NameComponent({ name: "Rage Bait" }),
       ColorComponent(),
-      RNG.mobs.chance(1) ? HostileComponent() : PeacefulComponent(),
+      getRng(rageBait).chance(1) ? HostileComponent() : PeacefulComponent(),
     );
     addLoot(rageBait);
     addEq(rageBait);

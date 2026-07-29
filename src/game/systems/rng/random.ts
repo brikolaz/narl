@@ -13,6 +13,7 @@ export const getRandomContextNamespace = (namespaces: string[]): string => {
 export class Random {
   private static readonly RANDOM_TOTAL_CHANCE = 100 as const;
   private readonly context: RandomContext;
+  private rolls = 0;
   rng: () => number;
 
   constructor(context: RandomContext) {
@@ -23,6 +24,7 @@ export class Random {
   }
 
   random(): number {
+    this.rolls++;
     return this.rng();
   }
 

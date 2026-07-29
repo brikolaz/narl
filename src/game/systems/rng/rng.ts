@@ -1,3 +1,4 @@
+import type { Entity } from "../../../core/model/Entity";
 import {
   DEFAULT_SEED,
   ITEMS_RNG_NAMESPACE,
@@ -6,8 +7,10 @@ import {
 import { Random } from "./random";
 
 type RNGTypes = "mobs" | "items";
-export type RNGMap = Record<RNGTypes, Random>;
+export type RNG = Random;
+export type RNGMap = Record<RNGTypes, RNG>;
 
+// World RNG / defaults
 export const RNG: RNGMap = {
   mobs: new Random({
     seed: DEFAULT_SEED,
@@ -17,4 +20,8 @@ export const RNG: RNGMap = {
     seed: DEFAULT_SEED,
     namespace: ITEMS_RNG_NAMESPACE,
   }),
+};
+
+export const getRng = (entity: Entity) => {
+  return entity.rng;
 };

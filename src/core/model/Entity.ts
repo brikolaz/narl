@@ -1,4 +1,7 @@
 import { STATE } from "../../game/state/state";
+import { Random } from "../../game/systems/rng/random";
+import type { RNG } from "../../game/systems/rng/rng";
+import { DEFAULT_SEED } from "../../utils/constants";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
@@ -7,7 +10,6 @@ import type { Unique } from "./Unique";
 
 export const EntityRole = {
   DEFAULT: "DEFAULT",
-  CONTAINER: "CONTAINER",
   BACKPACK: "BACKPACK",
   EQ: "EQ",
   ITEM: "ITEM",
@@ -19,6 +21,7 @@ export type EntityType = symbol;
 
 export type Entity = {
   type: EntityType;
+  rng: RNG;
   componentById: Map<Id, Component>;
   componentByType: Map<ComponentType, Map<Id, Component>>;
   entityById: Map<Id, Entity>;
@@ -28,18 +31,20 @@ export type Entity = {
 export type EntityCreator = { (): Entity; type: EntityType };
 
 export const getEntityCreator = (type: string): EntityCreator => {
-  const entityType: ComponentType = Symbol(
-    getEcsNamespace(Namespace.ENTITY, type),
-  );
+  const id = STATE.getId();
+  const typeNamespace = getEcsNamespace(Namespace.ENTITY, type);
+  const entityNamespace = getEcsNamespace(Namespace.ENTITY, type, id);
+  const entityType: ComponentType = Symbol(typeNamespace);
 
   const creator: EntityCreator = () => {
     const entity = {
       id: STATE.getId(),
+      type: entityType,
+      rng: new Random({ namespace: entityNamespace, seed: DEFAULT_SEED }),
       componentById: new Map<Id, Component>(),
       componentByType: new Map<ComponentType, Map<Id, Component>>(),
       entityById: new Map<Id, Entity>(),
       entityByRole: new Map<EntityRole, Set<Entity>>(),
-      type: entityType,
     };
     upsertRegistryEntities(entity);
     return entity;

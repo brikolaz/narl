@@ -1,8 +1,8 @@
 import { getEntityCreator, type Entity } from "../../../../../core/model/Entity";
-import type { Enum, EnumType } from "../../../../../utils/types/Enum";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
-import { RNG } from "../../../../systems/rng/rng";
+import type { Enum, EnumType } from "../../../../../utils/types/Enum";
+import { getRng } from "../../../../systems/rng/rng";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../../../components/containers/NestDepthComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
@@ -37,7 +37,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       NameComponent({ name: "Container" }),
       GlyphComponent({ glyph: "C" }),
       ContainerComponent(),
-      SizeComponent({ size: RNG.items.range(2, 4) }),
+      SizeComponent({ size: getRng(container).range(2, 4) }),
     );
     return container;
   },
@@ -50,8 +50,8 @@ export const ContainerEntityFactory: ContainerFactory = {
       NameComponent({ name: "Backpack" }),
       GlyphComponent({ glyph: "*" }),
       ContainerComponent(),
-      SizeComponent({ size: RNG.items.range(2, 4) }),
-      NestDepthComponent({ nestDepth: RNG.items.range(1, 2) }),
+      SizeComponent({ size: getRng(backpack).range(2, 4) }),
+      NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
     );
     return backpack;
   },
