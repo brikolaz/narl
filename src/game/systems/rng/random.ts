@@ -12,9 +12,11 @@ export const getRandomContextNamespace = (namespaces: string[]): string => {
 
 export class Random {
   private static readonly RANDOM_TOTAL_CHANCE = 100 as const;
+  private readonly context: RandomContext;
   rng: () => number;
 
-  constructor(private readonly context: RandomContext) {
+  constructor(context: RandomContext) {
+    this.context = context;
     this.rng = seedrandom(
       getRandomContextNamespace([this.context.seed, this.context.namespace]),
     );
