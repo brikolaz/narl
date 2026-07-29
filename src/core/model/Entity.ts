@@ -31,14 +31,15 @@ export type Entity = {
 export type EntityCreator = { (): Entity; type: EntityType };
 
 export const getEntityCreator = (type: string): EntityCreator => {
-  const id = STATE.getId();
   const typeNamespace = getEcsNamespace(Namespace.ENTITY, type);
-  const entityNamespace = getEcsNamespace(Namespace.ENTITY, type, id);
   const entityType: ComponentType = Symbol(typeNamespace);
-
+  
   const creator: EntityCreator = () => {
+    const id = STATE.getId();
+    const entityNamespace = getEcsNamespace(Namespace.ENTITY, type, id);
+
     const entity = {
-      id: STATE.getId(),
+      id,
       type: entityType,
       rng: new Random({ namespace: entityNamespace, seed: DEFAULT_SEED }),
       componentById: new Map<Id, Component>(),
