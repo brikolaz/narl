@@ -5,8 +5,13 @@ export type RenderedTileProps = {
   position: number;
 };
 
-export class RenderedTile {
-  static DEFAULT_CHAR = '#'
+export class RenderedTile implements RenderedTileProps {
+  static DEFAULT_CHAR = "#";
+
+  char = "";
+  background = "";
+  color = "";
+  position = 0;
 
   constructor(props: RenderedTileProps) {
     Object.assign(this, props);

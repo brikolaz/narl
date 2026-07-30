@@ -1,3 +1,4 @@
+import { resetHighlightedEqSlot } from "../../render/state/highlights";
 import type { GameAction } from "../../systems/actions/types";
 import { getInternalLogAction } from "../../systems/log/log";
 import { getLastFallbackMessage, type KeyboardToActionChain } from "./chain";
@@ -12,7 +13,9 @@ export const mapKeyboardEventToAction = (
   event: KeyboardEvent,
   keyboardChain: KeyboardToActionChain,
 ): KeyboardEventResult => {
-  if (event.key === "Escape" && keyboardChain) {
+  if (event.code === "Escape" && keyboardChain) {
+    resetHighlightedEqSlot(); // TODO: move to a better place
+
     return {
       action: getInternalLogAction("Action canceled"),
       keyboardChain: undefined,
@@ -21,7 +24,7 @@ export const mapKeyboardEventToAction = (
 
   const root = createKeyboardToAction();
   const currentCommands = keyboardChain?.current ?? root;
-  const command = currentCommands[event.key];
+  const command = currentCommands[event.code];
 
   if (!command) {
     const fallback = getLastFallbackMessage(keyboardChain);
@@ -37,7 +40,13 @@ export const mapKeyboardEventToAction = (
   }
 
   if (command.action) {
-    return { action: command.action, keyboardChain: undefined };
+    if (typeof command.action === "object") {
+      return { action: command.action, keyboardChain: undefined };
+    }
+    const result = command.action();
+    if (result) {
+      return { action: result, keyboardChain: undefined };
+    }
   }
 
   if (command.next) {

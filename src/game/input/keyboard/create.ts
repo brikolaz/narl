@@ -13,24 +13,19 @@ export const createKeyboardToAction = (): KeyboardToAction => ({
   ArrowLeft: getMoveCommand(Direction.LEFT),
   ArrowRight: getMoveCommand(Direction.RIGHT),
 
-  g: getPickUpCommand(),
-  G: getPickUpCommand(),
+  KeyG: getPickUpCommand(),
+  
 
-  i: getInspectCommand(),
-  I: getInspectCommand(),
+  KeyI: getInspectCommand(),
+  
+  KeyE: getEquipCommand(),
 
-  e: getEquipCommand(),
-  E: getEquipCommand(),
+  
+  KeyU: getUnequipCommand(),
 
-  u: getUnequipCommand(),
-  U: getUnequipCommand(),
+  KeyM: getMoveItemCommand(),
 
-  m: getMoveItemCommand(),
-  M: getMoveItemCommand(),
+  KeyD: getDropCommand(),
 
-  d: getDropCommand(),
-  D: getDropCommand(),
-
-  p: getPokeCommand(),
-  P: getPokeCommand()
+  KeyP: getPokeCommand()
 });

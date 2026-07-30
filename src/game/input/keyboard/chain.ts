@@ -1,7 +1,7 @@
 import type { GameAction } from "../../systems/actions/types";
 
 export type KeyboardToActionCommand = {
-  action?: GameAction;
+  action?: GameAction | (() => GameAction | void);
   next?: () => KeyboardToAction;
   fallback?: string;
   message?: string;
@@ -16,10 +16,9 @@ export type KeyboardToActionChain =
     }
   | undefined;
 
-
 export const getLastFallbackMessage = (
   keyboardChain: KeyboardToActionChain,
 ): string | undefined => {
-  const last = keyboardChain?.history?.at(-1)?.fallback
+  const last = keyboardChain?.history?.at(-1)?.fallback;
   return last;
 };

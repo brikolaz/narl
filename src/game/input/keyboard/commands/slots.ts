@@ -1,6 +1,6 @@
 import type { GameAction } from "../../../systems/actions/types";
-import type { EqSlot } from "../../../eq/types";
 import type { InvSlot } from "../../../systems/containers/types";
+import type { EqSlot } from "../../../systems/eq/eq";
 import type { KeyboardToAction } from "../chain";
 
 export const keyToInvSlot = (key: string): InvSlot => {
@@ -9,6 +9,10 @@ export const keyToInvSlot = (key: string): InvSlot => {
 
 export const keyToEqSlot = (key: string): EqSlot => {
   return Number(key) as EqSlot;
+};
+
+export const eqSlotToKey = (slot: EqSlot) => {
+  return `Digit${slot}`;
 };
 
 export const createSlotActionCommands = <T extends number>(
@@ -20,7 +24,7 @@ export const createSlotActionCommands = <T extends number>(
   const commands: KeyboardToAction = {};
 
   for (let slot = 1; slot <= (size ?? 0); slot++) {
-    commands[String(slot)] = {
+    commands[eqSlotToKey(slot)] = {
       action: createAction(slot as T),
       message,
       fallback,
@@ -39,7 +43,7 @@ export const createSlotNextCommands = <T extends number>(
   const commands: KeyboardToAction = {};
 
   for (let slot = 1; slot <= (size ?? 0); slot++) {
-    commands[String(slot)] = {
+    commands[eqSlotToKey(slot)] = {
       next: () => nextCommand(slot as T),
       message,
       fallback,

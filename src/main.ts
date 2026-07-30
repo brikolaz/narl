@@ -37,6 +37,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
   keyboardChain = result.keyboardChain;
 
   if (!result.action) {
+    render(getGameViewModel());
     return;
   }
 
