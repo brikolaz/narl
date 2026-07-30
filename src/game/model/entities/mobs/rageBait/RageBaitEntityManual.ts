@@ -22,11 +22,11 @@ export const RageBaitEntityManual: Manual = {
     const name = getEntityName(rageBait);
 
     if (isHostile(rageBait)) {
-      gameAction.success(`You poked ${name}`);
+      gameAction.success(`Poked ${name}`);
       return;
     }
 
-    gameAction.success(`You poked ${name}. It looks cute`);
+    gameAction.success(`Poked ${name}. It looks cute`);
 
     if (!getRng(rageBait).chance(20)) {
       return;

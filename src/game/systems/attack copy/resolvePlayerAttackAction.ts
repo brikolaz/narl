@@ -9,7 +9,7 @@ import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
-import { PlayerActionType, type PlayerPokeAction } from "../player/types";
+import type { PlayerPokeAction } from "../player/types";
 import { WorldActionType } from "../world/types";
 
 type AttackContext =
@@ -81,12 +81,13 @@ export const resolvePlayerAttackAction = (
     }
     const weapon = "weapon" in ctx ? ctx.weapon : undefined;
     const dmg = "dmg" in ctx ? ctx.dmg : undefined;
-
+    // TODO: add Poke resolver, add keybinding
     if (!weapon || !dmg) {
-      return action.addPendingAction({
-        type: PlayerActionType.POKE,
-        targetPosition: ctx.targetPosition,
-      });
+      if (getManual(mob)?.poke) {
+        getManual(mob)?.poke?.(action, mob);
+        return;
+      }
+      return action.success(`Poked ${mobName}`);
     }
     const mobHp = getHp(mob);
     const nextHp = mobHp?.hp - dmg;
@@ -97,11 +98,10 @@ export const resolvePlayerAttackAction = (
         entityId: mob.id,
         position: ctx.targetPosition,
       });
-    } else {
-      getManual(mob)?.onAfterTakeDamage?.(action, mob);
     }
     mobHp.hp = nextHp;
     action.success(`Dealt ${dmg} dmg to ${mobName}`);
+    getManual(mob)?.onAfterTakeDamage?.(action, mob);
   })();
 
   return action.resolve();

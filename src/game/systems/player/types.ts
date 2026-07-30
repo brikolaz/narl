@@ -14,13 +14,17 @@ export const PlayerActionType = {
   DROP_ITEM: "PLAYER_DROP_ITEM",
   INSPECT_INV: "PLAYER_INSPECT_INV",
   INSPECT_EQ: "PLAYER_INSPECT_EQ",
+  POKE: "PLAYER_POKE",
 } as const satisfies Enum;
 export type PlayerActionType = EnumType<typeof PlayerActionType>;
 
-export enum PlayerDropItemActionReason {
-  MANUAL = "MANUAL",
-  BACKPACK_FULL = "BACKPACK_FULL",
-}
+export const PlayerDropItemActionReason = {
+  MANUAL: "MANUAL",
+  BACKPACK_FULL: "BACKPACK_FULL",
+} as const satisfies Enum;
+export type PlayerDropItemActionReason = EnumType<
+  typeof PlayerDropItemActionReason
+>;
 
 export type PlayerDropItemAction = {
   type: typeof PlayerActionType.DROP_ITEM;
@@ -50,13 +54,17 @@ export type PlayerAttackAction = {
   type: typeof PlayerActionType.ATTACK;
   targetPosition: number;
 };
+export type PlayerPokeAction = {
+  type: typeof PlayerActionType.POKE;
+  targetPosition: number;
+};
 export type PlayerInspectInvAction = {
   type: typeof PlayerActionType.INSPECT_INV;
   invSlot: InvSlot;
 };
 export type PlayerInspectEqAction = {
   type: typeof PlayerActionType.INSPECT_EQ;
-  eqSlot: EqSlot
+  eqSlot: EqSlot;
 };
 export type PlayerMoveItemAction = {
   type: typeof PlayerActionType.MOVE_ITEM;
@@ -74,4 +82,5 @@ export type PlayerAction =
   | PlayerAttackAction
   | PlayerMoveItemAction
   | PlayerInspectInvAction
-  | PlayerInspectEqAction;
+  | PlayerInspectEqAction
+  | PlayerPokeAction;

@@ -9,6 +9,7 @@ import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
 import { resolveMoveAction } from "../movement/resolveMoveAction";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
+import { resolvePokeAction } from "../poke/resolvePokeAction";
 
 import { PlayerActionType } from "./types";
 
@@ -25,4 +26,5 @@ export const playerActionResolvers = {
   [PlayerActionType.DROP_ITEM]: resolvePlayerDropItemAction,
   [PlayerActionType.INSPECT_INV]: resolveInspectInvAction,
   [PlayerActionType.INSPECT_EQ]: resolveInspectEqAction,
+  [PlayerActionType.POKE]: resolvePokeAction,
 } satisfies Record<PlayerActionType, AnyPlayerResolver>;

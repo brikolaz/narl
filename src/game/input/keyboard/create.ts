@@ -6,6 +6,7 @@ import { getInspectCommand } from "./commands/inspectCommand";
 import { getMoveCommand } from "./commands/moveCommand";
 import { getMoveItemCommand } from "./commands/moveItemCommand";
 import { getPickUpCommand } from "./commands/pickupCommand";
+import { getPokeCommand } from "./commands/pokeCommand";
 import { getUnequipCommand } from "./commands/unequipCommand";
 
 export const createKeyboardToAction = (): KeyboardToAction => ({
@@ -29,4 +30,7 @@ export const createKeyboardToAction = (): KeyboardToAction => ({
 
   d: getDropCommand(),
   D: getDropCommand(),
+
+  p: getPokeCommand(),
+  P: getPokeCommand()
 });
