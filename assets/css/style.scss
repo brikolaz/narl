@@ -1,0 +1,27 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+h1.logo {
+  border-bottom: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  .content {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  border-bottom: 1px solid #eaecef;
+  margin-bottom: 32px;
+}
+
+.github {
+  height: 22px;
+  width: 22px;
+}
