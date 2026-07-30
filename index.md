@@ -3,8 +3,6 @@ layout: default
 title: NARL
 ---
 
-# NARL
-
 <p align="center">
     <img src="assets/images/gameplay.png" />
 </p>
@@ -12,8 +10,6 @@ title: NARL
 Emergent fuckery simulator disguised as a 1D roguelike.
 
 LLM-driven design. Human-in-the-loop bonanza.
-
-[REPO](https://github.com/brikolaz/narl)
 
 ## Posts
 

@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.html": "liquid"
+    },
+
+    "[liquid]": {
+        "editor.defaultFormatter": "Shopify.theme-check-vscode"
+    },
+      "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+}
