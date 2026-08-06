@@ -1,7 +1,8 @@
 import { UI_STATE } from "../../../render/state/state";
+import { EQ_SLOTS } from "../../../render/state/slots";
 import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
-import { EQ_SLOTS, getAdjacentSlotActions } from "./slots";
+import { getAdjacentSlotActions } from "./slots";
 
 export const getUnequipCommand = (): KeyboardToActionCommand => {
   return {

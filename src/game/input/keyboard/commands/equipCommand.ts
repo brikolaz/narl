@@ -1,8 +1,13 @@
 import { UI_STATE } from "../../../render/state/state";
-import type { EqSlot, InvSlot } from "../../../render/state/types";
+import {
+  EQ_SLOTS,
+  INV_SLOTS,
+  type EqSlot,
+  type InvSlot,
+} from "../../../render/state/slots";
 import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
-import { EQ_SLOTS, getAdjacentSlotActions, INV_SLOTS } from "./slots";
+import { getAdjacentSlotActions } from "./slots";
 
 export const getEquipCommand = (): KeyboardToActionCommand[] => {
   let invSlot: InvSlot;

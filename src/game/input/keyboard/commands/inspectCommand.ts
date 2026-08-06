@@ -1,8 +1,15 @@
+import {
+  EQ_SLOTS,
+  INV_SLOTS,
+  isEqLinkPoint,
+  isInvLinkPoint,
+  type EqSlot,
+  type InvSlot
+} from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
-import type { EqSlot, InvSlot } from "../../../render/state/types";
 import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
-import { EQ_SLOTS, getAdjacentSlotActions, INV_SLOTS } from "./slots";
+import { getAdjacentSlotActions } from "./slots";
 
 const resetHighlights = () => {
   UI_STATE.highlights.invSlot.resetHighlightedSlot();
@@ -17,7 +24,7 @@ const getInvCommands = (): KeyboardToAction => ({
     }),
     UI_STATE.highlights.invSlot,
     INV_SLOTS,
-    {
+    () => ({
       Tab: {
         action: () => {
           UI_STATE.highlights.invSlot.resetHighlightedSlot();
@@ -26,7 +33,18 @@ const getInvCommands = (): KeyboardToAction => ({
         message: "Inspect context: EQ",
         fallback: "Invalid direction",
       },
-    },
+      ...(isInvLinkPoint() && {
+        ArrowUp: {
+          action: () => {
+            UI_STATE.highlights.invSlot.resetHighlightedSlot();
+            UI_STATE.highlights.eqSlot.highlightSlot(6);
+            return getEqCommands();
+          },
+          message: "Inspect context: EQ",
+          fallback: "Invalid direction",
+        },
+      }),
+    }),
   ),
 });
 
@@ -38,7 +56,7 @@ const getEqCommands = (): KeyboardToAction => ({
     }),
     UI_STATE.highlights.eqSlot,
     EQ_SLOTS,
-    {
+    () => ({
       Tab: {
         action: () => {
           UI_STATE.highlights.eqSlot.resetHighlightedSlot();
@@ -47,7 +65,18 @@ const getEqCommands = (): KeyboardToAction => ({
         message: "Inspect context: INV",
         fallback: "Invalid direction",
       },
-    },
+      ...(isEqLinkPoint() && {
+        ArrowDown: {
+          action: () => {
+            UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+            UI_STATE.highlights.invSlot.highlightSlot(2);
+            return getInvCommands();
+          },
+          message: "Inspect context: INV",
+          fallback: "Invalid direction",
+        },
+      }),
+    }),
   ),
 });
 

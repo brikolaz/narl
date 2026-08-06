@@ -1,8 +1,8 @@
 import { UI_STATE } from "../../../render/state/state";
-import type { InvSlot } from "../../../render/state/types";
+import { INV_SLOTS, type InvSlot } from "../../../render/state/slots";
 import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
-import { getAdjacentSlotActions, INV_SLOTS } from "./slots";
+import { getAdjacentSlotActions } from "./slots";
 
 export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
   let sourceSlot: InvSlot;

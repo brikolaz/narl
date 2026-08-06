@@ -1,5 +1,5 @@
 import { Highlight } from "./highlight";
-import type { EqSlot, InvSlot } from "./types";
+import type { EqSlot, InvSlot } from "./slots";
 
 type BaseUiState = {
   highlights: {

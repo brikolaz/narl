@@ -1,11 +1,12 @@
 import { getPlayerPosition } from "../../../model/queries/player";
+import { INV_SLOTS } from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
 import {
   PlayerActionType,
   PlayerDropItemActionReason,
 } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
-import { getAdjacentSlotActions, INV_SLOTS } from "./slots";
+import { getAdjacentSlotActions } from "./slots";
 
 const getDropActionCommands = () => {
   return getAdjacentSlotActions(
