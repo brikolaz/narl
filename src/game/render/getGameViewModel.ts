@@ -10,7 +10,8 @@ import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
 import { getRenderedMap } from "./getRenderedMap";
-import { getHighlightedEqSlot } from "./state/highlights";
+import type { Highlight } from "./state/highlight";
+import { UI_STATE } from "./state/state";
 
 export type ColoredGlyphView = {
   char: string;
@@ -43,16 +44,17 @@ const getGlyphView = (
   };
 };
 
-const getHighlightedGlyphView = (
+const getHighlightedGlyphView = <T extends number>(
   entity: Parameters<typeof getComponentByType>[0],
   position: number,
+  highlight: Highlight<T>,
 ): ColoredGlyphView => {
+  const glyph = getGlyphView(entity);
+
   return {
-    char:
-      getComponentByType(entity, GlyphComponent)?.glyph ??
-      GlyphComponent.defaults.glyph,
-    color: getComponentByType(entity, ColorComponent)?.color,
-    background: position === getHighlightedEqSlot() ? "#630057" : undefined,
+    ...glyph,
+    background:
+      position === highlight.getHighlightedSlot() ? "#630057" : undefined,
   };
 };
 
@@ -73,6 +75,7 @@ export const getEquipmentView = (): EquipmentView => {
     getHighlightedGlyphView(
       getContainerItemAt(slot, 1),
       getComponentByType(slot, PositionComponent)?.position ?? -1,
+      UI_STATE.highlights.eqSlot,
     ),
   );
 };
@@ -81,7 +84,11 @@ export const getBackpackView = (): BackpackView => {
   const backpack = getBackpack(getPlayerEntity());
 
   return [...ALL_CONTAINER_SLOTS].map((slot) =>
-    getGlyphView(backpack ? getContainerItemAt(backpack, slot) : undefined),
+    getHighlightedGlyphView(
+      backpack ? getContainerItemAt(backpack, slot) : undefined,
+      slot,
+      UI_STATE.highlights.invSlot,
+    ),
   );
 };
 

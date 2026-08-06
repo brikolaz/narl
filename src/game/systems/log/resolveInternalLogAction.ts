@@ -7,7 +7,10 @@ export const resolveInternalLogAction = (
 ): ActionResolution => {
   const { message } = gameAction;
   const action = new Action(gameAction);
-  action.info(message);
+
+  for (const entry of Array.isArray(message) ? message : [message]) {
+    action.info(entry);
+  }
 
   return action.resolve();
 };

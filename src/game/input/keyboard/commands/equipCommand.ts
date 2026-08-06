@@ -1,51 +1,46 @@
-import { getBackpack, getContainerSize } from "../../../model/queries/containers";
-import { getEq } from "../../../model/queries/eq";
-import { getPlayerEntity } from "../../../model/queries/player";
-import type { InvSlot } from "../../../systems/containers/types";
+import { UI_STATE } from "../../../render/state/state";
+import type { EqSlot, InvSlot } from "../../../render/state/types";
 import { PlayerActionType } from "../../../systems/player/types";
-import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
-import { createSlotActionCommands, createSlotNextCommands } from "./slots";
+import type { KeyboardToActionCommand } from "../chain";
+import { EQ_SLOTS, getAdjacentSlotActions, INV_SLOTS } from "./slots";
 
-const getEquipActionSlotCommand = (
-  eqSize: number | undefined,
-  invSlot: InvSlot,
-): KeyboardToAction => {
-  return createSlotActionCommands(eqSize, (eqSlot) => ({
-    type: PlayerActionType.EQUIP_ITEM,
-    invSlot,
-    eqSlot,
-  }));
-};
+export const getEquipCommand = (): KeyboardToActionCommand[] => {
+  let invSlot: InvSlot;
 
-const getEquipNextSlotCommand = (
-  backpackSize: number | undefined,
-): KeyboardToAction => {
-  const player = getPlayerEntity();
-  const eqSize = getEq(player)?.length;
-
-  return createSlotNextCommands<InvSlot>(
-    backpackSize,
-    (invSlot) => {
-      return getEquipActionSlotCommand(eqSize, invSlot);
+  return [
+    {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: InvSlot) => {
+            invSlot = slot;
+          },
+          UI_STATE.highlights.invSlot,
+          INV_SLOTS,
+        );
+      },
+      message: `Select item to equip (arrows to move, space to accept)`,
+      fallback: "Invalid direction",
+      cleanup: () => {
+        UI_STATE.highlights.invSlot.resetHighlightedSlot();
+      },
     },
-    `Select target EQ slot (1-${eqSize})`,
-    "Invalid slot",
-  );
-};
-
-export const getEquipCommand = (): KeyboardToActionCommand => {
-  const player = getPlayerEntity();
-  const backpack = getBackpack(player);
-  if (!backpack) {
-    throw new Error("No player backpack");
-  }
-  const backpackSize = getContainerSize(backpack);
-
-  return {
-    next: () => {
-      return getEquipNextSlotCommand(backpackSize);
+    {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: EqSlot) => ({
+            type: PlayerActionType.EQUIP_ITEM,
+            invSlot,
+            eqSlot: slot,
+          }),
+          UI_STATE.highlights.eqSlot,
+          EQ_SLOTS,
+        );
+      },
+      message: `Select target slot (arrows to move, space to accept)`,
+      fallback: "Invalid direction",
+      cleanup: () => {
+        UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+      },
     },
-    message: `Select INV item to equip (1-${backpackSize})`,
-    fallback: "Invalid item",
-  };
+  ];
 };

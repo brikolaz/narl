@@ -1,54 +1,125 @@
+import type { Highlight } from "../../../render/state/highlight";
+import type { EqSlot } from "../../../render/state/types";
 import type { GameAction } from "../../../systems/actions/types";
 import type { InvSlot } from "../../../systems/containers/types";
-import type { EqSlot } from "../../../systems/eq/eq";
 import type { KeyboardToAction } from "../chain";
 
-export const keyToInvSlot = (key: string): InvSlot => {
-  return Number(key) as InvSlot;
-};
+type Slots<T extends number> = readonly (readonly (T | null)[])[];
 
-export const keyToEqSlot = (key: string): EqSlot => {
-  return Number(key) as EqSlot;
-};
+type Direction = "left" | "right" | "up" | "down";
 
-export const eqSlotToKey = (slot: EqSlot) => {
-  return `Digit${slot}`;
-};
+export const EQ_SLOTS = [
+  [null, 1, null],
+  [2, 3, 4],
+  [null, 5, null],
+  [null, 6, null],
+] as const satisfies Slots<EqSlot>;
 
-export const createSlotActionCommands = <T extends number>(
-  size: number | undefined,
-  createAction: (slot: T) => GameAction,
-  message?: string,
-  fallback?: string,
-): KeyboardToAction => {
-  const commands: KeyboardToAction = {};
+export const INV_SLOTS = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+] as const satisfies Slots<InvSlot>;
 
-  for (let slot = 1; slot <= (size ?? 0); slot++) {
-    commands[eqSlotToKey(slot)] = {
-      action: createAction(slot as T),
-      message,
-      fallback,
+export type AdjacentContainerSlots<T extends number> = Record<
+  Direction,
+  T | undefined
+>;
+
+export const getAdjacentSlots = <T extends number>(
+  highlight: Highlight<T>,
+  slots: Slots<T>,
+): AdjacentContainerSlots<T> => {
+  if (highlight.getHighlightedSlot() === undefined) {
+    highlight.highlightSlot();
+  }
+
+  const highlightedSlot = highlight.getHighlightedSlot();
+
+  let x = -1;
+  let y = -1;
+
+  for (let row = 0; row < slots.length; row++) {
+    const column = slots[row].findIndex((slot) => slot === highlightedSlot);
+
+    if (column !== -1) {
+      x = column;
+      y = row;
+      break;
+    }
+  }
+
+  if (x === -1 || y === -1) {
+    return {
+      left: undefined,
+      right: undefined,
+      up: undefined,
+      down: undefined,
     };
   }
 
-  return commands;
+  return {
+    left: slots[y]?.[x - 1] ?? undefined,
+    right: slots[y]?.[x + 1] ?? undefined,
+    up: slots[y - 1]?.[x] ?? undefined,
+    down: slots[y + 1]?.[x] ?? undefined,
+  };
 };
 
-export const createSlotNextCommands = <T extends number>(
-  size: number | undefined,
-  nextCommand: (slot: T) => KeyboardToAction,
-  message?: string,
-  fallback?: string,
+export const getAdjacentSlotActions = <T extends number>(
+  action: (slot: T) => GameAction | KeyboardToAction | void,
+  highlight: Highlight<T>,
+  slots: Slots<T>,
 ): KeyboardToAction => {
-  const commands: KeyboardToAction = {};
+  const move = (slot: T) => {
+    highlight.highlightSlot(slot);
 
-  for (let slot = 1; slot <= (size ?? 0); slot++) {
-    commands[eqSlotToKey(slot)] = {
-      next: () => nextCommand(slot as T),
-      message,
-      fallback,
-    };
-  }
+    return getAdjacentSlotActions(action, highlight, slots);
+  };
 
-  return commands;
+  const { left, right, up, down } = getAdjacentSlots(highlight, slots);
+
+  return {
+    Space: {
+      action: () => {
+        const slot = highlight.getHighlightedSlot();
+
+        if (slot === undefined) {
+          return;
+        }
+
+        highlight.resetHighlightedSlot();
+
+        return action(slot);
+      },
+    },
+
+    ...(left !== undefined && {
+      ArrowLeft: {
+        action: () => move(left),
+        fallback: "Invalid direction",
+      },
+    }),
+
+    ...(right !== undefined && {
+      ArrowRight: {
+        action: () => move(right),
+        fallback: "Invalid direction",
+      },
+    }),
+
+    ...(up !== undefined && {
+      ArrowUp: {
+        action: () => move(up),
+        fallback: "Invalid direction",
+      },
+    }),
+
+    ...(down !== undefined && {
+      ArrowDown: {
+        action: () => move(down),
+        fallback: "Invalid direction",
+      },
+    }),
+  };
 };

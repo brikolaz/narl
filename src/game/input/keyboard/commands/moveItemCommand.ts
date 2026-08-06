@@ -1,40 +1,45 @@
-import { getPlayerEntity } from "../../../model/queries/player";
-import { getBackpack, getContainerSize } from "../../../model/queries/containers";
-import type { InvSlot } from "../../../systems/containers/types";
+import { UI_STATE } from "../../../render/state/state";
+import type { InvSlot } from "../../../render/state/types";
 import { PlayerActionType } from "../../../systems/player/types";
-import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
-import { createSlotActionCommands, createSlotNextCommands } from "./slots";
+import type { KeyboardToActionCommand } from "../chain";
+import { getAdjacentSlotActions, INV_SLOTS } from "./slots";
 
-const getMoveItemActionCommand = (backpackSize: number, fromSlot: InvSlot) => {
-  return createSlotActionCommands<InvSlot>(backpackSize, (toSlot) => ({
-    type: PlayerActionType.MOVE_ITEM,
-    fromSlot,
-    toSlot,
-  }));
-};
-
-const getMoveItemNextCommand = (backpackSize: number): KeyboardToAction => {
-  return createSlotNextCommands<InvSlot>(
-    backpackSize,
-    (fromSlot) => {
-      return getMoveItemActionCommand(backpackSize, fromSlot);
+export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
+  let sourceSlot: InvSlot;
+  return [
+    {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: InvSlot) => {
+            sourceSlot = slot;
+          },
+          UI_STATE.highlights.invSlot,
+          INV_SLOTS,
+        );
+      },
+      message: `Select source (arrows to move, space to accept)`,
+      fallback: "Invalid direction",
+      cleanup: () => {
+        UI_STATE.highlights.invSlot.resetHighlightedSlot();
+      },
     },
-    `Select target INV slot (1-${backpackSize})`,
-    `Invalid item`,
-  );
-};
-
-export const getMoveItemCommand = (): KeyboardToActionCommand => {
-  const player = getPlayerEntity();
-  const backpack = getBackpack(player);
-  if (!backpack) {
-    throw new Error("No player backpack");
-  }
-  const backpackSize = getContainerSize(backpack);
-
-  return {
-    next: () => getMoveItemNextCommand(backpackSize),
-    message: `Select source INV item (1-${backpackSize})`,
-    fallback: "Invalid item",
-  };
+    {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: InvSlot) => ({
+            type: PlayerActionType.MOVE_ITEM,
+            fromSlot: sourceSlot,
+            toSlot: slot,
+          }),
+          UI_STATE.highlights.invSlot,
+          INV_SLOTS,
+        );
+      },
+      message: `Select target (arrows to move, space to accept)`,
+      fallback: "Invalid direction",
+      cleanup: () => {
+        UI_STATE.highlights.invSlot.resetHighlightedSlot();
+      },
+    },
+  ];
 };

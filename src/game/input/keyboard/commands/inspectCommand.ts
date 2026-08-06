@@ -1,27 +1,16 @@
-import { getBackpack, getContainerSize } from "../../../model/queries/containers";
+import {
+  getBackpack,
+  getContainerSize,
+} from "../../../model/queries/containers";
 import { getEq } from "../../../model/queries/eq";
 import { getPlayerEntity } from "../../../model/queries/player";
-import type { EqSlot } from "../../../eq/types";
-import type { InvSlot } from "../../../systems/containers/types";
+import { UI_STATE } from "../../../render/state/state";
+import type { EqSlot, InvSlot } from "../../../render/state/types";
 import { PlayerActionType } from "../../../systems/player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
-import { createSlotActionCommands } from "./slots";
+import { EQ_SLOTS, getAdjacentSlotActions, INV_SLOTS } from "./slots";
 
-const getInspectInvCommand = (invSize: number): KeyboardToAction => {
-  return createSlotActionCommands<InvSlot>(invSize, (slot) => ({
-    type: PlayerActionType.INSPECT_INV,
-    invSlot: slot,
-  }));
-};
-
-const getInspectEqCommand = (eqSize: number): KeyboardToAction => {
-  return createSlotActionCommands<EqSlot>(eqSize, (slot) => ({
-    type: PlayerActionType.INSPECT_EQ,
-    eqSlot: slot,
-  }));
-};
-
-const getInspectNextCommand = (): KeyboardToAction => {
+const getSourceCommands = (): KeyboardToAction => {
   const player = getPlayerEntity();
   const backpack = getBackpack(player);
   if (!backpack) {
@@ -31,22 +20,46 @@ const getInspectNextCommand = (): KeyboardToAction => {
   const eqSlotsCount = getEq(player).length;
 
   return {
-    "1": {
-      next: () => getInspectInvCommand(backpackSize),
+    Digit1: {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: InvSlot) => ({
+            type: PlayerActionType.INSPECT_INV,
+            invSlot: slot,
+          }),
+          UI_STATE.highlights.invSlot,
+          INV_SLOTS,
+        );
+      },
       message: `Select INV item to inspect (1-${backpackSize})`,
       fallback: "Invalid INV slot",
+      cleanup: () => {
+        UI_STATE.highlights.invSlot.resetHighlightedSlot();
+      },
     },
-    "2": {
-      next: () => getInspectEqCommand(eqSlotsCount),
+    Digit2: {
+      action: () => {
+        return getAdjacentSlotActions(
+          (slot: EqSlot) => ({
+            type: PlayerActionType.INSPECT_EQ,
+            eqSlot: slot,
+          }),
+          UI_STATE.highlights.eqSlot,
+          EQ_SLOTS,
+        );
+      },
       message: `Select EQ slot to inspect (1-${eqSlotsCount})`,
       fallback: "Invalid EQ slot",
+      cleanup: () => {
+        UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+      },
     },
   };
 };
 
 export const getInspectCommand = (): KeyboardToActionCommand => {
   return {
-    next: () => getInspectNextCommand(),
+    action: () => getSourceCommands(),
     message: `Inspect what (1 for INV, 2 for EQ)`,
     fallback: "Invalid source",
   };

@@ -48,7 +48,7 @@ export const getPendingLogs = (action: GameAction, messages: string[]) => {
   }, []);
 };
 
-export const getInternalLogAction = (message: string): GameAction => ({
+export const getInternalLogAction = (message: string | string[]): GameAction => ({
   type: InternalActionType.LOG,
   message,
 });

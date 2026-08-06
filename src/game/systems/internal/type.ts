@@ -9,6 +9,6 @@ export type InternalActionType = EnumType<typeof InternalActionType>;
 export type InternalInitAction = { type: typeof InternalActionType.INIT };
 export type InternalLogAction = {
   type: typeof InternalActionType.LOG;
-  message: string;
+  message: string | string[];
 };
 export type InternalAction = InternalInitAction | InternalLogAction;

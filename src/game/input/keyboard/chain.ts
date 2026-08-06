@@ -1,18 +1,23 @@
 import type { GameAction } from "../../systems/actions/types";
 
 export type KeyboardToActionCommand = {
-  action?: GameAction | (() => GameAction | void);
-  next?: () => KeyboardToAction;
+  action: GameAction | (() => GameAction | void | KeyboardToAction);
   fallback?: string;
   message?: string;
+  cleanup?: () => void;
 };
 
-export type KeyboardToAction = Record<string, KeyboardToActionCommand>;
+export type KeyboardToAction = Record<
+  string,
+  KeyboardToActionCommand | KeyboardToActionCommand[]
+>;
 
 export type KeyboardToActionChain =
   | {
       current: KeyboardToAction;
       history: KeyboardToActionCommand[];
+      commands: KeyboardToActionCommand[];
+      step: number;
     }
   | undefined;
 

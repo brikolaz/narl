@@ -1,26 +1,14 @@
-import {
-  getPlayerEntity,
-  getPlayerPosition,
-} from "../../../model/queries/player";
-import { getBackpack, getContainerSize } from "../../../model/queries/containers";
-import type { InvSlot } from "../../../systems/containers/types";
+import { getPlayerPosition } from "../../../model/queries/player";
+import { UI_STATE } from "../../../render/state/state";
 import {
   PlayerActionType,
   PlayerDropItemActionReason,
 } from "../../../systems/player/types";
 import type { KeyboardToActionCommand } from "../chain";
-import { createSlotActionCommands } from "./slots";
+import { getAdjacentSlotActions, INV_SLOTS } from "./slots";
 
 const getDropActionCommands = () => {
-  const player = getPlayerEntity();
-  const backpack = getBackpack(player);
-  if (!backpack) {
-    throw new Error("No player backpack");
-  }
-  const backpackSize = getContainerSize(backpack);
-
-  return createSlotActionCommands<InvSlot>(
-    backpackSize,
+  return getAdjacentSlotActions(
     (invSlot) => ({
       type: PlayerActionType.DROP_ITEM,
       invSlot,
@@ -28,20 +16,18 @@ const getDropActionCommands = () => {
       targetPosition: getPlayerPosition(),
       reason: PlayerDropItemActionReason.MANUAL,
     }),
+    UI_STATE.highlights.invSlot,
+    INV_SLOTS,
   );
 };
 
 export const getDropCommand = (): KeyboardToActionCommand => {
-  const player = getPlayerEntity();
-  const backpack = getBackpack(player);
-  if (!backpack) {
-    throw new Error("No player backpack");
-  }
-  const backpackSize = getContainerSize(backpack);
-
   return {
-    next: () => getDropActionCommands(),
-    message: `Select INV item to drop (1-${backpackSize})`,
+    action: () => getDropActionCommands(),
+    message: `Select an item to drop (arrow keys, space to confirm)`,
     fallback: "Invalid item",
+    cleanup: () => {
+      UI_STATE.highlights.invSlot.resetHighlightedSlot();
+    },
   };
 };

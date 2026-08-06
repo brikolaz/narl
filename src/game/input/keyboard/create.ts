@@ -9,23 +9,15 @@ import { getPickUpCommand } from "./commands/pickupCommand";
 import { getPokeCommand } from "./commands/pokeCommand";
 import { getUnequipCommand } from "./commands/unequipCommand";
 
-export const createKeyboardToAction = (): KeyboardToAction => ({
+export const createKeyboardToAction = ():
+  | KeyboardToAction => ({
   ArrowLeft: getMoveCommand(Direction.LEFT),
   ArrowRight: getMoveCommand(Direction.RIGHT),
-
   KeyG: getPickUpCommand(),
-  
-
   KeyI: getInspectCommand(),
-  
   KeyE: getEquipCommand(),
-
-  
   KeyU: getUnequipCommand(),
-
   KeyM: getMoveItemCommand(),
-
   KeyD: getDropCommand(),
-
-  KeyP: getPokeCommand()
+  KeyP: getPokeCommand(),
 });

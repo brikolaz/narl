@@ -27,7 +27,7 @@ const getPokeActionCommands = (): KeyboardToAction => {
 
 export const getPokeCommand = (): KeyboardToActionCommand => {
   return {
-    next: () => getPokeActionCommands(),
+    action: () => getPokeActionCommands(),
     message: `Left/right? (arrow keys)`,
     fallback: "Invalid direction",
   };

@@ -1,5 +1,4 @@
 import type { ColoredGlyphView, GameViewModel } from "./getGameViewModel";
-import type { EqSlot } from "./state/eq";
 
 const root = document.querySelector<HTMLDivElement>("#root");
 
@@ -108,7 +107,7 @@ const renderAsciiGrid = (
     fragment.append(" | ");
     appendColoredGlyph(fragment, glyphs[offset + 2]);
     fragment.append(
-      ` |\n| ${offset + 1} | ${offset + 2} | ${offset + 3} |\n${border}`,
+      ` |\n${border}`,
       row < 2 ? "\n" : "",
     );
   });
@@ -131,7 +130,6 @@ const renderEqGrid = (target: HTMLElement, glyphs: ColoredGlyphView[]) => {
   appendColoredGlyph(fragment, glyphs[0]);
 
   appendText(` |
-    | 1 |
 +---+---+---+
 | `);
 
@@ -146,67 +144,21 @@ const renderEqGrid = (target: HTMLElement, glyphs: ColoredGlyphView[]) => {
   appendColoredGlyph(fragment, glyphs[3]);
 
   appendText(` |
-| 2 | 3 | 4 |
 +---+---+---+
     | `);
 
   appendColoredGlyph(fragment, glyphs[4]);
 
   appendText(` |
-    | 5 |
     +---+
     | `);
 
   appendColoredGlyph(fragment, glyphs[5]);
 
   appendText(` |
-    | 6 |
     +---+`);
 
   target.replaceChildren(fragment);
-};
-
-const eqSlots = [
-  [null, 1, null],
-  [2, 3, 4],
-  [null, 5, null],
-  [null, 6, null],
-] as const;
-
-type Direction = "left" | "right" | "up" | "down";
-type AdjacentEqSlots = Record<Direction, EqSlot | undefined>;
-
-export const getAdjacentEqSlots = (
-  currentSlot: 1 | 2 | 3 | 4 | 5 | 6,
-): AdjacentEqSlots => {
-  let x = -1;
-  let y = -1;
-
-  for (let row = 0; row < eqSlots.length; row++) {
-    const column = eqSlots[row].findIndex((slot) => slot === currentSlot);
-
-    if (column !== -1) {
-      x = column;
-      y = row;
-      break;
-    }
-  }
-
-  if (x === -1 || y === -1) {
-    return {
-      left: undefined,
-      right: undefined,
-      up: undefined,
-      down: undefined,
-    };
-  }
-
-  return {
-    left: eqSlots[y]?.[x - 1] ?? undefined,
-    right: eqSlots[y]?.[x + 1] ?? undefined,
-    up: eqSlots[y - 1]?.[x] ?? undefined,
-    down: eqSlots[y + 1]?.[x] ?? undefined,
-  };
 };
 
 export const render = (viewModel: GameViewModel) => {

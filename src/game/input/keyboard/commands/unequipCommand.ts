@@ -1,69 +1,23 @@
-import { getAdjacentEqSlots } from "../../../render/render";
-import type { EqSlot } from "../../../render/state/eq";
-import {
-  getHighlightedEqSlot,
-  highlightEqSlot,
-  resetHighlightedEqSlot,
-} from "../../../render/state/highlights";
+import { UI_STATE } from "../../../render/state/state";
 import { PlayerActionType } from "../../../systems/player/types";
-import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
-
-// TODO: create generic function to handle EQ/BP
-const getTargetSlotCommand = (): KeyboardToAction => {
-  const highlighted = getHighlightedEqSlot() ?? highlightEqSlot();
-  const { left, right, up, down } = getAdjacentEqSlots(highlighted);
-
-  const move = (slot: EqSlot) => {
-    highlightEqSlot(slot);
-    return getTargetSlotCommand();
-  };
-
-  return {
-    Space: {
-      action: () => {
-        resetHighlightedEqSlot();
-
-        return {
-          type: PlayerActionType.UNEQUIP_ITEM,
-          eqSlot: highlighted,
-        };
-      },
-    },
-
-    ...(left && {
-      ArrowLeft: {
-        next: () => move(left),
-        fallback: "Invalid direction",
-      },
-    }),
-
-    ...(right && {
-      ArrowRight: {
-        next: () => move(right),
-        fallback: "Invalid direction",
-      },
-    }),
-
-    ...(up && {
-      ArrowUp: {
-        next: () => move(up),
-        fallback: "Invalid direction",
-      },
-    }),
-
-    ...(down && {
-      ArrowDown: {
-        next: () => move(down),
-        fallback: "Invalid direction",
-      },
-    }),
-  };
-};
+import type { KeyboardToActionCommand } from "../chain";
+import { EQ_SLOTS, getAdjacentSlotActions } from "./slots";
 
 export const getUnequipCommand = (): KeyboardToActionCommand => {
   return {
-    next: () => getTargetSlotCommand(),
+    action: () =>
+      getAdjacentSlotActions(
+        (eqSlot) => ({
+          type: PlayerActionType.UNEQUIP_ITEM,
+          eqSlot,
+        }),
+        UI_STATE.highlights.eqSlot,
+        EQ_SLOTS,
+      ),
     message: `Select EQ slot to unequip (arrow keys, space to confirm)`,
     fallback: "Invalid direction",
+    cleanup: () => {
+      UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+    },
   };
 };
