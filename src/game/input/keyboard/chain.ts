@@ -21,6 +21,13 @@ export type KeyboardToActionChain =
     }
   | undefined;
 
+export type KeyboardEventResult = {
+  action: GameAction | undefined;
+  keyboardChain: KeyboardToActionChain;
+};
+
+export type ActiveKeyboardToActionChain = NonNullable<KeyboardToActionChain>;
+
 export const getLastFallbackMessage = (
   keyboardChain: KeyboardToActionChain,
 ): string | undefined => {
