@@ -70,11 +70,12 @@ export const getAdjacentSlotActions = <T extends number>(
   action: (slot: T) => GameAction | KeyboardToAction | void,
   highlight: Highlight<T>,
   slots: Slots<T>,
+  repeatedCommands: KeyboardToAction = {},
 ): KeyboardToAction => {
   const move = (slot: T) => {
     highlight.highlightSlot(slot);
 
-    return getAdjacentSlotActions(action, highlight, slots);
+    return getAdjacentSlotActions(action, highlight, slots, repeatedCommands);
   };
 
   const { left, right, up, down } = getAdjacentSlots(highlight, slots);
@@ -121,5 +122,7 @@ export const getAdjacentSlotActions = <T extends number>(
         fallback: "Invalid direction",
       },
     }),
+
+    ...repeatedCommands,
   };
 };
