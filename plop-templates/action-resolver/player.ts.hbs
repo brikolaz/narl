@@ -1,0 +1,15 @@
+import { Action } from "../actions/action";
+import type { ActionResolution } from "../actions/types";
+import type { {{actionTypeName}} } from "../player/types";
+
+export const {{resolverName}} = (
+  gameAction: {{actionTypeName}},
+): ActionResolution => {
+  const action = new Action(gameAction);
+
+  (() => {
+    
+  })();
+
+  return action.resolve();
+};

@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "generate:mob": "plop mob",
+    "generate:resolver:internal": "plop action-resolver:internal",
+    "generate:resolver:player": "plop action-resolver:player",
+    "generate:resolver:world": "plop action-resolver:world",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest"

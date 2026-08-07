@@ -28,8 +28,39 @@ const toConstantCase = (value) =>
     .map((word) => word.toUpperCase())
     .join("_");
 
+const toActionName = (value) =>
+  toPascalCase(value.replace(/Action$/i, ""));
+
+const toActionFolder = (value) => {
+  const name = toActionName(value);
+  return name[0].toLowerCase() + name.slice(1);
+};
+
+const normalizeActionName = (value, kindName) => {
+  const name = toActionName(value);
+  return name.startsWith(kindName) ? name.slice(kindName.length) : name;
+};
+
 const isIdentifier = (node, name) =>
   node?.type === "Identifier" && node.name === name;
+
+const unwrapExpression = (node) => {
+  let expression = node;
+  while (
+    expression?.type === "TSAsExpression" ||
+    expression?.type === "TSSatisfiesExpression"
+  ) {
+    expression = expression.expression;
+  }
+  return expression;
+};
+
+const parseStatement = (source) => j(source).find(j.Program).nodes()[0].body[0];
+
+const writeAst = (filePath, root) => {
+  const output = root.toSource({ quote: "double", trailingComma: true });
+  writeFileSync(filePath, output.endsWith("\n") ? output : `${output}\n`);
+};
 
 const addImports = (program, imports) => {
   const newDeclarations = [];
@@ -126,15 +157,185 @@ const wireRegistry = ({
     ]),
   );
 
-  const output = root.toSource({ quote: "double", trailingComma: true });
-  writeFileSync(filePath, output.endsWith("\n") ? output : `${output}\n`);
+  writeAst(filePath, root);
   return `wired ${entryLabel} in ${filePath}`;
+};
+
+const getTypeAlias = (root, name, filePath) => {
+  const aliases = root.find(j.TSTypeAliasDeclaration, {
+    id: { type: "Identifier", name },
+  });
+  if (aliases.size() !== 1) {
+    throw new Error(`Expected one ${name} type alias in ${filePath}`);
+  }
+  return aliases.nodes()[0];
+};
+
+const wireActionTypes = ({
+  filePath,
+  actionTypeObject,
+  actionKey,
+  actionValue,
+  actionTypeName,
+  actionUnionName,
+}) => {
+  const root = j(readFileSync(filePath, "utf8"));
+  const declarators = root.find(j.VariableDeclarator, {
+    id: { type: "Identifier", name: actionTypeObject },
+  });
+  if (declarators.size() !== 1) {
+    throw new Error(`Expected one ${actionTypeObject} declaration in ${filePath}`);
+  }
+
+  const actionTypes = unwrapExpression(declarators.nodes()[0].init);
+  if (actionTypes?.type !== "ObjectExpression") {
+    throw new Error(`${actionTypeObject} is not an object in ${filePath}`);
+  }
+  if (
+    actionTypes.properties.some(
+      (property) =>
+        property.type === "ObjectProperty" &&
+        isIdentifier(property.key, actionKey),
+    )
+  ) {
+    throw new Error(`${actionTypeObject}.${actionKey} already exists`);
+  }
+
+  const enumProperty = parseStatement(
+    `const value = { ${actionKey}: "${actionValue}" };`,
+  ).declarations[0].init.properties[0];
+  actionTypes.properties.push(enumProperty);
+
+  const program = root.find(j.Program).nodes()[0];
+  const unionStatementIndex = program.body.findIndex((statement) => {
+    const declaration =
+      statement.type === "ExportNamedDeclaration"
+        ? statement.declaration
+        : statement;
+    return (
+      declaration?.type === "TSTypeAliasDeclaration" &&
+      isIdentifier(declaration.id, actionUnionName)
+    );
+  });
+  if (unionStatementIndex === -1) {
+    throw new Error(`No ${actionUnionName} union in ${filePath}`);
+  }
+
+  const actionTypeStatement = parseStatement(
+    `export type ${actionTypeName} = { type: typeof ${actionTypeObject}.${actionKey} };`,
+  );
+  program.body.splice(unionStatementIndex, 0, actionTypeStatement);
+
+  const actionUnion = getTypeAlias(root, actionUnionName, filePath);
+  const actionReference = parseStatement(
+    `type Value = ${actionTypeName};`,
+  ).typeAnnotation;
+  if (actionUnion.typeAnnotation.type === "TSUnionType") {
+    actionUnion.typeAnnotation.types.push(actionReference);
+  } else {
+    actionUnion.typeAnnotation = j.tsUnionType([
+      actionUnion.typeAnnotation,
+      actionReference,
+    ]);
+  }
+
+  writeAst(filePath, root);
+  return `wired ${actionTypeName} in ${filePath}`;
+};
+
+const wireActionResolver = ({
+  filePath,
+  importSource,
+  resolverName,
+  resolverMapName,
+  actionTypeObject,
+  actionKey,
+  resolverUnionName,
+}) => {
+  const root = j(readFileSync(filePath, "utf8"));
+  const declarators = root.find(j.VariableDeclarator, {
+    id: { type: "Identifier", name: resolverMapName },
+  });
+  if (declarators.size() !== 1) {
+    throw new Error(`Expected one ${resolverMapName} declaration in ${filePath}`);
+  }
+
+  const resolverMap = unwrapExpression(declarators.nodes()[0].init);
+  if (resolverMap?.type !== "ObjectExpression") {
+    throw new Error(`${resolverMapName} is not an object in ${filePath}`);
+  }
+  const alreadyWired = resolverMap.properties.some(
+    (property) =>
+      property.type === "ObjectProperty" &&
+      property.computed &&
+      property.key.type === "MemberExpression" &&
+      isIdentifier(property.key.object, actionTypeObject) &&
+      isIdentifier(property.key.property, actionKey),
+  );
+  if (alreadyWired) {
+    throw new Error(`${actionTypeObject}.${actionKey} resolver already exists`);
+  }
+
+  const program = root.find(j.Program).nodes()[0];
+  addImports(program, [{ source: importSource, names: [resolverName] }]);
+  const resolverProperty = parseStatement(
+    `const value = { [${actionTypeObject}.${actionKey}]: ${resolverName} };`,
+  ).declarations[0].init.properties[0];
+  resolverMap.properties.push(resolverProperty);
+
+  if (resolverUnionName) {
+    const resolverUnion = getTypeAlias(root, resolverUnionName, filePath);
+    const resolverReference = parseStatement(
+      `type Value = typeof ${resolverName};`,
+    ).typeAnnotation;
+    if (resolverUnion.typeAnnotation.type === "TSUnionType") {
+      resolverUnion.typeAnnotation.types.push(resolverReference);
+    } else {
+      resolverUnion.typeAnnotation = j.tsUnionType([
+        resolverUnion.typeAnnotation,
+        resolverReference,
+      ]);
+    }
+  }
+
+  writeAst(filePath, root);
+  return `wired ${resolverName} in ${filePath}`;
+};
+
+const ACTION_RESOLVER_CONFIG = {
+  internal: {
+    actionTypeObject: "InternalActionType",
+    actionTypeFile: "src/game/systems/internal/type.ts",
+    actionUnionName: "InternalAction",
+    resolverMapFile: "src/game/systems/internal/resolvers.ts",
+    resolverMapName: "internalActionResolvers",
+    resolverUnionName: "InternalActionResolver",
+    actionValuePrefix: "INTERNAL_",
+  },
+  player: {
+    actionTypeObject: "PlayerActionType",
+    actionTypeFile: "src/game/systems/player/types.ts",
+    actionUnionName: "PlayerAction",
+    resolverMapFile: "src/game/systems/player/resolvers.ts",
+    resolverMapName: "playerActionResolvers",
+    actionValuePrefix: "PLAYER_",
+  },
+  world: {
+    actionTypeObject: "WorldActionType",
+    actionTypeFile: "src/game/systems/world/types.ts",
+    actionUnionName: "WorldAction",
+    resolverMapFile: "src/game/systems/world/resolvers.ts",
+    resolverMapName: "worldActionResolvers",
+    actionValuePrefix: "",
+  },
 };
 
 export default function plopfile(plop) {
   plop.setHelper("mobName", toPascalCase);
   plop.setHelper("mobFolder", toCamelCase);
   plop.setHelper("mobType", toConstantCase);
+  plop.setHelper("actionName", toActionName);
+  plop.setHelper("actionFolder", toActionFolder);
 
   plop.setActionType("wireMobRegistries", (answers) => {
     const name = toPascalCase(answers.name);
@@ -199,4 +400,57 @@ export default function plopfile(plop) {
       },
     ],
   });
+
+  for (const [kind, config] of Object.entries(ACTION_RESOLVER_CONFIG)) {
+    const kindName = toPascalCase(kind);
+    plop.setGenerator(`action-resolver:${kind}`, {
+      description: `Create and wire a ${kind} action resolver`,
+      prompts: [
+        {
+          type: "input",
+          name: "name",
+          message: `${kindName} action name:`,
+          validate: (value) =>
+            normalizeActionName(value, kindName).length > 0 ||
+            "Action name is required",
+        },
+      ],
+      actions: (answers) => {
+        const name = normalizeActionName(answers.name, kindName);
+        const folder = toActionFolder(name);
+        const actionKey = toConstantCase(name);
+        const actionTypeName = `${kindName}${name}Action`;
+        const resolverName = `resolve${kindName}${name}Action`;
+        const resolverFile = `${resolverName}.ts`;
+
+        return [
+          {
+            type: "add",
+            path: `src/game/systems/${folder}/${resolverFile}`,
+            templateFile: `plop-templates/action-resolver/${kind}.ts.hbs`,
+            data: { actionTypeName, resolverName },
+          },
+          () =>
+            wireActionTypes({
+              filePath: config.actionTypeFile,
+              actionTypeObject: config.actionTypeObject,
+              actionKey,
+              actionValue: `${config.actionValuePrefix}${actionKey}`,
+              actionTypeName,
+              actionUnionName: config.actionUnionName,
+            }),
+          () =>
+            wireActionResolver({
+              filePath: config.resolverMapFile,
+              importSource: `../${folder}/${resolverName}`,
+              resolverName,
+              resolverMapName: config.resolverMapName,
+              actionTypeObject: config.actionTypeObject,
+              actionKey,
+              resolverUnionName: config.resolverUnionName,
+            }),
+        ];
+      },
+    });
+  }
 }
