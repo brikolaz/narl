@@ -4,7 +4,6 @@ import { ContainerComponent } from "../../../../components/containers/ContainerC
 import { SizeComponent } from "../../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../../components/display/NameComponent";
 import { PantsComponent } from "../../../../components/eq/PantsComponent";
-import { RingComponent } from "../../../../components/eq/RingComponent";
 import { PantsSlotComponent } from "../../../../components/eq/slots/PantsSlotComponent";
 import { PositionComponent } from "../../../../components/PositionComponent";
 import type { ItemFactory } from "../../../../Factory";
@@ -20,7 +19,6 @@ export const PantsSlotEntityFactory: ItemFactory = {
       NameComponent({ name: "Pants" }),
       PantsSlotComponent(),
       PantsComponent(),
-      RingComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
       PositionComponent({ position: 5 }),

@@ -44,7 +44,6 @@ export type PlayerPickUpUnpackAction = {
 export type PlayerEquipItemAction = {
   type: typeof PlayerActionType.EQUIP_ITEM;
   invSlot: InvSlot;
-  eqSlot: EqSlot;
 };
 export type PlayerUnequipItemAction = {
   type: typeof PlayerActionType.UNEQUIP_ITEM;

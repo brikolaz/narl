@@ -1,4 +1,5 @@
 import type { Component } from "../../../core/model/Component";
+import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,
@@ -14,7 +15,7 @@ import { curse } from "../curse/curse";
 import { isDisabled } from "../../model/queries/disabled";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEqSlotByPosition } from "../../model/queries/eq";
+import { getEq } from "../../model/queries/eq";
 
 const canBeEquipped = (
   itemSlots: Component[],
@@ -27,10 +28,32 @@ const canBeEquipped = (
   return itemSlots.length + eqSlots.length > uniqueSlots.size;
 };
 
+const getCompatibleEqSlot = (
+  player: Entity,
+  item: Entity,
+): Entity | undefined => {
+  const itemSlots = getItemSlots(item);
+
+  if (itemSlots.length > 1) {
+    throw new Error(
+      `Entity can have only one EQ slot component`,
+    );
+  }
+
+  const itemSlot = itemSlots[0];
+  if (!itemSlot) {
+    return undefined;
+  }
+
+  return getEq(player).find((slot) =>
+    getItemSlots(slot).some((eqItemSlot) => eqItemSlot.type === itemSlot.type),
+  );
+};
+
 export const resolveEquipAction = (
   gameAction: PlayerEquipItemAction,
 ): ActionResolution => {
-  const { invSlot: invSlotIndex, eqSlot: eqSlotIndex } = gameAction;
+  const { invSlot: invSlotIndex } = gameAction;
   const action = new Action(gameAction);
   (() => {
     const player = getPlayerEntity();
@@ -44,10 +67,12 @@ export const resolveEquipAction = (
       return action.fail(`No item in INV slot ${invSlotIndex} to equip`);
     }
 
-    const eqSlot = action.assert(
-      getEqSlotByPosition(player, eqSlotIndex),
-      "No EQ slot",
-    );
+    const eqSlot = getCompatibleEqSlot(player, itemToEquip);
+    if (!eqSlot) {
+      return action.fail(
+        `${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} can't be equipped`,
+      );
+    }
     const eqItemSlots = getItemSlots(eqSlot);
     const itemSlots = getItemSlots(itemToEquip);
     const itemInSlot = getFirstContainerItem(eqSlot);
