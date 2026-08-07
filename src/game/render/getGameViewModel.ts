@@ -94,7 +94,7 @@ export const getBackpackView = (): BackpackView => {
 
 export const getLogsView = (): LogEntryView[] =>
   STATE.log.map((entry) => ({
-    text: `[${entry.turn}] ${entry.message}`,
+    text: `[${entry.turn}] ${entry.message}${entry.count > 1 ? ` (x${entry.count})` : ""}`,
   }));
 
 export const getGameViewModel = (): GameViewModel => ({

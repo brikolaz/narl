@@ -6,18 +6,29 @@ import { type PlayerAction } from "../player/types";
 import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
-const addLog = (action: GameAction, message: string): LogEntry[] => {
+const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
+  const lastLog = logs.at(-1);
+
+  if (lastLog?.message !== entry.message || lastLog.turn !== entry.turn) {
+    return [...logs, entry].slice(-MAX_VISIBLE_LOGS);
+  }
+
   return [
-    ...STATE.log,
-    {
-      message,
-      action,
-      turn: STATE.turn,
-    },
-  ].slice(-MAX_VISIBLE_LOGS);
+    ...logs.slice(0, -1),
+    { ...lastLog, count: lastLog.count + entry.count },
+  ];
 };
 
-export const addLogMutable = (action: GameAction, message: string): void => {
+const addLog = (action: GameAction, message: string): LogEntry[] => {
+  return stackLog(STATE.log, {
+    message,
+    action,
+    turn: STATE.turn,
+    count: 1,
+  });
+};
+
+export const log = (action: GameAction, message: string): void => {
   STATE.log = addLog(action, message);
 };
 
@@ -27,14 +38,15 @@ export const flushLogs = (
 ): GameState => {
   const lastestTurn = STATE.turn;
   const nextTurn = consumesTurn ? increaseTurn(lastestTurn) : lastestTurn;
-  const nextLogs = logs.reduce<LogEntry[]>((next, log) => {
-    next.push({
-      ...log,
-      turn: nextTurn,
-    });
-    return next;
-  }, []);
-  STATE.log = [...STATE.log, ...nextLogs].slice(-MAX_VISIBLE_LOGS);
+  STATE.log = logs.reduce<LogEntry[]>(
+    (next, log) =>
+      stackLog(next, {
+        ...log,
+        turn: nextTurn,
+        count: 1,
+      }),
+    STATE.log,
+  );
   return STATE;
 };
 
