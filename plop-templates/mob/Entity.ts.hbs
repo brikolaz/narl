@@ -1,0 +1,12 @@
+import { getEntityCreator } from "../../../../../core/model/Entity";
+import type { MobFactory } from "../../../Factory";
+
+export const {{mobName name}}Entity = getEntityCreator("{{mobType name}}");
+
+export const {{mobName name}}EntityFactory: MobFactory = {
+  getDefault: () => {
+    const {{mobFolder name}} = {{mobName name}}Entity();
+
+    return {{mobFolder name}};
+  },
+};

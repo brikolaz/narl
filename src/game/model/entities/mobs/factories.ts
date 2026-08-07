@@ -4,7 +4,9 @@ import {
   RageBaitEntity,
   RageBaitEntityFactory,
 } from "./rageBait/RageBaitEntity";
+import { ZoomerEntity, ZoomerEntityFactory } from "./zoomer/ZoomerEntity";
 
 export const MOB_FACTORIES = new Map<EntityType, MobFactory>([
   [RageBaitEntity.type, RageBaitEntityFactory],
+  [ZoomerEntity.type, ZoomerEntityFactory],
 ]);
