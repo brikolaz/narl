@@ -31,8 +31,6 @@ export const getAdjacentSlotActions = <T extends number>(
           return;
         }
 
-        highlight.resetHighlightedSlot();
-
         return action(slot);
       },
     },

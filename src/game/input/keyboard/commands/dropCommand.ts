@@ -10,13 +10,17 @@ import { getAdjacentSlotActions } from "./slots";
 
 const getDropActionCommands = () => {
   return getAdjacentSlotActions(
-    (invSlot) => ({
-      type: PlayerActionType.DROP_ITEM,
-      invSlot,
-      eqSlot: undefined,
-      targetPosition: getPlayerPosition(),
-      reason: PlayerDropItemActionReason.MANUAL,
-    }),
+    (invSlot) => {
+      UI_STATE.highlights.invSlot.resetHighlightedSlot();
+
+      return {
+        type: PlayerActionType.DROP_ITEM,
+        invSlot,
+        eqSlot: undefined,
+        targetPosition: getPlayerPosition(),
+        reason: PlayerDropItemActionReason.MANUAL,
+      };
+    },
     UI_STATE.highlights.invSlot,
     INV_SLOTS,
   );

@@ -8,10 +8,14 @@ export const getUnequipCommand = (): KeyboardToActionCommand => {
   return {
     action: () =>
       getAdjacentSlotActions(
-        (eqSlot) => ({
-          type: PlayerActionType.UNEQUIP_ITEM,
-          eqSlot,
-        }),
+        (eqSlot) => {
+          UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+
+          return {
+            type: PlayerActionType.UNEQUIP_ITEM,
+            eqSlot,
+          };
+        },
         UI_STATE.highlights.eqSlot,
         EQ_SLOTS,
       ),

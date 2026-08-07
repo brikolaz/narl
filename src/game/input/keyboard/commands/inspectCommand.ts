@@ -4,7 +4,7 @@ import {
   isEqLinkPoint,
   isInvLinkPoint,
   type EqSlot,
-  type InvSlot
+  type InvSlot,
 } from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
 import { PlayerActionType } from "../../../systems/player/types";
@@ -18,10 +18,14 @@ const resetHighlights = () => {
 
 const getInvCommands = (): KeyboardToAction => ({
   ...getAdjacentSlotActions(
-    (invSlot: InvSlot) => ({
-      type: PlayerActionType.INSPECT_INV,
-      invSlot,
-    }),
+    (invSlot: InvSlot) => {
+      UI_STATE.highlights.invSlot.resetHighlightedSlot();
+
+      return {
+        type: PlayerActionType.INSPECT_INV,
+        invSlot,
+      };
+    },
     UI_STATE.highlights.invSlot,
     INV_SLOTS,
     () => ({
@@ -50,10 +54,14 @@ const getInvCommands = (): KeyboardToAction => ({
 
 const getEqCommands = (): KeyboardToAction => ({
   ...getAdjacentSlotActions(
-    (eqSlot: EqSlot) => ({
-      type: PlayerActionType.INSPECT_EQ,
-      eqSlot,
-    }),
+    (eqSlot: EqSlot) => {
+      UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+
+      return {
+        type: PlayerActionType.INSPECT_EQ,
+        eqSlot,
+      };
+    },
     UI_STATE.highlights.eqSlot,
     EQ_SLOTS,
     () => ({

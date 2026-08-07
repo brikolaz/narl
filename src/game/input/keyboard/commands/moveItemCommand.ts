@@ -26,20 +26,21 @@ export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
     {
       action: () => {
         return getAdjacentSlotActions(
-          (slot: InvSlot) => ({
-            type: PlayerActionType.MOVE_ITEM,
-            fromSlot: sourceSlot,
-            toSlot: slot,
-          }),
+          (slot: InvSlot) => {
+            UI_STATE.highlights.invSlot.resetHighlightedSlot();
+
+            return {
+              type: PlayerActionType.MOVE_ITEM,
+              fromSlot: sourceSlot,
+              toSlot: slot,
+            };
+          },
           UI_STATE.highlights.invSlot,
           INV_SLOTS,
         );
       },
       message: `Select target (arrows to move, space to accept)`,
       fallback: "Invalid direction",
-      cleanup: () => {
-        UI_STATE.highlights.invSlot.resetHighlightedSlot();
-      },
     },
   ];
 };

@@ -18,6 +18,7 @@ export const getEquipCommand = (): KeyboardToActionCommand[] => {
         return getAdjacentSlotActions(
           (slot: InvSlot) => {
             invSlot = slot;
+            UI_STATE.highlights.invSlot.resetHighlightedSlot();
           },
           UI_STATE.highlights.invSlot,
           INV_SLOTS,
@@ -32,11 +33,15 @@ export const getEquipCommand = (): KeyboardToActionCommand[] => {
     {
       action: () => {
         return getAdjacentSlotActions(
-          (slot: EqSlot) => ({
-            type: PlayerActionType.EQUIP_ITEM,
-            invSlot,
-            eqSlot: slot,
-          }),
+          (slot: EqSlot) => {
+            UI_STATE.highlights.eqSlot.resetHighlightedSlot();
+
+            return {
+              type: PlayerActionType.EQUIP_ITEM,
+              invSlot,
+              eqSlot: slot,
+            };
+          },
           UI_STATE.highlights.eqSlot,
           EQ_SLOTS,
         );
