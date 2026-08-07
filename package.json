@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "generate:component": "plop component",
+    "generate:entity": "plop entity",
     "generate:mob": "plop mob",
     "generate:resolver:internal": "plop action-resolver:internal",
     "generate:resolver:player": "plop action-resolver:player",

@@ -41,6 +41,47 @@ const normalizeActionName = (value, kindName) => {
   return name.startsWith(kindName) ? name.slice(kindName.length) : name;
 };
 
+const getScaffoldTarget = (value, suffix) => {
+  const parts = value
+    .replaceAll("\\", "/")
+    .split("/")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const rawName =
+    parts.pop()?.replace(new RegExp(`${suffix}$`, "i"), "") ?? "";
+  const name = toPascalCase(rawName);
+  if (!name) {
+    throw new Error(`${suffix} name is required`);
+  }
+  if (parts.some((part) => part === "." || part === "..")) {
+    throw new Error("Relative path segments are not allowed");
+  }
+
+  return {
+    folder: parts.map(toCamelCase).join("/"),
+    name,
+  };
+};
+
+const validateScaffoldTarget = (value, suffix) => {
+  try {
+    getScaffoldTarget(value, suffix);
+    return true;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+const getCoreImport = (folder, moduleName) => {
+  const depth = folder ? folder.split("/").length : 0;
+  return `${"../".repeat(3 + depth)}core/model/${moduleName}`;
+};
+
+const getFactoryImport = (folder) => {
+  const depth = folder ? folder.split("/").length : 0;
+  return `${"../".repeat(1 + depth)}Factory`;
+};
+
 const isIdentifier = (node, name) =>
   node?.type === "Identifier" && node.name === name;
 
@@ -336,6 +377,66 @@ export default function plopfile(plop) {
   plop.setHelper("mobType", toConstantCase);
   plop.setHelper("actionName", toActionName);
   plop.setHelper("actionFolder", toActionFolder);
+
+  plop.setGenerator("component", {
+    description: "Create a component creator boilerplate",
+    prompts: [
+      {
+        type: "input",
+        name: "target",
+        message: "Component path/name:",
+        validate: (value) => validateScaffoldTarget(value, "Component"),
+      },
+    ],
+    actions: (answers) => {
+      const { folder, name } = getScaffoldTarget(answers.target, "Component");
+      const targetFolder = folder ? `${folder}/` : "";
+
+      return [
+        {
+          type: "add",
+          path: `src/game/model/components/${targetFolder}${name}Component.ts`,
+          templateFile: "plop-templates/component/Component.ts.hbs",
+          data: {
+            componentName: name,
+            componentType: toConstantCase(name),
+            coreImport: getCoreImport(folder, "Component"),
+          },
+        },
+      ];
+    },
+  });
+
+  plop.setGenerator("entity", {
+    description: "Create an entity creator and factory boilerplate",
+    prompts: [
+      {
+        type: "input",
+        name: "target",
+        message: "Entity path/name:",
+        validate: (value) => validateScaffoldTarget(value, "Entity"),
+      },
+    ],
+    actions: (answers) => {
+      const { folder, name } = getScaffoldTarget(answers.target, "Entity");
+      const targetFolder = folder ? `${folder}/` : "";
+
+      return [
+        {
+          type: "add",
+          path: `src/game/model/entities/${targetFolder}${name}Entity.ts`,
+          templateFile: "plop-templates/entity/Entity.ts.hbs",
+          data: {
+            entityName: name,
+            entityVariable: toCamelCase(name),
+            entityType: toConstantCase(name),
+            coreImport: getCoreImport(folder, "Entity"),
+            factoryImport: getFactoryImport(folder),
+          },
+        },
+      ];
+    },
+  });
 
   plop.setActionType("wireMobRegistries", (answers) => {
     const name = toPascalCase(answers.name);

@@ -1,0 +1,12 @@
+import { getEntityCreator } from "{{coreImport}}";
+import type { Factory } from "{{factoryImport}}";
+
+export const {{entityName}}Entity = getEntityCreator("{{entityType}}");
+
+export const {{entityName}}EntityFactory: Factory = {
+  getDefault: () => {
+    const {{entityVariable}} = {{entityName}}Entity();
+
+    return {{entityVariable}};
+  },
+};
