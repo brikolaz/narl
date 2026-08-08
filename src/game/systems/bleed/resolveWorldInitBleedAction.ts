@@ -1,3 +1,4 @@
+import { getComponentsByType } from "../../../core/model/queries/components/get";
 import { getComponentRegistryRecord } from "../../../core/model/registry/componentRegistry";
 import { BleedComponent } from "../../model/components/BleedComponent";
 import { Action } from "../actions/action";
@@ -21,7 +22,14 @@ export const resolveWorldInitBleedAction = (
       "Component is not bleed",
     );
 
-    action.info(`${getEntityName(bleedRecord.parent)} bleed`);
+    const parent = bleedRecord.parent;
+    const multiple =
+      getComponentsByType(parent, BleedComponent).length > 1;
+    if (multiple) {
+      action.info(`${getEntityName(parent)} bleed some more`);
+    } else {
+      action.info(`${getEntityName(parent)} bleed`);
+    }
 
     action.addPendingDelayedAction(
       {

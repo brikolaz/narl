@@ -16,9 +16,10 @@ export const resolveWorldAttackAction = (
   (() => {
     const source = action.assert(getEntityById(sourceId), "No source");
     const target = action.assert(getEntityById(targetId), "No target");
+    const sourceManual = getManual(source);
     const weapon =
-      getManual(source)?.getEquippedWeapon?.(source) ??
-      getEquippedWeapon(source);
+      sourceManual?.getEquippedWeapon?.(source) ?? getEquippedWeapon(source);
+
     const sourceName = getEntityName(source);
     const targetName = getEntityName(target);
 
@@ -28,6 +29,7 @@ export const resolveWorldAttackAction = (
     const dmg = getDmg(weapon);
     const targetHp = getHp(target);
     targetHp.hp = targetHp.hp - dmg;
+    sourceManual?.onAttack?.(action, source, target);
     return action.success(
       `${sourceName} hits ${targetName}. ${targetName} lose ${dmg} HP`,
     );
