@@ -24,7 +24,7 @@ export const PlayerEntityFactory: Factory = {
       }),
       ExpComponent(),
       ColorComponent(),
-      NameComponent({ name: "Player" }),
+      NameComponent({ name: "You" }),
       HpComponent({ hp: 20, maxHp: 20 }),
     );
 

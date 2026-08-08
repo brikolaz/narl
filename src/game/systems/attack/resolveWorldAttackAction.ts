@@ -10,6 +10,7 @@ import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 
+// TODO: needs to handle mobs attacking other mobs
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
 ): ActionResolution => {

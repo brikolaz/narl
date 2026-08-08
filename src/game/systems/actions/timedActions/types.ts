@@ -3,7 +3,7 @@ import type { GameAction } from "../types";
 
 export type TimedAction = {
   id: Id;
-  immediate: boolean;
   action: GameAction;
-  turns: number;
+  duration: number;
+  delay: number
 };

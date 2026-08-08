@@ -9,6 +9,9 @@ export const WorldActionType = {
   ATTACK: "ATTACK",
   CURSE: "CURSE",
   DISABLE: "DISABLE",
+  BLEED: "BLEED",
+  INIT_BLEED: "INIT_BLEED",
+  CLEANUP_BLEED: "CLEANUP_BLEED",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -48,11 +51,20 @@ export type WorldDisableAction = {
   entityId: Id;
 };
 
+export type WorldBleedAction = {
+  type: typeof WorldActionType.BLEED;
+  bleedId: Id;
+};
+
+export type WorldInitBleedAction = {
+  type: typeof WorldActionType.INIT_BLEED;
+  bleedId: Id;
+};
+
+export type WorldCleanupBleedAction = {
+  type: typeof WorldActionType.CLEANUP_BLEED;
+  bleedId: Id;
+};
+
 export type WorldAction =
-  | WorldDropItemAction
-  | WorldGainExpAction
-  | WorldKillAction
-  | WorldRemoveEntityAction
-  | WorldAttackAction
-  | WorldCurseAction
-  | WorldDisableAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction;

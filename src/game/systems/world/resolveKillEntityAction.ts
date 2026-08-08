@@ -18,17 +18,17 @@ export const resolveKillEntityAction = (
     const backpack = action.assert(getBackpack(mob), "Mob has no backpack");
     action.success(`${getEntityName(mob)} died`);
     const exp = getExp(mob);
-    action.addPendingAction({
+    action.addPendingImmediateAction({
       type: WorldActionType.GAIN_EXP,
       exp,
     });
-    action.addPendingAction({
+    action.addPendingImmediateAction({
       type: WorldActionType.DROP_ITEM,
       targetPosition: position,
       entityId,
       itemId: backpack.id,
     });
-    action.addPendingAction({
+    action.addPendingImmediateAction({
       type: WorldActionType.REMOVE_ENTITY,
       entityId,
       position,

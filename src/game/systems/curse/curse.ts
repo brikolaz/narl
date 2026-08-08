@@ -8,7 +8,7 @@ export const curse = (action: Action, item: Entity) => {
   const manual = getManual(item);
 
   if (!isCursed(item) && manual?.shouldBeCursed?.(item)) {
-    action.addPendingAction({
+    action.addPendingImmediateAction({
       type: WorldActionType.CURSE,
       entityId: item.id,
     });

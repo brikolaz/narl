@@ -17,12 +17,11 @@ export const RingEntityManual: Manual = {
   curse(gameAction, item) {
     removeComponentsByType(item, RemovableComponent.type);
     const pantsSlot = getEqSlotByType(getPlayerEntity(), PantsSlotComponent);
-    gameAction.addPendingAction(
+    gameAction.addPendingDelayedAction(
       {
         type: WorldActionType.DISABLE,
         entityId: pantsSlot.id,
       },
-      false,
       3,
     );
   },

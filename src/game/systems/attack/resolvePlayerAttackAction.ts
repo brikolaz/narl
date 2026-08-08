@@ -83,7 +83,7 @@ export const resolvePlayerAttackAction = (
     const dmg = "dmg" in ctx ? ctx.dmg : undefined;
 
     if (!weapon || !dmg) {
-      return action.addPendingAction({
+      return action.addPendingImmediateAction({
         type: PlayerActionType.POKE,
         targetPosition: ctx.targetPosition,
       });
@@ -92,7 +92,7 @@ export const resolvePlayerAttackAction = (
     const nextHp = mobHp?.hp - dmg;
 
     if (nextHp <= 0) {
-      action.addPendingAction({
+      action.addPendingImmediateAction({
         type: WorldActionType.KILL,
         entityId: mob.id,
         position: ctx.targetPosition,

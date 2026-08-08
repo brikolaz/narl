@@ -5,7 +5,7 @@ import type { ActionResolution } from "../types";
 import type { TimedAction } from "./types";
 
 const enqueueTimedAction = (pendingAction: TimedAction): void => {
-  if (pendingAction.turns === undefined) {
+  if (pendingAction.duration === undefined) {
     throw new Error("Can't schedule actions with no delay");
   }
   STATE.timedActions.push(pendingAction);
@@ -14,20 +14,22 @@ const enqueueTimedAction = (pendingAction: TimedAction): void => {
 export const applyTimedAction = (
   pendingAction: TimedAction,
 ): ActionResolution | undefined => {
-  if (!pendingAction.immediate) {
-    if (pendingAction.turns === 0) {
-      return resolveGameAction(pendingAction.action);
-    }
+  if (pendingAction.delay > 0) {
     enqueueTimedAction(pendingAction);
     return;
   }
-  const actionResolution: ActionResolution = resolveGameAction(
-    pendingAction.action,
-  );
-  if (pendingAction.turns === 0) {
+
+  const actionResolution = resolveGameAction(pendingAction.action);
+
+  if (pendingAction.duration <= 1) {
     return actionResolution;
   }
-  enqueueTimedAction({ ...pendingAction, turns: pendingAction.turns - 1 });
+
+  enqueueTimedAction({
+    ...pendingAction,
+    duration: pendingAction.duration - 1,
+  });
+
   return actionResolution;
 };
 
@@ -35,28 +37,32 @@ export const dequeueTimedActions = (
   processedActions: Id[] = [],
 ): TimedAction[] => {
   const actionsToApply: TimedAction[] = [];
+
   STATE.timedActions = STATE.timedActions
     .map((timedAction) => {
       if (processedActions.includes(timedAction.id)) {
         return timedAction;
       }
-      const { id, action, immediate, turns } = timedAction;
-      if (immediate) {
-        actionsToApply.push(timedAction);
-        if (turns === 0) {
-          return undefined;
-        }
-      } else if (turns === 0) {
-        actionsToApply.push(timedAction);
-        return undefined;
+
+      const { delay, duration } = timedAction;
+
+      if (delay > 1) {
+        return {
+          ...timedAction,
+          delay: delay - 1,
+        };
       }
 
-      return {
-        id,
-        action,
-        immediate,
-        turns: turns - 1,
-      };
+      actionsToApply.push(timedAction);
+
+      if (duration > 0) {
+        return {
+          ...timedAction,
+          delay,
+          duration: duration - 1,
+        };
+      }
+      return undefined;
     })
     .filter((timedAction) => timedAction !== undefined);
 

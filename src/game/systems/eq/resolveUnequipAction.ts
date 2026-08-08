@@ -48,14 +48,13 @@ export const resolveUnequipAction = (
     }
 
     if (isFull) {
-      action.addPendingAction({
+      return action.addPendingImmediateAction({
         type: PlayerActionType.DROP_ITEM,
         targetPosition: getPlayerPosition(),
         eqSlot: eqSlotIndex,
         invSlot: undefined,
         reason: PlayerDropItemActionReason.BACKPACK_FULL,
       });
-      return;
     }
 
     addItemToEntityBackpack(player, item);

@@ -32,17 +32,33 @@ export class Action {
     };
   };
 
-  addPendingAction = (
+  addPendingDelayedAction = (
     action: GameAction,
-    immediate: boolean = true,
-    turns: number = 1,
+    delay: number = 1,
+    duration: number = 1,
   ): void => {
-    this.assert(turns >= 1, "Pending action must have at least 1 turn");
+    this.assert(duration >= 1, "Pending action must last least 1 turn");
+    this.assert(
+      delay > 0,
+      "Pending delayed action delay must be greater than 0 turns",
+    );
+
     this.pendingActions.push({
       id: STATE.getId(),
       action,
-      immediate,
-      turns: turns - 1,
+      duration: duration - 1,
+      delay,
+    });
+  };
+
+  addPendingImmediateAction = (action: GameAction, duration: number = 1): void => {
+    this.assert(duration >= 1, "Pending action must last at least 1 turn");
+
+    this.pendingActions.push({
+      id: STATE.getId(),
+      action,
+      duration: duration - 1,
+      delay: 0,
     });
   };
 
