@@ -7,6 +7,6 @@ export const isPeaceful = (entity: Entity) => {
   return hasComponentsByType(entity, PeacefulComponent);
 };
 
-export const isHostile = (entity: Entity) => {
-  return hasComponentsByType(entity, HostileComponent);
+export const isHostile = (entity?: Entity) => {
+  return hasComponentsByType(entity, HostileComponent) ?? false;
 };

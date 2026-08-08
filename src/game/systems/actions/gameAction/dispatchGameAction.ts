@@ -5,21 +5,23 @@ import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
 import { increaseTurn } from "../../turn/turn";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
-import { applyTimedAction, dequeueTimedActions } from "../timedActions/timedActions";
+import {
+  applyTimedAction
+} from "../timedActions/timedActions";
 import type { TimedAction } from "../timedActions/types";
 import type { ActionResolution, GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
 
-type DrainedResolution = {
+export type DrainedResolution = {
   consumesTurn: boolean;
 };
 
-type DrainContext = {
+export type DrainContext = {
   pendingLogs: PendingLog[];
   processedActions: Set<Id>;
 };
 
-const drainResolution = (
+export const drainResolution = (
   resolution: ActionResolution,
   context: DrainContext,
 ): DrainedResolution => {
@@ -46,7 +48,7 @@ const drainResolution = (
   };
 };
 
-const drainAction = (
+export const drainAction = (
   action: GameAction,
   context: DrainContext,
 ): DrainedResolution => {
@@ -55,7 +57,7 @@ const drainAction = (
   return drainResolution(resolution, context);
 };
 
-const drainDequeuedAction = (
+export const drainDequeuedAction = (
   timedAction: TimedAction,
   context: DrainContext,
 ): DrainedResolution => {
@@ -75,22 +77,10 @@ export const dispatchGameAction = (action: GameAction): GameState => {
   }
 
   const actionResult = drainAction(action, context);
-  let consumesTurn = actionResult.consumesTurn;
+  const consumesTurn = actionResult.consumesTurn;
 
   if (consumesTurn) {
-    for (const worldAction of runWorldTurn()) {
-      const worldResult = drainAction(worldAction, context);
-
-      consumesTurn ||= worldResult.consumesTurn;
-    }
-
-    const dequeuedActions = dequeueTimedActions([...context.processedActions]);
-
-    for (const timedAction of dequeuedActions) {
-      const timedResult = drainDequeuedAction(timedAction, context);
-
-      consumesTurn ||= timedResult.consumesTurn;
-    }
+    runWorldTurn(context);
   }
 
   flushLogs(context.pendingLogs, consumesTurn);

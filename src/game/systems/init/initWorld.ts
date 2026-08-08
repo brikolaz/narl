@@ -1,6 +1,10 @@
 import { upsertComponents } from "../../../core/model/queries/components/add";
+import {
+  patchComponentByType
+} from "../../../core/model/queries/components/patch";
 import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
+import { PositionComponent } from "../../model/components/PositionComponent";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity";
@@ -24,6 +28,21 @@ export const initWorld = (): WorldState => {
   world[5].mobs.push(RageBaitEntityFactory.getDefault());
   world[6].mobs.push(RageBaitEntityFactory.getDefault());
   world[7].mobs.push(RageBaitEntityFactory.getDefault());
+  patchComponentByType(
+    world[5].mobs[0],
+    PositionComponent,
+    (component) => (component.position = 5),
+  );
+  patchComponentByType(
+    world[6].mobs[0],
+    PositionComponent,
+    (component) => (component.position = 6),
+  );
+  patchComponentByType(
+    world[7].mobs[0],
+    PositionComponent,
+    (component) => (component.position = 7),
+  );
 
   return world;
 };

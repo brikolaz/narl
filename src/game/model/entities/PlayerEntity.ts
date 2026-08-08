@@ -7,6 +7,7 @@ import { GlyphComponent } from "../components/display/GlyphComponent";
 import { NameComponent } from "../components/display/NameComponent";
 import { ExpComponent } from "../components/mobs/ExpComponent";
 import { HpComponent } from "../components/mobs/HpComponent";
+import { PositionComponent } from "../components/PositionComponent";
 import type { Factory } from "../Factory";
 import { initEq } from "../queries/eq";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";
@@ -26,6 +27,7 @@ export const PlayerEntityFactory: Factory = {
       ColorComponent(),
       NameComponent({ name: "You" }),
       HpComponent({ hp: 20, maxHp: 20 }),
+      PositionComponent()
     );
 
     const backpack = ContainerEntityFactory.getPlayerBackpack();

@@ -1,20 +1,19 @@
+import { STATE } from "../../../state/state";
 import type { GameAction } from "../../actions/types";
-import { getVisibleTiles } from "../../player/getVisibleTiles";
-import { pickMobWorldAction } from "./pickMobWorldAction";
+import { WorldActionType } from "../types";
 
-// routing
-export const scheduleMobActions = () => {
-  const nextQueue: (GameAction | undefined)[] = [];
-  const tiles = getVisibleTiles();
+export const enqueueMobActions = () => {
+  const nextQueue: GameAction[] = [];
+  const tiles = STATE.world;
 
-  for (let i = 0; i < tiles.length; i++) {
-    const tile = tiles[i];
-    const mobs = tile.mobs;
+  const mobs = tiles.flatMap((tile) => tile.mobs);
 
-    for (const mob of mobs) {
-      nextQueue.push(pickMobWorldAction(mob, tile));
-    }
+  for (const mob of mobs) {
+    nextQueue.push({
+      type: WorldActionType.MOB_AI,
+      mobId: mob.id,
+    });
   }
 
-  return nextQueue.filter(Boolean) as GameAction[];
+  return nextQueue;
 };

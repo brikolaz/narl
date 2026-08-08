@@ -6,7 +6,7 @@ import { resolveUnequipAction } from "../eq/resolveUnequipAction";
 import { resolveInspectEqAction } from "../inspect/resolveInspectEqAction";
 import { resolveInspectInvAction } from "../inspect/resolveInspectInvAction";
 import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
-import { resolveMoveAction } from "../movement/resolveMoveAction";
+import { resolvePlayerMoveAction } from "../movement/resolvePlayerMoveAction";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 import { resolvePokeAction } from "../poke/resolvePokeAction";
@@ -16,7 +16,7 @@ import { PlayerActionType } from "./types";
 export type AnyPlayerResolver = (action: any) => ActionResolution;
 
 export const playerActionResolvers = {
-  [PlayerActionType.MOVE]: resolveMoveAction,
+  [PlayerActionType.MOVE]: resolvePlayerMoveAction,
   [PlayerActionType.PICK_UP]: resolvePickUpAction,
   [PlayerActionType.PICK_UP_UNPACK]: resolvePickUpUnpack,
   [PlayerActionType.EQUIP_ITEM]: resolveEquipAction,

@@ -18,6 +18,8 @@ import { ExpComponent } from "../../../components/mobs/ExpComponent";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
 import { HpComponent } from "../../../components/mobs/HpComponent";
 import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
+import { PositionComponent } from "../../../components/PositionComponent";
+import { UnawareComponent } from "../../../components/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
@@ -70,6 +72,8 @@ export const RageBaitEntityFactory: MobFactory = {
       NameComponent({ name: "Rage Bait" }),
       ColorComponent(),
       getRng(rageBait).chance(1) ? HostileComponent() : PeacefulComponent(),
+      PositionComponent(),
+      UnawareComponent(),
     );
     addLoot(rageBait);
     addEq(rageBait);

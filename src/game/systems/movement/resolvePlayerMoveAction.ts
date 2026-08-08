@@ -1,3 +1,5 @@
+import { patchComponentByType } from "../../../core/model/queries/components/patch";
+import { PositionComponent } from "../../model/components/PositionComponent";
 import { hasMobs } from "../../model/queries/mobs";
 import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
 import { getTile } from "../../model/queries/tile";
@@ -8,10 +10,15 @@ import { addExplorationExp } from "../exp/exp";
 import { PlayerActionType, type PlayerMoveAction } from "../player/types";
 import { discoverTiles } from "../world/tile";
 import { markAsVisited } from "./exploration";
-import { getNextPlayerPosition } from "./getNextPlayerPosition";
+import { getNextPosition } from "./position";
 
 const getNextState = (nextPlayerPosition: number): void => {
   const player = getPlayerEntity();
+  patchComponentByType(
+    player,
+    PositionComponent,
+    (component) => (component.position = nextPlayerPosition),
+  );
   STATE.player = {
     player: addExplorationExp(getTile(nextPlayerPosition).floor, player),
     position: nextPlayerPosition,
@@ -19,14 +26,14 @@ const getNextState = (nextPlayerPosition: number): void => {
   markAsVisited(nextPlayerPosition);
 };
 
-export const resolveMoveAction = (
+export const resolvePlayerMoveAction = (
   gameAction: PlayerMoveAction,
 ): ActionResolution => {
   const { direction } = gameAction;
   const action = new Action(gameAction);
   (() => {
     const currentPlayerPosition = getPlayerPosition();
-    const nextPlayerPosition = getNextPlayerPosition({
+    const nextPlayerPosition = getNextPosition({
       currentPosition: currentPlayerPosition,
       direction,
     });

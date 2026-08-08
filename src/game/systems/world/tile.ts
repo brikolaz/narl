@@ -1,11 +1,11 @@
+import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
-import {
-  FloorEntityFactory
-} from "../../model/entities/FloorEntity";
+import { PositionComponent } from "../../model/components/PositionComponent";
+import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";
 
-const generateTile = (position: number): Tile => {
+export const generateTile = (position: number): Tile => {
   const tile: Tile = {
     floor: FloorEntityFactory.getDefault(),
     items: [],
@@ -13,15 +13,16 @@ const generateTile = (position: number): Tile => {
     position,
   };
   const mob = getRandomMob(position);
+  patchComponentByType(mob, PositionComponent, (component) => {
+    component.position = position;
+  });
   if (mob) {
     tile.mobs.push(mob);
   }
   return tile;
 };
 
-export const discoverTiles = (
-  centerPosition: number,
-): void => {
+export const discoverTiles = (centerPosition: number): void => {
   const half = Math.floor(MAP_SIZE / 2);
 
   const start = Math.max(0, centerPosition - half);

@@ -1,17 +1,20 @@
 import type { Enum, EnumType } from "../../../utils/types/Enum";
 import type { Id } from "../../../core/model/Id";
+import type { Direction } from "../turn/types";
 
 export const WorldActionType = {
-  DROP_ITEM: "DROP_ITEM",
-  GAIN_EXP: "GAIN_EXP",
-  KILL: "KILL",
-  REMOVE_ENTITY: "REMOVE_ENTITY",
-  ATTACK: "ATTACK",
-  CURSE: "CURSE",
-  DISABLE: "DISABLE",
-  BLEED: "BLEED",
-  INIT_BLEED: "INIT_BLEED",
-  CLEANUP_BLEED: "CLEANUP_BLEED",
+  DROP_ITEM: "WORLD_DROP_ITEM",
+  GAIN_EXP: "WORLD_GAIN_EXP",
+  KILL: "WORLD_KILL",
+  REMOVE_ENTITY: "WORLD_REMOVE_ENTITY",
+  ATTACK: "WORLD_ATTACK",
+  CURSE: "WORLD_CURSE",
+  DISABLE: "WORLD_DISABLE",
+  BLEED: "WORLD_BLEED",
+  INIT_BLEED: "WORLD_INIT_BLEED",
+  CLEANUP_BLEED: "WORLD_CLEANUP_BLEED",
+  MOVE: "WORLD_MOVE",
+  MOB_AI: "WORLD_MOB_AI",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -37,8 +40,8 @@ export type WorldRemoveEntityAction = {
 };
 export type WorldAttackAction = {
   type: typeof WorldActionType.ATTACK;
-  sourcePos: number;
-  mobId: Id;
+  sourceId: Id;
+  targetId: Id;
 };
 
 export type WorldCurseAction = {
@@ -66,5 +69,15 @@ export type WorldCleanupBleedAction = {
   bleedId: Id;
 };
 
+export type WorldMoveAction = {
+  type: typeof WorldActionType.MOVE;
+  entityId: Id;
+  direction: Direction;
+};
+
+export type WorldMobAiAction = { type: typeof WorldActionType.MOB_AI,
+  mobId: Id
+ };
+
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction;

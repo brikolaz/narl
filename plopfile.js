@@ -367,7 +367,7 @@ const ACTION_RESOLVER_CONFIG = {
     actionUnionName: "WorldAction",
     resolverMapFile: "src/game/systems/world/resolvers.ts",
     resolverMapName: "worldActionResolvers",
-    actionValuePrefix: "",
+    actionValuePrefix: "WORLD_",
   },
 };
 

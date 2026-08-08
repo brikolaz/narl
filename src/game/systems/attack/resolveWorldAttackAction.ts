@@ -1,36 +1,36 @@
+import { getEntityById } from "../../../core/model/queries/entities/get";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
-import { getMobById } from "../../model/queries/mobs";
-import { getPlayerEntity } from "../../model/queries/player";
-import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 
-// TODO: needs to handle mobs attacking other mobs
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
 ): ActionResolution => {
-  const { sourcePos, mobId } = gameAction;
+  const { sourceId, targetId } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const sourceTile = getTile(sourcePos);
-    const mob = action.assert(getMobById(sourceTile, mobId), "No mob");
-    const player = getPlayerEntity();
-    const mobWeapon =
-      getManual(mob)?.getEquippedWeapon?.(mob) ?? getEquippedWeapon(mob);
-    const mobName = getEntityName(mob);
+    const source = action.assert(getEntityById(sourceId), "No source");
+    const target = action.assert(getEntityById(targetId), "No target");
+    const weapon =
+      getManual(source)?.getEquippedWeapon?.(source) ??
+      getEquippedWeapon(source);
+    const sourceName = getEntityName(source);
+    const targetName = getEntityName(target);
 
-    if (!mobWeapon) {
-      return action.success(`${mobName} poked you`); // TODO: dynamic target
+    if (!weapon) {
+      return action.success(`${sourceName} poked ${targetName}`);
     }
-    const mobDmg = getDmg(mobWeapon);
-    const playerHp = getHp(player);
-    playerHp.hp = playerHp.hp - mobDmg;
-    return action.success(`${mobName} hits you. You lose ${mobDmg} HP`);
+    const dmg = getDmg(weapon);
+    const targetHp = getHp(target);
+    targetHp.hp = targetHp.hp - dmg;
+    return action.success(
+      `${sourceName} hits ${targetName}. ${targetName} lose ${dmg} HP`,
+    );
   })();
 
   return action.resolve();

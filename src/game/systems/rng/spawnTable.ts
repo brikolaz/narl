@@ -1,13 +1,17 @@
 import type { Entity, EntityType } from "../../../core/model/Entity";
 import { getFactory } from "../../model/entities/getFactory";
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
+import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity";
 import { RNG } from "./rng";
 import { getZone, Zone } from "./zones";
 
 type SpawnTable = Map<EntityType, number>;
 const SPAWN_TABLE = {
   [Zone.START]: new Map(),
-  [Zone.EARLY]: new Map([[RageBaitEntity.type, 15]]),
+  [Zone.EARLY]: new Map([
+    [RageBaitEntity.type, 15],
+    [ZoomerEntity.type, 20],
+  ]),
   [Zone.LOW]: new Map(),
   [Zone.MID]: new Map(),
   [Zone.HIGH]: new Map(),
