@@ -47,7 +47,7 @@ export const ZoomerEntityFactory: MobFactory = {
       HpComponent({ hp: 10, maxHp: 10 }),
       ExpComponent({ exp: 50 }),
       GlyphComponent({
-        glyph: "z",
+        glyph: "Z",
       }),
       NameComponent({ name: "Zoomer" }),
       ColorComponent(),

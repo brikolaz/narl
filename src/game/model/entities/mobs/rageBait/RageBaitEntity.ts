@@ -67,7 +67,7 @@ export const RageBaitEntityFactory: MobFactory = {
       HpComponent({ hp: 10, maxHp: 10 }),
       ExpComponent({ exp: 20 }),
       GlyphComponent({
-        glyph: "r",
+        glyph: "R",
       }),
       NameComponent({ name: "Rage Bait" }),
       ColorComponent(),
