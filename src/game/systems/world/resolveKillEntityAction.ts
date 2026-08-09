@@ -1,4 +1,5 @@
 import { getBackpack } from "../../model/queries/containers";
+import { assert } from "../../../utils/assert";
 import { getExp } from "../../model/queries/exp";
 import { getMobById } from "../../model/queries/mobs";
 import { getTile } from "../../model/queries/tile";
@@ -14,8 +15,8 @@ export const resolveKillEntityAction = (
   const { entityId, position } = gameAction;
   (() => {
     const tile = getTile(position);
-    const mob = action.assert(getMobById(tile, entityId), "No mob to kill");
-    const backpack = action.assert(getBackpack(mob), "Mob has no backpack");
+    const mob = assert(getMobById(tile, entityId), "No mob to kill");
+    const backpack = assert(getBackpack(mob), "Mob has no backpack");
     action.success(`${getEntityName(mob)} died`);
     const exp = getExp(mob);
     action.addPendingImmediateAction({

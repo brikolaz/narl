@@ -1,6 +1,6 @@
 import type { Entity } from "../../../../core/model/Entity";
+import { assert } from "../../../../utils/assert";
 import { getPlayerEntity } from "../../../model/queries/player";
-import type { Action } from "../../actions/action";
 import type { GameAction } from "../../actions/types";
 import { isHostile } from "../../attack/hostililty";
 import { getDirectionTo } from "../../movement/position";
@@ -24,13 +24,10 @@ const canMove = (mob: Entity) => {
   );
 };
 
-export const move = (action: Action, mob: Entity): GameAction | undefined => {
+export const move = (mob: Entity): GameAction | undefined => {
   const player = getPlayerEntity();
   if (canMove(mob)) {
-    const direction = action.assert(
-      getDirectionTo(mob, player),
-      "Invalid direction",
-    );
+    const direction = assert(getDirectionTo(mob, player), "Invalid direction");
     return {
       type: WorldActionType.MOVE,
       entityId: mob.id,

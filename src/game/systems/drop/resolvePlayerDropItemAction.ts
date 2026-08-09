@@ -1,4 +1,5 @@
 import type { Entity } from "../../../core/model/Entity";
+import { assert } from "../../../utils/assert";
 import {
   getBackpack,
   getContainerItemAt,
@@ -22,11 +23,11 @@ export const resolvePlayerDropItemAction = (
   const action: Action = new Action(gameAction);
   (() => {
     const player = getPlayerEntity();
-    const backpack = action.assert(
+    const backpack = assert(
       getBackpack(player),
       "Player has no backpack",
     );
-    const source = action.assert(
+    const source = assert(
       eqSlot
         ? getEqSlotByPosition(player, eqSlot)
         : invSlot
@@ -37,7 +38,7 @@ export const resolvePlayerDropItemAction = (
     let itemToDrop: Entity | undefined = undefined;
 
     if (eqSlot !== undefined) {
-      itemToDrop = action.assert(
+      itemToDrop = assert(
         getContainerItemAt(source, 1),
         "No item in EQ slot to drop",
       );
@@ -47,7 +48,7 @@ export const resolvePlayerDropItemAction = (
         return action.fail(`No item to drop at slot ${invSlot}`);
       }
     }
-    action.assertCondition(itemToDrop, "No item to drop");
+    itemToDrop = assert(itemToDrop, "No item to drop");
     dropItem(itemToDrop, targetPosition);
 
     if (reason === PlayerDropItemActionReason.MANUAL) {

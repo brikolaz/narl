@@ -1,4 +1,5 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
+import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getEquippedWeapon } from "../../model/queries/eq";
@@ -14,8 +15,8 @@ export const resolveWorldAttackAction = (
   const { sourceId, targetId } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const source = action.assert(getEntityById(sourceId), "No source");
-    const target = action.assert(getEntityById(targetId), "No target");
+    const source = assert(getEntityById(sourceId), "No source");
+    const target = assert(getEntityById(targetId), "No target");
     const sourceManual = getManual(source);
     const weapon =
       sourceManual?.getEquippedWeapon?.(source) ?? getEquippedWeapon(source);

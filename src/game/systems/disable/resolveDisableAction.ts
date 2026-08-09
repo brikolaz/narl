@@ -1,4 +1,5 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
+import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -11,7 +12,7 @@ export const resolveDisableAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const entity = action.assert(getEntityById(entityId), "No slot to disable");
+    const entity = assert(getEntityById(entityId), "No slot to disable");
     const manual = getManual(entity);
     manual?.disable?.(action, entity);
   })();

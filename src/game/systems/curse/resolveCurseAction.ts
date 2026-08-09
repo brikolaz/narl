@@ -1,5 +1,6 @@
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getEntityById } from "../../../core/model/queries/entities/get";
+import { assert } from "../../../utils/assert";
 import { COLORS } from "../../../utils/colors";
 import { ColorComponent } from "../../model/components/display/ColorComponent";
 import { CursedComponent } from "../../model/components/items/CursedComponent";
@@ -16,7 +17,7 @@ export const resolveCurseAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const entity = action.assert(
+    const entity = assert(
       getEntityById(entityId),
       "No entity to curse",
     );

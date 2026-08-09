@@ -1,6 +1,7 @@
 import { getComponentsByType } from "../../../core/model/queries/components/get";
 import { removeComponents } from "../../../core/model/queries/components/remove";
 import { getComponentRegistryRecord } from "../../../core/model/registry/componentRegistry";
+import { assert } from "../../../utils/assert";
 import { BleedComponent } from "../../model/components/BleedComponent";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -14,7 +15,7 @@ export const resolveWorldCleanupBleedAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const bleedRecord = action.assert(
+    const bleedRecord = assert(
       getComponentRegistryRecord(bleedId),
       "Bleed component not found",
     );

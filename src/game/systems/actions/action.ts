@@ -1,4 +1,5 @@
 import { STATE } from "../../state/state";
+import { assert } from "../../../utils/assert";
 import { getPendingLogs } from "../log/log";
 import type { TimedAction } from "./timedActions/types";
 import type { ActionResolution, GameAction } from "./types";
@@ -37,8 +38,8 @@ export class Action {
     delay: number = 1,
     duration: number = 1,
   ): void => {
-    this.assert(duration >= 1, "Pending action must last least 1 turn");
-    this.assert(
+    assert(duration >= 1, "Pending action must last least 1 turn");
+    assert(
       delay > 0,
       "Pending delayed action delay must be greater than 0 turns",
     );
@@ -52,7 +53,7 @@ export class Action {
   };
 
   addPendingImmediateAction = (action: GameAction, duration: number = 1): void => {
-    this.assert(duration >= 1, "Pending action must last at least 1 turn");
+    assert(duration >= 1, "Pending action must last at least 1 turn");
 
     this.pendingActions.push({
       id: STATE.getId(),
@@ -64,22 +65,5 @@ export class Action {
 
   info(message: string) {
     this.pendingLogMessages.push(message);
-  }
-
-  assert<T>(value: T | null | undefined, message: string): T {
-    if (value === null || value === undefined) {
-      throw new Error(message);
-    }
-
-    return value;
-  }
-
-  assertCondition<T>(
-    condition: T,
-    message: string,
-  ): asserts condition is NonNullable<T> {
-    if (!condition) {
-      throw new Error(message);
-    }
   }
 }

@@ -3,6 +3,7 @@ import {
   isContainer,
   isContainerFull
 } from "../../model/queries/containers";
+import { assert } from "../../../utils/assert";
 import { isCursed } from "../../model/queries/curse";
 import { pickUpItem } from "../../model/queries/pickUp";
 import { getPlayer } from "../../model/queries/player";
@@ -28,7 +29,7 @@ export const resolvePickUpUnpack = (
         return;
       }
 
-      const backpack = action.assert(
+      const backpack = assert(
         getBackpack(player),
         "Player has no backpack.",
       );

@@ -6,6 +6,7 @@ import {
   isContainer,
   isContainerFull,
 } from "../../model/queries/containers";
+import { assert } from "../../../utils/assert";
 import { getPlayerEntity } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -23,7 +24,7 @@ export const resolveMoveItemAction = (
   const action: Action = new Action(gameAction);
   (() => {
     const player = getPlayerEntity();
-    const backpack = action.assert(getBackpack(player), "No backpack");
+    const backpack = assert(getBackpack(player), "No backpack");
     const fromItem = getContainerItemAt(backpack, fromSlot);
     const toItem = getContainerItemAt(backpack, toSlot);
 

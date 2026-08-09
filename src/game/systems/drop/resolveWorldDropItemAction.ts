@@ -1,4 +1,5 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
+import { assert } from "../../../utils/assert";
 import { getContainerItems } from "../../model/queries/containers";
 import { getMobById } from "../../model/queries/mobs";
 import { getTile } from "../../model/queries/tile";
@@ -15,7 +16,7 @@ export const resolveWorldDropItemAction = (
   const action = new Action(gameAction);
   (() => {
     const tile = getTile(targetPosition);
-    const source = action.assert(getMobById(tile, entityId), "No mob");
+    const source = assert(getMobById(tile, entityId), "No mob");
     const sourceEntityName = getEntityName(source);
 
     const item = getEntityById(itemId);

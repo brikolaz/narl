@@ -3,6 +3,7 @@ import {
   getContainerItemAt,
   isContainerFull,
 } from "../../model/queries/containers";
+import { assert } from "../../../utils/assert";
 import { isRemovable } from "../../model/queries/items";
 import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
 import { Action } from "../actions/action";
@@ -27,13 +28,13 @@ export const resolveUnequipAction = (
   const action: Action = new Action(gameAction);
   (() => {
     const player = getPlayerEntity();
-    const backpack = action.assert(
+    const backpack = assert(
       getBackpack(player),
       "Player has no backpack",
     );
     const isFull = isContainerFull(backpack);
 
-    const slot = action.assert(
+    const slot = assert(
       getEqSlotByPosition(player, eqSlotIndex),
       "No EQ slot",
     );

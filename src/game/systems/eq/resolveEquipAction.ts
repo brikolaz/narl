@@ -1,5 +1,6 @@
 import type { Component } from "../../../core/model/Component";
 import type { Entity } from "../../../core/model/Entity";
+import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,
@@ -57,7 +58,7 @@ export const resolveEquipAction = (
   const action = new Action(gameAction);
   (() => {
     const player = getPlayerEntity();
-    const backpack = action.assert(
+    const backpack = assert(
       getBackpack(player),
       "Player has no backpack",
     );

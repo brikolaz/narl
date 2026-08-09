@@ -1,6 +1,7 @@
 import type { Entity } from "../../../core/model/Entity";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntityById } from "../../../core/model/queries/entities/get";
+import { assert } from "../../../utils/assert";
 import { removeById } from "../../../utils/removeById";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { getMob, hasMobs } from "../../model/queries/mobs";
@@ -29,7 +30,7 @@ export const resolveWorldMoveAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const entity = action.assert(getEntityById(entityId), "No entity to move");
+    const entity = assert(getEntityById(entityId), "No entity to move");
     const nextPosition = getNextPosition({
       currentPosition: getPosition(entity),
       direction,
