@@ -3,7 +3,10 @@ import { assert } from "../../../utils/assert";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getContainerItemAt } from "../../model/queries/containers";
-import { type PlayerInspectEqAction } from "../player/types";
+import {
+  PlayerInspectActionReason,
+  type PlayerInspectEqAction,
+} from "../player/types";
 import {
   getInspectDesc,
   getItemInspectText,
@@ -16,15 +19,12 @@ import { getEqSlotByPosition } from "../../model/queries/eq";
 export const resolveInspectEqAction = (
   gameAction: PlayerInspectEqAction,
 ): ActionResolution => {
-  const { eqSlot } = gameAction;
+  const { eqSlot, reason } = gameAction;
   const action = new Action(gameAction);
 
   (() => {
     const player = getPlayer();
-    const slot = assert(
-      getEqSlotByPosition(player, eqSlot),
-      "No EQ slot",
-    );
+    const slot = assert(getEqSlotByPosition(player, eqSlot), "No EQ slot");
     const item = getContainerItemAt(slot, 1);
 
     if (!item) {
@@ -34,7 +34,13 @@ export const resolveInspectEqAction = (
     }
     increaseInspected(item);
 
-    action.info(getItemInspectText(item));
+    if (reason === PlayerInspectActionReason.MANUAL) {
+      action.info(getItemInspectText(item));
+    } else {
+      action.info(
+        `${getEntityName(player)} are bored and start to inspect your EQ. ${getEntityName(player)} see ${getItemInspectText(item)}`,
+      );
+    }
     curse(action, item);
   })();
 

@@ -2,7 +2,7 @@ import { getComponentCreator } from "../../../../core/model/Component";
 
 export type HpComponentProps = {
   hp: number;
-  maxHp?: number;
+  maxHp: number;
 };
 
 export const HpComponent = getComponentCreator<HpComponentProps>("HP", {

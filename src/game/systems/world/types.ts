@@ -15,6 +15,7 @@ export const WorldActionType = {
   CLEANUP_BLEED: "WORLD_CLEANUP_BLEED",
   MOVE: "WORLD_MOVE",
   MOB_AI: "WORLD_MOB_AI",
+  HEAL: "WORLD_HEAL",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -75,9 +76,28 @@ export type WorldMoveAction = {
   direction: Direction;
 };
 
-export type WorldMobAiAction = { type: typeof WorldActionType.MOB_AI,
-  mobId: Id
- };
+export type WorldMobAiAction = {
+  type: typeof WorldActionType.MOB_AI;
+  mobId: Id;
+};
+
+export type WorldHealAction = {
+  type: typeof WorldActionType.HEAL;
+  entityId: Id;
+  value: number;
+};
 
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction;
+  | WorldDropItemAction
+  | WorldGainExpAction
+  | WorldKillAction
+  | WorldRemoveEntityAction
+  | WorldAttackAction
+  | WorldCurseAction
+  | WorldDisableAction
+  | WorldBleedAction
+  | WorldInitBleedAction
+  | WorldCleanupBleedAction
+  | WorldMoveAction
+  | WorldMobAiAction
+  | WorldHealAction;

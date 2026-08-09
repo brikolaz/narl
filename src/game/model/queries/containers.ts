@@ -5,6 +5,7 @@ import {
   getEntitiesByRole,
   getEntityByRole,
 } from "../../../core/model/queries/entities/get";
+import type { EntityArgument } from "../../../core/model/queries/entities/normalize";
 import {
   ALL_CONTAINER_SLOTS,
   type ContainerSlot,
@@ -23,6 +24,18 @@ export const isContainerFull = (container: Entity): boolean => {
     throw new Error("Entity is not a container");
   }
   return getFirstEmptyContainerSlot(container) === undefined;
+};
+
+export const isContainerEmpty = (container: Entity): boolean => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  for (let i = 0; i < getContainerSize(container); i++) {
+    if (getContainerItemAt(container, (i + 1) as ContainerSlot)) {
+      return false;
+    }
+  }
+  return true;
 };
 
 export const getContainerItemAt = (
@@ -79,7 +92,7 @@ export const getFirstContainerItem = (
   return getContainerItemAt(container, 1);
 };
 
-export const isContainer = (entity: Entity) => {
+export const isContainer = (entity: EntityArgument) => {
   return hasComponentsByType(entity, ContainerComponent);
 };
 

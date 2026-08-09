@@ -26,6 +26,13 @@ export const PlayerDropItemActionReason = {
 export type PlayerDropItemActionReason = EnumType<
   typeof PlayerDropItemActionReason
 >;
+export const PlayerInspectActionReason = {
+  MANUAL: "MANUAL",
+  BORED: "BORED",
+} as const satisfies Enum;
+export type PlayerInspectActionReason = EnumType<
+  typeof PlayerInspectActionReason
+>;
 
 export type PlayerDropItemAction = {
   type: typeof PlayerActionType.DROP_ITEM;
@@ -61,10 +68,12 @@ export type PlayerPokeAction = {
 export type PlayerInspectInvAction = {
   type: typeof PlayerActionType.INSPECT_INV;
   invSlot: InvSlot;
+  reason: PlayerInspectActionReason
 };
 export type PlayerInspectEqAction = {
   type: typeof PlayerActionType.INSPECT_EQ;
   eqSlot: EqSlot;
+reason: PlayerInspectActionReason
 };
 export type PlayerMoveItemAction = {
   type: typeof PlayerActionType.MOVE_ITEM;

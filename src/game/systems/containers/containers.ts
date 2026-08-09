@@ -18,6 +18,7 @@ import {
   isContainer,
 } from "../../model/queries/containers";
 import { getPosition } from "../../model/queries/position";
+import { setPosition } from "../position/position";
 import type { ContainerSlot } from "./types";
 
 export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
@@ -72,6 +73,7 @@ export const setContainerItemAt = (
   upsertRoleEntities(container, {
     [EntityRole.ITEM]: entity,
   });
+  setPosition(entity, slot);
 };
 
 export const clearContainerItemAt = (

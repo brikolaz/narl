@@ -11,6 +11,7 @@ import { resolveWorldInitBleedAction } from "../bleed/resolveWorldInitBleedActio
 import { resolveWorldCleanupBleedAction } from "../bleed/resolveWorldCleanupBleedAction";
 import { resolveWorldMoveAction } from "../movement/resolveWorldMoveAction";
 import { resolveWorldMobAiAction } from "../mobAi/resolveWorldMobAiAction";
+import { resolveWorldHealAction } from "../heal/resolveWorldHealAction";
 import { WorldActionType } from "./types";
 
 export type AnyWorldResolver = (action: any) => ActionResolution;
@@ -28,4 +29,5 @@ export const worldActionResolvers = {
   [WorldActionType.CLEANUP_BLEED]: resolveWorldCleanupBleedAction,
   [WorldActionType.MOVE]: resolveWorldMoveAction,
   [WorldActionType.MOB_AI]: resolveWorldMobAiAction,
+  [WorldActionType.HEAL]: resolveWorldHealAction,
 } satisfies Record<WorldActionType, AnyWorldResolver>;

@@ -7,7 +7,7 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldDropItemAction } from "../world/types";
-import { isDroppable } from "./drop";
+import { dropItem, isDroppable } from "./drop";
 
 export const resolveWorldDropItemAction = (
   gameAction: WorldDropItemAction,
@@ -34,7 +34,8 @@ export const resolveWorldDropItemAction = (
     if (!itemsToDrop.length) {
       return;
     }
-    tile.items.push(...itemsToDrop);
+
+    itemsToDrop.forEach((item) => dropItem(item, targetPosition));
 
     const itemNames = itemsToDrop.map((item) => getEntityName(item)).join(", ");
     return action.success(`${sourceEntityName} dropped ${itemNames}`);

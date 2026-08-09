@@ -1,11 +1,14 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import {
-  resolveComponentType,
-  type ComponentTypeArgument,
+  resolveComponentType
 } from "../../../core/model/queries/components/normalize";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
+import {
+  getEntityRegistryRecordById
+} from "../../../core/model/registry/entityRegistry";
+import type { EqSlotComponent } from "../../systems/eq/eq";
 import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
 import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";
 import { BootsSlotEntityFactory } from "../entities/eq/slots/BootsSlotEntity";
@@ -24,7 +27,7 @@ export const getEq = (entity: Entity): Entity[] => {
 
 export const getEqSlotsByType = (
   entity: Entity,
-  componentType: ComponentTypeArgument,
+  componentType: EqSlotComponent,
 ) => {
   if (!isEqSlot(componentType)) {
     throw new Error("Not an EQ component");
@@ -35,12 +38,12 @@ export const getEqSlotsByType = (
 
 export const getEqSlotByType = (
   entity: Entity,
-  componentType: ComponentTypeArgument,
+  componentType: EqSlotComponent,
 ) => {
   return getEqSlotsByType(entity, componentType)[0];
 };
 
-export const isEqSlot = (component: ComponentTypeArgument) => {
+export const isEqSlot = (component: EqSlotComponent) => {
   const target = resolveComponentType(component);
   return EQ_SLOT_COMPONENTS.has(target);
 };
@@ -67,4 +70,9 @@ export const getEqItems = (entity: Entity) => {
 export const getEqSlotByPosition = (entity: Entity, position: number) => {
   const eq = getEq(entity);
   return eq.find((slot) => getPosition(slot) === position);
+};
+
+export const getEqItemSlot = (entity: Entity) => {
+  const parent = getEntityRegistryRecordById(entity.id)?.parent ?? undefined;
+  return parent
 };

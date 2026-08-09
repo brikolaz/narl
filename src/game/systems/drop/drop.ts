@@ -5,15 +5,14 @@ import { detachEntity } from "../../../core/model/queries/entities/remove";
 import { DroppableComponent } from "../../model/components/items/DroppableComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { getTile } from "../../model/queries/tile";
+import { setPosition } from "../position/position";
 
-export const dropItem = (
-  item: Entity,
-  targetPosition: number,
-) => {
+export const dropItem = (item: Entity, targetPosition: number) => {
   const tile = getTile(targetPosition);
   detachEntity(item.id);
   removeComponentsByType(item, PositionComponent.type);
   tile.items.push(item);
+  setPosition(item, targetPosition);
 };
 
 export const isDroppable = (item: Entity) => {

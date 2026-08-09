@@ -7,16 +7,16 @@ import {
   getContainerItemAt,
   getFirstContainerItem,
 } from "../../model/queries/containers";
+import { isDisabled } from "../../model/queries/disabled";
+import { getEq } from "../../model/queries/eq";
 import { getItemSlots } from "../../model/queries/items";
 import { getPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
 import { curse } from "../curse/curse";
-import { isDisabled } from "../../model/queries/disabled";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
-import { getEq } from "../../model/queries/eq";
 
 const canBeEquipped = (
   itemSlots: Component[],
@@ -36,9 +36,7 @@ const getCompatibleEqSlot = (
   const itemSlots = getItemSlots(item);
 
   if (itemSlots.length > 1) {
-    throw new Error(
-      `Entity can have only one EQ slot component`,
-    );
+    throw new Error(`Entity can have only one EQ slot component`);
   }
 
   const itemSlot = itemSlots[0];
@@ -58,10 +56,7 @@ export const resolveEquipAction = (
   const action = new Action(gameAction);
   (() => {
     const player = getPlayer();
-    const backpack = assert(
-      getBackpack(player),
-      "Player has no backpack",
-    );
+    const backpack = assert(getBackpack(player), "Player has no backpack");
 
     const itemToEquip = getContainerItemAt(backpack, invSlotIndex);
     if (!itemToEquip) {
@@ -97,7 +92,6 @@ export const resolveEquipAction = (
     }
 
     addItemToContainer(eqSlot, itemToEquip);
-
     action.success(
       `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
     );

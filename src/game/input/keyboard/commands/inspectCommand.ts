@@ -7,7 +7,10 @@ import {
   type InvSlot,
 } from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
-import { PlayerActionType } from "../../../systems/player/types";
+import {
+  PlayerActionType,
+  PlayerInspectActionReason,
+} from "../../../systems/player/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 import { getAdjacentSlotActions } from "./slots";
 
@@ -24,6 +27,7 @@ const getInvCommands = (): KeyboardToAction => ({
       return {
         type: PlayerActionType.INSPECT_INV,
         invSlot,
+        reason: PlayerInspectActionReason.MANUAL,
       };
     },
     UI_STATE.highlights.invSlot,
@@ -60,6 +64,7 @@ const getEqCommands = (): KeyboardToAction => ({
       return {
         type: PlayerActionType.INSPECT_EQ,
         eqSlot,
+        reason: PlayerInspectActionReason.MANUAL,
       };
     },
     UI_STATE.highlights.eqSlot,

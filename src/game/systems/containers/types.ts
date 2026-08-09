@@ -3,3 +3,4 @@ export type InvSlot = ContainerSlot;
 export const ALL_CONTAINER_SLOTS = new Set<ContainerSlot>([
   1, 2, 3, 4, 5, 6, 7, 8, 9,
 ]);
+export const ALL_INV_SLOTS = new Set<InvSlot>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
