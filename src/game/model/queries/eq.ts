@@ -14,6 +14,7 @@ import { HeadSlotEntityFactory } from "../entities/eq/slots/HeadSlotEntity";
 import { MainHandSlotEntityFactory } from "../entities/eq/slots/MainHandSlotEntity";
 import { OffhandSlotEntityFactory } from "../entities/eq/slots/OffhandSlotEntity";
 import { PantsSlotEntityFactory } from "../entities/eq/slots/pantsSlot/PantsSlotEntity";
+import { getManual } from "../entities/getManual";
 import { getContainerItemAt, getContainerItems } from "./containers";
 import { getPosition } from "./position";
 
@@ -66,6 +67,10 @@ export const getEqItems = (entity: Entity) => {
 };
 
 export const getEquippedWeapon = (entity: Entity): Entity | undefined => {
+  const manual = getManual(entity);
+  if (manual?.getEquippedWeapon) {
+    return manual?.getEquippedWeapon(entity);
+  }
   const slot = getEqSlotByType(entity, MainHandSlotComponent);
   return getContainerItemAt(slot, 1);
 };

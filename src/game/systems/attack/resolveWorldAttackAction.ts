@@ -14,18 +14,18 @@ export const resolveWorldAttackAction = (
 ): ActionResolution => {
   const { sourceId, targetId } = gameAction;
   const action = new Action(gameAction);
+  
   (() => {
     const source = assert(getEntityById(sourceId), "No source");
-    const target = assert(getEntityById(targetId), "No target");
     const sourceManual = getManual(source);
-    const weapon =
-      sourceManual?.getEquippedWeapon?.(source) ?? getEquippedWeapon(source);
+    const target = assert(getEntityById(targetId), "No target");
+    const weapon = getEquippedWeapon(source);
 
     const sourceName = getEntityName(source);
     const targetName = getEntityName(target);
 
     if (!weapon) {
-      return action.success(`${sourceName} poked ${targetName}`);
+      return action.success(`${sourceName} poked ${targetName}`); // TODO: add poke resolver?
     }
     const dmg = getDmg(weapon);
     const targetHp = getHp(target);
