@@ -1,4 +1,3 @@
-import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
 import { getHp } from "../../model/queries/hp";
@@ -12,80 +11,27 @@ import { PlayerActionType, type PlayerPokeAction } from "../player/types";
 import { WorldActionType } from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
 
-type AttackContext =
-  | {
-      ok: true;
-      targetPosition: number;
-      weapon: Entity;
-      dmg: number;
-      mobName: string;
-    }
-  | {
-      ok: true;
-      targetPosition: number;
-      mobName: string;
-    }
-  | {
-      ok: false;
-      message: string;
-    };
-
-// TODO: can be deleted
-export const prepareAttack = ({
-  targetPosition,
-}: PlayerPokeAction): AttackContext => {
-  const target = getTile(targetPosition);
-
-  if (!target || !hasMobs(target)) {
-    return { ok: false, message: "No mobs to attack in that direction." };
-  }
-
-  const mob = getMob(target);
-  if (!mob) {
-    return { ok: false, message: "No mobs to attack in that direction." };
-  }
-
-  const player = getPlayer();
-
-  const weapon = getAttackWeapon(player);
-
-  const dmg = weapon ? getDmg(weapon) : undefined;
-  const mobName = getEntityName(mob);
-
-  return {
-    ok: true,
-    targetPosition,
-    weapon,
-    dmg,
-    mobName,
-  };
-};
-
 export const resolvePlayerAttackAction = (
   gameAction: PlayerPokeAction,
 ): ActionResolution => {
+  const { targetPosition } = gameAction;
   const action = new Action(gameAction);
-  const ctx = prepareAttack(gameAction);
   (() => {
-    if (!ctx.ok) {
+    const target = getTile(targetPosition);
+    if (!hasMobs(target)) {
       return;
     }
-    const target = getTile(ctx.targetPosition);
-    if (!hasMobs(target)) {
-      return action.fail("No mobs to attack in that direction.");
-    }
     const mob = getMob(target);
-    const mobName = ctx.mobName;
     if (!mob) {
-      return action.fail("No mobs to attack in that direction.");
+      return;
     }
-    const weapon = "weapon" in ctx ? ctx.weapon : undefined;
-    const dmg = "dmg" in ctx ? ctx.dmg : undefined;
+    const weapon = getAttackWeapon(getPlayer());
+    const dmg = weapon ? getDmg(weapon) : undefined;
 
     if (!weapon || !dmg) {
       return action.addPendingImmediateAction({
         type: PlayerActionType.POKE,
-        targetPosition: ctx.targetPosition,
+        targetPosition,
       });
     }
     const mobHp = getHp(mob);
@@ -95,13 +41,13 @@ export const resolvePlayerAttackAction = (
       action.addPendingImmediateAction({
         type: WorldActionType.KILL,
         entityId: mob.id,
-        position: ctx.targetPosition,
+        position: targetPosition,
       });
     } else {
       getManual(mob)?.onAfterTakeDamage?.(action, mob);
     }
     mobHp.hp = nextHp;
-    action.success(`Dealt ${dmg} dmg to ${mobName}`);
+    action.success(`Dealt ${dmg} dmg to ${getEntityName(mob)}`);
   })();
 
   return action.resolve();
