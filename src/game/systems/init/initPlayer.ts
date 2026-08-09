@@ -14,7 +14,7 @@ export const initPlayer = (): PlayerState => {
     (component) => (component.position = INITIAL_PLAYER_POSITION),
   );
   return {
-    player: PlayerEntityFactory.getDefault(),
+    player,
     position: INITIAL_PLAYER_POSITION,
   };
 };

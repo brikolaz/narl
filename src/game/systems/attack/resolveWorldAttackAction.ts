@@ -2,12 +2,12 @@ import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
-import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
+import { getAttackWeapon } from "./getAttackWeapon";
 
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
@@ -19,7 +19,7 @@ export const resolveWorldAttackAction = (
     const source = assert(getEntityById(sourceId), "No source");
     const sourceManual = getManual(source);
     const target = assert(getEntityById(targetId), "No target");
-    const weapon = getEquippedWeapon(source);
+    const weapon = getAttackWeapon(source);
 
     const sourceName = getEntityName(source);
     const targetName = getEntityName(target);

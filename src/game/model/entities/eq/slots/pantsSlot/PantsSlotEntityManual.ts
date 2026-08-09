@@ -16,7 +16,8 @@ import type { Manual } from "../../../../Manual";
 import { getContainerItemAt } from "../../../../queries/containers";
 import { isCursed } from "../../../../queries/curse";
 import { isDisabled } from "../../../../queries/disabled";
-import { getPlayerEntity, getPlayerPosition } from "../../../../queries/player";
+import { getPlayer } from "../../../../queries/player";
+import { getPosition } from "../../../../queries/position";
 import { DickEntityFactory } from "../../../items/DickEntity";
 
 export const PantsSlotEntityManual: Manual = {
@@ -31,10 +32,12 @@ export const PantsSlotEntityManual: Manual = {
       isCursed(itemAtSlot)
     ) {
       detachEntity(itemAtSlot);
-      dropItem(DickEntityFactory.getDefault(), getPlayerPosition());
-      dropItem(itemAtSlot, getPlayerPosition());
+      const player = getPlayer();
+      const playerPosition = getPosition(player);
+      dropItem(DickEntityFactory.getDefault(), playerPosition);
+      dropItem(itemAtSlot, playerPosition);
       const bleed = BleedComponent({ value: 5 });
-      upsertComponents(getPlayerEntity(), bleed);
+      upsertComponents(player, bleed);
       action.addPendingImmediateAction({
         type: WorldActionType.INIT_BLEED,
         bleedId: bleed.id,

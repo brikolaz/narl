@@ -5,7 +5,8 @@ import {
 } from "../../model/queries/containers";
 import { assert } from "../../../utils/assert";
 import { isRemovable } from "../../model/queries/items";
-import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
+import { getPosition } from "../../model/queries/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -27,7 +28,7 @@ export const resolveUnequipAction = (
 
   const action: Action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity();
+    const player = getPlayer();
     const backpack = assert(
       getBackpack(player),
       "Player has no backpack",
@@ -51,7 +52,7 @@ export const resolveUnequipAction = (
     if (isFull) {
       return action.addPendingImmediateAction({
         type: PlayerActionType.DROP_ITEM,
-        targetPosition: getPlayerPosition(),
+        targetPosition: getPosition(player),
         eqSlot: eqSlotIndex,
         invSlot: undefined,
         reason: PlayerDropItemActionReason.BACKPACK_FULL,

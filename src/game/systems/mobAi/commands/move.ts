@@ -1,6 +1,6 @@
 import type { Entity } from "../../../../core/model/Entity";
 import { assert } from "../../../../utils/assert";
-import { getPlayerEntity } from "../../../model/queries/player";
+import { getPlayer } from "../../../model/queries/player";
 import type { GameAction } from "../../actions/types";
 import { isHostile } from "../../attack/hostililty";
 import { getDirectionTo } from "../../movement/position";
@@ -12,7 +12,7 @@ import { hasPath } from "../path";
 import { canAttack } from "./attack";
 
 const canMove = (mob: Entity) => {
-  const player = getPlayerEntity();
+  const player = getPlayer();
 
   return (
     !canAttack(mob) &&
@@ -25,7 +25,7 @@ const canMove = (mob: Entity) => {
 };
 
 export const move = (mob: Entity): GameAction | undefined => {
-  const player = getPlayerEntity();
+  const player = getPlayer();
   if (canMove(mob)) {
     const direction = assert(getDirectionTo(mob, player), "Invalid direction");
     return {

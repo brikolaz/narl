@@ -1,4 +1,5 @@
-import { getPlayerPosition } from "../../../model/queries/player";
+import { getPlayer } from "../../../model/queries/player";
+import { getPosition } from "../../../model/queries/position";
 import { INV_SLOTS } from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
 import {
@@ -17,7 +18,7 @@ const getDropActionCommands = () => {
         type: PlayerActionType.DROP_ITEM,
         invSlot,
         eqSlot: undefined,
-        targetPosition: getPlayerPosition(),
+        targetPosition: getPosition(getPlayer()),
         reason: PlayerDropItemActionReason.MANUAL,
       };
     },

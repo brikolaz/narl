@@ -6,7 +6,6 @@ import {
 } from "../../../core/model/queries/components/normalize";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import { MainHandSlotComponent } from "../components/eq/slots/MainHandSlotComponent";
 import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
 import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";
 import { BootsSlotEntityFactory } from "../entities/eq/slots/BootsSlotEntity";
@@ -14,8 +13,7 @@ import { HeadSlotEntityFactory } from "../entities/eq/slots/HeadSlotEntity";
 import { MainHandSlotEntityFactory } from "../entities/eq/slots/MainHandSlotEntity";
 import { OffhandSlotEntityFactory } from "../entities/eq/slots/OffhandSlotEntity";
 import { PantsSlotEntityFactory } from "../entities/eq/slots/pantsSlot/PantsSlotEntity";
-import { getManual } from "../entities/getManual";
-import { getContainerItemAt, getContainerItems } from "./containers";
+import { getContainerItems } from "./containers";
 import { getPosition } from "./position";
 
 export const getEq = (entity: Entity): Entity[] => {
@@ -64,15 +62,6 @@ export const getEqItems = (entity: Entity) => {
   const eq = getEq(entity);
   const items = eq.flatMap((item) => getContainerItems(item));
   return items;
-};
-
-export const getEquippedWeapon = (entity: Entity): Entity | undefined => {
-  const manual = getManual(entity);
-  if (manual?.getEquippedWeapon) {
-    return manual?.getEquippedWeapon(entity);
-  }
-  const slot = getEqSlotByType(entity, MainHandSlotComponent);
-  return getContainerItemAt(slot, 1);
 };
 
 export const getEqSlotByPosition = (entity: Entity, position: number) => {

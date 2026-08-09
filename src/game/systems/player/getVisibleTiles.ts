@@ -3,11 +3,12 @@ import {
   MAX_WORLD_POSITION,
   MIN_WORLD_POSITION,
 } from "../../../utils/constants";
-import { getPlayerPosition } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
+import { getPosition } from "../../model/queries/position";
 import { STATE, type Tile } from "../../state/state";
 
 export const getVisibleTiles = (): Tile[] => {
-  const playerPosition = getPlayerPosition();
+  const playerPosition = getPosition(getPlayer());
   const half = Math.floor(MAP_SIZE / 2);
 
   let start = playerPosition - half;

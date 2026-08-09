@@ -5,7 +5,7 @@ import {
   getContainerItemAt,
 } from "../../model/queries/containers";
 import { getEqSlotByPosition } from "../../model/queries/eq";
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -22,7 +22,7 @@ export const resolvePlayerDropItemAction = (
   const { eqSlot, invSlot, targetPosition, reason } = gameAction;
   const action: Action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity();
+    const player = getPlayer();
     const backpack = assert(
       getBackpack(player),
       "Player has no backpack",

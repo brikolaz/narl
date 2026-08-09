@@ -1,4 +1,4 @@
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import type { WorldGainExpAction } from "../world/types";
@@ -12,7 +12,7 @@ export const resolveGainExpAction = (
   const { exp } = gameAction;
 
   (() => {
-    const target = getPlayerEntity();
+    const target = getPlayer();
 
     addExp(target, exp);
     action.info(`Gained ${exp} EXP`);

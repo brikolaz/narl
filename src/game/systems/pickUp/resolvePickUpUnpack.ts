@@ -7,6 +7,7 @@ import { assert } from "../../../utils/assert";
 import { isCursed } from "../../model/queries/curse";
 import { pickUpItem } from "../../model/queries/pickUp";
 import { getPlayer } from "../../model/queries/player";
+import { getPosition } from "../../model/queries/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { unpackContainer } from "../containers/containers";
@@ -23,7 +24,8 @@ export const resolvePickUpUnpack = (
 ): ActionResolution => {
   const action: Action = new Action(gameAction);
   (() => {
-    const { player, position: playerPosition } = getPlayer();
+    const player = getPlayer();
+    const playerPosition = getPosition(player);
     getVisibleTiles().forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;

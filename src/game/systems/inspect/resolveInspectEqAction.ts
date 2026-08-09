@@ -1,4 +1,4 @@
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { assert } from "../../../utils/assert";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -20,7 +20,7 @@ export const resolveInspectEqAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const player = getPlayerEntity();
+    const player = getPlayer();
     const slot = assert(
       getEqSlotByPosition(player, eqSlot),
       "No EQ slot",

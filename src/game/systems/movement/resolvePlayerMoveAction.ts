@@ -1,7 +1,8 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { hasMobs } from "../../model/queries/mobs";
-import { getPlayerEntity, getPlayerPosition } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
+import { getPosition } from "../../model/queries/position";
 import { getTile } from "../../model/queries/tile";
 import { STATE } from "../../state/state";
 import { Action } from "../actions/action";
@@ -13,7 +14,7 @@ import { markAsVisited } from "./exploration";
 import { getNextPosition } from "./position";
 
 const getNextState = (nextPlayerPosition: number): void => {
-  const player = getPlayerEntity();
+  const player = getPlayer();
   patchComponentByType(
     player,
     PositionComponent,
@@ -32,7 +33,7 @@ export const resolvePlayerMoveAction = (
   const { direction } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const currentPlayerPosition = getPlayerPosition();
+    const currentPlayerPosition = getPosition(getPlayer());
     const nextPlayerPosition = getNextPosition({
       currentPosition: currentPlayerPosition,
       direction,

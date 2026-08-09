@@ -1,4 +1,4 @@
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { assert } from "../../../utils/assert";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -14,7 +14,7 @@ export const resolveInspectInvAction = (
   const action: Action = new Action(gameAction);
 
   (() => {
-    const player = getPlayerEntity();
+    const player = getPlayer();
     const backpack = assert(
       getBackpack(player),
       "Player has no backpack",

@@ -6,17 +6,17 @@ import { PantsSlotComponent } from "../../../components/eq/slots/PantsSlotCompon
 import type { Manual } from "../../../Manual";
 import { getContainerItemAt } from "../../../queries/containers";
 import { getEqSlotByType } from "../../../queries/eq";
-import { getPlayerEntity } from "../../../queries/player";
+import { getPlayer } from "../../../queries/player";
 
 export const RingEntityManual: Manual = {
   shouldBeCursed(item: Entity): boolean {
-    const pantsSlot = getEqSlotByType(getPlayerEntity(), PantsSlotComponent);
+    const pantsSlot = getEqSlotByType(getPlayer(), PantsSlotComponent);
     return getContainerItemAt(pantsSlot, 1)?.id === item.id;
   },
 
   curse(gameAction, item) {
     removeComponentsByType(item, RemovableComponent.type);
-    const pantsSlot = getEqSlotByType(getPlayerEntity(), PantsSlotComponent);
+    const pantsSlot = getEqSlotByType(getPlayer(), PantsSlotComponent);
     gameAction.addPendingDelayedAction(
       {
         type: WorldActionType.DISABLE,

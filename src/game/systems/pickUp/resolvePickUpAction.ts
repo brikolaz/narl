@@ -1,5 +1,6 @@
 import { removeById } from "../../../utils/removeById";
 import { getPlayer } from "../../model/queries/player";
+import { getPosition } from "../../model/queries/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
@@ -20,7 +21,8 @@ export const resolvePickUpAction = (
 ): ActionResolution => {
   const action = new Action(gameAction);
   (() => {
-    const { player, position: playerPosition } = getPlayer();
+    const player = getPlayer();
+    const playerPosition = getPosition(player);
     getVisibleTiles().forEach((tile) => {
       if (playerPosition !== tile.position) {
         return;

@@ -4,7 +4,7 @@ import { GlyphComponent } from "../model/components/display/GlyphComponent";
 import { PositionComponent } from "../model/components/PositionComponent";
 import { getBackpack, getContainerItemAt } from "../model/queries/containers";
 import { getEq } from "../model/queries/eq";
-import { getPlayerEntity } from "../model/queries/player";
+import { getPlayer } from "../model/queries/player";
 import { STATE } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
 import { getEqStats } from "../systems/stats/eqStats";
@@ -59,7 +59,7 @@ const getHighlightedGlyphView = <T extends number>(
 };
 
 export const getPlayerStatsView = (): PlayerStatsView => {
-  const player = getPlayerEntity();
+  const player = getPlayer();
 
   return {
     ...getPlayerStats(player),
@@ -68,7 +68,7 @@ export const getPlayerStatsView = (): PlayerStatsView => {
 };
 
 export const getEquipmentView = (): EquipmentView => {
-  const player = getPlayerEntity();
+  const player = getPlayer();
   const slots = getEq(player);
 
   return slots.map((slot) =>
@@ -81,7 +81,7 @@ export const getEquipmentView = (): EquipmentView => {
 };
 
 export const getBackpackView = (): BackpackView => {
-  const backpack = getBackpack(getPlayerEntity());
+  const backpack = getBackpack(getPlayer());
 
   return [...ALL_CONTAINER_SLOTS].map((slot) =>
     getHighlightedGlyphView(

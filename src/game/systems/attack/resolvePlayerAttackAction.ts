@@ -1,16 +1,16 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
 import { getDmg } from "../../model/queries/dmg";
-import { getEquippedWeapon } from "../../model/queries/eq";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import { PlayerActionType, type PlayerPokeAction } from "../player/types";
 import { WorldActionType } from "../world/types";
+import { getAttackWeapon } from "./getAttackWeapon";
 
 type AttackContext =
   | {
@@ -45,9 +45,9 @@ export const prepareAttack = ({
     return { ok: false, message: "No mobs to attack in that direction." };
   }
 
-  const player = getPlayerEntity();
+  const player = getPlayer();
 
-  const weapon = getEquippedWeapon(player);
+  const weapon = getAttackWeapon(player);
 
   const dmg = weapon ? getDmg(weapon) : undefined;
   const mobName = getEntityName(mob);

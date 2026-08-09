@@ -8,7 +8,7 @@ import {
   getFirstContainerItem,
 } from "../../model/queries/containers";
 import { getItemSlots } from "../../model/queries/items";
-import { getPlayerEntity } from "../../model/queries/player";
+import { getPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
@@ -57,7 +57,7 @@ export const resolveEquipAction = (
   const { invSlot: invSlotIndex } = gameAction;
   const action = new Action(gameAction);
   (() => {
-    const player = getPlayerEntity();
+    const player = getPlayer();
     const backpack = assert(
       getBackpack(player),
       "Player has no backpack",
