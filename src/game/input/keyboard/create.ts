@@ -8,6 +8,7 @@ import { getMoveItemCommand } from "./commands/moveItemCommand";
 import { getPickUpCommand } from "./commands/pickupCommand";
 import { getPokeCommand } from "./commands/pokeCommand";
 import { getUnequipCommand } from "./commands/unequipCommand";
+import { getWaitCommand } from "./commands/waitCommand";
 
 export const createKeyboardToAction = ():
   | KeyboardToAction => ({
@@ -20,4 +21,5 @@ export const createKeyboardToAction = ():
   KeyM: getMoveItemCommand(),
   KeyD: getDropCommand(),
   KeyP: getPokeCommand(),
+  KeyW: getWaitCommand(),
 });

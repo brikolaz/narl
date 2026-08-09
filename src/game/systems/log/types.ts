@@ -5,8 +5,8 @@ import type { PlayerAction } from "../player/types";
 export type LogEntry = {
   message: string;
   action: Pick<GameAction, "type"> | GameAction;
-  turn: number;
-  count: number;
+  startTurn: number;
+  endTurn: number;
 };
 
 export type PendingLog = {

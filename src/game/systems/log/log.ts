@@ -6,25 +6,26 @@ import { type PlayerAction } from "../player/types";
 import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
+export const getLogEntryCount = (entry: LogEntry) => {
+  return entry.endTurn - entry.startTurn + 1;
+};
+
 const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
   const lastLog = logs.at(-1);
 
-  if (lastLog?.message !== entry.message || lastLog.turn !== entry.turn) {
+  if (lastLog?.message !== entry.message) {
     return [...logs, entry].slice(-MAX_VISIBLE_LOGS);
   }
 
-  return [
-    ...logs.slice(0, -1),
-    { ...lastLog, count: lastLog.count + entry.count },
-  ];
+  return [...logs.slice(0, -1), { ...lastLog, endTurn: entry.endTurn }];
 };
 
 const addLog = (action: GameAction, message: string): LogEntry[] => {
   return stackLog(STATE.log, {
     message,
     action,
-    turn: STATE.turn,
-    count: 1,
+    startTurn: STATE.turn,
+    endTurn: STATE.turn,
   });
 };
 
@@ -42,7 +43,8 @@ export const flushLogs = (
     (next, log) =>
       stackLog(next, {
         ...log,
-        turn: nextTurn,
+        startTurn: nextTurn,
+        endTurn: nextTurn,
         count: 1,
       }),
     STATE.log,
@@ -60,7 +62,9 @@ export const getPendingLogs = (action: GameAction, messages: string[]) => {
   }, []);
 };
 
-export const getInternalLogAction = (message: string | string[]): GameAction => ({
+export const getInternalLogAction = (
+  message: string | string[],
+): GameAction => ({
   type: InternalActionType.LOG,
   message,
 });

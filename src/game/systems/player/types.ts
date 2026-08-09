@@ -15,6 +15,7 @@ export const PlayerActionType = {
   INSPECT_INV: "PLAYER_INSPECT_INV",
   INSPECT_EQ: "PLAYER_INSPECT_EQ",
   POKE: "PLAYER_POKE",
+  WAIT: "PLAYER_WAIT",
 } as const satisfies Enum;
 export type PlayerActionType = EnumType<typeof PlayerActionType>;
 
@@ -71,6 +72,8 @@ export type PlayerMoveItemAction = {
   toSlot: InvSlot;
 };
 
+export type PlayerWaitAction = { type: typeof PlayerActionType.WAIT };
+
 export type PlayerAction =
   | PlayerDropItemAction
   | PlayerMoveAction
@@ -82,4 +85,5 @@ export type PlayerAction =
   | PlayerMoveItemAction
   | PlayerInspectInvAction
   | PlayerInspectEqAction
-  | PlayerPokeAction;
+  | PlayerPokeAction
+  | PlayerWaitAction;

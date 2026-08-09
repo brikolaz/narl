@@ -7,6 +7,7 @@ import { getEq } from "../model/queries/eq";
 import { getPlayer } from "../model/queries/player";
 import { STATE } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
+import { getLogEntryCount } from "../systems/log/log";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
 import { getRenderedMap } from "./getRenderedMap";
@@ -93,9 +94,16 @@ export const getBackpackView = (): BackpackView => {
 };
 
 export const getLogsView = (): LogEntryView[] =>
-  STATE.log.map((entry) => ({
-    text: `[${entry.turn}] ${entry.message}${entry.count > 1 ? ` (x${entry.count})` : ""}`,
-  }));
+  STATE.log.map((entry) => {
+    const spansTurns = entry.startTurn !== entry.endTurn;
+    const turnLabel = spansTurns
+      ? `[${entry.startTurn},${entry.endTurn}]`
+      : `[${entry.endTurn}]`;
+    const count = getLogEntryCount(entry);
+    const countLabel = count > 1 ? ` (x${count})` : "";
+
+    return { text: `${turnLabel} ${entry.message}${countLabel}` };
+  });
 
 export const getGameViewModel = (): GameViewModel => ({
   map: getRenderedMap().map((tile) => ({
