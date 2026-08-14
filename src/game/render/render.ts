@@ -124,13 +124,12 @@ const renderMap = (
 
 const renderAsciiGrid = (
   target: HTMLElement,
-  title: string,
   glyphs: ColoredGlyphView[],
 ) => {
   const border = "+---+---+---+";
   const fragment = document.createDocumentFragment();
 
-  fragment.append(`${title}\n${border}\n`);
+  fragment.append(`${border}\n`);
 
   Array.from({ length: 3 }, (_, row) => {
     const offset = row * 3;
@@ -161,7 +160,6 @@ const renderEqGrid = (
   };
 
   appendText(`
-     E Q
     +---+
     | `);
 
@@ -212,7 +210,7 @@ export const render = (viewModel: GameViewModel) => {
     .join("\n");
 
   renderMap(map, viewModel.map);
-  renderAsciiGrid(backpack, "BACKPACK", viewModel.backpack);
+  renderAsciiGrid(backpack, viewModel.backpack);
   renderEqGrid(eq, viewModel.equipment);
 
   log.textContent = viewModel.logs
