@@ -7,6 +7,7 @@ export type LogEntry = {
   action: Pick<GameAction, "type"> | GameAction;
   startTurn: number;
   endTurn: number;
+  count: number;
 };
 
 export type PendingLog = {

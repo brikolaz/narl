@@ -7,7 +7,7 @@ import { increaseTurn } from "../turn/turn";
 import type { LogEntry, PendingLog } from "./types";
 
 export const getLogEntryCount = (entry: LogEntry) => {
-  return entry.endTurn - entry.startTurn + 1;
+  return entry.count;
 };
 
 const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
@@ -17,7 +17,14 @@ const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
     return [...logs, entry].slice(-MAX_VISIBLE_LOGS);
   }
 
-  return [...logs.slice(0, -1), { ...lastLog, endTurn: entry.endTurn }];
+  return [
+    ...logs.slice(0, -1),
+    {
+      ...lastLog,
+      endTurn: entry.endTurn,
+      count: lastLog.count + entry.count,
+    },
+  ];
 };
 
 const addLog = (action: GameAction, message: string): LogEntry[] => {
@@ -26,6 +33,7 @@ const addLog = (action: GameAction, message: string): LogEntry[] => {
     action,
     startTurn: STATE.turn,
     endTurn: STATE.turn,
+    count: 1,
   });
 };
 
