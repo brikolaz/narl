@@ -38,7 +38,6 @@ const getInvCommands = (): KeyboardToAction => ({
           UI_STATE.highlights.invSlot.resetHighlightedSlot();
           return getEqCommands();
         },
-        message: "Inspect context: EQ",
         fallback: "Invalid direction",
       },
       ...(isInvLinkPoint() && {
@@ -48,7 +47,6 @@ const getInvCommands = (): KeyboardToAction => ({
             UI_STATE.highlights.eqSlot.highlightSlot(6);
             return getEqCommands();
           },
-          message: "Inspect context: EQ",
           fallback: "Invalid direction",
         },
       }),
@@ -75,7 +73,6 @@ const getEqCommands = (): KeyboardToAction => ({
           UI_STATE.highlights.eqSlot.resetHighlightedSlot();
           return getInvCommands();
         },
-        message: "Inspect context: INV",
         fallback: "Invalid direction",
       },
       ...(isEqLinkPoint() && {
@@ -85,7 +82,6 @@ const getEqCommands = (): KeyboardToAction => ({
             UI_STATE.highlights.invSlot.highlightSlot(2);
             return getInvCommands();
           },
-          message: "Inspect context: INV",
           fallback: "Invalid direction",
         },
       }),
