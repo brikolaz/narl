@@ -36,6 +36,6 @@ export const getDmg = (entity: Entity): number => {
   }
 
   const childrenDmg = getChildrenDmg(entity);
-  const totalDmg = (ownDmg + childrenDmg) * getDmgMod(entity);
+  const totalDmg = ownDmg + childrenDmg * getDmgMod(entity);
   return Math.ceil(totalDmg);
 };
