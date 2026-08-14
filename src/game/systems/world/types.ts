@@ -16,6 +16,8 @@ export const WorldActionType = {
   MOVE: "WORLD_MOVE",
   MOB_AI: "WORLD_MOB_AI",
   HEAL: "WORLD_HEAL",
+  GAME_OVER: "WORLD_GAME_OVER",
+  PENDING_GAME_OVER: "WORLD_PENDING_GAME_OVER",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -87,17 +89,11 @@ export type WorldHealAction = {
   value: number;
 };
 
+export type WorldGameOverAction = { type: typeof WorldActionType.GAME_OVER };
+
+export type WorldPendingGameOverAction = {
+  type: typeof WorldActionType.PENDING_GAME_OVER;
+};
+
 export type WorldAction =
-  | WorldDropItemAction
-  | WorldGainExpAction
-  | WorldKillAction
-  | WorldRemoveEntityAction
-  | WorldAttackAction
-  | WorldCurseAction
-  | WorldDisableAction
-  | WorldBleedAction
-  | WorldInitBleedAction
-  | WorldCleanupBleedAction
-  | WorldMoveAction
-  | WorldMobAiAction
-  | WorldHealAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction;

@@ -5,8 +5,9 @@ import { PositionComponent } from "../model/components/PositionComponent";
 import { getBackpack, getContainerItemAt } from "../model/queries/containers";
 import { getEq } from "../model/queries/eq";
 import { getPlayer } from "../model/queries/player";
-import { STATE } from "../state/state";
+import { STATE, type DeathContext } from "../state/state";
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
+import { isGameOver } from "../systems/gameOver/gameOver";
 import { getLogEntryCount } from "../systems/log/log";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
@@ -27,11 +28,14 @@ export type BackpackView = ColoredGlyphView[];
 export type LogEntryView = { text: string };
 
 export type GameViewModel = {
+  gameOver: typeof isGameOver;
+  turn: number;
   map: RenderedMap;
   playerStats: PlayerStatsView;
   equipment: EquipmentView;
   backpack: BackpackView;
   logs: LogEntryView[];
+  death: DeathContext;
 };
 
 const getGlyphView = (
@@ -93,7 +97,7 @@ export const getBackpackView = (): BackpackView => {
   );
 };
 
-export const getLogsView = (): LogEntryView[] =>
+export const getLogsView = (): LogEntryView[] => 
   STATE.log.map((entry) => {
     const spansTurns = entry.startTurn !== entry.endTurn;
     const turnLabel = spansTurns
@@ -106,6 +110,8 @@ export const getLogsView = (): LogEntryView[] =>
   });
 
 export const getGameViewModel = (): GameViewModel => ({
+  gameOver: isGameOver,
+  turn: STATE.turn,
   map: getRenderedMap().map((tile) => ({
     char: tile.char ?? " ",
     color: tile.color,
@@ -115,4 +121,5 @@ export const getGameViewModel = (): GameViewModel => ({
   equipment: getEquipmentView(),
   backpack: getBackpackView(),
   logs: getLogsView(),
+  death: STATE.death,
 });

@@ -1,33 +1,42 @@
-import "./patches";
-import { render } from "./game/render/render";
-import { createInitialState, STATE, type GameState } from "./game/state/state";
-import { dispatchGameAction } from "./game/systems/actions/gameAction/dispatchGameAction";
 import type { KeyboardToActionChain } from "./game/input/keyboard/chain";
 import { mapKeyboardEventToAction } from "./game/input/keyboard/mapKeyboardEventToAction";
-import { InternalActionType } from "./game/systems/internal/type";
 import {
   getGameViewModel,
   type GameViewModel,
 } from "./game/render/getGameViewModel";
 import "./game/render/index.css";
-import type { GameAction } from "./game/systems/actions/types";
+import { render } from "./game/render/render";
+import {
+  GAME_STATUS,
+  STATE,
+  type GameState
+} from "./game/state/state";
+import { dispatch } from "./game/systems/actions/gameAction/dispatchGameAction";
+import { InternalActionType } from "./game/systems/internal/type";
+import "./patches";
 
 type Game = {
   state: GameState;
-  dispatch: (action: GameAction) => void;
+  dispatch: typeof dispatch;
   view: GameViewModel;
+  gameOver: boolean;
+  pendingGameOver: boolean;
 };
 
 const createGame = (): Game => {
-  const state = createInitialState();
+  const state = STATE;
 
   return {
     state,
-    dispatch(action) {
-      dispatchGameAction(action);
-    },
+    dispatch,
     get view() {
       return getGameViewModel();
+    },
+    get gameOver() {
+      return state.status === GAME_STATUS.GAME_OVER;
+    },
+    get pendingGameOver() {
+      return state.status === GAME_STATUS.PENDING_GAME_OVER;
     },
   };
 };
@@ -40,15 +49,10 @@ console.debug(STATE);
 
 let keyboardChain: KeyboardToActionChain = undefined;
 const handleKeyDown = (event: KeyboardEvent) => {
+  event.preventDefault();
+
   const result = mapKeyboardEventToAction(event, keyboardChain);
   keyboardChain = result.keyboardChain;
-
-  if (!result.action) {
-    render(game.view);
-    return;
-  }
-
-  event.preventDefault();
 
   game.dispatch(result.action);
   render(game.view);

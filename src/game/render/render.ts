@@ -26,6 +26,10 @@ const log = document.createElement("pre");
 log.className = "log";
 log.setAttribute("aria-label", "Game log");
 
+const gameOver = document.createElement("pre");
+gameOver.className = "game-over";
+gameOver.setAttribute("aria-label", "Game over");
+
 const game = document.createElement("main");
 game.className = "game";
 game.append(stats, map);
@@ -34,7 +38,29 @@ const inventory = document.createElement("aside");
 inventory.className = "inventory";
 inventory.append(eq, backpack);
 
-root.append(inventory, game, log);
+const renderGameLayout = () => {
+  root.replaceChildren(inventory, game, log);
+};
+
+renderGameLayout();
+
+const renderGameOver = ({ turn, epitaph }: GameViewModel["death"]) => {
+  gameOver.textContent = [
+    "",
+    "GAME OVER",
+    "",
+    "Died at:",
+    `Turn ${turn}`,
+    "",
+    "Killed by:",
+    `${epitaph}`,
+    "",
+    "",
+    "Press any key to restart",
+  ].join("\n");
+
+  root.replaceChildren(gameOver);
+};
 
 const appendColoredGlyph = (
   target: DocumentFragment | HTMLElement,
@@ -48,12 +74,15 @@ const appendColoredGlyph = (
   }
 
   const coloredGlyph = document.createElement("span");
+
   if (glyph.color) {
     coloredGlyph.style.color = glyph.color;
   }
+
   if (glyph.background) {
     coloredGlyph.style.backgroundColor = glyph.background;
   }
+
   coloredGlyph.textContent = char;
   target.append(coloredGlyph);
 };
@@ -63,8 +92,10 @@ const renderMap = (
   tiles: Array<ColoredGlyphView & { position: number }>,
 ) => {
   const fragment = document.createDocumentFragment();
+
   const glyphs = document.createElement("span");
   glyphs.className = "map-row";
+
   tiles.forEach((tile) => {
     const glyph = document.createElement("span");
     appendColoredGlyph(glyph, tile);
@@ -73,10 +104,12 @@ const renderMap = (
 
   const positions = document.createElement("span");
   positions.className = "map-positions";
+
   [glyphs, positions].forEach((row) => {
     row.style.gridTemplateColumns = `repeat(${tiles.length}, 1fr)`;
     row.style.width = `${tiles.length * 1.15}em`;
   });
+
   tiles.forEach((tile) => {
     const position = document.createElement("span");
     position.className = "map-position";
@@ -96,26 +129,31 @@ const renderAsciiGrid = (
 ) => {
   const border = "+---+---+---+";
   const fragment = document.createDocumentFragment();
+
   fragment.append(`${title}\n${border}\n`);
 
   Array.from({ length: 3 }, (_, row) => {
     const offset = row * 3;
+
     fragment.append("| ");
     appendColoredGlyph(fragment, glyphs[offset]);
+
     fragment.append(" | ");
     appendColoredGlyph(fragment, glyphs[offset + 1]);
+
     fragment.append(" | ");
     appendColoredGlyph(fragment, glyphs[offset + 2]);
-    fragment.append(
-      ` |\n${border}`,
-      row < 2 ? "\n" : "",
-    );
+
+    fragment.append(` |\n${border}`, row < 2 ? "\n" : "");
   });
 
   target.replaceChildren(fragment);
 };
 
-const renderEqGrid = (target: HTMLElement, glyphs: ColoredGlyphView[]) => {
+const renderEqGrid = (
+  target: HTMLElement,
+  glyphs: ColoredGlyphView[],
+) => {
   const fragment = document.createDocumentFragment();
 
   const appendText = (text: string) => {
@@ -162,11 +200,22 @@ const renderEqGrid = (target: HTMLElement, glyphs: ColoredGlyphView[]) => {
 };
 
 export const render = (viewModel: GameViewModel) => {
+  if (viewModel.gameOver()) {
+    renderGameOver(viewModel.death);
+    return;
+  }
+
+  renderGameLayout();
+
   stats.textContent = Object.entries(viewModel.playerStats)
     .map(([stat, value]) => `${stat}: ${value}`)
     .join("\n");
+
   renderMap(map, viewModel.map);
   renderAsciiGrid(backpack, "BACKPACK", viewModel.backpack);
   renderEqGrid(eq, viewModel.equipment);
-  log.textContent = viewModel.logs.map((entry) => entry.text).join("\n");
+
+  log.textContent = viewModel.logs
+    .map((entry) => entry.text)
+    .join("\n");
 };

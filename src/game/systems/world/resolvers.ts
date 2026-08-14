@@ -12,6 +12,8 @@ import { resolveWorldCleanupBleedAction } from "../bleed/resolveWorldCleanupBlee
 import { resolveWorldMoveAction } from "../movement/resolveWorldMoveAction";
 import { resolveWorldMobAiAction } from "../mobAi/resolveWorldMobAiAction";
 import { resolveWorldHealAction } from "../heal/resolveWorldHealAction";
+import { resolveWorldGameOverAction } from "../gameOver/resolveWorldGameOverAction";
+import { resolveWorldPendingGameOverAction } from "../gameOver/resolveWorldPendingGameOverAction";
 import { WorldActionType } from "./types";
 
 export type AnyWorldResolver = (action: any) => ActionResolution;
@@ -30,4 +32,6 @@ export const worldActionResolvers = {
   [WorldActionType.MOVE]: resolveWorldMoveAction,
   [WorldActionType.MOB_AI]: resolveWorldMobAiAction,
   [WorldActionType.HEAL]: resolveWorldHealAction,
+  [WorldActionType.GAME_OVER]: resolveWorldGameOverAction,
+  [WorldActionType.PENDING_GAME_OVER]: resolveWorldPendingGameOverAction,
 } satisfies Record<WorldActionType, AnyWorldResolver>;

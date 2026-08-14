@@ -5,6 +5,7 @@ import { getDmg } from "../../model/queries/dmg";
 import { getHp } from "../../model/queries/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { initDeath } from "../gameOver/death";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
@@ -14,7 +15,7 @@ export const resolveWorldAttackAction = (
 ): ActionResolution => {
   const { sourceId, targetId } = gameAction;
   const action = new Action(gameAction);
-  
+
   (() => {
     const source = assert(getEntityById(sourceId), "No source");
     const sourceManual = getManual(source);
@@ -29,7 +30,9 @@ export const resolveWorldAttackAction = (
     }
     const dmg = getDmg(weapon);
     const targetHp = getHp(target);
-    targetHp.hp = targetHp.hp - dmg;
+    initDeath(() => {
+      targetHp.hp = targetHp.hp - dmg;
+    });
     sourceManual?.onAttack?.(action, source, target);
     return action.success(
       `${sourceName} hits ${targetName}. ${targetName} lose ${dmg} HP`,

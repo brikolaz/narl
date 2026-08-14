@@ -4,6 +4,7 @@ import { BleedComponent } from "../../model/components/BleedComponent";
 import { getHp } from "../../model/queries/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { initDeath } from "../gameOver/death";
 import { getEntityName } from "../inspect/getEntityName";
 import type { WorldBleedAction } from "../world/types";
 
@@ -25,7 +26,9 @@ export const resolveWorldBleedAction = (
     const bleed = bleedRecord.component as ReturnType<typeof BleedComponent>;
     const hp = getHp(bleedRecord.parent);
 
-    hp.hp -= bleed.value;
+    initDeath(() => {
+      hp.hp -= bleed.value;
+    });
 
     return action.info(
       `${getEntityName(bleedRecord.parent)} bleed for ${bleed.value} HP`,

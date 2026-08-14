@@ -1,13 +1,19 @@
 import type { Id } from "../../../../core/model/Id";
-import { STATE, type GameState } from "../../../state/state";
+import { STATE } from "../../../state/state";
+import { shouldEndGame } from "../../gameOver/endCondition";
+import {
+  getGameOverAction,
+  getPendingGameOverAction,
+  isGameOver,
+  isPendingGameOver,
+} from "../../gameOver/gameOver";
+import { InternalActionType } from "../../internal/type";
 import { flushLogs, recordPlayerAction } from "../../log/log";
 import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
 import { increaseTurn } from "../../turn/turn";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
-import {
-  applyTimedAction
-} from "../timedActions/timedActions";
+import { applyTimedAction } from "../timedActions/timedActions";
 import type { TimedAction } from "../timedActions/types";
 import type { ActionResolution, GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
@@ -66,7 +72,7 @@ export const drainDequeuedAction = (
   return drainAction(timedAction.action, context);
 };
 
-export const dispatchGameAction = (action: GameAction): GameState => {
+const dispatchGameAction = (action: GameAction): void => {
   const context: DrainContext = {
     pendingLogs: [],
     processedActions: new Set(),
@@ -83,11 +89,39 @@ export const dispatchGameAction = (action: GameAction): GameState => {
     runWorldTurn(context);
   }
 
+  if (shouldEndGame()) {
+    drainAction(getPendingGameOverAction(), context);
+  }
+
   flushLogs(context.pendingLogs, consumesTurn);
 
   if (consumesTurn) {
     STATE.turn = increaseTurn(STATE.turn);
   }
 
-  return STATE;
+  if (shouldEndGame()) {
+    getPendingGameOverAction();
+  }
+};
+
+export const dispatch = (action?: GameAction): void => {
+  if (isGameOver()) {
+    dispatchGameAction({
+      type: InternalActionType.INIT,
+    });
+
+    return;
+  }
+  if (isPendingGameOver()) {
+    dispatchGameAction(getGameOverAction());
+    return;
+  }
+
+  if (!action) return;
+
+  dispatchGameAction(action);
+
+  if (shouldEndGame()) {
+    dispatchGameAction(getPendingGameOverAction());
+  }
 };

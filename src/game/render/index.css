@@ -77,3 +77,9 @@ body {
   word-break: normal;
   width: 300px;
 }
+
+.game-over {
+  margin: 0;
+  white-space: pre;
+  text-align: center;
+}

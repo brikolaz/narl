@@ -1,6 +1,7 @@
 import { getEntityCreator, type Entity } from "../../core/model/Entity";
 import { type ComponentRegistryById } from "../../core/model/registry/componentRegistry";
 import { type EntityRegistryById } from "../../core/model/registry/entityRegistry";
+import type { Enum, EnumType } from "../../utils/types/Enum";
 import type { TimedAction } from "../systems/actions/timedActions/types";
 import type { ActionLog, LogEntry } from "../systems/log/types";
 
@@ -14,12 +15,25 @@ export type Tile = {
 export type WorldState = Tile[];
 
 export type PlayerState = {
-  player: Entity;
+  player: Entity | undefined;
   position: number;
 };
 
+export const GAME_STATUS = {
+  INACTIVE: "INACTIVE",
+  ACTIVE: "ACTIVE",
+  PENDING_GAME_OVER: "PENDING_GAME_OVER",
+  GAME_OVER: "GAME_OVER",
+} as const satisfies Enum;
+type GameStatus = EnumType<typeof GAME_STATUS>;
+
+export type DeathContext = Partial<{
+  epitaph: string;
+  turn: number;
+}>;
+
 export type GameState = {
-  initialized: boolean;
+  status: GameStatus;
   world: WorldState;
   turn: number;
   log: LogEntry[];
@@ -27,19 +41,18 @@ export type GameState = {
   player: PlayerState;
   entityRegistryById: EntityRegistryById;
   componentRegistryById: ComponentRegistryById;
-  timedActions: TimedAction[]
+  timedActions: TimedAction[];
   getId: () => number;
+  death: DeathContext;
 };
-
-export let STATE: GameState;
 
 export const createInitialState = (): GameState => {
   const entityRegistryById: EntityRegistryById = {};
   const componentRegistryById: ComponentRegistryById = {};
   let id = 0;
 
-  STATE = {
-    initialized: false,
+  return {
+    status: GAME_STATUS.INACTIVE,
     world: [],
     turn: 0,
     log: [],
@@ -51,18 +64,23 @@ export const createInitialState = (): GameState => {
     get componentRegistryById() {
       return componentRegistryById;
     },
-
-    player: undefined as unknown as PlayerState,
     timedActions: [],
     getId() {
       return id++;
     },
+    death: {},
+    player: {
+      player: undefined,
+      position: 0,
+    },
   };
+};
 
-  STATE.player = {
-    player: getEntityCreator("DUMMY")(),
-    position: 0,
-  };
+export let STATE: GameState = createInitialState();
 
-  return STATE;
+export const initState = (): void => {
+  Object.defineProperties(
+    STATE,
+    Object.getOwnPropertyDescriptors(createInitialState()),
+  );
 };

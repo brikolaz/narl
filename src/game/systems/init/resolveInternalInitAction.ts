@@ -1,6 +1,6 @@
 import { removeEntity } from "../../../core/model/queries/entities/remove";
 import { INITIAL_TURN } from "../../../utils/constants";
-import { STATE } from "../../state/state";
+import { GAME_STATUS, initState, STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type InternalInitAction } from "../internal/type";
@@ -13,23 +13,24 @@ export const resolveInternalInitAction = (
 ): ActionResolution => {
   const action = new Action(gameAction);
 
-  if (STATE.initialized) {
+  if (
+    STATE.status !== GAME_STATUS.INACTIVE &&
+    STATE.status !== GAME_STATUS.GAME_OVER
+  ) {
     throw new Error("Can't reinitialize the game");
   }
 
   validateSpawnTables();
 
   (() => {
-    const oldPlayer = STATE.player.player;
+    initState();
 
     STATE.world = initWorld();
     STATE.turn = INITIAL_TURN;
     STATE.log = [];
     STATE.actionLog = [];
-    STATE.initialized = true;
     STATE.player = initPlayer();
-
-    removeEntity(oldPlayer);
+    STATE.status = GAME_STATUS.ACTIVE;
 
     action.info("You'd rather stay dead");
   })();
