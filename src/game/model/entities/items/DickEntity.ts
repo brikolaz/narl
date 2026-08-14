@@ -15,11 +15,12 @@ export const DickEntity = getEntityCreator("DICK");
 export const DickEntityFactory: ItemFactory = {
   getDefault: () => {
     const dick = DickEntity();
+    const dmg = getRng(dick).range(1, 3);
     upsertComponents(
       dick,
       GlyphComponent({ glyph: "=" }),
       NameComponent({ name: "Dick" }),
-      DmgComponent({ dmg: getRng(dick).range(1, 3) }),
+      DmgComponent({ min: dmg, max: dmg }),
       RemovableComponent(),
       MainHandComponent(),
       PickupableComponent(),

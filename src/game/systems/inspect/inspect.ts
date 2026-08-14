@@ -5,10 +5,11 @@ import { InspectedComponent } from "../../model/components/inspect/InspectedComp
 import { DefComponent } from "../../model/components/items/DefComponent";
 import { getDef } from "../../model/queries/def";
 import {
-  getChildrenDmg, 
-  getDmg,
+  formatDmgRange,
+  getChildrenDmgRange,
+  getDmgRange,
   getDmgMod,
-  getOwnDmg,
+  getOwnDmgRange,
 } from "../../model/queries/dmg";
 import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
@@ -30,13 +31,15 @@ export const getInspectDesc = (entity: Entity) => {
 export const getItemInspectText = (entity: Entity): string => {
   const stats = [];
   if (isContainer(entity)) {
-    stats.push(`${getDmg(entity)} TOTAL DMG`);
-    stats.push(`${getOwnDmg(entity)} OWN DMG`);
-    stats.push(`${getChildrenDmg(entity)} CHILDREN DMG`);
+    stats.push(`${formatDmgRange(getDmgRange(entity))} TOTAL DMG`);
+    stats.push(`${formatDmgRange(getOwnDmgRange(entity))} OWN DMG`);
+    stats.push(
+      `${formatDmgRange(getChildrenDmgRange(entity))} CHILDREN DMG`,
+    );
     stats.push(`${getDmgMod(entity)} DMG MOD`);
   } else {
     if (isWeapon(entity)) {
-      stats.push(`${getDmg(entity)} DMG`);
+      stats.push(`${formatDmgRange(getOwnDmgRange(entity))} DMG`);
     }
     if (hasComponentsByType(entity, DefComponent)) {
       stats.push(`${getDef(entity)} DEF`);

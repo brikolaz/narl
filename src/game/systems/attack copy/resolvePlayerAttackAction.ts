@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getManual } from "../../model/entities/getManual";
-import { getDmg } from "../../model/queries/dmg";
+import { rollDmg } from "../../model/queries/dmg";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
@@ -8,7 +8,7 @@ import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
-import type { PlayerPokeAction } from "../player/types";
+import { PlayerActionType, type PlayerPokeAction } from "../player/types";
 import { WorldActionType } from "../world/types";
 import { getAttackWeapon } from "../attack/getAttackWeapon";
 
@@ -49,7 +49,7 @@ export const prepareAttack = ({
 
   const weapon = getAttackWeapon(player);
 
-  const dmg = weapon ? getDmg(weapon) : undefined;
+  const dmg = weapon ? rollDmg(weapon) : undefined;
   const mobName = getEntityName(mob);
 
   return {
@@ -83,11 +83,10 @@ export const resolvePlayerAttackAction = (
     const dmg = "dmg" in ctx ? ctx.dmg : undefined;
     // TODO: add Poke resolver, add keybinding
     if (!weapon || !dmg) {
-      if (getManual(mob)?.poke) {
-        getManual(mob)?.poke?.(action, mob);
-        return;
-      }
-      return action.success(`Poked ${mobName}`);
+      return action.addPendingImmediateAction({
+        type: PlayerActionType.POKE,
+        targetPosition: ctx.targetPosition,
+      });
     }
     const mobHp = getHp(mob);
     const nextHp = mobHp?.hp - dmg;

@@ -1,5 +1,5 @@
 import { getManual } from "../../model/entities/getManual";
-import { getDmg } from "../../model/queries/dmg";
+import { rollDmg } from "../../model/queries/dmg";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
@@ -26,7 +26,7 @@ export const resolvePlayerAttackAction = (
       return;
     }
     const weapon = getAttackWeapon(getPlayer());
-    const dmg = weapon ? getDmg(weapon) : undefined;
+    const dmg = weapon ? rollDmg(weapon) : undefined;
 
     if (!weapon || !dmg) {
       return action.addPendingImmediateAction({

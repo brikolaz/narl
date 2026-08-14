@@ -2,10 +2,12 @@ import type { Entity } from "../../../core/model/Entity";
 import type { Enum, EnumType } from "../../../utils/types/Enum";
 import { getDef } from "../../model/queries/def";
 import {
-  getChildrenDmg,
-  getDmg,
+  type DmgRange,
+  formatDmgRange,
+  getChildrenDmgRange,
+  getDmgRange,
   getDmgMod,
-  getOwnDmg,
+  getOwnDmgRange,
 } from "../../model/queries/dmg";
 import { getEqItems } from "../../model/queries/eq";
 
@@ -20,10 +22,14 @@ type EqStat = EnumType<typeof EqStat>;
 
 // TODO: resolve stats based on slots/item types
 // TODO; remove duplication in Inspect action
-export type EqStats = Record<EqStat, number>;
+export type EqStats = Record<EqStat, number | string>;
 
+// TODO: refactor
 export const getEqStats = (entity: Entity): EqStats => {
   const items = getEqItems(entity);
+  const totalDmg: DmgRange = { min: 0, max: 0 };
+  const ownDmg: DmgRange = { min: 0, max: 0 };
+  const childrenDmg: DmgRange = { min: 0, max: 0 };
   const stats: EqStats = {
     [EqStat.TOTAL_DMG]: 0,
     [EqStat.OWN_DMG]: 0,
@@ -32,11 +38,20 @@ export const getEqStats = (entity: Entity): EqStats => {
     [EqStat.DEF]: 0,
   };
   items.forEach((item) => {
-    stats[EqStat.TOTAL_DMG] += getDmg(item);
-    stats[EqStat.OWN_DMG] += getOwnDmg(item);
-    stats[EqStat.CHILDREN_DMG] += getChildrenDmg(item);
+    const itemTotalDmg = getDmgRange(item);
+    totalDmg.min += itemTotalDmg.min;
+    totalDmg.max += itemTotalDmg.max;
+    const itemOwnDmg = getOwnDmgRange(item);
+    ownDmg.min += itemOwnDmg.min;
+    ownDmg.max += itemOwnDmg.max;
+    const itemChildrenDmg = getChildrenDmgRange(item);
+    childrenDmg.min += itemChildrenDmg.min;
+    childrenDmg.max += itemChildrenDmg.max;
     stats[EqStat.DMG_MOD] ||= getDmgMod(item);
-    stats[EqStat.DEF] += getDef(item);
+    stats[EqStat.DEF] = Number(stats[EqStat.DEF]) + getDef(item);
   });
+  stats[EqStat.TOTAL_DMG] = formatDmgRange(totalDmg);
+  stats[EqStat.OWN_DMG] = formatDmgRange(ownDmg);
+  stats[EqStat.CHILDREN_DMG] = formatDmgRange(childrenDmg);
   return stats;
 };

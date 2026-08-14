@@ -8,11 +8,12 @@ import type { Manual } from "../../../Manual";
 
 export const ContainerEntityManual: Manual = {
   curse(_gameAction, item) {
+    const dmg = getRng(item).range(1, 3);
     upsertComponents(
       item,
       DmgModComponent({ dmgMod: 0.5 }),
       EquippableComponent(),
-      DmgComponent({ dmg: getRng(item).range(1, 3) }),
+      DmgComponent({ min: dmg, max: dmg }),
     );
   },
 

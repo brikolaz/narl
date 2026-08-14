@@ -1,7 +1,11 @@
 import { getComponentCreator } from "../../../../core/model/Component";
 
 export type DmgComponentProps = {
-  dmg: number;
+  min: number;
+  max: number;
 };
 
-export const DmgComponent = getComponentCreator<DmgComponentProps>("DMG", { dmg: 0 });
+export const DmgComponent = getComponentCreator<DmgComponentProps>("DMG", {
+  min: 0,
+  max: 0,
+});

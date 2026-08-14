@@ -1,6 +1,5 @@
 import { getEntityCreator } from "../../../../core/model/Entity";
 import { upsertComponents } from "../../../../core/model/queries/components/add";
-import { getRng } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";
 import { MainHandComponent } from "../../components/eq/MainHandComponent";
@@ -24,7 +23,7 @@ export const SwordEntityFactory: ItemFactory = {
       NameComponent({ name: "Sword" }),
       RemovableComponent(),
       MainHandComponent(),
-      DmgComponent({ dmg: getRng(sword).range(5, 8) }),
+      DmgComponent({ min: 5, max: 8 }),
       PickupableComponent(),
       DroppableComponent(),
     );

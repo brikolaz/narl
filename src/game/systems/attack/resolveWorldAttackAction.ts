@@ -1,7 +1,7 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
-import { getDmg } from "../../model/queries/dmg";
+import { rollDmg } from "../../model/queries/dmg";
 import { getHp } from "../../model/queries/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
@@ -28,7 +28,7 @@ export const resolveWorldAttackAction = (
     if (!weapon) {
       return action.success(`${sourceName} poked ${targetName}`); // TODO: add poke resolver?
     }
-    const dmg = getDmg(weapon);
+    const dmg = rollDmg(weapon);
     const targetHp = getHp(target);
     initDeath(() => {
       targetHp.hp = targetHp.hp - dmg;

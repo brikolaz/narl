@@ -5,10 +5,22 @@ import { DmgComponent } from "../components/items/DmgComponent";
 import { DmgModComponent } from "../components/items/DmgModComponent";
 import { isContainer } from "./containers";
 
-export const getOwnDmg = (entity: Entity): number => {
-  return (
-    getComponentByType(entity, DmgComponent)?.dmg ?? DmgComponent.defaults.dmg
-  );
+export type DmgRange = { min: number; max: number };
+
+const addDmgRanges = (left: DmgRange, right: DmgRange): DmgRange => ({
+  min: left.min + right.min,
+  max: left.max + right.max,
+});
+
+export const formatDmgRange = ({ min, max }: DmgRange): number | string =>
+  min === max ? min : `${min}-${max}`;
+
+export const getOwnDmgRange = (entity: Entity): DmgRange => {
+  const dmg = getComponentByType(entity, DmgComponent);
+  return {
+    min: dmg?.min ?? DmgComponent.defaults.min,
+    max: dmg?.max ?? DmgComponent.defaults.max,
+  };
 };
 
 export const getDmgMod = (entity: Entity): number => {
@@ -18,24 +30,43 @@ export const getDmgMod = (entity: Entity): number => {
   );
 };
 
-export const getChildrenDmg = (entity: Entity): number => {
-  const childrenDmg = getEntitiesByRole(entity, EntityRole.ITEM).reduce(
-    (acc, child) => {
-      return acc + getDmg(child);
-    },
-    0,
+export const getChildrenDmgRange = (entity: Entity): DmgRange => {
+  return getEntitiesByRole(entity, EntityRole.ITEM).reduce(
+    (range, child) => addDmgRanges(range, getDmgRange(child)),
+    { min: 0, max: 0 },
   );
-  return childrenDmg;
 };
 
-export const getDmg = (entity: Entity): number => {
-  const ownDmg = getOwnDmg(entity);
+export const getDmgRange = (entity: Entity): DmgRange => {
+  const ownDmg = getOwnDmgRange(entity);
 
   if (!isContainer(entity)) {
     return ownDmg;
   }
 
-  const childrenDmg = getChildrenDmg(entity);
-  const totalDmg = ownDmg + childrenDmg * getDmgMod(entity);
-  return Math.ceil(totalDmg);
+  const childrenDmg = getChildrenDmgRange(entity);
+  const dmgMod = getDmgMod(entity);
+  return {
+    min: Math.ceil(ownDmg.min + childrenDmg.min * dmgMod),
+    max: Math.ceil(ownDmg.max + childrenDmg.max * dmgMod),
+  };
+};
+
+const rollOwnDmg = (entity: Entity): number => {
+  const { min, max } = getOwnDmgRange(entity);
+  return entity.rng.range(min, max);
+};
+
+export const rollDmg = (entity: Entity): number => {
+  const ownDmg = rollOwnDmg(entity);
+
+  if (!isContainer(entity)) {
+    return ownDmg;
+  }
+
+  const childrenDmg = getEntitiesByRole(entity, EntityRole.ITEM).reduce(
+    (dmg, child) => dmg + rollDmg(child),
+    0,
+  );
+  return Math.ceil(ownDmg + childrenDmg * getDmgMod(entity));
 };
