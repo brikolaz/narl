@@ -91,7 +91,7 @@ const getEqCommands = (): KeyboardToAction => ({
 
 export const getInspectCommand = (): KeyboardToActionCommand => ({
   action: () => getInvCommands(),
-  message: "Inspect INV item (arrows to move, Tab for EQ, space to confirm)",
+  message: "Inspect INV item (arrow keys, Tab for EQ, space to confirm)",
   fallback: "Invalid direction",
   cleanup: resetHighlights,
 });

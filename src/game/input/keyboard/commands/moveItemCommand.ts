@@ -17,7 +17,7 @@ export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
           INV_SLOTS,
         );
       },
-      message: `Select source (arrows to move, space to accept)`,
+      message: `Select source (arrow keys, space to accept)`,
       fallback: "Invalid direction",
       cleanup: () => {
         UI_STATE.highlights.invSlot.resetHighlightedSlot();
@@ -39,7 +39,7 @@ export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
           INV_SLOTS,
         );
       },
-      message: `Select target (arrows to move, space to accept)`,
+      message: `Select target (arrow keys, space to accept)`,
       fallback: "Invalid direction",
     },
   ];

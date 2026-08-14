@@ -1,4 +1,3 @@
-import type { Component } from "../../../core/model/Component";
 import type { Entity } from "../../../core/model/Entity";
 import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
@@ -17,17 +16,6 @@ import { addItemToContainer } from "../containers/containers";
 import { curse } from "../curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
-
-const canBeEquipped = (
-  itemSlots: Component[],
-  eqSlots: Component[],
-): boolean => {
-  const uniqueSlots = new Set([
-    ...itemSlots.map((slot) => slot.type),
-    ...eqSlots.map((slot) => slot.type),
-  ]);
-  return itemSlots.length + eqSlots.length > uniqueSlots.size;
-};
 
 const getCompatibleEqSlot = (
   player: Entity,
@@ -60,17 +48,16 @@ export const resolveEquipAction = (
 
     const itemToEquip = getContainerItemAt(backpack, invSlotIndex);
     if (!itemToEquip) {
-      return action.fail(`No item in INV slot ${invSlotIndex} to equip`);
+      return action.fail(`No item to equip`);
     }
 
     const eqSlot = getCompatibleEqSlot(player, itemToEquip);
     if (!eqSlot) {
       return action.fail(
-        `${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} can't be equipped`,
+        `${getEntityName(itemToEquip)} can't be equipped`,
       );
     }
-    const eqItemSlots = getItemSlots(eqSlot);
-    const itemSlots = getItemSlots(itemToEquip);
+    
     const itemInSlot = getFirstContainerItem(eqSlot);
     const eqSlotName = getEntityName(eqSlot);
 
@@ -78,22 +65,17 @@ export const resolveEquipAction = (
       isDisabled(eqSlot) &&
       !getManual(eqSlot)?.canAdd?.(eqSlot, itemToEquip)
     ) {
-      return action.fail(`Can't equip. ${eqSlotName} slot is disabled`);
+      return action.fail(`Can't equip to disabled ${eqSlotName} slot`);
     }
     if (itemInSlot) {
       return action.fail(
-        `Can't equip. ${getEntityName(itemInSlot)} in ${eqSlotName} EQ slot`,
-      );
-    }
-    if (!canBeEquipped(itemSlots, eqItemSlots)) {
-      return action.fail(
-        `${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} can't be equipped in ${eqSlotName} EQ slot`,
+        `Can't equip. ${getEntityName(itemInSlot)} in ${eqSlotName} slot`,
       );
     }
 
     addItemToContainer(eqSlot, itemToEquip);
     action.success(
-      `Equipped ${getEntityName(itemToEquip)} from INV slot ${invSlotIndex} to ${eqSlotName} EQ slot`,
+      `Equipped ${getEntityName(itemToEquip)}`,
     );
     curse(action, itemToEquip);
   })();

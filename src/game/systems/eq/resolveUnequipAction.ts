@@ -42,7 +42,7 @@ export const resolveUnequipAction = (
     const slotName = getEntityName(slot);
     const item = getContainerItemAt(slot, 1);
     if (!item) {
-      return action.fail(`No item at ${slotName} EQ slot`);
+      return action.fail(`No item at ${slotName} slot`);
     }
 
     if (!isRemovable(item)) {
@@ -62,7 +62,7 @@ export const resolveUnequipAction = (
     addItemToEntityBackpack(player, item);
     clearContainerItemAt(slot, 1);
     action.success(
-      `Unequipped ${getEntityName(item)} from ${slotName} EQ slot`,
+      `Unequipped ${getEntityName(item)}`,
     );
   })();
 

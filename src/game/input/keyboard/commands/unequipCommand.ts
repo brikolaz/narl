@@ -19,7 +19,7 @@ export const getUnequipCommand = (): KeyboardToActionCommand => {
         UI_STATE.highlights.eqSlot,
         EQ_SLOTS,
       ),
-    message: `Select EQ slot to unequip (arrow keys, space to confirm)`,
+    message: `Select item to unequip (arrow keys, space to confirm)`,
     fallback: "Invalid direction",
     cleanup: () => {
       UI_STATE.highlights.eqSlot.resetHighlightedSlot();
