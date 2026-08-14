@@ -18,6 +18,7 @@ import { MovableComponent } from "../../../components/MovableComponent";
 import { PositionComponent } from "../../../components/PositionComponent";
 import { UnawareComponent } from "../../../components/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
+import { setDmg } from "../../../queries/dmg";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import { SwordEntityFactory } from "../../items/SwordEntity";
@@ -36,6 +37,7 @@ const addEq = (entity: Entity) => {
   initEq(entity);
   const sword = SwordEntityFactory.getDefault();
   setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
+  setDmg(sword, 3, 7);
 };
 
 export const ZoomerEntityFactory: MobFactory = {

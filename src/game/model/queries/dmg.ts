@@ -1,5 +1,8 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
+import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
+import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { DmgComponent } from "../components/items/DmgComponent";
 import { DmgModComponent } from "../components/items/DmgModComponent";
@@ -69,4 +72,14 @@ export const rollDmg = (entity: Entity): number => {
     0,
   );
   return Math.ceil(ownDmg + childrenDmg * getDmgMod(entity));
+};
+
+export const setDmg = (entity: Entity, min: number, max?: number) => {
+  if (!hasComponentsByType(entity, DmgComponent)) {
+    upsertComponents(entity, DmgComponent());
+  }
+  patchComponentByType(entity, DmgComponent, (component) => {
+    component.min = min;
+    component.max = max ?? min;
+  });
 };

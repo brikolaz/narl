@@ -21,6 +21,7 @@ import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import { PositionComponent } from "../../../components/PositionComponent";
 import { UnawareComponent } from "../../../components/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
+import { setDmg } from "../../../queries/dmg";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {
@@ -56,6 +57,7 @@ const addEq = (entity: Entity) => {
   initEq(entity);
   const sword = SwordEntityFactory.getDefault();
   setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
+  setDmg(sword, 1, 3);
 };
 
 export const RageBaitEntityFactory: MobFactory = {
