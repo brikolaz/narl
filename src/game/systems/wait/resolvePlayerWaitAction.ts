@@ -36,7 +36,7 @@ export const resolvePlayerWaitAction = (
     action.addPendingImmediateAction({
       type: WorldActionType.HEAL,
       entityId: player.id,
-      value: 5,
+      value: rng.range(4, 5),
     });
 
     if (!isPlayerBored()) {

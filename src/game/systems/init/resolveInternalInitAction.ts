@@ -1,4 +1,3 @@
-import { removeEntity } from "../../../core/model/queries/entities/remove";
 import { INITIAL_TURN } from "../../../utils/constants";
 import { GAME_STATUS, initState, STATE } from "../../state/state";
 import { Action } from "../actions/action";

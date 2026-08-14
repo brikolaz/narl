@@ -1,4 +1,4 @@
-import { getEntityCreator, type Entity } from "../../core/model/Entity";
+import { type Entity } from "../../core/model/Entity";
 import { type ComponentRegistryById } from "../../core/model/registry/componentRegistry";
 import { type EntityRegistryById } from "../../core/model/registry/entityRegistry";
 import type { Enum, EnumType } from "../../utils/types/Enum";
