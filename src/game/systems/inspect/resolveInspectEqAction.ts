@@ -1,25 +1,24 @@
-import { getPlayer } from "../../model/queries/player";
 import { assert } from "../../../utils/assert";
+import { getContainerItemAt } from "../../model/queries/containers";
+import { getEqSlotByPosition } from "../../model/queries/eq";
+import { getPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { getContainerItemAt } from "../../model/queries/containers";
+import { curse } from "../curse/curse";
 import {
-  PlayerInspectActionReason,
-  type PlayerInspectEqAction,
+  type PlayerInspectEqAction
 } from "../player/types";
+import { getEntityName } from "./getEntityName";
 import {
   getInspectDesc,
   getItemInspectText,
   increaseInspected,
 } from "./inspect";
-import { getEntityName } from "./getEntityName";
-import { curse } from "../curse/curse";
-import { getEqSlotByPosition } from "../../model/queries/eq";
 
 export const resolveInspectEqAction = (
   gameAction: PlayerInspectEqAction,
 ): ActionResolution => {
-  const { eqSlot, reason } = gameAction;
+  const { eqSlot } = gameAction;
   const action = new Action(gameAction);
 
   (() => {
@@ -32,15 +31,9 @@ export const resolveInspectEqAction = (
         getInspectDesc(slot) || `${getEntityName(slot)} slot is empty`,
       );
     }
-    increaseInspected(item);
 
-    if (reason === PlayerInspectActionReason.MANUAL) {
-      action.info(getItemInspectText(item));
-    } else {
-      action.info(
-        `${getEntityName(player)} are bored and start to inspect your EQ. ${getEntityName(player)} see ${getItemInspectText(item)}`,
-      );
-    }
+    increaseInspected(item);
+    action.info(getItemInspectText(item));
     curse(action, item);
   })();
 
