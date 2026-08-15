@@ -13,7 +13,7 @@ import { discoverTiles } from "../world/tile";
 import { markAsVisited } from "./exploration";
 import { getNextPosition } from "./position";
 
-const getNextState = (nextPlayerPosition: number): void => {
+const setNextState = (nextPlayerPosition: number): void => {
   const player = getPlayer();
   patchComponentByType(
     player,
@@ -51,8 +51,7 @@ export const resolvePlayerMoveAction = (
       });
     }
 
-    getNextState(nextPlayerPosition);
-    action.success(`Moved ${direction.toLowerCase()}`);
+    setNextState(nextPlayerPosition);
   })();
 
   return action.resolve();
