@@ -8,7 +8,6 @@ import { WorldActionType } from "../../world/types";
 import { isAware } from "../aggro";
 import { inFov } from "../fov";
 import { isMovable } from "../move";
-import { hasPath } from "../path";
 import { canAttack } from "./attack";
 
 const canMove = (mob: Entity) => {
@@ -18,7 +17,7 @@ const canMove = (mob: Entity) => {
     !canAttack(mob) &&
     isHostile(mob) &&
     isMovable(mob) &&
-    hasPath(mob, player) &&
+    // hasPath(mob, player) &&
     isAware(mob) &&
     inFov(mob, player)
   );
