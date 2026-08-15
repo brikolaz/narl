@@ -2,10 +2,9 @@ import type { Id } from "../../../../core/model/Id";
 import { STATE } from "../../../state/state";
 import { shouldEndGame } from "../../gameOver/endCondition";
 import {
-  getGameOverAction,
   getPendingGameOverAction,
   isGameOver,
-  isPendingGameOver,
+  isPendingGameOver
 } from "../../gameOver/gameOver";
 import { InternalActionType } from "../../internal/type";
 import { flushLogs, recordPlayerAction } from "../../log/log";
@@ -13,6 +12,7 @@ import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
 import { increaseTurn } from "../../turn/turn";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
+import { WorldActionType } from "../../world/types";
 import { applyTimedAction } from "../timedActions/timedActions";
 import type { TimedAction } from "../timedActions/types";
 import type { ActionResolution, GameAction } from "../types";
@@ -98,23 +98,19 @@ const dispatchGameAction = (action: GameAction): void => {
   if (consumesTurn) {
     STATE.turn = increaseTurn(STATE.turn);
   }
-
-  if (shouldEndGame()) {
-    getPendingGameOverAction();
-  }
 };
 
 export const dispatch = (action?: GameAction): void => {
   if (isGameOver()) {
-    dispatchGameAction({
+    return dispatchGameAction({
       type: InternalActionType.INIT,
     });
-
-    return;
   }
+
   if (isPendingGameOver()) {
-    dispatchGameAction(getGameOverAction());
-    return;
+    return dispatchGameAction({
+      type: WorldActionType.GAME_OVER,
+    });
   }
 
   if (!action) return;
@@ -122,6 +118,8 @@ export const dispatch = (action?: GameAction): void => {
   dispatchGameAction(action);
 
   if (shouldEndGame()) {
-    dispatchGameAction(getPendingGameOverAction());
+    dispatchGameAction({
+      type: WorldActionType.PENDING_GAME_OVER,
+    });
   }
 };
