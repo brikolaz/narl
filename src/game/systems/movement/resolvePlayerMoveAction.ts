@@ -52,6 +52,7 @@ export const resolvePlayerMoveAction = (
     }
 
     setNextState(nextPlayerPosition);
+    action.success();
   })();
 
   return action.resolve();

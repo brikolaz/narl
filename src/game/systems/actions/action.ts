@@ -19,8 +19,10 @@ export class Action {
     this.pendingLogMessages.push(message);
   };
 
-  success = (message: string): void => {
-    this.pendingLogMessages.push(message);
+  success = (message?: string): void => {
+    if (message) {
+      this.pendingLogMessages.push(message);
+    }
     this.consumesTurn = true;
   };
 
@@ -52,7 +54,10 @@ export class Action {
     });
   };
 
-  addPendingImmediateAction = (action: GameAction, duration: number = 1): void => {
+  addPendingImmediateAction = (
+    action: GameAction,
+    duration: number = 1,
+  ): void => {
     assert(duration >= 1, "Pending action must last at least 1 turn");
 
     this.pendingActions.push({
