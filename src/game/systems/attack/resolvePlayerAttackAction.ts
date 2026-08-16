@@ -36,6 +36,9 @@ export const resolvePlayerAttackAction = (
     }
     const mobHp = getHp(mob);
     const nextHp = mobHp?.hp - dmg;
+    mobHp.hp = nextHp;
+
+    action.success(`Dealt ${dmg} dmg to ${getEntityName(mob)}`);
 
     if (nextHp <= 0) {
       action.addPendingImmediateAction({
@@ -46,8 +49,6 @@ export const resolvePlayerAttackAction = (
     } else {
       getManual(mob)?.onAfterTakeDamage?.(action, mob);
     }
-    mobHp.hp = nextHp;
-    action.success(`Dealt ${dmg} dmg to ${getEntityName(mob)}`);
   })();
 
   return action.resolve();
