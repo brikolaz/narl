@@ -6,8 +6,8 @@ import {
   type ComponentTypeArgument,
 } from "./normalize";
 
-export const areComponentTypesEqual = <P extends object | undefined>(
-  ...components: ComponentTypeArgument<P>[]
+export const areComponentTypesEqual = (
+  ...components: ComponentTypeArgument<object | undefined>[]
 ): boolean => {
   if (components.length === 0) {
     return true;
@@ -17,6 +17,12 @@ export const areComponentTypesEqual = <P extends object | undefined>(
       resolveComponentType(component) === resolveComponentType(components[0]),
   );
 };
+
+export const isComponentType = <T extends object | undefined>(
+  component: ComponentTypeArgument<object | undefined>,
+  expected: ComponentTypeArgument<T>,
+): component is ComponentTypeArgument<T> =>
+  resolveComponentType(component) === resolveComponentType(expected);
 
 export const hasComponentsByType = <P extends object | undefined>(
   entity: EntityArgument,

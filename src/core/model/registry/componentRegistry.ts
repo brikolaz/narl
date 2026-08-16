@@ -3,8 +3,8 @@ import type { Component } from "../Component";
 import type { Entity } from "../Entity";
 import type { Id } from "../Id";
 
-type ComponentRegistryRecord = {
-  component: Component;
+type ComponentRegistryRecord<Props extends object | undefined = object> = {
+  component: Component<Props>;
   parent: Entity;
 };
 

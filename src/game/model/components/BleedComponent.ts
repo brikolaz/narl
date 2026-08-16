@@ -1,9 +1,10 @@
 import { getComponentCreator } from "../../../core/model/Component";
 
 type BleedComponentProps = {
-  value: number;
+  min: number;
+  max: number;
 };
 export const BleedComponent = getComponentCreator<BleedComponentProps>(
   "BLEED",
-  { value: 0 },
+  { min: 0, max: 0 },
 );

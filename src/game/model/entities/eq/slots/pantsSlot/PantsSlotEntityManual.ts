@@ -36,7 +36,7 @@ export const PantsSlotEntityManual: Manual = {
       const playerPosition = getPosition(player);
       dropItem(DickEntityFactory.getDefault(), playerPosition);
       dropItem(itemAtSlot, playerPosition);
-      const bleed = BleedComponent({ value: 5 });
+      const bleed = BleedComponent({ min: 5, max: 5 });
       upsertComponents(player, bleed);
       action.addPendingImmediateAction({
         type: WorldActionType.INIT_BLEED,
