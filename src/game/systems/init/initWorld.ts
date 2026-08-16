@@ -1,8 +1,6 @@
 import { upsertComponents } from "../../../core/model/queries/components/add";
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
-import { PositionComponent } from "../../model/components/PositionComponent";
 import { VisitedComponent } from "../../model/components/VisitedComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity";
