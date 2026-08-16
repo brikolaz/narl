@@ -4,6 +4,7 @@ import { getComponentByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
+import { getRng } from "../../systems/rng/rng";
 import { DmgComponent } from "../components/items/DmgComponent";
 import { DmgModComponent } from "../components/items/DmgModComponent";
 import { isContainer } from "./containers";
@@ -57,7 +58,7 @@ export const getDmgRange = (entity: Entity): DmgRange => {
 
 const rollOwnDmg = (entity: Entity): number => {
   const { min, max } = getOwnDmgRange(entity);
-  return entity.rng.range(min, max);
+  return getRng(entity).range(min, max);
 };
 
 export const rollDmg = (entity: Entity): number => {
