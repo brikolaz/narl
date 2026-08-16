@@ -432,6 +432,7 @@ export default function plopfile(plop) {
             entityType: toConstantCase(name),
             coreImport: getCoreImport(folder, "Entity"),
             factoryImport: getFactoryImport(folder),
+            factoryType: "Factory",
           },
         },
       ];
@@ -485,21 +486,38 @@ export default function plopfile(plop) {
           toPascalCase(value).length > 0 || "Mob name is required",
       },
     ],
-    actions: [
-      {
-        type: "add",
-        path: `${MOBS_PATH}/{{mobFolder name}}/{{mobName name}}Entity.ts`,
-        templateFile: "plop-templates/mob/Entity.ts.hbs",
-      },
-      {
-        type: "add",
-        path: `${MOBS_PATH}/{{mobFolder name}}/{{mobName name}}EntityManual.ts`,
-        templateFile: "plop-templates/mob/EntityManual.ts.hbs",
-      },
-      {
-        type: "wireMobRegistries",
-      },
-    ],
+    actions: (answers) => {
+      const name = toPascalCase(answers.name);
+      const folder = `mobs/${toCamelCase(answers.name)}`;
+
+      return [
+        {
+          type: "add",
+          path: `${MOBS_PATH}/${toCamelCase(answers.name)}/${name}Entity.ts`,
+          templateFile: "plop-templates/entity/Entity.ts.hbs",
+          data: {
+            entityName: name,
+            entityVariable: toCamelCase(answers.name),
+            entityType: toConstantCase(answers.name),
+            coreImport: getCoreImport(folder, "Entity"),
+            factoryImport: getFactoryImport(folder),
+            factoryType: "MobFactory",
+          },
+        },
+        {
+          type: "add",
+          path: `${MOBS_PATH}/${toCamelCase(answers.name)}/${name}EntityManual.ts`,
+          templateFile: "plop-templates/entity/EntityManual.ts.hbs",
+          data: {
+            entityName: name,
+            manualImport: getFactoryImport(folder),
+          },
+        },
+        {
+          type: "wireMobRegistries",
+        },
+      ];
+    },
   });
 
   for (const [kind, config] of Object.entries(ACTION_RESOLVER_CONFIG)) {

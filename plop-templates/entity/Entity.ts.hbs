@@ -1,9 +1,9 @@
 import { getEntityCreator } from "{{coreImport}}";
-import type { Factory } from "{{factoryImport}}";
+import type { {{factoryType}} } from "{{factoryImport}}";
 
 export const {{entityName}}Entity = getEntityCreator("{{entityType}}");
 
-export const {{entityName}}EntityFactory: Factory = {
+export const {{entityName}}EntityFactory: {{factoryType}} = {
   getDefault: () => {
     const {{entityVariable}} = {{entityName}}Entity();
 
