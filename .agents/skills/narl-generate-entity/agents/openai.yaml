@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL Generate Entity"
+  short_description: "Generate a NARL entity and factory"
+  default_prompt: "Use $narl-generate-entity to add an entity at the requested path."

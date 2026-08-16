@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL Generate Component"
+  short_description: "Generate a NARL ECS component creator"
+  default_prompt: "Use $narl-generate-component to add a component at the requested path."

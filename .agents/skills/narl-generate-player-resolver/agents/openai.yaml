@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL Player Resolver"
+  short_description: "Generate a player action resolver"
+  default_prompt: "Use $narl-generate-player-resolver to add and implement a player action."

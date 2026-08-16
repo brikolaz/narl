@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL Generate Mob"
+  short_description: "Generate and wire a NARL mob entity"
+  default_prompt: "Use $narl-generate-mob to add and wire a new mob."

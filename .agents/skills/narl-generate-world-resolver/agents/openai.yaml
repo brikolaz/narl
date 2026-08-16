@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL World Resolver"
+  short_description: "Generate a world action resolver"
+  default_prompt: "Use $narl-generate-world-resolver to add and implement a world action."

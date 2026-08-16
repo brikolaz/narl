@@ -1,0 +1,4 @@
+interface:
+  display_name: "NARL Internal Resolver"
+  short_description: "Generate an internal action resolver"
+  default_prompt: "Use $narl-generate-internal-resolver to add and implement an internal action."

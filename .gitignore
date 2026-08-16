@@ -26,6 +26,5 @@ dist-ssr
 
 .vite
 .codex
-.agents
 tmp
 .VSCodeCounter
