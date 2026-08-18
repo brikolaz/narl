@@ -5,7 +5,6 @@ import { InspectedComponent } from "../../model/components/inspect/InspectedComp
 import { DefComponent } from "../../model/components/items/DefComponent";
 import { getDef } from "../../model/queries/def";
 import {
-  formatDmgRange,
   getChildrenDmgRange,
   getDmgRange,
   getDmgMod,
@@ -18,6 +17,7 @@ import { getEntityName } from "./getEntityName";
 import { getComponentByType, getComponentsByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { upsertComponents } from "../../../core/model/queries/components/add";
+import { formatDmgRange } from "../log/format";
 
 export const getInspectDesc = (entity: Entity) => {
   const inspectedTimes = getInspectedTimes(entity);

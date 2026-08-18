@@ -1,0 +1,1 @@
+export type DmgRange = { min: number; max: number };

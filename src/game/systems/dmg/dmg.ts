@@ -8,16 +8,12 @@ import { getRng } from "../rng/rng";
 import { DmgComponent } from "../../model/components/items/DmgComponent";
 import { DmgModComponent } from "../../model/components/items/DmgModComponent";
 import { isContainer } from "../../model/queries/containers";
-
-export type DmgRange = { min: number; max: number };
+import type { DmgRange } from "./types";
 
 const addDmgRanges = (left: DmgRange, right: DmgRange): DmgRange => ({
   min: left.min + right.min,
   max: left.max + right.max,
 });
-
-export const formatDmgRange = ({ min, max }: DmgRange): number | string =>
-  min === max ? min : `${min}-${max}`;
 
 export const getOwnDmgRange = (entity: Entity): DmgRange => {
   const dmg = getComponentByType(entity, DmgComponent);
