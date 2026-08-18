@@ -3,7 +3,7 @@ import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { hit } from "../dmg/hit";
+import { hit } from "../hit/hit";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
@@ -25,10 +25,15 @@ export const resolveWorldAttackAction = (
     if (!weapon) {
       return action.success(`${sourceName} poked ${targetName}`); // TODO: add poke resolver?
     }
-    const dmg = hit(source, target);
+    const { dmg } = hit(source, target);
     getManual(source)?.onAttack?.(action, source, target);
+    if (dmg === 0) {
+      return action.success(
+        `${sourceName} tingled ${targetName}`,
+      );
+    }
     return action.success(
-      `${sourceName} hits ${targetName}. ${targetName} lose ${dmg} HP`,
+      `${sourceName} hits ${targetName} for ${dmg} HP`,
     );
   })();
 

@@ -1,11 +1,10 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
-import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { isTileOccupied } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { WorldActionType, type WorldMoveAction } from "../world/types";
+import { type WorldMoveAction } from "../world/types";
 import { move } from "./move";
 import { getNextPosition } from "./position";
 
@@ -24,13 +23,9 @@ export const resolveWorldMoveAction = (
     if (nextPosition === null) {
       return;
     }
-    const nextTile = getTile(nextPosition);
-    if (hasMobs(nextTile)) {
-      return action.addPendingImmediateAction({
-        type: WorldActionType.ATTACK,
-        sourceId: entityId,
-        targetId: getMob(nextTile).id,
-      });
+
+    if (isTileOccupied(nextPosition)) {
+      return;
     }
     move(entity, nextPosition);
   })();

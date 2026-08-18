@@ -9,7 +9,7 @@ import {
   getDmgRange,
   getDmgMod,
   getOwnDmgRange,
-} from "../dmg/dmg";
+} from "../hit/dmg";
 import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
 import { isWeapon } from "../../model/queries/weapons";
