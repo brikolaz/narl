@@ -1,11 +1,10 @@
 import { getManual } from "../../model/entities/getManual";
-import { rollDmg } from "../dmg/dmg";
-import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
 import { getTile } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { hit } from "../dmg/hit";
 import { getEntityName } from "../inspect/getEntityName";
 import { PlayerActionType, type PlayerPokeAction } from "../player/types";
 import { WorldActionType } from "../world/types";
@@ -26,17 +25,14 @@ export const resolvePlayerAttackAction = (
       return;
     }
     const weapon = getAttackWeapon(getPlayer());
-    const dmg = weapon ? rollDmg(weapon) : undefined;
 
-    if (!weapon || !dmg) {
+    if (!weapon) {
       return action.addPendingImmediateAction({
         type: PlayerActionType.POKE,
         targetPosition,
       });
     }
-    const mobHp = getHp(mob);
-    const nextHp = mobHp?.hp - dmg;
-    mobHp.hp = nextHp;
+    const { dmg, nextHp } = hit(getPlayer(), mob);
 
     action.success(`Dealt ${dmg} dmg to ${getEntityName(mob)}`);
 
