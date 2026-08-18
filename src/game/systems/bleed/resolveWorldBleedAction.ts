@@ -17,10 +17,11 @@ export const resolveWorldBleedAction = (
   const action: Action = new Action(gameAction);
 
   (() => {
-    const { component: bleed, parent } = assert(
-      getComponentRegistryRecord(bleedId),
-      "No bleed component",
-    );
+    const record = getComponentRegistryRecord(bleedId);
+    if(!record) {
+      return
+    }
+    const { component: bleed, parent } = record;
     assert(isComponentType(bleed, BleedComponent), "No bleed component");
     const hp = getHp(parent);
     const dmg = getRng(parent).range(bleed.min, bleed.max);
