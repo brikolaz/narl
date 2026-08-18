@@ -6,12 +6,12 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { hit } from "../hit/hit";
 import { getEntityName } from "../inspect/getEntityName";
-import { PlayerActionType, type PlayerPokeAction } from "../player/types";
+import { PlayerActionType, type PlayerAttackAction } from "../player/types";
 import { WorldActionType } from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
 
 export const resolvePlayerAttackAction = (
-  gameAction: PlayerPokeAction,
+  gameAction: PlayerAttackAction,
 ): ActionResolution => {
   const { targetPosition } = gameAction;
   const action = new Action(gameAction);
