@@ -60,7 +60,7 @@ export const setContainerItemAt = (
     getComponentByType(container, SizeComponent)?.size ??
     SizeComponent.defaults.size;
   if (slot > size) {
-    return;
+    throw new Error(`Container slot ${slot} exceeds size ${size}`);
   }
 
   const existingItem = getContainerItemAt(container, slot);

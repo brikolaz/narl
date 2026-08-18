@@ -6,11 +6,8 @@ import {
 } from "./game/render/getGameViewModel";
 import "./game/render/index.css";
 import { render } from "./game/render/render";
-import {
-  GAME_STATUS,
-  STATE,
-  type GameState
-} from "./game/state/state";
+import { UI_STATE } from "./game/render/state/state";
+import { GAME_STATUS, STATE, type GameState } from "./game/state/state";
 import { dispatch } from "./game/systems/actions/gameAction/dispatchGameAction";
 import { InternalActionType } from "./game/systems/internal/type";
 import "./patches";
@@ -50,6 +47,15 @@ console.debug(STATE);
 let keyboardChain: KeyboardToActionChain = undefined;
 const handleKeyDown = (event: KeyboardEvent) => {
   event.preventDefault();
+
+  if (
+    game.gameOver || game.pendingGameOver
+  ) {
+    keyboardChain = undefined;
+    game.dispatch();
+    render(game.view);
+    return;
+  }
 
   const result = mapKeyboardEventToAction(event, keyboardChain);
   keyboardChain = result.keyboardChain;

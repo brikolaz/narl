@@ -9,7 +9,7 @@ import { removeComponents } from "../components/remove";
 import { getEntitiesByRole } from "./get";
 import { resolveEntity, type EntityArgument } from "./normalize";
 
-export const removeDataEntity = (id: Id): void => {
+const removeDataEntity = (id: Id): void => {
   const record = getEntityRegistryRecordById(id);
   if (!record) return;
 
@@ -30,6 +30,8 @@ export const removeDataEntity = (id: Id): void => {
   for (const childId of [...record.entity.entityById.keys()]) {
     removeDataEntity(childId);
   }
+
+  removeEntityRegistryRecordById(id);
 };
 
 export const removeEntity = (entity: EntityArgument) => {
@@ -38,7 +40,6 @@ export const removeEntity = (entity: EntityArgument) => {
     return;
   }
   removeDataEntity(source.id);
-  removeEntityRegistryRecordById(source.id);
 };
 
 export const removeEntitiesByRole = (

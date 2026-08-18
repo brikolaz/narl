@@ -5,6 +5,10 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerPokeAction } from "../player/types";
+import {
+  MAX_WORLD_POSITION,
+  MIN_WORLD_POSITION,
+} from "../../../utils/constants";
 
 export const resolvePokeAction = (
   gameAction: PlayerPokeAction,
@@ -12,6 +16,13 @@ export const resolvePokeAction = (
   const { targetPosition } = gameAction;
   const action = new Action(gameAction);
   (() => {
+    if (
+      targetPosition < MIN_WORLD_POSITION ||
+      targetPosition > MAX_WORLD_POSITION
+    ) {
+      return action.fail("Nothing to poke");
+    }
+
     const target = getTile(targetPosition);
     if (!hasMobs(target)) {
       return action.fail("Nothing to poke");

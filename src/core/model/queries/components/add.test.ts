@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import {
-  createInitialState,
+  initState,
+  STATE,
   type GameState,
 } from "../../../../game/state/state";
 import { getComponentCreator, type Component } from "../../Component";
@@ -64,7 +65,7 @@ describe("upsertComponents", () => {
   let state: GameState;
 
   beforeEach(() => {
-    state = createInitialState();
+    state = initState();
   });
 
   describe.each([

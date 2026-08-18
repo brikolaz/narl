@@ -76,10 +76,10 @@ export const createInitialState = (): GameState => {
   };
 };
 
-export let STATE: GameState = createInitialState();
+export const STATE: GameState = createInitialState();
 
-export const initState = (): void => {
-  Object.defineProperties(
+export const initState = (): GameState => {
+  return Object.defineProperties(
     STATE,
     Object.getOwnPropertyDescriptors(createInitialState()),
   );

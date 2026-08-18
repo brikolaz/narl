@@ -59,7 +59,7 @@ export const getContainerItems = (container: Entity): Entity[] => {
   return getEntitiesByRole(container, EntityRole.ITEM);
 };
 
-const getEmptySlots = (container: Entity): ContainerSlot[] => {
+const getEmptySlots = (container: Entity): Set<ContainerSlot> => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }
@@ -72,7 +72,11 @@ const getEmptySlots = (container: Entity): ContainerSlot[] => {
       return pos;
     }),
   );
-  return [...ALL_CONTAINER_SLOTS.difference(occupiedSlots)];
+  const containerSlots = new Set(
+    [...ALL_CONTAINER_SLOTS].slice(0, getContainerSize(container)),
+  );
+
+  return containerSlots.difference(occupiedSlots);
 };
 
 export const getFirstEmptyContainerSlot = (
@@ -80,7 +84,7 @@ export const getFirstEmptyContainerSlot = (
 ): ContainerSlot | undefined => {
   const emptySlots = getEmptySlots(container);
 
-  return emptySlots.at(0);
+  return emptySlots.values().next().value;
 };
 
 export const getFirstContainerItem = (
