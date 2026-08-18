@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import {
   initState,
-  STATE,
   type GameState,
 } from "../../../../game/state/state";
 import { getComponentCreator, type Component } from "../../Component";

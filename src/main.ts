@@ -6,7 +6,6 @@ import {
 } from "./game/render/getGameViewModel";
 import "./game/render/index.css";
 import { render } from "./game/render/render";
-import { UI_STATE } from "./game/render/state/state";
 import { GAME_STATUS, STATE, type GameState } from "./game/state/state";
 import { dispatch } from "./game/systems/actions/gameAction/dispatchGameAction";
 import { InternalActionType } from "./game/systems/internal/type";
