@@ -18,7 +18,6 @@ export default defineConfig([
   },
   {
     files: [
-      'src/core/ecs/Constructor.ts',
       'src/game/systems/player/resolvers.ts',
       'src/game/systems/world/resolvers.ts',
     ],
