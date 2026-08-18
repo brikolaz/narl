@@ -9,6 +9,7 @@ import { initDeath } from "../gameOver/death";
 import { getEntityName } from "../inspect/getEntityName";
 import { type WorldAttackAction } from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
+import { isPlayer } from "../../model/queries/player";
 
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
@@ -30,9 +31,13 @@ export const resolveWorldAttackAction = (
     }
     const dmg = rollDmg(weapon);
     const targetHp = getHp(target);
-    initDeath(() => {
+    if (isPlayer(target)) {
+      initDeath(() => {
+        targetHp.hp = targetHp.hp - dmg;
+      });
+    } else {
       targetHp.hp = targetHp.hp - dmg;
-    });
+    }
     sourceManual?.onAttack?.(action, source, target);
     return action.success(
       `${sourceName} hits ${targetName}. ${targetName} lose ${dmg} HP`,
