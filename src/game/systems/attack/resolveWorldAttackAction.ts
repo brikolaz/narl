@@ -1,7 +1,7 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
-import { rollDmg } from "../../model/queries/dmg";
+import { rollDmg } from "../dmg/dmg";
 import { getHp } from "../../model/queries/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

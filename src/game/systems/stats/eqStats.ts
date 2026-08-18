@@ -8,7 +8,7 @@ import {
   getDmgRange,
   getDmgMod,
   getOwnDmgRange,
-} from "../../model/queries/dmg";
+} from "../dmg/dmg";
 import { getEqItems } from "../../model/queries/eq";
 
 const EqStat = {

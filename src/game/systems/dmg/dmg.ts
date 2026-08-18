@@ -4,10 +4,10 @@ import { getComponentByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import { getRng } from "../../systems/rng/rng";
-import { DmgComponent } from "../components/items/DmgComponent";
-import { DmgModComponent } from "../components/items/DmgModComponent";
-import { isContainer } from "./containers";
+import { getRng } from "../rng/rng";
+import { DmgComponent } from "../../model/components/items/DmgComponent";
+import { DmgModComponent } from "../../model/components/items/DmgModComponent";
+import { isContainer } from "../../model/queries/containers";
 
 export type DmgRange = { min: number; max: number };
 

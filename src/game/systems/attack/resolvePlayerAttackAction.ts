@@ -1,5 +1,5 @@
 import { getManual } from "../../model/entities/getManual";
-import { rollDmg } from "../../model/queries/dmg";
+import { rollDmg } from "../dmg/dmg";
 import { getHp } from "../../model/queries/hp";
 import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";

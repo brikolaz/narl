@@ -12,7 +12,7 @@ export const resolveDisableAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const entity = assert(getEntityById(entityId), "No slot to disable");
+    const entity = assert(getEntityById(entityId), "No entity to disable");
     const manual = getManual(entity);
     manual?.disable?.(action, entity);
   })();
