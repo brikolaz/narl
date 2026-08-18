@@ -41,6 +41,7 @@ export const hasComponent = <P extends object | undefined>(
   const source = resolveEntity(entity);
   if (!source) return false;
   const resolvedComponent = resolveComponent(component);
+  if (!resolvedComponent) return false;
 
   return source?.componentById?.has(resolvedComponent.id) ?? false;
 };

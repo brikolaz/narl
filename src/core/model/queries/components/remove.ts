@@ -68,7 +68,10 @@ const removeDataComponentsById = (...ids: Id[]): void => {
 export const removeComponents = <P extends object | undefined = undefined>(
   ...components: ComponentArgument<P>[]
 ): void => {
-  const ids = components.map((component) => resolveComponent(component).id);
+  const ids = components.flatMap((component) => {
+    const resolvedComponent = resolveComponent(component);
+    return resolvedComponent ? [resolvedComponent.id] : [];
+  });
   removeDataComponentsById(...ids);
   removeComponentRegistryRecords(...ids);
 };

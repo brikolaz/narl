@@ -1,4 +1,4 @@
-import type { ActionResolution } from "../actions/types";
+import type { ActionResolverMap } from "../actions/types";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
 import { resolveCurseAction } from "../curse/resolveCurseAction";
 import { resolveDisableAction } from "../disable/resolveDisableAction";
@@ -14,9 +14,7 @@ import { resolveWorldMobAiAction } from "../mobAi/resolveWorldMobAiAction";
 import { resolveWorldHealAction } from "../heal/resolveWorldHealAction";
 import { resolveWorldGameOverAction } from "../gameOver/resolveWorldGameOverAction";
 import { resolveWorldPendingGameOverAction } from "../gameOver/resolveWorldPendingGameOverAction";
-import { WorldActionType } from "./types";
-
-export type AnyWorldResolver = (action: any) => ActionResolution;
+import { WorldActionType, type WorldAction } from "./types";
 
 export const worldActionResolvers = {
   [WorldActionType.DROP_ITEM]: resolveWorldDropItemAction,
@@ -34,4 +32,4 @@ export const worldActionResolvers = {
   [WorldActionType.HEAL]: resolveWorldHealAction,
   [WorldActionType.GAME_OVER]: resolveWorldGameOverAction,
   [WorldActionType.PENDING_GAME_OVER]: resolveWorldPendingGameOverAction,
-} satisfies Record<WorldActionType, AnyWorldResolver>;
+} satisfies ActionResolverMap<WorldAction>;

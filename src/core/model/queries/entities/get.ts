@@ -24,6 +24,6 @@ export const getEntitiesByRole = (
 export const getEntityByRole = (
   parentEntity: EntityArgument,
   entityRole: EntityRole,
-): Entity => {
+): Entity | undefined => {
   return getEntitiesByRole(parentEntity, entityRole)[0];
 };

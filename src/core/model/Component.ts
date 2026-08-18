@@ -29,7 +29,7 @@ export function getComponentCreator<Props extends object>(
   defaults: Props,
 ): ComponentCreator<Props>;
 
-export function getComponentCreator<Props extends Component>(
+export function getComponentCreator<Props extends object>(
   type: string,
   defaults?: Props,
 ) {

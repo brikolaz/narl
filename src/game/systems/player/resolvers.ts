@@ -1,4 +1,4 @@
-import type { ActionResolution } from "../actions/types";
+import type { ActionResolverMap } from "../actions/types";
 import { resolvePlayerAttackAction } from "../attack/resolvePlayerAttackAction";
 import { resolvePlayerDropItemAction } from "../drop/resolvePlayerDropItemAction";
 import { resolveEquipAction } from "../eq/resolveEquipAction";
@@ -12,9 +12,7 @@ import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 import { resolvePokeAction } from "../poke/resolvePokeAction";
 import { resolvePlayerWaitAction } from "../wait/resolvePlayerWaitAction";
 
-import { PlayerActionType } from "./types";
-
-export type AnyPlayerResolver = (action: any) => ActionResolution;
+import { PlayerActionType, type PlayerAction } from "./types";
 
 export const playerActionResolvers = {
   [PlayerActionType.MOVE]: resolvePlayerMoveAction,
@@ -29,4 +27,4 @@ export const playerActionResolvers = {
   [PlayerActionType.INSPECT_EQ]: resolveInspectEqAction,
   [PlayerActionType.POKE]: resolvePokeAction,
   [PlayerActionType.WAIT]: resolvePlayerWaitAction,
-} satisfies Record<PlayerActionType, AnyPlayerResolver>;
+} satisfies ActionResolverMap<PlayerAction>;

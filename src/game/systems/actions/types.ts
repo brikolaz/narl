@@ -15,3 +15,9 @@ export type ActionResolution = {
   pendingActions: TimedAction[];
   action?: Action;
 };
+
+export type ActionResolverMap<TAction extends GameAction> = {
+  [TType in TAction["type"]]: (
+    action: Extract<TAction, { type: TType }>,
+  ) => ActionResolution;
+};

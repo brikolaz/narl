@@ -23,8 +23,8 @@ export const resolveComponentType = <P extends object | undefined = undefined>(
 
 export const resolveComponent = <P extends object | undefined = undefined>(
   component: ComponentArgument<P>,
-): Component<P> => {
+): Component<P> | undefined => {
   return typeof component === "number"
-    ? (getComponentById(component) as Component<P>)
+    ? (getComponentById(component) as Component<P> | undefined)
     : component;
 };
