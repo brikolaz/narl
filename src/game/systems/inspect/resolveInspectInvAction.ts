@@ -23,7 +23,7 @@ export const resolveInspectInvAction = (
     const item = getContainerItemAt(backpack, invSlot);
 
     if (!item) {
-      return action.info(`INV slot ${invSlot} is empty`);
+      return action.info(`No item to inspect`);
     }
     increaseInspected(item);
 

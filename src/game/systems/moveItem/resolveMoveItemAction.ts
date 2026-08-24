@@ -55,7 +55,7 @@ export const resolveMoveItemAction = (
     addItemToContainer(toItem, fromItem);
 
     action.success(
-      `Moved ${getEntityName(fromItem)} from inv slot ${fromSlot} to ${getEntityName(toItem)} at slot ${toSlot}`,
+      `Moved ${getEntityName(fromItem)} to ${getEntityName(toItem)}`,
     );
   })();
 
