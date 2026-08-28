@@ -62,7 +62,6 @@ export const dequeueTimedActions = (
           duration: duration - 1,
         };
       }
-      return undefined;
     })
     .filter((timedAction) => timedAction !== undefined);
 

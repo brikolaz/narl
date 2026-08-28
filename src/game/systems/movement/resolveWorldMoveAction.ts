@@ -5,7 +5,7 @@ import { isTileOccupied } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type WorldMoveAction } from "../world/types";
-import { move } from "./move";
+import { moveMob } from "./move";
 import { getNextPosition } from "./position";
 
 export const resolveWorldMoveAction = (
@@ -27,7 +27,7 @@ export const resolveWorldMoveAction = (
     if (isTileOccupied(nextPosition)) {
       return;
     }
-    move(entity, nextPosition);
+    moveMob(entity, nextPosition);
   })();
 
   return action.resolve();

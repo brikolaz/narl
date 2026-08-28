@@ -6,7 +6,7 @@ import { getPosition } from "../../model/queries/position";
 import { getTile } from "../../model/queries/tile";
 
 // TODO: handle other entity kind (items etc.) movement if needed
-export const move = (entity: Entity, nextPosition: number) => {
+export const moveMob = (entity: Entity, nextPosition: number) => {
   const tile = getTile(getPosition(entity));
   removeById(tile.mobs, entity.id);
   const nextTile = getTile(nextPosition);

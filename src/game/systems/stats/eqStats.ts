@@ -12,7 +12,6 @@ const EqStat = {
 } as const satisfies Enum;
 type EqStat = EnumType<typeof EqStat>;
 
-// TODO: resolve stats based on slots/item types
 // TODO; remove duplication in Inspect action
 export type EqStats = Record<EqStat, number | string>;
 
