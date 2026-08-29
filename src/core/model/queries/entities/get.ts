@@ -11,7 +11,7 @@ export const getEntitiesByRole = (
   parentEntity: EntityArgument,
   entityRole: EntityRole,
 ): Entity[] => {
-  if (!parentEntity) {
+  if (parentEntity === undefined) {
     return [];
   }
   const source = resolveEntity(parentEntity);
