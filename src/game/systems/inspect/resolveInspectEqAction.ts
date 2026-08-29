@@ -33,7 +33,7 @@ export const resolveInspectEqAction = (
     }
 
     increaseInspected(item);
-    action.info(getItemInspectText(item));
+    action.info(getItemInspectText(item, slot));
     curse(action, item);
   })();
 

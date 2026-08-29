@@ -3,7 +3,7 @@ import type { Entity } from "../../../core/model/Entity";
 import { InspectDescComponent } from "../../model/components/inspect/InspectDescComponent";
 import { InspectedComponent } from "../../model/components/inspect/InspectedComponent";
 import { DefComponent } from "../../model/components/items/DefComponent";
-import { getDef } from "../../model/queries/def";
+import { getDef, getDefMod } from "../../model/queries/def";
 import {
   getChildrenDmgRange,
   getDmgRange,
@@ -28,10 +28,23 @@ export const getInspectDesc = (entity: Entity) => {
   return inspectDesc.at(-1)?.text ?? "";
 };
 
-export const getItemInspectText = (entity: Entity): string => {
+const getEffectiveDmgRange = (entity: Entity, eqSlot?: Entity) => {
+  const { min, max } = getDmgRange(entity);
+  const modifier = eqSlot ? getDmgMod(eqSlot) : 1;
+  return {
+    min: Math.ceil(min * modifier),
+    max: Math.ceil(max * modifier),
+  };
+};
+
+const getEffectiveDef = (entity: Entity, eqSlot?: Entity) => {
+  return Math.ceil(getDef(entity) * (eqSlot ? getDefMod(eqSlot) : 1));
+};
+
+export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
   const stats = [];
   if (isContainer(entity)) {
-    stats.push(`${formatDmgRange(getDmgRange(entity))} TOTAL DMG`);
+    stats.push(`${formatDmgRange(getEffectiveDmgRange(entity, eqSlot))} TOTAL DMG`);
     stats.push(`${formatDmgRange(getOwnDmgRange(entity))} OWN DMG`);
     stats.push(
       `${formatDmgRange(getChildrenDmgRange(entity))} CHILDREN DMG`,
@@ -39,10 +52,10 @@ export const getItemInspectText = (entity: Entity): string => {
     stats.push(`${getDmgMod(entity)} DMG MOD`);
   } else {
     if (isWeapon(entity)) {
-      stats.push(`${formatDmgRange(getOwnDmgRange(entity))} DMG`);
+      stats.push(`${formatDmgRange(getEffectiveDmgRange(entity, eqSlot))} DMG`);
     }
     if (hasComponentsByType(entity, DefComponent)) {
-      stats.push(`${getDef(entity)} DEF`);
+      stats.push(`${getEffectiveDef(entity, eqSlot)} DEF`);
     }
   }
 
