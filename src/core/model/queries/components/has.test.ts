@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { getComponentCreator } from "../../Component";
 import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
@@ -10,13 +10,20 @@ import {
   hasComponentsByType,
   isComponentType,
 } from "./has";
+import { expectComponentStateConsistent } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
 const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT");
 
 describe("component predicates", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectComponentStateConsistent(state);
+  });
 
   describe("areComponentTypesEqual", () => {
     it("returns true for no components", () => {

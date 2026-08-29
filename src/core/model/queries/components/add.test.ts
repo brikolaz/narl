@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import {
   initState,
@@ -8,7 +8,13 @@ import { getComponentCreator } from "../../Component";
 import { getEntityCreator, type Entity } from "../../Entity";
 import type { Id } from "../../Id";
 import { upsertComponents } from "./add";
-import { expectComponentAttached, expectComponentDetached, expectComponentsAttached, expectComponentsDetached } from "./tests";
+import {
+  expectComponentAttached,
+  expectComponentNotAttached,
+  expectComponentStateConsistent,
+  expectComponentsAttached,
+  expectComponentsNotAttached,
+} from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
@@ -19,6 +25,10 @@ describe("upsertComponents", () => {
 
   beforeEach(() => {
     state = initState();
+  });
+
+  afterEach(() => {
+    expectComponentStateConsistent(state);
   });
 
   describe.each([
@@ -106,7 +116,7 @@ describe("upsertComponents", () => {
         upsertComponents(getEntityInput(entity), ...updatedComponents);
 
         for (const component of newComponents) {
-          expectComponentDetached(state, entity, component);
+          expectComponentNotAttached(entity, component);
         }
         for (const component of [...initialComponents, ...updatedComponents]) {
           expectComponentAttached(state, entity, component);
@@ -128,8 +138,7 @@ describe("upsertComponents", () => {
         upsertComponents(firstEntity, ...initialComponents, ...newComponents);
         upsertComponents(secondEntity, ...initialComponents, ...newComponents);
 
-        expectComponentsDetached(
-          state,
+        expectComponentsNotAttached(
           firstEntity,
           ...initialComponents,
           ...newComponents,

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
 import { getComponentCreator } from "../../Component";
@@ -6,6 +6,12 @@ import { EntityRole, getEntityCreator } from "../../Entity";
 import { upsertComponents } from "../components/add";
 import { upsertRoleEntities } from "./add";
 import { detachEntity, removeEntitiesByRole, removeEntity } from "./remove";
+import {
+  expectEntityAttached,
+  expectEntityDetached,
+  expectEntityRemoved,
+  expectEntityStateConsistent,
+} from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
@@ -14,6 +20,9 @@ describe("entity removal", () => {
   let state: GameState;
   beforeEach(() => {
     state = initState();
+  });
+  afterEach(() => {
+    expectEntityStateConsistent(state);
   });
 
   describe("removeEntity", () => {
@@ -27,7 +36,7 @@ describe("entity removal", () => {
         upsertRoleEntities(child, { [EntityRole.DEFAULT]: grandchild });
         upsertComponents(child, component);
         removeEntity(child);
-        expect(state.entityRegistryById[child.id]).toBeUndefined();
+        expectEntityRemoved(state, parent, child, EntityRole.ITEM);
         expect(state.entityRegistryById[grandchild.id]).toBeUndefined();
         expect(state.componentRegistryById[component.id]).toBeUndefined();
       });
@@ -53,8 +62,8 @@ describe("entity removal", () => {
 
     removeEntitiesByRole(parent, EntityRole.ITEM);
 
-    expect(state.entityRegistryById[item.id]).toBeUndefined();
-    expect(state.entityRegistryById[eq.id]?.entity).toBe(eq);
+    expectEntityRemoved(state, parent, item, EntityRole.ITEM);
+    expectEntityAttached(state, parent, eq, EntityRole.EQ);
   });
 
   describe("detachEntity", () => {
@@ -64,8 +73,7 @@ describe("entity removal", () => {
         const child = TestEntity();
         upsertRoleEntities(parent, { [EntityRole.ITEM]: child });
         detachEntity(child);
-        expect(parent.entityById.has(child.id)).toBe(false);
-        expect(state.entityRegistryById[child.id]?.parent).toBeNull();
+        expectEntityDetached(state, parent, child, EntityRole.ITEM);
       });
     });
 
@@ -75,8 +83,7 @@ describe("entity removal", () => {
         const child = TestEntity();
         upsertRoleEntities(parent, { [EntityRole.ITEM]: child });
         detachEntity(child.id);
-        expect(parent.entityById.has(child.id)).toBe(false);
-        expect(state.entityRegistryById[child.id]?.parent).toBeNull();
+        expectEntityDetached(state, parent, child, EntityRole.ITEM);
       });
     });
   });

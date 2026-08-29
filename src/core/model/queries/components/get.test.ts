@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { getComponentCreator } from "../../Component";
 import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
@@ -10,13 +10,20 @@ import {
   getComponentsByType,
   getComponentsByTypes,
 } from "./get";
+import { expectComponentStateConsistent } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
 const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT");
 
 describe("component getters", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectComponentStateConsistent(state);
+  });
 
   describe("getComponentById", () => {
     it("gets one component by id", () => {

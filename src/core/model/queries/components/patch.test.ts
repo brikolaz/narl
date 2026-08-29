@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { getComponentCreator } from "../../Component";
 import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
@@ -9,13 +9,24 @@ import {
   patchComponentByType,
   replaceComponentsByType,
 } from "./patch";
+import {
+  expectComponentAttached,
+  expectComponentDetached,
+  expectComponentStateConsistent,
+} from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 type TestComponentProps = { value: number }
 const TestComponent = getComponentCreator<TestComponentProps>("TEST_COMPONENT", { value: 0 });
 
 describe("component patching", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectComponentStateConsistent(state);
+  });
 
   describe("patchComponent", () => {
     it("patches with component object", () => {
@@ -28,6 +39,7 @@ describe("component patching", () => {
       });
 
       expect(component.value).toBe(10);
+      expectComponentAttached(state, entity, component);
     });
 
     it("patches with component id", () => {
@@ -40,6 +52,7 @@ describe("component patching", () => {
       });
 
       expect(component.value).toBe(10);
+      expectComponentAttached(state, entity, component);
     });
   });
 
@@ -53,6 +66,7 @@ describe("component patching", () => {
           target.value = 20;
         });
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
 
       it("patches with component object", () => {
@@ -63,6 +77,7 @@ describe("component patching", () => {
           target.value = 20;
         });
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
 
       it("patches with component type", () => {
@@ -77,6 +92,7 @@ describe("component patching", () => {
           },
         );
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
     });
 
@@ -89,6 +105,7 @@ describe("component patching", () => {
           target.value = 20;
         });
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
 
       it("patches with component object", () => {
@@ -99,6 +116,7 @@ describe("component patching", () => {
           target.value = 20;
         });
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
 
       it("patches with component type", () => {
@@ -113,6 +131,7 @@ describe("component patching", () => {
           },
         );
         expect(component.value).toBe(20);
+        expectComponentAttached(state, entity, component);
       });
     });
   });
@@ -127,6 +146,8 @@ describe("component patching", () => {
         replaceComponentsByType(entity, TestComponent, replacement);
         expect(entity.componentById.has(component.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, component);
+        expectComponentAttached(state, entity, replacement);
       });
 
       it("replaces with component object", () => {
@@ -137,6 +158,8 @@ describe("component patching", () => {
         replaceComponentsByType(entity, component, replacement);
         expect(entity.componentById.has(component.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, component);
+        expectComponentAttached(state, entity, replacement);
       });
 
       it("replaces with component type", () => {
@@ -151,6 +174,9 @@ describe("component patching", () => {
         expect(entity.componentById.has(first.id)).toBe(false);
         expect(entity.componentById.has(second.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, first);
+        expectComponentDetached(state, entity, second);
+        expectComponentAttached(state, entity, replacement);
       });
     });
 
@@ -163,6 +189,8 @@ describe("component patching", () => {
         replaceComponentsByType(entity.id, TestComponent, replacement);
         expect(entity.componentById.has(component.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, component);
+        expectComponentAttached(state, entity, replacement);
       });
 
       it("replaces with component object", () => {
@@ -173,6 +201,8 @@ describe("component patching", () => {
         replaceComponentsByType(entity.id, component, replacement);
         expect(entity.componentById.has(component.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, component);
+        expectComponentAttached(state, entity, replacement);
       });
 
       it("replaces with component type", () => {
@@ -183,6 +213,8 @@ describe("component patching", () => {
         replaceComponentsByType(entity.id, component.type, replacement);
         expect(entity.componentById.has(component.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
+        expectComponentDetached(state, entity, component);
+        expectComponentAttached(state, entity, replacement);
       });
     });
   });

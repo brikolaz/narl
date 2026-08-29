@@ -1,13 +1,20 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { getEntityCreator } from "../../Entity";
 import { patchEntity } from "./patch";
+import { expectEntityRoot, expectEntityStateConsistent } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 
 describe("patchEntity", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectEntityStateConsistent(state);
+  });
 
   describe("with entity object", () => {
     it("patches the entity", () => {
@@ -17,6 +24,7 @@ describe("patchEntity", () => {
         target.type = replacementType;
       });
       expect(entity.type).toBe(replacementType);
+      expectEntityRoot(state, entity);
     });
   });
 
@@ -28,6 +36,7 @@ describe("patchEntity", () => {
         target.type = replacementType;
       });
       expect(entity.type).toBe(replacementType);
+      expectEntityRoot(state, entity);
     });
   });
 

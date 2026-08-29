@@ -1,9 +1,14 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, it } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
 import { EntityRole, getEntityCreator } from "../../Entity";
 import { upsertEntities, upsertRoleEntities } from "./add";
-import { expectEntityAttached } from "./tests";
+import {
+  expectEntityAttached,
+  expectEntityNotAttached,
+  expectEntityRoot,
+  expectEntityStateConsistent,
+} from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 
@@ -11,6 +16,10 @@ describe("entity upserting", () => {
   let state: GameState;
   beforeEach(() => {
     state = initState();
+  });
+
+  afterEach(() => {
+    expectEntityStateConsistent(state);
   });
 
   describe("upsertEntities", () => {
@@ -68,24 +77,21 @@ describe("entity upserting", () => {
 
     upsertRoleEntities(secondParent, { [EntityRole.ITEM]: child });
 
-    expect(state.entityRegistryById[child.id]).toEqual({
-      entity: child,
-      parent: secondParent,
-      role: EntityRole.ITEM,
-    });
+    expectEntityNotAttached(firstParent, child, EntityRole.DEFAULT);
+    expectEntityAttached(state, secondParent, child, EntityRole.ITEM);
   });
 
   describe("with undefined entity", () => {
     it("does not attach child in upsertEntities", () => {
       const child = TestEntity();
       upsertEntities(undefined, child);
-      expect(state.entityRegistryById[child.id]?.parent).toBeNull();
+      expectEntityRoot(state, child);
     });
 
     it("does not attach child in upsertRoleEntities", () => {
       const child = TestEntity();
       upsertRoleEntities(undefined, { [EntityRole.ITEM]: child });
-      expect(state.entityRegistryById[child.id]?.parent).toBeNull();
+      expectEntityRoot(state, child);
     });
   });
 });

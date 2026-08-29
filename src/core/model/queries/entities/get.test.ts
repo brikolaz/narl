@@ -1,14 +1,21 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { EntityRole, getEntityCreator } from "../../Entity";
 import { upsertRoleEntities } from "./add";
 import { getEntitiesByRole, getEntityById, getEntityByRole } from "./get";
+import { expectEntityStateConsistent } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 
 describe("entity getters", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectEntityStateConsistent(state);
+  });
 
   describe("getEntityById", () => {
     it("gets a registered entity", () => {

@@ -1,13 +1,20 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { initState } from "../../../../game/state/state";
+import { initState, type GameState } from "../../../../game/state/state";
 import { EntityRole, getEntityCreator } from "../../Entity";
 import { normalizeChildrenEntityRecords, resolveEntity } from "./normalize";
+import { expectEntityStateConsistent } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 
 describe("entity normalization", () => {
-  beforeEach(() => initState());
+  let state: GameState;
+  beforeEach(() => {
+    state = initState();
+  });
+  afterEach(() => {
+    expectEntityStateConsistent(state);
+  });
 
   it("normalizeChildrenEntityRecords", () => {
     const first = TestEntity();

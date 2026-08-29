@@ -1,11 +1,15 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
 import { getComponentCreator } from "../../Component";
 import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
 import { removeComponents, removeComponentsByType } from "./remove";
-import { expectComponentDetached } from "./tests";
+import {
+  expectComponentAttached,
+  expectComponentDetached,
+  expectComponentStateConsistent,
+} from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
@@ -16,6 +20,9 @@ describe("component removal", () => {
   beforeEach(() => {
     state = initState();
   });
+  afterEach(() => {
+    expectComponentStateConsistent(state);
+  });
 
   describe("removeComponents", () => {
     it("removes with component object", () => {
@@ -25,7 +32,7 @@ describe("component removal", () => {
       upsertComponents(entity, removed, preserved);
       removeComponents(removed);
       expectComponentDetached(state, entity, removed);
-      expect(entity.componentById.get(preserved.id)).toBe(preserved);
+      expectComponentAttached(state, entity, preserved);
     });
 
     it("removes with component id", () => {
@@ -35,7 +42,7 @@ describe("component removal", () => {
       upsertComponents(entity, removed, preserved);
       removeComponents(removed.id);
       expectComponentDetached(state, entity, removed);
-      expect(entity.componentById.get(preserved.id)).toBe(preserved);
+      expectComponentAttached(state, entity, preserved);
     });
   });
 
@@ -66,7 +73,7 @@ describe("component removal", () => {
         removeComponentsByType(entity, first.type);
         expectComponentDetached(state, entity, first);
         expectComponentDetached(state, entity, second);
-        expect(entity.componentById.get(preserved.id)).toBe(preserved);
+        expectComponentAttached(state, entity, preserved);
       });
     });
 

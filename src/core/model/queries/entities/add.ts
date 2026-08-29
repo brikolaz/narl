@@ -7,6 +7,7 @@ import {
   normalizeChildrenEntityRecords,
   type ChildrenInput,
 } from "./normalize";
+import { detachEntity } from "./remove";
 
 const upsertDataEntities = (
   entity: Entity,
@@ -32,8 +33,14 @@ const _upsertEntities = (
     return;
   }
   const children = normalizeChildrenEntityRecords(childrenEntities);
-  upsertDataEntities(target, children);
-  upsertRegistryEntities(target, children);
+  for (const [role, entities] of typedEntries(children)) {
+    for (const child of entities) {
+      detachEntity(child);
+      const childByRole = { [role]: [child] };
+      upsertDataEntities(target, childByRole);
+      upsertRegistryEntities(target, childByRole);
+    }
+  }
 };
 
 export const upsertEntities = (
