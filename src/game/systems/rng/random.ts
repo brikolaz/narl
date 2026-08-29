@@ -29,7 +29,7 @@ export class Random {
   }
 
   chance(percent: number): boolean {
-    return this.random() * Random.RANDOM_TOTAL_CHANCE <= percent;
+    return this.random() * Random.RANDOM_TOTAL_CHANCE < percent;
   }
 
   range(min: number, max: number): number {
