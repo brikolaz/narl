@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
-import { getComponentCreator, type Component } from "../../Component";
-import { getEntityCreator, type Entity } from "../../Entity";
+import { getComponentCreator } from "../../Component";
+import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
 import { removeComponents, removeComponentsByType } from "./remove";
 import { expectComponentDetached } from "./tests";

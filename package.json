@@ -14,7 +14,8 @@
     "generate:resolver:world": "plop action-resolver:world",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "husky"
   },
   "dependencies": {
     "seedrandom": "^3.0.5"
@@ -25,6 +26,7 @@
     "@types/seedrandom": "^3.0.8",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
     "jscodeshift": "^17.4.0",
     "plop": "^4.0.5",
     "typescript": "~5.9.3",

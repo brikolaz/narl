@@ -4,10 +4,10 @@ import {
   initState,
   type GameState,
 } from "../../../../game/state/state";
-import { getComponentCreator, type Component } from "../../Component";
+import { getComponentCreator } from "../../Component";
 import { getEntityCreator, type Entity } from "../../Entity";
-import { upsertComponents } from "./add";
 import type { Id } from "../../Id";
+import { upsertComponents } from "./add";
 import { expectComponentAttached, expectComponentDetached, expectComponentsAttached, expectComponentsDetached } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
