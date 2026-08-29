@@ -14,6 +14,7 @@ import { resolveWorldMobAiAction } from "../mobAi/resolveWorldMobAiAction";
 import { resolveWorldHealAction } from "../heal/resolveWorldHealAction";
 import { resolveWorldGameOverAction } from "../gameOver/resolveWorldGameOverAction";
 import { resolveWorldPendingGameOverAction } from "../gameOver/resolveWorldPendingGameOverAction";
+import { resolveWorldWinAction } from "../win/resolveWorldWinAction";
 import { WorldActionType, type WorldAction } from "./types";
 
 export const worldActionResolvers = {
@@ -32,4 +33,5 @@ export const worldActionResolvers = {
   [WorldActionType.HEAL]: resolveWorldHealAction,
   [WorldActionType.GAME_OVER]: resolveWorldGameOverAction,
   [WorldActionType.PENDING_GAME_OVER]: resolveWorldPendingGameOverAction,
+  [WorldActionType.WIN]: resolveWorldWinAction,
 } satisfies ActionResolverMap<WorldAction>;

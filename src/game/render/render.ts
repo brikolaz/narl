@@ -30,6 +30,10 @@ const gameOver = document.createElement("pre");
 gameOver.className = "game-over";
 gameOver.setAttribute("aria-label", "Game over");
 
+const win = document.createElement("pre");
+win.className = "game-over";
+win.setAttribute("aria-label", "You won");
+
 // TODO: get it from game view (no hardcoded keys)
 const controls = document.createElement("pre");
 controls.className = "controls";
@@ -77,6 +81,20 @@ const renderGameOver = ({ turn, epitaph }: GameViewModel["death"]) => {
   ].join("\n");
 
   root.replaceChildren(gameOver);
+};
+
+const renderWin = () => {
+  win.textContent = [
+    "",
+    "You won!",
+    "",
+    "Don't get used to it",
+    "",
+    "",
+    "Press any key to restart",
+  ].join("\n");
+
+  root.replaceChildren(win);
 };
 
 const appendColoredGlyph = (
@@ -215,6 +233,12 @@ const renderEqGrid = (
 };
 
 export const render = (viewModel: GameViewModel) => {
+  if (viewModel.win()) {
+    controls.hidden = true;
+    renderWin();
+    return;
+  }
+
   if (viewModel.gameOver()) {
     controls.hidden = true;
     renderGameOver(viewModel.death);

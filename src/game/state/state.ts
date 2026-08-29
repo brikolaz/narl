@@ -24,8 +24,9 @@ export const GAME_STATUS = {
   ACTIVE: "ACTIVE",
   PENDING_GAME_OVER: "PENDING_GAME_OVER",
   GAME_OVER: "GAME_OVER",
+  WIN: "WIN"
 } as const satisfies Enum;
-type GameStatus = EnumType<typeof GAME_STATUS>;
+export type GameStatus = EnumType<typeof GAME_STATUS>;
 
 export type DeathContext = Partial<{
   epitaph: string;

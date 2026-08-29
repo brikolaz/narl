@@ -5,13 +5,15 @@ import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";
 
+export const getDefaultTile = (position: number): Tile => ({
+  floor: FloorEntityFactory.getDefault(),
+  items: [],
+  mobs: [],
+  position,
+})
+
 export const generateTile = (position: number): Tile => {
-  const tile: Tile = {
-    floor: FloorEntityFactory.getDefault(),
-    items: [],
-    mobs: [],
-    position,
-  };
+  const tile = getDefaultTile(position)
   const mob = getRandomMob(position);
   patchComponentByType(mob, PositionComponent, (component) => {
     component.position = position;

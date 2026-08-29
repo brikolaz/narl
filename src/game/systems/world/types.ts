@@ -18,6 +18,7 @@ export const WorldActionType = {
   HEAL: "WORLD_HEAL",
   GAME_OVER: "WORLD_GAME_OVER",
   PENDING_GAME_OVER: "WORLD_PENDING_GAME_OVER",
+  WIN: "WORLD_WIN",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -95,5 +96,7 @@ export type WorldPendingGameOverAction = {
   type: typeof WorldActionType.PENDING_GAME_OVER;
 };
 
+export type WorldWinAction = { type: typeof WorldActionType.WIN };
+
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction;

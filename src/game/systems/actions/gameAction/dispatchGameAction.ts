@@ -11,6 +11,7 @@ import { flushLogs, recordPlayerAction } from "../../log/log";
 import type { PendingLog } from "../../log/types";
 import { isPlayerAction } from "../../player/guards";
 import { increaseTurn } from "../../turn/turn";
+import { isWin } from "../../win/resolveWorldWinAction";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
 import { WorldActionType } from "../../world/types";
 import { applyTimedAction } from "../timedActions/timedActions";
@@ -101,7 +102,7 @@ const dispatchGameAction = (action: GameAction): void => {
 };
 
 export const dispatch = (action?: GameAction): void => {
-  if (isGameOver()) {
+  if (isGameOver() || isWin()) {
     return dispatchGameAction({
       type: InternalActionType.INIT,
     });

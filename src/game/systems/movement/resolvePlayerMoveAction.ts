@@ -1,4 +1,5 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
+import { ENG_GAME_GATE_POSITION } from "../../../utils/constants";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
@@ -10,10 +11,11 @@ import type { ActionResolution } from "../actions/types";
 import { addExplorationExp } from "../exp/exp";
 import { PlayerActionType, type PlayerMoveAction } from "../player/types";
 import { discoverTiles } from "../world/tile";
+import { WorldActionType } from "../world/types";
 import { markAsVisited } from "./exploration";
 import { getNextPosition } from "./position";
 
-const setNextState = (nextPlayerPosition: number): void => {
+const move = (nextPlayerPosition: number): void => {
   const player = getPlayer();
   patchComponentByType(
     player,
@@ -42,6 +44,7 @@ export const resolvePlayerMoveAction = (
     if (nextPlayerPosition === null) {
       return action.fail(`Cannot move ${direction.toLowerCase()}`);
     }
+    
     discoverTiles(nextPlayerPosition);
     const nextTile = getTile(nextPlayerPosition);
     if (hasMobs(nextTile)) {
@@ -51,7 +54,14 @@ export const resolvePlayerMoveAction = (
       });
     }
 
-    setNextState(nextPlayerPosition);
+    // TODO: hardcoded for now
+    if(nextPlayerPosition === ENG_GAME_GATE_POSITION) {
+      return action.addPendingImmediateAction({
+        type: WorldActionType.WIN
+      })
+    }
+
+    move(nextPlayerPosition);
     action.success();
   })();
 

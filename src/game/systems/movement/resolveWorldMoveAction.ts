@@ -1,7 +1,7 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { getPosition } from "../../model/queries/position";
-import { isTileOccupied } from "../../model/queries/tile";
+import { isTileImpassable } from "../../model/queries/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type WorldMoveAction } from "../world/types";
@@ -24,7 +24,7 @@ export const resolveWorldMoveAction = (
       return;
     }
 
-    if (isTileOccupied(nextPosition)) {
+    if (isTileImpassable(nextPosition)) {
       return;
     }
     moveMob(entity, nextPosition);

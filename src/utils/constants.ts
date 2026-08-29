@@ -18,3 +18,5 @@ export const MOBS_RNG_NAMESPACE = "mobs" as const;
 export const ITEMS_RNG_NAMESPACE = "items" as const;
 
 export const MAX_VISIBLE_LOGS = 10 as const;
+
+export const ENG_GAME_GATE_POSITION = 50 - 1

@@ -1,5 +1,5 @@
 import { INITIAL_TURN } from "../../../utils/constants";
-import { GAME_STATUS, initState, STATE } from "../../state/state";
+import { GAME_STATUS, initState, STATE, type GameStatus } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type InternalInitAction } from "../internal/type";
@@ -13,8 +13,7 @@ export const resolveInternalInitAction = (
   const action = new Action(gameAction);
 
   if (
-    STATE.status !== GAME_STATUS.INACTIVE &&
-    STATE.status !== GAME_STATUS.GAME_OVER
+    !Array.from<GameStatus>([GAME_STATUS.INACTIVE, GAME_STATUS.GAME_OVER, GAME_STATUS.WIN]).includes(STATE.status)
   ) {
     throw new Error("Can't reinitialize the game");
   }

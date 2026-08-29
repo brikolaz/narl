@@ -17,6 +17,7 @@ type Game = {
   view: GameViewModel;
   gameOver: boolean;
   pendingGameOver: boolean;
+  win: boolean;
 };
 
 const createGame = (): Game => {
@@ -34,6 +35,9 @@ const createGame = (): Game => {
     get pendingGameOver() {
       return state.status === GAME_STATUS.PENDING_GAME_OVER;
     },
+    get win() {
+      return state.status === GAME_STATUS.WIN;
+    },
   };
 };
 
@@ -48,7 +52,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
   event.preventDefault();
 
   if (
-    game.gameOver || game.pendingGameOver
+    game.gameOver || game.pendingGameOver || game.win
   ) {
     keyboardChain = undefined;
     game.dispatch();

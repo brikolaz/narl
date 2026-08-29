@@ -11,6 +11,7 @@ import { isGameOver } from "../systems/gameOver/gameOver";
 import { getLogEntryCount } from "../systems/log/log";
 import { getEqStats } from "../systems/stats/eqStats";
 import { getPlayerStats } from "../systems/stats/playerStats";
+import { isWin } from "../systems/win/resolveWorldWinAction";
 import { getRenderedMap } from "./getRenderedMap";
 import type { Highlight } from "./state/highlight";
 import { UI_STATE } from "./state/state";
@@ -29,6 +30,7 @@ export type LogEntryView = { text: string };
 
 export type GameViewModel = {
   gameOver: typeof isGameOver;
+  win: typeof isWin;
   turn: number;
   map: RenderedMap;
   playerStats: PlayerStatsView;
@@ -111,6 +113,7 @@ export const getLogsView = (): LogEntryView[] =>
 
 export const getGameViewModel = (): GameViewModel => ({
   gameOver: isGameOver,
+  win: isWin,
   turn: STATE.turn,
   map: getRenderedMap().map((tile) => ({
     char: tile.char ?? " ",
