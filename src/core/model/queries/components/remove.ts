@@ -36,9 +36,9 @@ const removeDataComponentsByType = (
   return ids;
 };
 
-export const removeComponentsByType = (
+export const removeComponentsByType = <P extends object | undefined>(
   entity: EntityArgument,
-  ...componentTypes: ComponentTypeArgument[]
+  ...componentTypes: ComponentTypeArgument<P>[]
 ) => {
   const ids = removeDataComponentsByType(
     resolveEntity(entity),

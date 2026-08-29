@@ -11,7 +11,7 @@ import {
 import { removeComponentsByType } from "./remove";
 
 export const patchComponent = <P extends object>(
-  component: ComponentArgument,
+  component: ComponentArgument<P>,
   patcher: (component: Component<P>) => void,
 ): void => {
   const resolvedComponent = resolveComponent(component);

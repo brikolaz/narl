@@ -8,57 +8,11 @@ import { getComponentCreator, type Component } from "../../Component";
 import { getEntityCreator, type Entity } from "../../Entity";
 import { upsertComponents } from "./add";
 import type { Id } from "../../Id";
+import { expectComponentAttached, expectComponentDetached, expectComponentsAttached, expectComponentsDetached } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
 const TestComponent = getComponentCreator("TEST_COMPONENT");
 const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT");
-
-export const expectComponentAttached = (
-  state: GameState,
-  entity: Entity,
-  component: Component,
-) => {
-  expect(entity.componentById.get(component.id)).toBe(component);
-  expect(entity.componentByType.get(component.type)?.get(component.id)).toBe(
-    component,
-  );
-  expect(state.componentRegistryById[component.id]).toEqual({
-    component,
-    parent: entity,
-  });
-};
-
-export const expectComponentsAttached = (
-  state: GameState,
-  entity: Entity,
-  ...components: Component[]
-) => {
-  for (const component of components) {
-    expectComponentAttached(state, entity, component);
-  }
-};
-
-export const expectComponentDetached = (
-  state: GameState,
-  entity: Entity,
-  component: Component,
-) => {
-  expect(entity.componentById.get(component.id)).not.toBe(component);
-  expect(
-    entity.componentByType.get(component.type)?.get(component.id),
-  ).not.toBe(component);
-  expect(state.componentRegistryById[component.id]).not.toBe(component);
-};
-
-export const expectComponentsDetached = (
-  state: GameState,
-  entity: Entity,
-  ...components: Component[]
-) => {
-  for (const component of components) {
-    expectComponentDetached(state, entity, component);
-  }
-};
 
 describe("upsertComponents", () => {
   let state: GameState;
