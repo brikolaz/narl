@@ -75,13 +75,22 @@ body {
 }
 
 .log {
-  min-height: 20em;
+  height: 15rem;
   margin: 0;
   font: 1rem/1.5 monospace;
   white-space: pre-wrap;
   overflow-wrap: normal;
   word-break: normal;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
   width: 300px;
+}
+
+.log:hover,
+.log:focus {
+  scrollbar-color: #666 #222;
 }
 
 .game-over {

@@ -48,6 +48,14 @@ inventory.className = "inventory";
 inventory.append(eq, backpack);
 
 const renderGameLayout = () => {
+  if (
+    inventory.parentElement === root &&
+    game.parentElement === root &&
+    log.parentElement === root
+  ) {
+    return;
+  }
+
   root.replaceChildren(inventory, game, log);
 };
 
@@ -227,4 +235,5 @@ export const render = (viewModel: GameViewModel) => {
   log.textContent = viewModel.logs
     .map((entry) => entry.text)
     .join("\n");
+  log.scrollTop = log.scrollHeight;
 };
