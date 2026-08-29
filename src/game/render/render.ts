@@ -30,6 +30,15 @@ const gameOver = document.createElement("pre");
 gameOver.className = "game-over";
 gameOver.setAttribute("aria-label", "Game over");
 
+// TODO: get it from game view (no hardcoded keys)
+const controls = document.createElement("pre");
+controls.className = "controls";
+controls.setAttribute("aria-label", "Keyboard controls");
+controls.textContent =
+  "[←/→] Move  [G] Pick Up  [I] Inspect  [E] Equip  [U] Unequip\n[M] Move Item  [D] Drop  [P] Poke  [W] Wait";
+
+document.body.append(controls);
+
 const game = document.createElement("main");
 game.className = "game";
 game.append(stats, map);
@@ -199,10 +208,12 @@ const renderEqGrid = (
 
 export const render = (viewModel: GameViewModel) => {
   if (viewModel.gameOver()) {
+    controls.hidden = true;
     renderGameOver(viewModel.death);
     return;
   }
 
+  controls.hidden = false;
   renderGameLayout();
 
   stats.textContent = Object.entries(viewModel.playerStats)
