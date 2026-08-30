@@ -4,6 +4,7 @@ import { type EntityRegistryById } from "../../core/model/registry/entityRegistr
 import type { Enum, EnumType } from "../../utils/types/Enum";
 import type { TimedAction } from "../systems/actions/timedActions/types";
 import type { ActionLog, LogEntry } from "../systems/log/types";
+import { generateSeed, type Seed } from "../systems/rng/seed";
 
 export type Tile = {
   floor: Entity;
@@ -34,6 +35,7 @@ export type DeathContext = Partial<{
 }>;
 
 export type GameState = {
+  seed: Seed;
   status: GameStatus;
   world: WorldState;
   turn: number;
@@ -53,6 +55,7 @@ export const createInitialState = (): GameState => {
   let id = 0;
 
   return {
+    seed: generateSeed(),
     status: GAME_STATUS.INACTIVE,
     world: [],
     turn: 0,

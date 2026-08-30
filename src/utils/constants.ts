@@ -12,7 +12,6 @@ export const DEFAULT_PLAYER_GLYPH = "@" as const;
 export const INITIAL_TURN = 1 as const;
 export const CURSED_PREFIX = "Cursed";
 
-export const DEFAULT_SEED = "NARL2" as const;
 export const NAMESPACE_SEPARATOR = "." as const;
 export const MOBS_RNG_NAMESPACE = "mobs" as const;
 export const ITEMS_RNG_NAMESPACE = "items" as const;

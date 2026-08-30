@@ -1,7 +1,6 @@
 import { STATE } from "../../game/state/state";
 import { Random } from "../../game/systems/rng/random";
 import type { RNG } from "../../game/systems/rng/rng";
-import { DEFAULT_SEED } from "../../utils/constants";
 import type { Component, ComponentType } from "./Component";
 import type { Id } from "./Id";
 import { getEcsNamespace, Namespace } from "./namespaces";
@@ -41,7 +40,7 @@ export const getEntityCreator = (type: string): EntityCreator => {
     const entity = {
       id,
       type: entityType,
-      rng: new Random({ namespace: entityNamespace, seed: DEFAULT_SEED }),
+      rng: new Random({ namespace: entityNamespace, seed: STATE.seed }),
       componentById: new Map<Id, Component>(),
       componentByType: new Map<ComponentType, Map<Id, Component>>(),
       entityById: new Map<Id, Entity>(),
