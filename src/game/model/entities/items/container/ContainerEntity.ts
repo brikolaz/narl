@@ -48,7 +48,7 @@ export const ContainerEntityFactory: ContainerFactory = {
     upsertComponents(
       backpack,
       NameComponent({ name: "Backpack" }),
-      GlyphComponent({ glyph: "*" }),
+      GlyphComponent({ glyph: "b" }),
       ContainerComponent(),
       SizeComponent({ size: getRng(backpack).range(2, 4) }),
       NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
