@@ -5,7 +5,9 @@ import {
 } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
-import { setContainerItemAt } from "../../../../systems/containers/containers";
+import { addItemToContainer, setContainerItemAt } from "../../../../systems/containers/containers";
+import { setDmg } from "../../../../systems/hit/dmg";
+import { getRng } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -18,15 +20,23 @@ import { MovableComponent } from "../../../components/MovableComponent";
 import { PositionComponent } from "../../../components/PositionComponent";
 import { UnawareComponent } from "../../../components/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
-import { setDmg } from "../../../../systems/hit/dmg";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
+import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity";
 import { SwordEntityFactory } from "../../items/SwordEntity";
 
 export const ZoomerEntity = getEntityCreator("ZOOMER");
 
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
+
+  if (getRng(entity).chance(5)) {
+    ContainerEntityFactory.setDroppable?.(backpack);
+  }
+
+  if (getRng(entity).chance(20)) {
+    addItemToContainer(backpack, HelmetEntityFactory.getHornedHelmet())
+  }
 
   upsertRoleEntities(entity, {
     [EntityRole.BACKPACK]: backpack,

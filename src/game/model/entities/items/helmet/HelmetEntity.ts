@@ -37,7 +37,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       }),
       RemovableComponent(),
       HeadComponent(),
-      DefComponent({ def: getRng(helmet).range(3, 4) }),
+      DefComponent({ def: getRng(helmet).range(2, 3) }),
       PickupableComponent(),
       DroppableComponent(),
     );

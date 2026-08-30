@@ -35,13 +35,13 @@ export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
 
-  if (getRng(entity).chance(100)) {
+  if (getRng(entity).chance(5)) {
     ContainerEntityFactory.setDroppable?.(backpack);
   }
   if (getRng(entity).chance(20)) {
     addItemToContainer(backpack, SwordEntityFactory.getDefault());
   }
-  if (getRng(entity).chance(100)) {
+  if (getRng(entity).chance(20)) {
     addItemToContainer(
       backpack,
       HelmetEntityFactory.getVariant?.(HelmetEntityVariants.DEFAULT),

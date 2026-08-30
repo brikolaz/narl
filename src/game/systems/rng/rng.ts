@@ -11,6 +11,7 @@ export type RNG = Random;
 export type RNGMap = Record<RNGTypes, RNG>;
 
 // World RNG / defaults
+// TODO: create World object, attach RNG to it?
 export const RNG: RNGMap = {
   mobs: new Random({
     seed: DEFAULT_SEED,
