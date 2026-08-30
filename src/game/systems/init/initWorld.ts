@@ -17,8 +17,8 @@ export const initWorld = (): WorldState => {
   const world: WorldState = getDummyArray(MAP_SIZE).map((_, position) => (getDefaultTile(position)));
 
   const ring = RingEntityFactory.getDefault();
-  world[3].items.push(ring);
-  setPosition(ring, 3);
+  world[2].items.push(ring);
+  setPosition(ring, 2);
 
   const sword = SwordEntityFactory.getDefault();
   world[3].items.push(sword);
