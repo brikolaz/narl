@@ -1,7 +1,7 @@
 import { EntityRole, getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
-import { DEFAULT_PLAYER_GLYPH } from "../../../utils/constants";
+import { DEFAULT_PLAYER_GLYPH, INITIAL_PLAYER_POSITION } from "../../../utils/constants";
 import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
 import { NameComponent } from "../components/display/NameComponent";
@@ -27,7 +27,7 @@ export const PlayerEntityFactory: Factory = {
       ColorComponent(),
       NameComponent({ name: "You" }),
       HpComponent({ hp: 20, maxHp: 20 }),
-      PositionComponent()
+      PositionComponent({ position: INITIAL_PLAYER_POSITION })
     );
 
     const backpack = ContainerEntityFactory.getPlayerBackpack();
