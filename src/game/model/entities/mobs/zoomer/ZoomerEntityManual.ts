@@ -10,7 +10,7 @@ export const ZoomerEntityManual: Manual = {
   onAttack: (action: Action, source: Entity, target: Entity) => {
     const rng = getRng(source);
     if (rng.chance(50)) {
-      const bleed = BleedComponent({ min: 3, max: 4 });
+      const bleed = BleedComponent({ min: 2, max: 3 });
       upsertComponents(target, bleed);
       action.addPendingImmediateAction(
         {
