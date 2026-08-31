@@ -45,7 +45,6 @@ export const resolvePlayerMoveAction = (
       return action.fail(`Cannot move ${direction.toLowerCase()}`);
     }
     
-    discoverTiles(nextPlayerPosition);
     const nextTile = getTile(nextPlayerPosition);
     if (hasMobs(nextTile)) {
       return action.addPendingImmediateAction({
@@ -61,6 +60,7 @@ export const resolvePlayerMoveAction = (
       })
     }
 
+    discoverTiles(nextPlayerPosition);
     move(nextPlayerPosition);
     action.success();
   })();
