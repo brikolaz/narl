@@ -17,9 +17,13 @@ let keyboardChain: KeyboardToActionChain = undefined;
 const handleKeyDown = (event: KeyboardEvent) => {
   event.preventDefault();
 
-  if (
-    game.gameOver || game.pendingGameOver || game.win
-  ) {
+  const isGameFinished = game.gameOver || game.pendingGameOver || game.win;
+
+  if (isGameFinished && event.repeat) {
+    return;
+  }
+
+  if (isGameFinished) {
     keyboardChain = undefined;
     game.dispatch();
     render(game.view);
