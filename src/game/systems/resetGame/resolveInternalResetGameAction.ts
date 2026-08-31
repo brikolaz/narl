@@ -1,7 +1,6 @@
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import type { InternalResetGameAction } from "../internal/type";
-import { InternalActionType } from "../internal/type";
+import { InternalActionType, type InternalResetGameAction } from "../internal/type";
 import { GAME_STATUS, initState, STATE } from "../../state/state";
 
 export const resolveInternalResetGameAction = (

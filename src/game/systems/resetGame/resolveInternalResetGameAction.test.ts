@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame, type Game } from "../../../game";
-import { GAME_STATUS } from "../../state/state";
+import { GAME_STATUS, initState } from "../../state/state";
 import { InternalActionType } from "../internal/type";
 import * as seed from "../rng/seed";
 import { WorldActionType } from "../world/types";
@@ -8,11 +8,20 @@ import { WorldActionType } from "../world/types";
 describe("resolveInternalResetGameAction", () => {
   let game: Game
   beforeEach(() => {
+    initState();
     game = createGame();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it("does not regenerate the seed when creating a game wrapper", () => {
+    vi.spyOn(seed, "generateSeed");
+
+    createGame();
+
+    expect(seed.generateSeed).not.toHaveBeenCalled();
   });
 
   describe("starts a new game with a new seed", () => {
@@ -22,7 +31,7 @@ describe("resolveInternalResetGameAction", () => {
       game.dispatch({ type: InternalActionType.INIT });
       game.dispatch({ type: WorldActionType.PENDING_GAME_OVER });
       game.dispatch({ type: WorldActionType.GAME_OVER });
-      game.dispatch({ type: InternalActionType.RESET_GAME });
+      game.dispatch();
 
       expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
       expect(seed.generateSeed).toHaveBeenCalledOnce();
@@ -32,7 +41,7 @@ describe("resolveInternalResetGameAction", () => {
       vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed");
 
       game.dispatch({ type: WorldActionType.WIN });
-      game.dispatch({ type: InternalActionType.RESET_GAME });
+      game.dispatch();
 
       expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
       expect(seed.generateSeed).toHaveBeenCalledOnce();

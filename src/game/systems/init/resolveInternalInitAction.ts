@@ -1,11 +1,8 @@
-import { INITIAL_TURN } from "../../../utils/constants";
 import { GAME_STATUS, STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type InternalInitAction } from "../internal/type";
-import { validateSpawnTables } from "../rng/spawnTable";
-import { initPlayer } from "./initPlayer";
-import { initWorld } from "./initWorld";
+import { initGame } from "./initGame";
 
 export const resolveInternalInitAction = (
   gameAction: InternalInitAction,
@@ -16,16 +13,8 @@ export const resolveInternalInitAction = (
     throw new Error("Can't reinitialize the game");
   }
 
-  validateSpawnTables();
-
   (() => {
-    STATE.world = initWorld();
-    STATE.turn = INITIAL_TURN;
-    STATE.log = [];
-    STATE.actionLog = [];
-    STATE.player = initPlayer();
-    STATE.status = GAME_STATUS.ACTIVE;
-
+    initGame();
     action.info("You'd rather stay dead");
   })();
 
