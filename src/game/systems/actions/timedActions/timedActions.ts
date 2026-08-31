@@ -21,7 +21,7 @@ export const applyTimedAction = (
 
   const actionResolution = resolveGameAction(pendingAction.action);
 
-  if (pendingAction.duration <= 1) {
+  if (pendingAction.duration < 1) {
     return actionResolution;
   }
 
