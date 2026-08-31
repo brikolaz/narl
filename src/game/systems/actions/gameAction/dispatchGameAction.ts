@@ -104,7 +104,7 @@ const dispatchGameAction = (action: GameAction): void => {
 export const dispatch = (action?: GameAction): void => {
   if (isGameOver() || isWin()) {
     return dispatchGameAction({
-      type: InternalActionType.INIT,
+      type: InternalActionType.RESET_GAME,
     });
   }
 

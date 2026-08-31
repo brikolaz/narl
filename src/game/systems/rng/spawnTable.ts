@@ -2,7 +2,7 @@ import type { Entity, EntityType } from "../../../core/model/Entity";
 import { getFactory } from "../../model/entities/getFactory";
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity";
-import { RNG } from "./rng";
+import { STATE } from "../../state/state";
 import { getZone, Zone } from "./zones";
 
 type SpawnTable = Map<EntityType, number>;
@@ -43,7 +43,7 @@ export const getRandomMob = (position: number): Entity | undefined => {
   const table = getSpawnTable(zone);
 
   let mob: Entity | undefined = undefined;
-  const roll = RNG.mobs.roll();
+  const roll = STATE.rng.mobs.roll();
   let current = 0;
 
   for (const [mobClass, chance] of table) {

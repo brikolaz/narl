@@ -5,6 +5,7 @@ import type { Enum, EnumType } from "../../utils/types/Enum";
 import type { TimedAction } from "../systems/actions/timedActions/types";
 import type { ActionLog, LogEntry } from "../systems/log/types";
 import { generateSeed, type Seed } from "../systems/rng/seed";
+import { createWorldRng, type WorldRng } from "../systems/rng/worldRng";
 
 export type Tile = {
   floor: Entity;
@@ -35,7 +36,8 @@ export type DeathContext = Partial<{
 }>;
 
 export type GameState = {
-  seed: Seed;
+  readonly seed: Seed;
+  readonly rng: WorldRng;
   status: GameStatus;
   world: WorldState;
   turn: number;
@@ -52,10 +54,12 @@ export type GameState = {
 export const createInitialState = (): GameState => {
   const entityRegistryById: EntityRegistryById = {};
   const componentRegistryById: ComponentRegistryById = {};
+  const seed = generateSeed();
   let id = 0;
 
-  return {
-    seed: generateSeed(),
+  const state: GameState = {
+    seed,
+    rng: createWorldRng(seed),
     status: GAME_STATUS.INACTIVE,
     world: [],
     turn: 0,
@@ -78,6 +82,8 @@ export const createInitialState = (): GameState => {
       position: 0,
     },
   };
+
+  return state;
 };
 
 export const STATE: GameState = createInitialState();

@@ -1,5 +1,5 @@
 import { INITIAL_TURN } from "../../../utils/constants";
-import { GAME_STATUS, initState, STATE, type GameStatus } from "../../state/state";
+import { GAME_STATUS, STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type InternalInitAction } from "../internal/type";
@@ -12,17 +12,13 @@ export const resolveInternalInitAction = (
 ): ActionResolution => {
   const action = new Action(gameAction);
 
-  if (
-    !Array.from<GameStatus>([GAME_STATUS.INACTIVE, GAME_STATUS.GAME_OVER, GAME_STATUS.WIN]).includes(STATE.status)
-  ) {
+  if (STATE.status !== GAME_STATUS.INACTIVE) {
     throw new Error("Can't reinitialize the game");
   }
 
   validateSpawnTables();
 
   (() => {
-    initState();
-
     STATE.world = initWorld();
     STATE.turn = INITIAL_TURN;
     STATE.log = [];
