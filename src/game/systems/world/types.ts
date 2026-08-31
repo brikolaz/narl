@@ -66,6 +66,7 @@ export type WorldBleedAction = {
 export type WorldInitBleedAction = {
   type: typeof WorldActionType.INIT_BLEED;
   bleedId: Id;
+  duration: number;
 };
 
 export type WorldCleanupBleedAction = {

@@ -16,8 +16,8 @@ export const ZoomerEntityManual: Manual = {
         {
           type: WorldActionType.INIT_BLEED,
           bleedId: bleed.id,
+          duration: 3
         },
-        2,
       );
     }
   },

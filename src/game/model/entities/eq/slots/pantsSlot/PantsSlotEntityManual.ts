@@ -37,12 +37,13 @@ export const PantsSlotEntityManual: Manual = {
       const playerPosition = getPosition(player);
       dropItem(DickEntityFactory.getDefault(), playerPosition);
       dropItem(itemAtSlot, playerPosition);
-      const bleed = BleedComponent({ min: 5, max: 5 });
+      const bleed = BleedComponent({ min: 4, max: 5 });
       upsertComponents(player, bleed);
       upsertComponents(entity, DefModComponent({ defMod: 2 }));
       action.addPendingImmediateAction({
         type: WorldActionType.INIT_BLEED,
         bleedId: bleed.id,
+        duration: 3
       });
       const parent =
         getEntityRegistryRecordById(entity.id)?.parent ?? undefined;

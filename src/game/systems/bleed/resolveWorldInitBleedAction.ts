@@ -10,7 +10,7 @@ import { WorldActionType, type WorldInitBleedAction } from "../world/types";
 export const resolveWorldInitBleedAction = (
   gameAction: WorldInitBleedAction,
 ): ActionResolution => {
-  const { bleedId } = gameAction;
+  const { bleedId, duration } = gameAction;
   const action: Action = new Action(gameAction);
 
   (() => {
@@ -22,6 +22,7 @@ export const resolveWorldInitBleedAction = (
       bleedRecord.component.type === BleedComponent.type,
       "Component is not bleed",
     );
+    assert(duration > 1, "Bleed must last at least 1 turn");
 
     const parent = bleedRecord.parent;
     const multiple =
@@ -38,14 +39,14 @@ export const resolveWorldInitBleedAction = (
         bleedId,
       },
       1,
-      3,
+      duration,
     );
     action.addPendingDelayedAction(
       {
         type: WorldActionType.CLEANUP_BLEED,
         bleedId,
       },
-      3,
+      duration,
     );
   })();
 
