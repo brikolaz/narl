@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:itch": "node scripts/build-itch.mjs",
+    "build:itch:web": "tsc -b && vite build --mode itch",
+    "deploy:itch": "node scripts/deploy-itch.mjs",
     "generate:component": "plop component",
     "generate:entity": "plop entity",
     "generate:mob": "plop mob",
