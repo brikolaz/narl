@@ -86,11 +86,18 @@ export const createInitialState = (): GameState => {
   return state;
 };
 
-export const STATE: GameState = createInitialState();
+export let STATE: GameState;
 
 export const initState = (): GameState => {
+  const initialState = createInitialState();
+
+  if (!STATE) {
+    STATE = initialState;
+    return STATE;
+  }
+
   return Object.defineProperties(
     STATE,
-    Object.getOwnPropertyDescriptors(createInitialState()),
+    Object.getOwnPropertyDescriptors(initialState),
   );
 };

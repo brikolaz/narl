@@ -11,6 +11,11 @@
 
 - Cursed Backpacks can't be opened
 
+## Death
+
+- Wrap every state mutation that can kill the player in `initDeath()`
+- Keep `initDeath()` independent of turn cost; record the death turn in the dispatcher after resolving the final `consumesTurn` value
+
 ## Bootstrap
 
 - Initialize `STATE` before invoking any game logic

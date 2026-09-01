@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame, type Game } from "../../../game";
-import { GAME_STATUS, initState } from "../../state/state";
+import { GAME_STATUS } from "../../state/state";
 import { InternalActionType } from "../internal/type";
 import * as seed from "../rng/seed";
 import { WorldActionType } from "../world/types";
 
 describe("resolveInternalResetGameAction", () => {
-  let game: Game
+  let game: Game;
+
   beforeEach(() => {
-    initState();
     game = createGame();
   });
 
@@ -16,16 +16,19 @@ describe("resolveInternalResetGameAction", () => {
     vi.restoreAllMocks();
   });
 
-  it("does not regenerate the seed when creating a game wrapper", () => {
-    vi.spyOn(seed, "generateSeed");
+  it("generates the initial seed once when creating a game", () => {
+    const generateSeed = vi
+      .spyOn(seed, "generateSeed")
+      .mockReturnValue("initial-seed");
 
     createGame();
 
-    expect(seed.generateSeed).not.toHaveBeenCalled();
+    expect(generateSeed).toHaveBeenCalledOnce();
+    expect(game.state.seed).toBe("initial-seed");
   });
 
   describe("starts a new game with a new seed", () => {
-    it('with GAME_OVER status', () => {
+    it("with GAME_OVER status", () => {
       vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed");
 
       game.dispatch({ type: InternalActionType.INIT });
@@ -36,8 +39,9 @@ describe("resolveInternalResetGameAction", () => {
       expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
       expect(seed.generateSeed).toHaveBeenCalledOnce();
       expect(game.state.seed).toBe("new-seed");
-    })
-    it('with WIN status', () => {
+    });
+
+    it("with WIN status", () => {
       vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed");
 
       game.dispatch({ type: WorldActionType.WIN });
@@ -46,23 +50,24 @@ describe("resolveInternalResetGameAction", () => {
       expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
       expect(seed.generateSeed).toHaveBeenCalledOnce();
       expect(game.state.seed).toBe("new-seed");
-    })
+    });
   });
 
   describe("rejects reset", () => {
-    it('while game is INACTIVE', () => {
+    it("while game is INACTIVE", () => {
       expect(game.state.status).toBe(GAME_STATUS.INACTIVE);
       expect(() =>
         game.dispatch({ type: InternalActionType.RESET_GAME }),
       ).toThrow("Can't reset an active game");
-    })
-    it('while game is ACTIVE', () => {
+    });
+
+    it("while game is ACTIVE", () => {
       game.dispatch({ type: InternalActionType.INIT });
 
       expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
       expect(() =>
         game.dispatch({ type: InternalActionType.RESET_GAME }),
       ).toThrow("Can't reset an active game");
-    })
+    });
   });
 });

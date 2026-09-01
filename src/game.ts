@@ -1,5 +1,5 @@
 import { getGameViewModel, type GameViewModel } from "./game/render/getGameViewModel";
-import { GAME_STATUS, STATE, type GameState } from "./game/state/state";
+import { GAME_STATUS, initState, type GameState } from "./game/state/state";
 import { dispatch } from "./game/systems/actions/gameAction/dispatchGameAction";
 
 export type Game = {
@@ -12,7 +12,7 @@ export type Game = {
 };
 
 export const createGame = (): Game => {
-    const state = STATE;
+    const state = initState();
 
     return {
         state,

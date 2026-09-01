@@ -1,5 +1,5 @@
 import { STATE, type DeathContext } from "../../state/state";
-import { shouldEndGame } from "./endCondition";
+import { increaseTurn } from "../turn/turn";
 
 export const getDeathContext = (): DeathContext => {
   return STATE.death;
@@ -7,7 +7,8 @@ export const getDeathContext = (): DeathContext => {
 
 export const initDeath = (op: () => void) => {
   op();
-  if (shouldEndGame()) {
-    STATE.death.turn = STATE.turn;
-  }
+};
+
+export const recordDeathTurn = (consumesTurn: boolean) => {
+  STATE.death.turn = consumesTurn ? increaseTurn(STATE.turn) : STATE.turn;
 };

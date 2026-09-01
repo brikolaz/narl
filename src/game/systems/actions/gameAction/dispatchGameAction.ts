@@ -1,5 +1,6 @@
 import type { Id } from "../../../../core/model/Id";
 import { STATE } from "../../../state/state";
+import { recordDeathTurn } from "../../gameOver/death";
 import { shouldEndGame } from "../../gameOver/endCondition";
 import {
   getPendingGameOverAction,
@@ -91,6 +92,7 @@ const dispatchGameAction = (action: GameAction): void => {
   }
 
   if (shouldEndGame()) {
+    recordDeathTurn(consumesTurn);
     drainAction(getPendingGameOverAction(), context);
   }
 
