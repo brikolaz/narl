@@ -15,7 +15,10 @@ import { increaseTurn } from "../../turn/turn";
 import { isWin } from "../../win/resolveWorldWinAction";
 import { runWorldTurn } from "../../world/turn/runWorldTurn";
 import { WorldActionType } from "../../world/types";
-import { applyTimedAction } from "../timedActions/timedActions";
+import {
+  applyTimedAction,
+  sortTimedActionsByPriority,
+} from "../timedActions/timedActions";
 import type { TimedAction } from "../timedActions/types";
 import type { ActionResolution, GameAction } from "../types";
 import { resolveGameAction } from "./resolveGameAction";
@@ -34,10 +37,13 @@ export const drainResolution = (
   context: DrainContext,
 ): DrainedResolution => {
   let consumesTurn = resolution.consumesTurn;
-
   context.pendingLogs.push(...resolution.pendingLogs);
+  let pendingActions = sortTimedActionsByPriority(resolution.pendingActions);
 
-  for (const pendingAction of resolution.pendingActions) {
+  while (pendingActions.length > 0) {
+    const [pendingAction, ...remainingActions] = pendingActions;
+    pendingActions = remainingActions;
+
     context.processedActions.add(pendingAction.id);
 
     const pendingResolution = applyTimedAction(pendingAction);
@@ -46,9 +52,11 @@ export const drainResolution = (
       continue;
     }
 
-    const result = drainResolution(pendingResolution, context);
-
-    consumesTurn ||= result.consumesTurn;
+    context.pendingLogs.push(...pendingResolution.pendingLogs);
+    consumesTurn ||= pendingResolution.consumesTurn;
+    pendingActions.unshift(
+      ...sortTimedActionsByPriority(pendingResolution.pendingActions),
+    );
   }
 
   return {

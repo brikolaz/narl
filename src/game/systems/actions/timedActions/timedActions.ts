@@ -4,6 +4,11 @@ import { resolveGameAction } from "../gameAction/resolveGameAction";
 import type { ActionResolution } from "../types";
 import type { TimedAction } from "./types";
 
+export const sortTimedActionsByPriority = (
+  timedActions: readonly TimedAction[],
+): TimedAction[] =>
+  timedActions.toSorted((left, right) => right.priority - left.priority);
+
 const enqueueTimedAction = (pendingAction: TimedAction): void => {
   if (pendingAction.duration === undefined) {
     throw new Error("Can't schedule actions with no delay");
@@ -65,5 +70,5 @@ export const dequeueTimedActions = (
     })
     .filter((timedAction) => timedAction !== undefined);
 
-  return actionsToApply;
+  return sortTimedActionsByPriority(actionsToApply);
 };

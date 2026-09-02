@@ -39,6 +39,7 @@ export class Action {
     action: GameAction,
     delay: number = 1,
     duration: number = 1,
+    priority: number = 0,
   ): void => {
     assert(duration >= 1, "Pending action must last least 1 turn");
     assert(
@@ -51,12 +52,14 @@ export class Action {
       action,
       duration: duration - 1,
       delay,
+      priority,
     });
   };
 
   addPendingImmediateAction = (
     action: GameAction,
     duration: number = 1,
+    priority: number = 0,
   ): void => {
     assert(duration >= 1, "Pending action must last at least 1 turn");
 
@@ -65,6 +68,7 @@ export class Action {
       action,
       duration: duration - 1,
       delay: 0,
+      priority,
     });
   };
 

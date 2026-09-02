@@ -1,7 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { ExplodeComponent } from "../../model/components/ExplodeComponent";
 import { ExplodeRangeComponent } from "../../model/components/ExplodeRangeComponent";
@@ -69,13 +68,14 @@ export const resolveWorldExplodeAction = (
       }
     }
 
-    removeComponentsByType(source, ExplodeComponent);
-    removeComponentsByType(source, ExplodeRangeComponent);
-
-    action.addPendingImmediateAction({
-      type: WorldActionType.CLEANUP_EXPLODE,
-      entityId: source.id,
-    });
+    action.addPendingImmediateAction(
+      {
+        type: WorldActionType.CLEANUP_EXPLODE,
+        entityId: source.id,
+      },
+      1,
+      1,
+    );
   })();
 
   return action.resolve();

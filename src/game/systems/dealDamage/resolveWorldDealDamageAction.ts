@@ -20,7 +20,10 @@ export const resolveWorldDealDamageAction = (
   (() => {
     const source = getEntityById(gameAction.sourceId);
     const target = getEntityById(gameAction.targetId);
-    if (!source || !target) {
+    if (
+      !target ||
+      (gameAction.reason === WorldDealDamageActionReason.ATTACK && !source)
+    ) {
       return;
     }
     const hit = damage(target, gameAction.dmg);

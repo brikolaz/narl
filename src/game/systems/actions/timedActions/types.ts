@@ -5,5 +5,6 @@ export type TimedAction = {
   id: Id;
   action: GameAction;
   duration: number;
-  delay: number
+  delay: number;
+  priority: number;
 };
