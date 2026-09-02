@@ -1,7 +1,6 @@
 import type { Entity } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { getRng } from "../../../../systems/rng/rng";
-import { EquippableComponent } from "../../../components/eq/EquippableComponent";
 import { DmgComponent } from "../../../components/items/DmgComponent";
 import { DmgModComponent } from "../../../components/items/DmgModComponent";
 import type { Manual } from "../../../Manual";
@@ -12,7 +11,6 @@ export const ContainerEntityManual: Manual = {
     upsertComponents(
       item,
       DmgModComponent({ dmgMod: 0.5 }),
-      EquippableComponent(),
       DmgComponent({ min: dmg, max: dmg }),
     );
   },
