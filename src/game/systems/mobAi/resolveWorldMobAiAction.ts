@@ -1,5 +1,4 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
-import { assert } from "../../../utils/assert";
 import { Action } from "../actions/action";
 import type { ActionResolution, GameAction } from "../actions/types";
 import { type WorldMobAiAction } from "../world/types";
@@ -13,7 +12,10 @@ export const resolveWorldMobAiAction = (
   const action = new Action(gameAction);
 
   (() => {
-    const mob = assert(getEntityById(mobId), "No mob");
+    const mob = getEntityById(mobId);
+    if (!mob) {
+      return;
+    }
     const pendingActions: (GameAction | undefined)[] = [
       attack(mob),
       move(mob),

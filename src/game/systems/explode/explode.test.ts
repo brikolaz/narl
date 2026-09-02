@@ -9,7 +9,6 @@ import { getComponentByType } from "../../../core/model/queries/components/get";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
-import { getEntityById } from "../../../core/model/queries/entities/get";
 import { createGame, type Game } from "../../../game";
 import { ExplodeComponent } from "../../model/components/ExplodeComponent";
 import { ExplodeRangeComponent } from "../../model/components/ExplodeRangeComponent";
@@ -19,18 +18,20 @@ import { HpComponent } from "../../model/components/mobs/HpComponent";
 import { PositionComponent } from "../../model/components/PositionComponent";
 import { ContainerEntityFactory } from "../../model/entities/items/container/ContainerEntity";
 import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/BoomerEntity";
-import { STATE } from "../../state/state";
+import { getPosition } from "../../model/queries/position";
+import type { GameState } from "../../state/state";
 import { dispatchGameAction } from "../actions/gameAction/dispatchGameAction";
 import { InternalActionType } from "../internal/type";
+import { PlayerActionType } from "../player/types";
 import { getDefaultTile } from "../world/tile";
 import { WorldActionType, WorldKillActionReason } from "../world/types";
 
 const ExplosiveEntity = getEntityCreator("TEST_EXPLOSIVE");
 const TargetEntity = getEntityCreator("TEST_EXPLOSION_TARGET");
 
-const placeMob = (mob: Entity, position: number): Entity => {
-  if (!STATE.world[position]) {
-    STATE.world[position] = getDefaultTile(position);
+const placeMob = (state: GameState, mob: Entity, position: number): Entity => {
+  if (!state.world[position]) {
+    state.world[position] = getDefaultTile(position);
   }
   if (getComponentByType(mob, PositionComponent)) {
     patchComponentByType(mob, PositionComponent, (component) => {
@@ -39,11 +40,11 @@ const placeMob = (mob: Entity, position: number): Entity => {
   } else {
     upsertComponents(mob, PositionComponent({ position }));
   }
-  STATE.world[position].mobs.push(mob);
+  state.world[position].mobs.push(mob);
   return mob;
 };
 
-const createExplosiveEntity = (position = 10): Entity => {
+const createExplosiveEntity = (state: GameState, position = 10): Entity => {
   const explosive = ExplosiveEntity();
   upsertComponents(
     explosive,
@@ -55,17 +56,17 @@ const createExplosiveEntity = (position = 10): Entity => {
   upsertRoleEntities(explosive, {
     [EntityRole.BACKPACK]: ContainerEntityFactory.getBackpack(),
   });
-  return placeMob(explosive, position);
+  return placeMob(state, explosive, position);
 };
 
-const createTargetEntity = (position: number): Entity => {
+const createTargetEntity = (state: GameState, position: number): Entity => {
   const target = TargetEntity();
   upsertComponents(
     target,
     HpComponent({ hp: 100, maxHp: 100 }),
     NameComponent({ name: `Target ${position}` }),
   );
-  return placeMob(target, position);
+  return placeMob(state, target, position);
 };
 
 describe("Explode action cycle", () => {
@@ -77,8 +78,10 @@ describe("Explode action cycle", () => {
   });
 
   it("runs the complete immediate cycle through dispatchGameAction", () => {
-    const explosive = createExplosiveEntity();
-    const targets = [8, 9, 10, 11, 12].map(createTargetEntity);
+    const explosive = createExplosiveEntity(game.state);
+    const targets = [8, 9, 10, 11, 12].map((position) =>
+      createTargetEntity(game.state, position),
+    );
     const range = vi
       .spyOn(explosive.rng, "range")
       .mockReturnValueOnce(4)
@@ -99,7 +102,7 @@ describe("Explode action cycle", () => {
     expect(range).toHaveBeenNthCalledWith(1, 4, 6);
     expect(range).toHaveBeenNthCalledWith(2, 4, 6);
     expect(range).toHaveBeenNthCalledWith(3, 4, 6);
-    expect(getEntityById(explosive.id)).toBeUndefined();
+    expect(game.state.entityRegistryById[explosive.id]).toBeUndefined();
     expect(game.state.world[10].mobs).not.toContain(explosive);
     expect(game.state.timedActions).toEqual([]);
     expect(game.state.log).not.toContainEqual(
@@ -116,7 +119,7 @@ describe("Explode action cycle", () => {
     ExplodeComponent,
     ExplodeRangeComponent,
   ])("does not start the cycle when %s is missing", (missing) => {
-    const explosive = createExplosiveEntity();
+    const explosive = createExplosiveEntity(game.state);
     removeComponentsByType(explosive, missing.type);
 
     dispatchGameAction({
@@ -143,13 +146,13 @@ describe("Explode action cycle", () => {
       entityId: explosive.id,
     });
 
-    expect(getEntityById(explosive.id)).toBe(explosive);
+    expect(game.state.entityRegistryById[explosive.id]?.entity).toBe(explosive);
     expect(getComponentByType(explosive, ExplodeComponent)).toBeUndefined();
     expect(getComponentByType(explosive, ExplodeRangeComponent)).toBeUndefined();
   });
 
   it("logs death for an Attack Kill reason", () => {
-    const explosive = createExplosiveEntity();
+    const explosive = createExplosiveEntity(game.state);
 
     dispatchGameAction({
       type: WorldActionType.KILL,
@@ -164,8 +167,8 @@ describe("Explode action cycle", () => {
   });
 
   it("does not recurse indefinitely when adjacent Boomers explode", () => {
-    const left = placeMob(BoomerEntityFactory.getDefault(), 10);
-    const right = placeMob(BoomerEntityFactory.getDefault(), 11);
+    const left = placeMob(game.state, BoomerEntityFactory.getDefault(), 10);
+    const right = placeMob(game.state, BoomerEntityFactory.getDefault(), 11);
     for (const boomer of [left, right]) {
       patchComponentByType(boomer, ExplodeComponent, (component) => {
         component.min = 5;
@@ -183,7 +186,39 @@ describe("Explode action cycle", () => {
       });
     }).not.toThrow();
 
-    expect(getEntityById(left.id)).toBeUndefined();
-    expect(getEntityById(right.id)).toBeUndefined();
+    expect(game.state.entityRegistryById[left.id]).toBeUndefined();
+    expect(game.state.entityRegistryById[right.id]).toBeUndefined();
+  });
+
+  it("ignores queued MobAi actions for Boomers removed earlier in the turn", () => {
+    for (const tile of game.state.world) {
+      if (tile) {
+        tile.mobs.length = 0;
+      }
+    }
+    const playerPosition = getPosition(game.state.player.player);
+    const left = placeMob(
+      game.state,
+      BoomerEntityFactory.getDefault(),
+      playerPosition + 1,
+    );
+    const right = placeMob(
+      game.state,
+      BoomerEntityFactory.getDefault(),
+      playerPosition + 2,
+    );
+    for (const boomer of [left, right]) {
+      patchComponentByType(boomer, ExplodeComponent, (component) => {
+        component.min = 5;
+        component.max = 5;
+      });
+    }
+
+    expect(() => {
+      dispatchGameAction({ type: PlayerActionType.WAIT });
+    }).not.toThrow();
+
+    expect(game.state.entityRegistryById[left.id]).toBeUndefined();
+    expect(game.state.entityRegistryById[right.id]).toBeUndefined();
   });
 });
