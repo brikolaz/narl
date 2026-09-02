@@ -1,5 +1,9 @@
 import type { Entity } from "../../../core/model/Entity";
+import { getComponentByType } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { assert } from "../../../utils/assert";
+import { MainHandComponent } from "../../model/components/eq/MainHandComponent";
+import { OffhandComponent } from "../../model/components/eq/OffhandComponent";
 import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,
@@ -17,17 +21,21 @@ import { curse } from "../curse/curse";
 import { getEntityName } from "../inspect/getEntityName";
 import type { PlayerEquipItemAction } from "../player/types";
 
+// TODO: when equipiing sth to offhand, check if 2-hand item in main hand
+const isTwoHand = (entity: Entity) => {
+  return hasComponentsByType(entity, MainHandComponent) && hasComponentsByType(entity, OffhandComponent)
+}
+
 const getCompatibleEqSlot = (
   player: Entity,
   item: Entity,
 ): Entity | undefined => {
   const itemSlots = getItemSlots(item);
 
-  if (itemSlots.length > 1) {
-    throw new Error(`Entity can have only one EQ slot component`);
-  }
+  assert(itemSlots.length === 1 || isTwoHand(item), 'Invalid item slots')
 
-  const itemSlot = itemSlots[0];
+  const itemSlot = itemSlots.length === 1 ? itemSlots[0] : getComponentByType(item, MainHandComponent);
+  
   if (!itemSlot) {
     return undefined;
   }

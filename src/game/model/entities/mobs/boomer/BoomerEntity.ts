@@ -6,7 +6,7 @@ import {
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
 import { addItemToContainer } from "../../../../systems/containers/containers";
-import { setDmg } from "../../../../systems/hit/dmg";
+import { getRng } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
@@ -28,10 +28,12 @@ export const BoomerEntity = getEntityCreator("BOOMER");
 
 const addLoot = (boomer: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack();
-  const sword = SwordEntityFactory.getDefault(); // TODO: add fire sword
-
-  setDmg(sword, 10, 12);
-  addItemToContainer(backpack, sword);
+  
+  if(getRng(boomer).chance(15)) {
+    const longSword = SwordEntityFactory.getLongSword();
+    addItemToContainer(backpack, longSword);
+  }
+  
   upsertRoleEntities(boomer, {
     [EntityRole.BACKPACK]: backpack,
   });
