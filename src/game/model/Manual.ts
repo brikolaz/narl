@@ -3,6 +3,8 @@ import type { Action } from "../systems/actions/action";
 
 export type Manual<T = Entity> = {
   onAfterTakeDamage?: (gameAction: Action, entity: T) => void;
+  onDie?: (gameAction: Action, entity: T) => void;
+  beforeAttack?: (gameAction: Action, source: T, entity: T) => void;
   onAttack?: (gameAction: Action, source: T, entity: T) => void;
   getAttackWeapon?: (entity: T) => Entity;
   curse?: (gameAction: Action, item: T) => void;

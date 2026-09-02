@@ -19,8 +19,26 @@ export const WorldActionType = {
   GAME_OVER: "WORLD_GAME_OVER",
   PENDING_GAME_OVER: "WORLD_PENDING_GAME_OVER",
   WIN: "WORLD_WIN",
+  EXPLODE: "WORLD_EXPLODE",
+  INIT_EXPLODE: "WORLD_INIT_EXPLODE",
+  CLEANUP_EXPLODE: "WORLD_CLEANUP_EXPLODE",
+  DEAL_DAMAGE: "WORLD_DEAL_DAMAGE",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
+
+export const WorldKillActionReason = {
+  ATTACK: "ATTACK",
+  EXPLODE: "EXPLODE",
+} as const satisfies Enum;
+export type WorldKillActionReason = EnumType<typeof WorldKillActionReason>;
+
+export const WorldDealDamageActionReason = {
+  ATTACK: "ATTACK",
+  EXPLODE: "EXPLODE",
+} as const satisfies Enum;
+export type WorldDealDamageActionReason = EnumType<
+  typeof WorldDealDamageActionReason
+>;
 
 export type WorldDropItemAction = {
   type: typeof WorldActionType.DROP_ITEM;
@@ -32,6 +50,7 @@ export type WorldKillAction = {
   type: typeof WorldActionType.KILL;
   entityId: Id;
   position: number;
+  reason: WorldKillActionReason;
 };
 export type WorldGainExpAction = {
   type: typeof WorldActionType.GAIN_EXP;
@@ -99,5 +118,28 @@ export type WorldPendingGameOverAction = {
 
 export type WorldWinAction = { type: typeof WorldActionType.WIN };
 
+export type WorldExplodeAction = {
+  type: typeof WorldActionType.EXPLODE;
+  entityId: Id;
+};
+
+export type WorldInitExplodeAction = {
+  type: typeof WorldActionType.INIT_EXPLODE;
+  entityId: Id;
+};
+
+export type WorldCleanupExplodeAction = {
+  type: typeof WorldActionType.CLEANUP_EXPLODE;
+  entityId: Id;
+};
+
+export type WorldDealDamageAction = {
+  type: typeof WorldActionType.DEAL_DAMAGE;
+  sourceId: Id;
+  targetId: Id;
+  dmg: number;
+  reason: WorldDealDamageActionReason;
+};
+
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction;

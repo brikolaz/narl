@@ -74,7 +74,7 @@ export const drainDequeuedAction = (
   return drainAction(timedAction.action, context);
 };
 
-const dispatchGameAction = (action: GameAction): void => {
+export const dispatchGameAction = (action: GameAction): void => {
   const context: DrainContext = {
     pendingLogs: [],
     processedActions: new Set(),

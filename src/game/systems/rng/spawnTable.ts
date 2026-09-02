@@ -1,5 +1,6 @@
 import type { Entity, EntityType } from "../../../core/model/Entity";
 import { getFactory } from "../../model/entities/getFactory";
+import { BoomerEntity } from "../../model/entities/mobs/boomer/BoomerEntity";
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity";
 import { STATE } from "../../state/state";
@@ -9,8 +10,9 @@ type SpawnTable = Map<EntityType, number>;
 const SPAWN_TABLE = {
   [Zone.START]: new Map(),
   [Zone.EARLY]: new Map([
-    [RageBaitEntity.type, 15],
-    [ZoomerEntity.type, 20],
+    [RageBaitEntity.type, 10],
+    [ZoomerEntity.type, 15],
+    [BoomerEntity.type, 15],
   ]),
   [Zone.LOW]: new Map(),
   [Zone.MID]: new Map(),

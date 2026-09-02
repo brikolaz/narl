@@ -3,11 +3,16 @@ import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { hit } from "../hit/hit";
+import { rollDmg } from "../hit/dmg";
 import { getEntityName } from "../inspect/getEntityName";
-import { type WorldAttackAction } from "../world/types";
+import {
+  WorldActionType,
+  WorldDealDamageActionReason,
+  type WorldAttackAction,
+} from "../world/types";
 import { getAttackWeapon } from "./getAttackWeapon";
 
+// TODO: onAttack should override the whole attack flow
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
 ): ActionResolution => {
@@ -21,20 +26,23 @@ export const resolveWorldAttackAction = (
     const sourceName = getEntityName(source);
     const targetName = getEntityName(target);
 
+    if (getManual(source)?.onAttack) {
+      getManual(source)?.onAttack?.(action, source, target);
+      return
+    }
+    getManual(source)?.beforeAttack?.(action, source, target);
+
     const weapon = getAttackWeapon(source);
     if (!weapon) {
       return action.success(`${sourceName} poked ${targetName}`); // TODO: add poke resolver?
     }
-    const { dmg } = hit(source, target);
-    getManual(source)?.onAttack?.(action, source, target);
-    if (dmg === 0) {
-      return action.success(
-        `${sourceName} tingled ${targetName}`,
-      );
-    }
-    return action.success(
-      `${sourceName} hits ${targetName} for ${dmg} HP`,
-    );
+    action.addPendingImmediateAction({
+      type: WorldActionType.DEAL_DAMAGE,
+      sourceId: source.id,
+      targetId: target.id,
+      dmg: rollDmg(weapon),
+      reason: WorldDealDamageActionReason.ATTACK,
+    });
   })();
 
   return action.resolve();

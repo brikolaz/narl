@@ -15,6 +15,10 @@ import { resolveWorldHealAction } from "../heal/resolveWorldHealAction";
 import { resolveWorldGameOverAction } from "../gameOver/resolveWorldGameOverAction";
 import { resolveWorldPendingGameOverAction } from "../gameOver/resolveWorldPendingGameOverAction";
 import { resolveWorldWinAction } from "../win/resolveWorldWinAction";
+import { resolveWorldExplodeAction } from "../explode/resolveWorldExplodeAction";
+import { resolveWorldInitExplodeAction } from "../explode/resolveWorldInitExplodeAction";
+import { resolveWorldCleanupExplodeAction } from "../explode/resolveWorldCleanupExplodeAction";
+import { resolveWorldDealDamageAction } from "../dealDamage/resolveWorldDealDamageAction";
 import { WorldActionType, type WorldAction } from "./types";
 
 export const worldActionResolvers = {
@@ -34,4 +38,8 @@ export const worldActionResolvers = {
   [WorldActionType.GAME_OVER]: resolveWorldGameOverAction,
   [WorldActionType.PENDING_GAME_OVER]: resolveWorldPendingGameOverAction,
   [WorldActionType.WIN]: resolveWorldWinAction,
+  [WorldActionType.EXPLODE]: resolveWorldExplodeAction,
+  [WorldActionType.INIT_EXPLODE]: resolveWorldInitExplodeAction,
+  [WorldActionType.CLEANUP_EXPLODE]: resolveWorldCleanupExplodeAction,
+  [WorldActionType.DEAL_DAMAGE]: resolveWorldDealDamageAction,
 } satisfies ActionResolverMap<WorldAction>;
