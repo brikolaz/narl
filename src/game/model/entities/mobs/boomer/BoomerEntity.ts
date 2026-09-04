@@ -53,7 +53,7 @@ export const BoomerEntityFactory: MobFactory = {
       HostileComponent(),
       PositionComponent(),
       ExplodeComponent({ min: 4, max: 8 }),
-      ExplodeRangeComponent({ range: 2 }),
+      ExplodeRangeComponent({ range: boomer.rng.range(1, 2) }),
       UnawareComponent(),
       MovableComponent(),
       DmgComponent(),
