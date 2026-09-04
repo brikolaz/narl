@@ -13,7 +13,11 @@ export const getLogEntryCount = (entry: LogEntry) => {
 const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
   const lastLog = logs.at(-1);
 
-  if (lastLog?.message !== entry.message) {
+  if (
+    !lastLog ||
+    lastLog.message !== entry.message ||
+    entry.startTurn > increaseTurn(lastLog.endTurn)
+  ) {
     return [...logs, entry].slice(-MAX_VISIBLE_LOGS);
   }
 
