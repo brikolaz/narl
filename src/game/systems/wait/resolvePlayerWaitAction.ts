@@ -7,6 +7,7 @@ import {
 } from "../player/types";
 import { getRng } from "../rng/rng";
 import { WorldActionType } from "../world/types";
+import { isInCombat } from "./combat";
 
 export const resolvePlayerWaitAction = (
   gameAction: PlayerWaitAction,
@@ -15,15 +16,22 @@ export const resolvePlayerWaitAction = (
 
   (() => {
     const player = getPlayer();
-    const rng = getRng(player);
+    const inCombat = isInCombat();
 
-    action.addPendingImmediateAction({
-      type: WorldActionType.HEAL,
-      entityId: player.id,
-      value: rng.range(4, 5),
-    });
-
-    action.success(`${getEntityName(getPlayer())} wait`);
+    if (inCombat) {
+      return action.addPendingImmediateAction({
+        type: WorldActionType.INIT_BLOCK,
+        entityId: player.id,
+      });
+    }
+      const rng = getRng(player);
+      action.addPendingImmediateAction({
+        type: WorldActionType.HEAL,
+        entityId: player.id,
+        value: rng.range(4, 5),
+      });
+      action.success(`${getEntityName(player)} wait`);
+    
   })();
 
   return action.resolve(true);

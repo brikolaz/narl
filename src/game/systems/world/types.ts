@@ -23,6 +23,9 @@ export const WorldActionType = {
   INIT_EXPLODE: "WORLD_INIT_EXPLODE",
   CLEANUP_EXPLODE: "WORLD_CLEANUP_EXPLODE",
   DEAL_DAMAGE: "WORLD_DEAL_DAMAGE",
+  BLOCK: "WORLD_BLOCK",
+  CLEANUP_BLOCK: "WORLD_CLEANUP_BLOCK",
+  INIT_BLOCK: "WORLD_INIT_BLOCK",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -141,5 +144,20 @@ export type WorldDealDamageAction = {
   reason: WorldDealDamageActionReason;
 };
 
+export type WorldBlockAction = {
+  type: typeof WorldActionType.BLOCK;
+  entityId: Id;
+};
+
+export type WorldCleanupBlockAction = {
+  type: typeof WorldActionType.CLEANUP_BLOCK;
+  defId: Id;
+};
+
+export type WorldInitBlockAction = {
+  type: typeof WorldActionType.INIT_BLOCK;
+  entityId: Id;
+};
+
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction | WorldBlockAction | WorldCleanupBlockAction | WorldInitBlockAction;

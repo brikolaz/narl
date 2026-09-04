@@ -1,12 +1,15 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
-import { getComponentByType } from "../../../core/model/queries/components/get";
+import { getComponentByType, getComponentsByType } from "../../../core/model/queries/components/get";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { isContainer } from "./containers";
 import { DefComponent } from "../components/items/DefComponent";
 import { DefModComponent } from "../components/items/DefModComponent";
 
 export const getOwnDef = (entity?: Entity): number => {
-  return getComponentByType(entity, DefComponent)?.def ?? DefComponent.defaults.def;
+  return getComponentsByType(entity, DefComponent).reduce(
+    (total, component) => total + component.def,
+    DefComponent.defaults.def,
+  );
 };
 
 export const getDefMod = (entity: Entity): number => {
