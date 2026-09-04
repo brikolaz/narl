@@ -1,5 +1,6 @@
 import { Direction } from "../../systems/turn/types";
 import type { KeyboardToAction } from "./chain";
+import { getAttackCommand } from "./commands/attackCommand";
 import { getDropCommand } from "./commands/dropCommand";
 import { getEquipCommand } from "./commands/equipCommand";
 import { getInspectCommand } from "./commands/inspectCommand";
@@ -14,6 +15,7 @@ export const createKeyboardToAction = ():
   | KeyboardToAction => ({
   ArrowLeft: getMoveCommand(Direction.LEFT),
   ArrowRight: getMoveCommand(Direction.RIGHT),
+  KeyA: getAttackCommand(),
   KeyG: getPickUpCommand(),
   KeyI: getInspectCommand(),
   KeyE: getEquipCommand(),

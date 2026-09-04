@@ -1,46 +1,46 @@
-import { getMob, hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
-import { getTile } from "../../model/queries/tile";
+import { getPosition } from "../../model/queries/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { rollDmg } from "../hit/dmg";
+import { getNextPosition } from "../movement/position";
 import { PlayerActionType, type PlayerAttackAction } from "../player/types";
-import {
-  WorldActionType,
-  WorldDealDamageActionReason,
-} from "../world/types";
+import { canPierce } from "../rangedAttack/pierce";
 import { getAttackWeapon } from "./getAttackWeapon";
 
 export const resolvePlayerAttackAction = (
   gameAction: PlayerAttackAction,
 ): ActionResolution => {
-  const { targetPosition } = gameAction;
   const action = new Action(gameAction);
+  const { direction } = gameAction;
   (() => {
-    const target = getTile(targetPosition);
     const source = getPlayer();
+    const targetPosition = getNextPosition({
+      currentPosition: getPosition(source),
+      direction
+    })
 
-    if (!hasMobs(target)) {
-      return;
-    }
-    const mob = getMob(target);
-    if (!mob) {
-      return;
-    }
     const weapon = getAttackWeapon(source);
 
     if (!weapon) {
       return action.addPendingImmediateAction({
         type: PlayerActionType.POKE,
-        targetPosition,
+        direction
       });
     }
+
+    if (canPierce(weapon)) {
+      return action.addPendingImmediateAction({
+        type: PlayerActionType.RANGED_ATTACK,
+        direction,
+      });
+    }
+
+    if (targetPosition === null) {
+      return action.fail("Nothing to attack")
+    }
     action.addPendingImmediateAction({
-      type: WorldActionType.DEAL_DAMAGE,
-      sourceId: source.id,
-      targetId: mob.id,
-      dmg: rollDmg(weapon),
-      reason: WorldDealDamageActionReason.ATTACK,
+      type: PlayerActionType.MELEE_ATTACK,
+      targetPosition
     });
   })();
 

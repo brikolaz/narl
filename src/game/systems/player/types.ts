@@ -16,6 +16,8 @@ export const PlayerActionType = {
   INSPECT_EQ: "PLAYER_INSPECT_EQ",
   POKE: "PLAYER_POKE",
   WAIT: "PLAYER_WAIT",
+  MELEE_ATTACK: "PLAYER_MELEE_ATTACK",
+  RANGED_ATTACK: "PLAYER_RANGED_ATTACK",
 } as const satisfies Enum;
 export type PlayerActionType = EnumType<typeof PlayerActionType>;
 
@@ -52,11 +54,11 @@ export type PlayerUnequipItemAction = {
 };
 export type PlayerAttackAction = {
   type: typeof PlayerActionType.ATTACK;
-  targetPosition: number;
+  direction: Direction;
 };
 export type PlayerPokeAction = {
   type: typeof PlayerActionType.POKE;
-  targetPosition: number;
+  direction: Direction;
 };
 export type PlayerInspectInvAction = {
   type: typeof PlayerActionType.INSPECT_INV;
@@ -74,6 +76,16 @@ export type PlayerMoveItemAction = {
 
 export type PlayerWaitAction = { type: typeof PlayerActionType.WAIT };
 
+export type PlayerMeleeAttackAction = {
+  type: typeof PlayerActionType.MELEE_ATTACK;
+  targetPosition: number;
+};
+
+export type PlayerRangedAttackAction = {
+  type: typeof PlayerActionType.RANGED_ATTACK;
+  direction: Direction;
+};
+
 export type PlayerAction =
   | PlayerDropItemAction
   | PlayerMoveAction
@@ -86,4 +98,6 @@ export type PlayerAction =
   | PlayerInspectInvAction
   | PlayerInspectEqAction
   | PlayerPokeAction
-  | PlayerWaitAction;
+  | PlayerWaitAction
+  | PlayerMeleeAttackAction
+  | PlayerRangedAttackAction;

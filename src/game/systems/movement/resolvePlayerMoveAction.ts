@@ -49,7 +49,7 @@ export const resolvePlayerMoveAction = (
     if (hasMobs(nextTile)) {
       return action.addPendingImmediateAction({
         type: PlayerActionType.ATTACK,
-        targetPosition: nextPlayerPosition,
+        direction,
       });
     }
 

@@ -11,6 +11,8 @@ import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
 import { resolvePokeAction } from "../poke/resolvePokeAction";
 import { resolvePlayerWaitAction } from "../wait/resolvePlayerWaitAction";
+import { resolvePlayerMeleeAttackAction } from "../meleeAttack/resolvePlayerMeleeAttackAction";
+import { resolvePlayerRangedAttackAction } from "../rangedAttack/resolvePlayerRangedAttackAction";
 
 import { PlayerActionType, type PlayerAction } from "./types";
 
@@ -27,4 +29,6 @@ export const playerActionResolvers = {
   [PlayerActionType.INSPECT_EQ]: resolveInspectEqAction,
   [PlayerActionType.POKE]: resolvePokeAction,
   [PlayerActionType.WAIT]: resolvePlayerWaitAction,
+  [PlayerActionType.MELEE_ATTACK]: resolvePlayerMeleeAttackAction,
+  [PlayerActionType.RANGED_ATTACK]: resolvePlayerRangedAttackAction,
 } satisfies ActionResolverMap<PlayerAction>;

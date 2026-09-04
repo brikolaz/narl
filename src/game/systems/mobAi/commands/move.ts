@@ -3,7 +3,7 @@ import { assert } from "../../../../utils/assert";
 import { getPlayer } from "../../../model/queries/player";
 import type { GameAction } from "../../actions/types";
 import { isHostile } from "../../attack/hostililty";
-import { getDirectionTo } from "../../movement/position";
+import { getDirection } from "../../movement/position";
 import { WorldActionType } from "../../world/types";
 import { isAware } from "../aggro";
 import { inFov } from "../fov";
@@ -26,7 +26,7 @@ const canMove = (mob: Entity) => {
 export const move = (mob: Entity): GameAction | undefined => {
   const player = getPlayer();
   if (canMove(mob)) {
-    const direction = assert(getDirectionTo(mob, player), "Invalid direction");
+    const direction = assert(getDirection(mob, player), "Invalid direction");
     return {
       type: WorldActionType.MOVE,
       entityId: mob.id,

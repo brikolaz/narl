@@ -1,24 +1,22 @@
-import { getPlayer } from "../../../model/queries/player";
-import { getPosition } from "../../../model/queries/position";
 import {
-    PlayerActionType
+  PlayerActionType
 } from "../../../systems/player/types";
+import { Direction } from "../../../systems/turn/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 
 const getPokeActionCommands = (): KeyboardToAction => {
-  const playerPosition = getPosition(getPlayer());
-
   return {
     ArrowLeft: {
       action: {
         type: PlayerActionType.POKE,
-        targetPosition: playerPosition - 1,
+        direction: Direction.LEFT,
       },
     },
     ArrowRight: {
       action: {
         type: PlayerActionType.POKE,
-        targetPosition: playerPosition + 1,
+        direction: Direction.RIGHT
+
       },
     },
   };

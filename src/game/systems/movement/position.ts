@@ -1,3 +1,4 @@
+// TODO: move outside movement system
 import type { Entity } from "../../../core/model/Entity";
 import { MAX_WORLD_SIZE } from "../../../utils/constants";
 import { getPosition } from "../../model/queries/position";
@@ -8,7 +9,7 @@ type GetNextPositionParams = {
   direction: Direction;
 };
 
-export const getDirectionTo = (
+export const getDirection = (
   source: Entity,
   target: Entity,
 ): Direction | undefined => {
@@ -21,7 +22,7 @@ export const getDirectionTo = (
   return undefined;
 };
 
-export const getMovementPositionDelta = (direction: Direction) => {
+export const getPositionDelta = (direction: Direction) => {
   const delta = direction === Direction.LEFT ? -1 : 1;
   return delta;
 };
@@ -30,7 +31,7 @@ export const getNextPosition = ({
   currentPosition,
   direction,
 }: GetNextPositionParams): number | null => {
-  const delta = getMovementPositionDelta(direction);
+  const delta = getPositionDelta(direction);
   const nextPosition = currentPosition + delta;
 
   if (nextPosition < 0 || nextPosition >= MAX_WORLD_SIZE) {

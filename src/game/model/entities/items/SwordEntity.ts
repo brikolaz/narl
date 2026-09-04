@@ -10,6 +10,7 @@ import { RemovableComponent } from "../../components/eq/RemovableComponent";
 import { DmgComponent } from "../../components/items/DmgComponent";
 import { DroppableComponent } from "../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../components/items/PickupableComponent";
+import { PierceComponent } from "../../components/PierceComponent";
 import type { ItemFactory } from "../../Factory";
 
 export const SwordEntityVariants = {
@@ -60,6 +61,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
       MainHandComponent(),
       OffhandComponent(),
       DmgComponent({ min: minDmg, max: minDmg + 3 }),
+      PierceComponent({ pierce: 2 }),
       PickupableComponent(),
       DroppableComponent(),
     );
