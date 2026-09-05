@@ -1,15 +1,26 @@
 import type { Entity } from "../../../core/model/Entity";
-import { assert } from "../../../utils/assert";
-import { getAttackWeapon } from "../attack/getAttackWeapon";
-import { damage, type Damage } from "./damage";
-import { rollDmg } from "./dmg";
+import { getHp } from "../../model/queries/hp";
+import { isPlayer } from "../../model/queries/player";
+import { getReducedDmg } from "../def/def";
+import { initDeath } from "../gameOver/death";
 
-export const hit = (source: Entity, target: Entity): Damage => {
-  const weapon = getAttackWeapon(source);
-  const sourceDmg = assert(
-    weapon ? rollDmg(weapon) : undefined,
-    "Weapon has no dmg",
-  );
+export type Damage = {
+  dmg: number;
+  nextHp: number;
+};
 
-  return damage(target, sourceDmg);
+export const hit = (target: Entity, sourceDmg: number): Damage => {
+  const dmg = getReducedDmg(target, sourceDmg);
+  const targetHp = getHp(target);
+  const applyDamage = () => {
+    targetHp.hp -= dmg;
+  };
+
+  if (isPlayer(target)) {
+    initDeath(applyDamage);
+  } else {
+    applyDamage();
+  }
+
+  return { dmg, nextHp: targetHp.hp };
 };

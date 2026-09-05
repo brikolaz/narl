@@ -36,6 +36,14 @@ export class Random {
     return Math.floor(this.random() * (max - min + 1)) + min;
   }
 
+  pick<T>(...items: readonly T[]): T | undefined {
+    if (items.length === 0) {
+      return undefined;
+    }
+
+    return items[this.range(0, items.length - 1)];
+  }
+
   roll(): number {
     return this.range(1, 100);
   }

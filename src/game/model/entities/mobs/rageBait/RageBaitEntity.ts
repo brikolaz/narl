@@ -4,6 +4,7 @@ import {
   type Entity,
 } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
+import { patchComponentByType } from "../../../../../core/model/queries/components/patch";
 import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
 import {
   addItemToContainer,
@@ -21,8 +22,8 @@ import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
 import { PositionComponent } from "../../../components/PositionComponent";
 import { UnawareComponent } from "../../../components/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
-import { setDmg } from "../../../../systems/hit/dmg";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
+import { DmgComponent } from "../../../components/items/DmgComponent";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {
   HelmetEntityFactory,
@@ -57,7 +58,10 @@ const addEq = (entity: Entity) => {
   initEq(entity);
   const sword = SwordEntityFactory.getDefault();
   setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
-  setDmg(sword, 1, 3);
+  patchComponentByType(sword, DmgComponent, (dmg) => {
+    dmg.min = 1;
+    dmg.max = 3;
+  });
 };
 
 export const RageBaitEntityFactory: MobFactory = {

@@ -10,5 +10,5 @@ export const getAttackWeapon = (entity: Entity): Entity | undefined => {
     return manual.getAttackWeapon(entity);
   }
   const slot = getEqSlotByType(entity, MainHandSlotComponent);
-  return getContainerItemAt(slot, 1);
+  return slot ? getContainerItemAt(slot, 1) : undefined;
 };

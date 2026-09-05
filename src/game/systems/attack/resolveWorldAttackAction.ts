@@ -3,7 +3,7 @@ import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
-import { rollDmg } from "../hit/dmg";
+import { rollAttackDmg } from "./dmg";
 import { getEntityName } from "../inspect/getEntityName";
 import {
   WorldActionType,
@@ -40,7 +40,7 @@ export const resolveWorldAttackAction = (
       type: WorldActionType.DEAL_DAMAGE,
       sourceId: source.id,
       targetId: target.id,
-      dmg: rollDmg(weapon),
+      dmg: rollAttackDmg(source),
       reason: WorldDealDamageActionReason.ATTACK,
     });
   })();

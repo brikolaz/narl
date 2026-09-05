@@ -1,4 +1,4 @@
-import type { DmgRange } from "../hit/types";
+import type { DmgRange } from "../attack/dmg";
 
 // TODO: this should be a part of presenter layer
 // change log model

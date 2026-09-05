@@ -12,6 +12,7 @@ export const EntityRole = {
   BACKPACK: "BACKPACK",
   EQ: "EQ",
   ITEM: "ITEM",
+  BONUS_STATS: "BONUS_STATS",
 } as const;
 
 export type EntityRole = (typeof EntityRole)[keyof typeof EntityRole];

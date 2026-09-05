@@ -1,14 +1,16 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
-import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
-import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import { getRng } from "../rng/rng";
 import { DmgComponent } from "../../model/components/items/DmgComponent";
 import { DmgModComponent } from "../../model/components/items/DmgModComponent";
 import { isContainer } from "../../model/queries/containers";
-import type { DmgRange } from "./types";
+import { getAllBonusStats } from "../bonusStats/bonusStats";
+import { getRng } from "../rng/rng";
+import { getAttackWeapon } from "./getAttackWeapon";
+
+export type DmgRange = { min: number; max: number };
+
+type EntityDmgRangeGetter = (entity: Entity) => DmgRange;
 
 const addDmgRanges = (left: DmgRange, right: DmgRange): DmgRange => ({
   min: left.min + right.min,
@@ -36,6 +38,16 @@ export const getChildrenDmgRange = (entity: Entity): DmgRange => {
     { min: 0, max: 0 },
   );
 };
+
+export const getEffectiveChildrenDmgRange = (entity: Entity): DmgRange => {
+  const childrenDmg = getChildrenDmgRange(entity)
+  const dmgMod = getDmgMod(entity);
+
+  return {
+    min: Math.ceil(childrenDmg.min * dmgMod),
+    max: Math.ceil(childrenDmg.max * dmgMod),
+  };
+}
 
 export const getDmgRange = (entity: Entity): DmgRange => {
   const ownDmg = getOwnDmgRange(entity);
@@ -71,12 +83,35 @@ export const rollDmg = (entity: Entity): number => {
   return Math.ceil(ownDmg + childrenDmg * getDmgMod(entity));
 };
 
-export const setDmg = (entity: Entity, min: number, max?: number) => {
-  if (!hasComponentsByType(entity, DmgComponent)) {
-    upsertComponents(entity, DmgComponent());
+const calculateAttackDmgRange = (
+  source: Entity,
+  getEntityDmgRange: EntityDmgRangeGetter,
+): DmgRange => {
+  const weapon = getAttackWeapon(source);
+  if (!weapon) {
+    return DmgComponent.defaults;
   }
-  patchComponentByType(entity, DmgComponent, (component) => {
-    component.min = min;
-    component.max = max ?? min;
-  });
+
+  const bonusStats = getAllBonusStats(source);
+  const dmgMod = bonusStats.reduce(
+    (modifier, stats) => modifier * getDmgMod(stats),
+    1,
+  );
+  const weaponDmg = getEntityDmgRange(weapon);
+
+  return {
+    min: Math.ceil(weaponDmg.min * dmgMod),
+    max: Math.ceil(weaponDmg.max * dmgMod),
+  };
+};
+
+export const getAttackDmgRange = (source: Entity): DmgRange => {
+  return calculateAttackDmgRange(source, getDmgRange);
+};
+
+export const rollAttackDmg = (source: Entity): number => {
+  return calculateAttackDmgRange(source, (entity) => {
+    const dmg = rollDmg(entity);
+    return { min: dmg, max: dmg };
+  }).min;
 };

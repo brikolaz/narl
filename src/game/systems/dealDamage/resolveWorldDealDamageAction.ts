@@ -4,7 +4,7 @@ import { isPlayer } from "../../model/queries/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { resolveMobDeath } from "../attack/resolveMobDeath";
-import { damage } from "../hit/damage";
+import { hit } from "../hit/hit";
 import { getEntityName } from "../inspect/getEntityName";
 import {
   WorldDealDamageActionReason,
@@ -26,25 +26,27 @@ export const resolveWorldDealDamageAction = (
     ) {
       return;
     }
-    const hit = damage(target, gameAction.dmg);
+    const hitResult = hit(target, gameAction.dmg);
 
     if (gameAction.reason === WorldDealDamageActionReason.ATTACK) {
-      if (hit.dmg === 0) {
+      if (hitResult.dmg === 0) {
         action.success(
           `${getEntityName(source)} tingled ${getEntityName(target)}`,
         );
       } else {
         action.success(
-          `${getEntityName(source)} hits ${getEntityName(target)} for ${hit.dmg} HP`,
+          `${getEntityName(source)} hits ${getEntityName(target)} for ${hitResult.dmg} HP`,
         );
       }
-    } else if (hit.dmg === 0) {
+    } else if (hitResult.dmg === 0) {
       action.success(`Explosion tingled ${getEntityName(target)}`);
     } else {
-      action.info(`${getEntityName(target)} takes ${hit.dmg} explosion DMG`);
+      action.info(
+        `${getEntityName(target)} takes ${hitResult.dmg} explosion DMG`,
+      );
     }
 
-    if (hit.nextHp <= 0 && !isPlayer(target)) {
+    if (hitResult.nextHp <= 0 && !isPlayer(target)) {
       resolveMobDeath(
         action,
         target,
@@ -52,7 +54,7 @@ export const resolveWorldDealDamageAction = (
           ? WorldKillActionReason.EXPLODE
           : WorldKillActionReason.ATTACK,
       );
-    } else if (hit.nextHp > 0) {
+    } else if (hitResult.nextHp > 0) {
       getManual(target)?.onAfterTakeDamage?.(action, target);
     }
   })();

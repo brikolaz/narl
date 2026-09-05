@@ -1,9 +1,7 @@
 import type { Entity } from "../../../core/model/Entity";
 import type { Enum, EnumType } from "../../../utils/types/Enum";
-import { getEqItems } from "../../model/queries/eq";
-import { getTotalDef } from "../hit/def";
-import { getDmgRange } from "../hit/dmg";
-import type { DmgRange } from "../hit/types";
+import { getAttackDmgRange } from "../attack/dmg";
+import { getTotalDef } from "../def/def";
 import { formatDmgRange } from "../log/format";
 
 const EqStat = {
@@ -15,19 +13,13 @@ type EqStat = EnumType<typeof EqStat>;
 // TODO; remove duplication in Inspect action
 export type EqStats = Record<EqStat, number | string>;
 
+// todo: move formatting to renderer
 export const getEqStats = (entity: Entity): EqStats => {
-  const items = getEqItems(entity);
-  const totalDmg: DmgRange = { min: 0, max: 0 };
   const stats: EqStats = {
     [EqStat.DMG]: 0,
     [EqStat.DEF]: 0,
   };
-  items.forEach((item) => {
-    const itemTotalDmg = getDmgRange(item);
-    totalDmg.min += itemTotalDmg.min;
-    totalDmg.max += itemTotalDmg.max;
-  });
-  stats[EqStat.DMG] = formatDmgRange(totalDmg);
+  stats[EqStat.DMG] = formatDmgRange(getAttackDmgRange(entity));
   stats[EqStat.DEF] = getTotalDef(entity);
   return stats;
 };

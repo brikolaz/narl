@@ -4,14 +4,15 @@ import {
   type Entity,
 } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
+import { patchComponentByType } from "../../../../../core/model/queries/components/patch";
 import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
 import { addItemToContainer, setContainerItemAt } from "../../../../systems/containers/containers";
-import { setDmg } from "../../../../systems/hit/dmg";
 import { getRng } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { MainHandSlotComponent } from "../../../components/eq/slots/MainHandSlotComponent";
+import { DmgComponent } from "../../../components/items/DmgComponent";
 import { FovComponent } from "../../../components/FovComponent";
 import { ExpComponent } from "../../../components/mobs/ExpComponent";
 import { HostileComponent } from "../../../components/mobs/HostileComponent";
@@ -47,7 +48,10 @@ const addEq = (entity: Entity) => {
   initEq(entity);
   const sword = SwordEntityFactory.getDefault();
   setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
-  setDmg(sword, 3, 7);
+  patchComponentByType(sword, DmgComponent, (dmg) => {
+    dmg.min = 3;
+    dmg.max = 7;
+  });
 };
 
 export const ZoomerEntityFactory: MobFactory = {
