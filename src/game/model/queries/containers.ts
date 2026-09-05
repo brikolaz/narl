@@ -26,18 +26,6 @@ export const isContainerFull = (container: Entity): boolean => {
   return getFirstEmptyContainerSlot(container) === undefined;
 };
 
-export const isContainerEmpty = (container: Entity): boolean => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  for (let i = 0; i < getContainerSize(container); i++) {
-    if (getContainerItemAt(container, (i + 1) as ContainerSlot)) {
-      return false;
-    }
-  }
-  return true;
-};
-
 export const getContainerItemAt = (
   container: Entity,
   containerSlot: ContainerSlot,
@@ -100,7 +88,7 @@ export const isContainer = (entity: EntityArgument) => {
   return hasComponentsByType(entity, ContainerComponent);
 };
 
-export const getContainerSize = (container: Entity) => {
+const getContainerSize = (container: Entity) => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container");
   }

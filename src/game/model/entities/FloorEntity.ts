@@ -5,7 +5,7 @@ import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
 import type { Factory } from "../Factory";
 
-export const FloorEntity = getEntityCreator("FLOOR");
+const FloorEntity = getEntityCreator("FLOOR");
 export const FloorEntityFactory: Factory = {
   getDefault: () => {
     const floor = FloorEntity();

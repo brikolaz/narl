@@ -13,7 +13,7 @@ import { PickupableComponent } from "../../components/items/PickupableComponent"
 import { PierceComponent } from "../../components/PierceComponent";
 import type { ItemFactory } from "../../Factory";
 
-export const SwordEntityVariants = {
+const SwordEntityVariants = {
   DEFAULT: "Sword",
   LONG_SWORD: "Long Sword",
 } as const satisfies Enum;

@@ -8,7 +8,7 @@ import { HeadSlotComponent } from "../../../components/eq/slots/HeadSlotComponen
 import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
-export const HeadSlotEntity = getEntityCreator("HEAD_SLOT");
+const HeadSlotEntity = getEntityCreator("HEAD_SLOT");
 
 export const HeadSlotEntityFactory: ItemFactory = {
   getDefault: () => {

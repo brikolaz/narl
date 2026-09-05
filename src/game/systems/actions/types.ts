@@ -1,11 +1,9 @@
 import type { InternalAction } from "../internal/type";
 import type { PendingLog } from "../log/types";
-import type { PlayerAction, PlayerActionType } from "../player/types";
-import type { WorldAction, WorldActionType } from "../world/types";
+import type { PlayerAction } from "../player/types";
+import type { WorldAction } from "../world/types";
 import type { Action } from "./action";
 import type { TimedAction } from "./timedActions/types";
-
-export type GameActionType = PlayerActionType | WorldActionType;
 
 export type GameAction = PlayerAction | WorldAction | InternalAction;
 

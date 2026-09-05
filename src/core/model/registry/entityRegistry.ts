@@ -19,7 +19,7 @@ export type EntityRegistryById = {
   [id: Id]: EntityRegistryRecord;
 };
 
-export const upsertEntityRegistryRecords = (
+const upsertEntityRegistryRecords = (
   ...records: EntityRegistryRecord[]
 ) => {
   for (const record of records) {
@@ -57,7 +57,7 @@ export const upsertRegistryEntities = (
   upsertEntityRegistryRecords(...records);
 };
 
-export const hasEntityRegistryRecord = (id: Id) => {
+const hasEntityRegistryRecord = (id: Id) => {
   return STATE.entityRegistryById[id] !== undefined;
 };
 

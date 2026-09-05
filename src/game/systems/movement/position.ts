@@ -22,7 +22,7 @@ export const getDirection = (
   return undefined;
 };
 
-export const getPositionDelta = (direction: Direction) => {
+const getPositionDelta = (direction: Direction) => {
   const delta = direction === Direction.LEFT ? -1 : 1;
   return delta;
 };

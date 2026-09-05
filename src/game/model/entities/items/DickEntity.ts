@@ -10,7 +10,7 @@ import { DroppableComponent } from "../../components/items/DroppableComponent";
 import { PickupableComponent } from "../../components/items/PickupableComponent";
 import type { ItemFactory } from "../../Factory";
 
-export const DickEntity = getEntityCreator("DICK");
+const DickEntity = getEntityCreator("DICK");
 
 export const DickEntityFactory: ItemFactory = {
   getDefault: () => {

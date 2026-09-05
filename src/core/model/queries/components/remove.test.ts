@@ -8,6 +8,8 @@ import { removeComponents, removeComponentsByType } from "./remove";
 import {
   expectComponentAttached,
   expectComponentDetached,
+  expectComponentsAttached,
+  expectComponentsDetached,
   expectComponentStateConsistent,
 } from "./tests";
 
@@ -31,8 +33,8 @@ describe("component removal", () => {
       const preserved = TestComponent();
       upsertComponents(entity, removed, preserved);
       removeComponents(removed);
-      expectComponentDetached(state, entity, removed);
-      expectComponentAttached(state, entity, preserved);
+      expectComponentDetached(state, entity, removed)
+      expectComponentsAttached(state, entity, preserved);
     });
 
     it("removes with component id", () => {
@@ -71,8 +73,7 @@ describe("component removal", () => {
         const preserved = AnotherTestComponent();
         upsertComponents(entity, first, second, preserved);
         removeComponentsByType(entity, first.type);
-        expectComponentDetached(state, entity, first);
-        expectComponentDetached(state, entity, second);
+        expectComponentsDetached(state, entity, first, second);
         expectComponentAttached(state, entity, preserved);
       });
     });

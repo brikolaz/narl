@@ -12,7 +12,3 @@ export const getMob = (tile: Tile) => {
 export const getMobById = (tile: Tile, id: Id) => {
   return tile.mobs.find((mob) => mob.id === id);
 };
-
-export const getMobPosition = (tile: Tile) => {
-  return tile.mobs[0];
-};

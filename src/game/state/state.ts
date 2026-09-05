@@ -28,7 +28,7 @@ export const GAME_STATUS = {
   GAME_OVER: "GAME_OVER",
   WIN: "WIN"
 } as const satisfies Enum;
-export type GameStatus = EnumType<typeof GAME_STATUS>;
+type GameStatus = EnumType<typeof GAME_STATUS>;
 
 export type DeathContext = Partial<{
   epitaph: string;
@@ -51,7 +51,7 @@ export type GameState = {
   death: DeathContext;
 };
 
-export const createInitialState = (): GameState => {
+const createInitialState = (): GameState => {
   const entityRegistryById: EntityRegistryById = {};
   const componentRegistryById: ComponentRegistryById = {};
   const seed = generateSeed();

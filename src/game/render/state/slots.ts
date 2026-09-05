@@ -6,7 +6,7 @@ export type InvSlot = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export type Slots<T extends number> = readonly (readonly (T | null)[])[];
 
-export type Direction = "left" | "right" | "up" | "down";
+type Direction = "left" | "right" | "up" | "down";
 
 export const EQ_SLOTS = [
   [null, 1, null],
@@ -21,7 +21,7 @@ export const INV_SLOTS = [
   [7, 8, 9],
 ] as const satisfies Slots<InvSlot>;
 
-export const LINK_SLOTS: Record<"INV" | "EQ", (EqSlot | InvSlot)[]> = {
+const LINK_SLOTS: Record<"INV" | "EQ", (EqSlot | InvSlot)[]> = {
   INV: [1, 2, 3],
   EQ: [6],
 };

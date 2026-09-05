@@ -8,7 +8,7 @@ import { MainHandSlotComponent } from "../../../components/eq/slots/MainHandSlot
 import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
-export const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT");
+const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT");
 
 export const MainHandSlotEntityFactory: ItemFactory = {
   getDefault: () => {

@@ -3,7 +3,6 @@ import { STATE } from "../../../state/state";
 import { recordDeathTurn } from "../../gameOver/death";
 import { shouldEndGame } from "../../gameOver/endCondition";
 import {
-  getPendingGameOverAction,
   isGameOver,
   isPendingGameOver
 } from "../../gameOver/gameOver";
@@ -101,7 +100,9 @@ export const dispatchGameAction = (action: GameAction): void => {
 
   if (shouldEndGame()) {
     recordDeathTurn(consumesTurn);
-    drainAction(getPendingGameOverAction(), context);
+    drainAction({
+      type: WorldActionType.PENDING_GAME_OVER,
+    }, context);
   }
 
   flushLogs(context.pendingLogs, consumesTurn);

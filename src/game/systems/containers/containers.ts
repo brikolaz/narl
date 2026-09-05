@@ -3,7 +3,6 @@ import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
-import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import {
   detachEntity,
   removeEntity,
@@ -90,27 +89,6 @@ export const clearContainerItemAt = (
     return;
   }
   removeEntity(item.id);
-};
-
-export const clearContainerItemById = (container: Entity, id: number): void => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  const item = getEntitiesByRole(container, EntityRole.ITEM).find(
-    (item) => item.id === id,
-  );
-  if (!item) {
-    throw new Error("Item doesn't belong to the container");
-  }
-  removeEntity(id);
-};
-
-export const clearContainerItems = (container: Entity): void => {
-  if (!isContainer(container)) {
-    throw new Error("Entity is not a container");
-  }
-  const items = getContainerItems(container);
-  items.forEach((item) => clearContainerItemById(container, item.id));
 };
 
 export const unpackContainer = (container: Entity) => {

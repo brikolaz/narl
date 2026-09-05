@@ -33,14 +33,3 @@ export const removeComponentRegistryRecords = (...components: Id[]) => {
 export const getComponentRegistryRecord = (component: Id) => {
   return STATE.componentRegistryById[component];
 };
-
-export const patchRegistryComponent = (
-  component: Id,
-  patcher: (record: ComponentRegistryRecord) => ComponentRegistryRecord,
-) => {
-  const record = getComponentRegistryRecord(component);
-  if (!record) {
-    return;
-  }
-  STATE.componentRegistryById[component] = patcher(record);
-};

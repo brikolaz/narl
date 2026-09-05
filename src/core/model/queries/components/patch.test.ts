@@ -12,6 +12,7 @@ import {
 import {
   expectComponentAttached,
   expectComponentDetached,
+  expectComponentsDetached,
   expectComponentStateConsistent,
 } from "./tests";
 
@@ -174,8 +175,7 @@ describe("component patching", () => {
         expect(entity.componentById.has(first.id)).toBe(false);
         expect(entity.componentById.has(second.id)).toBe(false);
         expect(entity.componentById.get(replacement.id)).toBe(replacement);
-        expectComponentDetached(state, entity, first);
-        expectComponentDetached(state, entity, second);
+        expectComponentsDetached(state, entity, first, second);
         expectComponentAttached(state, entity, replacement);
       });
     });

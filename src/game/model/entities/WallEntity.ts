@@ -5,7 +5,7 @@ import { NameComponent } from "../components/display/NameComponent";
 import { ImpassableComponent } from "../components/ImpassableComponent";
 import type { Factory } from "../Factory";
 
-export const WallEntity = getEntityCreator("WALL");
+const WallEntity = getEntityCreator("WALL");
 
 export const WallEntityFactory: Factory = {
   getDefault: () => {

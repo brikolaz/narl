@@ -12,7 +12,7 @@ export const getDefaultTile = (position: number): Tile => ({
   position,
 })
 
-export const generateTile = (position: number): Tile => {
+const generateTile = (position: number): Tile => {
   const tile = getDefaultTile(position)
   const mob = getRandomMob(position);
   patchComponentByType(mob, PositionComponent, (component) => {

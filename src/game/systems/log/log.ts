@@ -31,20 +31,6 @@ const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
   ];
 };
 
-const addLog = (action: GameAction, message: string): LogEntry[] => {
-  return stackLog(STATE.log, {
-    message,
-    action,
-    startTurn: STATE.turn,
-    endTurn: STATE.turn,
-    count: 1,
-  });
-};
-
-export const log = (action: GameAction, message: string): void => {
-  STATE.log = addLog(action, message);
-};
-
 export const flushLogs = (
   logs: PendingLog[],
   consumesTurn: boolean,

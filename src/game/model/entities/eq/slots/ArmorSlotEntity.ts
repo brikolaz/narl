@@ -8,7 +8,7 @@ import { ArmorSlotComponent } from "../../../components/eq/slots/ArmorSlotCompon
 import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
-export const ArmorSlotEntity = getEntityCreator("ARMOR_SLOT");
+const ArmorSlotEntity = getEntityCreator("ARMOR_SLOT");
 
 export const ArmorSlotEntityFactory: ItemFactory = {
   getDefault: () => {

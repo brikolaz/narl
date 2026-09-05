@@ -8,7 +8,7 @@ import { OffhandSlotComponent } from "../../../components/eq/slots/OffhandSlotCo
 import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
-export const OffhandSlotEntity = getEntityCreator("OFFHAND_SLOT");
+const OffhandSlotEntity = getEntityCreator("OFFHAND_SLOT");
 
 export const OffhandSlotEntityFactory: ItemFactory = {
   getDefault: () => {

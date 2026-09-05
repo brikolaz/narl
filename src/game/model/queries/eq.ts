@@ -5,9 +5,8 @@ import {
 } from "../../../core/model/queries/components/normalize";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import {
-  getEntityRegistryRecordById
-} from "../../../core/model/registry/entityRegistry";
+
+
 import type { EqSlotComponent } from "../../systems/eq/eq";
 import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
 import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";
@@ -25,7 +24,7 @@ export const getEq = (entity: Entity): Entity[] => {
   );
 };
 
-export const getEqSlotsByType = (
+const getEqSlotsByType = (
   entity: Entity,
   componentType: EqSlotComponent,
 ) => {
@@ -43,7 +42,7 @@ export const getEqSlotByType = (
   return getEqSlotsByType(entity, componentType)[0];
 };
 
-export const isEqSlot = (component: EqSlotComponent) => {
+const isEqSlot = (component: EqSlotComponent) => {
   const target = resolveComponentType(component);
   return EQ_SLOT_COMPONENTS.has(target);
 };
@@ -70,9 +69,4 @@ export const getEqItems = (entity: Entity) => {
 export const getEqSlotByPosition = (entity: Entity, position: number) => {
   const eq = getEq(entity);
   return eq.find((slot) => getPosition(slot) === position);
-};
-
-export const getEqItemSlot = (entity: Entity) => {
-  const parent = getEntityRegistryRecordById(entity.id)?.parent ?? undefined;
-  return parent
 };

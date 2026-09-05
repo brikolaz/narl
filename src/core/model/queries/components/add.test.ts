@@ -10,10 +10,9 @@ import type { Id } from "../../Id";
 import { upsertComponents } from "./add";
 import {
   expectComponentAttached,
-  expectComponentNotAttached,
   expectComponentStateConsistent,
   expectComponentsAttached,
-  expectComponentsNotAttached,
+  expectComponentsNotAttachedToEntity,
 } from "./tests";
 
 const TestEntity = getEntityCreator("TEST_ENTITY");
@@ -115,12 +114,10 @@ describe("upsertComponents", () => {
         upsertComponents(getEntityInput(entity), ...newComponents);
         upsertComponents(getEntityInput(entity), ...updatedComponents);
 
-        for (const component of newComponents) {
-          expectComponentNotAttached(entity, component);
-        }
-        for (const component of [...initialComponents, ...updatedComponents]) {
-          expectComponentAttached(state, entity, component);
-        }
+
+        expectComponentsNotAttachedToEntity(entity, ...newComponents);
+
+
         expectComponentsAttached(
           state,
           entity,
@@ -138,7 +135,7 @@ describe("upsertComponents", () => {
         upsertComponents(firstEntity, ...initialComponents, ...newComponents);
         upsertComponents(secondEntity, ...initialComponents, ...newComponents);
 
-        expectComponentsNotAttached(
+        expectComponentsNotAttachedToEntity(
           firstEntity,
           ...initialComponents,
           ...newComponents,

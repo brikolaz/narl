@@ -22,7 +22,7 @@ export type ColoredGlyphView = {
   background?: string;
 };
 
-export type RenderedMap = Array<ColoredGlyphView & { position: number }>;
+type RenderedMap = Array<ColoredGlyphView & { position: number }>;
 export type PlayerStatsView = Record<string, string | number>;
 export type EquipmentView = ColoredGlyphView[];
 export type BackpackView = ColoredGlyphView[];
@@ -65,7 +65,7 @@ const getHighlightedGlyphView = <T extends number>(
   };
 };
 
-export const getPlayerStatsView = (): PlayerStatsView => {
+const getPlayerStatsView = (): PlayerStatsView => {
   const player = getPlayer();
 
   return {
@@ -74,7 +74,7 @@ export const getPlayerStatsView = (): PlayerStatsView => {
   };
 };
 
-export const getEquipmentView = (): EquipmentView => {
+const getEquipmentView = (): EquipmentView => {
   const player = getPlayer();
   const slots = getEq(player);
 
@@ -87,7 +87,7 @@ export const getEquipmentView = (): EquipmentView => {
   );
 };
 
-export const getBackpackView = (): BackpackView => {
+const getBackpackView = (): BackpackView => {
   const backpack = getBackpack(getPlayer());
 
   return [...ALL_CONTAINER_SLOTS].map((slot) =>
@@ -99,7 +99,7 @@ export const getBackpackView = (): BackpackView => {
   );
 };
 
-export const getLogsView = (): LogEntryView[] => 
+const getLogsView = (): LogEntryView[] => 
   STATE.log.map((entry) => {
     const spansTurns = entry.startTurn !== entry.endTurn;
     const turnLabel = spansTurns

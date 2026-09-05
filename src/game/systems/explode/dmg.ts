@@ -4,7 +4,7 @@ import { ExplodeComponent } from "../../model/components/ExplodeComponent";
 import { getRng } from "../rng/rng";
 
 // TODO: somehow combine with ATTACT dmg utils
-export const getExplodeDmgRange = (entity: Entity) => {
+const getExplodeDmgRange = (entity: Entity) => {
   const explode = getComponentByType(entity, ExplodeComponent);
   return {
     min: explode?.min ?? ExplodeComponent.defaults.min,

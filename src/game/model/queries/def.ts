@@ -8,7 +8,7 @@ import { DefComponent } from "../components/items/DefComponent";
 import { DefModComponent } from "../components/items/DefModComponent";
 import { isContainer } from "./containers";
 
-export const getOwnDef = (entity?: Entity): number => {
+const getOwnDef = (entity?: Entity): number => {
   return getComponentsByType(entity, DefComponent).reduce(
     (total, component) => total + component.def,
     DefComponent.defaults.def,

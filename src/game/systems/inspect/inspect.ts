@@ -10,10 +10,10 @@ import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
 import { isWeapon } from "../../model/queries/weapons";
 import {
-  getChildrenDmgRange,
+  getBaseChildrenDmgRange,
   getDmgMod,
   getDmgRange,
-  getEffectiveChildrenDmgRange
+  getChildrenDmgRange
 } from "../attack/dmg";
 import { getBonusStats } from "../bonusStats/bonusStats";
 import { getEffectiveDef, isArmor } from "../def/def";
@@ -44,11 +44,11 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
   const stats = [];
 
 if (isContainer(entity)) {
-  const childrenDmgRange = getChildrenDmgRange(entity);
+  const childrenDmgRange = getBaseChildrenDmgRange(entity);
   const childrenDmgMod = getDmgMod(entity);
 
   if (childrenDmgRange) {
-    const effectiveChildrenDmgRange = getEffectiveChildrenDmgRange(entity)
+    const effectiveChildrenDmgRange = getChildrenDmgRange(entity)
 
     const totalDmgRange = getDmgRange(entity)
 

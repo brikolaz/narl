@@ -6,7 +6,7 @@ export type RandomContext = {
   seed: string;
 };
 
-export const getRandomContextNamespace = (namespaces: string[]): string => {
+const getRandomContextNamespace = (namespaces: string[]): string => {
   return namespaces.join(NAMESPACE_SEPARATOR);
 };
 
