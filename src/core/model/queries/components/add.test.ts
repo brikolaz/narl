@@ -164,17 +164,13 @@ describe("upsertComponents", () => {
   it("does nothing when entity is undefined", () => {
     const component = TestComponent();
 
-    upsertComponents(undefined);
+    upsertComponents(undefined, component);
 
     expect(state.componentRegistryById[component.id]).toBeUndefined();
   });
 
   it("does nothing when entity is undefined and no components are provided", () => {
-    const component = TestComponent();
-
-    upsertComponents(undefined);
-
-    expect(state.componentRegistryById[component.id]).toBeUndefined();
+    expect(() => upsertComponents(undefined)).not.toThrow();
   });
 
   it("does nothing when entity id cannot be resolved", () => {
