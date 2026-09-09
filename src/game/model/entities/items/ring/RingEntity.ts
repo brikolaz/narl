@@ -16,6 +16,8 @@ import { DroppableComponent } from "../../../components/interaction/DroppableCom
 import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
 import type { ItemFactory } from "../../../Factory";
 import { BonusStatsEntityFactory } from "../../BonusStatsEntity";
+import { COLORS } from "../../../../../utils/colors";
+import { ColorComponent } from "../../../components/display/ColorComponent";
 
 export const RingEntity = getEntityCreator("RING");
 
@@ -44,6 +46,7 @@ export const RingEntityFactory: ItemFactory = {
       PantsComponent(),
       PickupableComponent(),
       DroppableComponent(),
+      ColorComponent({ color: COLORS.TIER.COMMON }),
     );
 
     addBonusStats(ring)

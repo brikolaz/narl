@@ -13,3 +13,5 @@
 - Base stats do not implicitly become global equipment bonuses
 
 - Equipment-wide effects must be represented explicitly through BonusStats, rather than inferred from base entity stats
+
+- Item glyphs are always lowercase characters

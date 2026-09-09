@@ -12,6 +12,8 @@ import { DroppableComponent } from "../../components/interaction/DroppableCompon
 import { PickupableComponent } from "../../components/interaction/PickupableComponent";
 import { PierceComponent } from "../../components/combat/PierceComponent";
 import type { ItemFactory } from "../../Factory";
+import { ColorComponent } from "../../components/display/ColorComponent";
+import { COLORS } from "../../../../utils/colors";
 
 const SwordEntityVariants = {
   DEFAULT: "Sword",
@@ -30,7 +32,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
   getDefault: () => {
     const sword = SwordEntity();
     const minDmg = getRng(sword).range(4, 6);
-    
+
     upsertComponents(
       sword,
       GlyphComponent({
@@ -39,7 +41,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
       NameComponent({ name: "Sword" }),
       RemovableComponent(),
       MainHandComponent(),
-
+      ColorComponent({ color: COLORS.TIER.COMMON }),
       DmgComponent({ min: minDmg, max: minDmg + 3 }),
       PickupableComponent(),
       DroppableComponent(),
@@ -50,7 +52,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
   getLongSword: () => {
     const longSword = SwordEntity();
     const minDmg = getRng(longSword).range(5, 6);
-    
+
     upsertComponents(
       longSword,
       GlyphComponent({
@@ -64,12 +66,13 @@ export const SwordEntityFactory: SwordEntityFactory = {
       PierceComponent({ pierce: 2 }),
       PickupableComponent(),
       DroppableComponent(),
+      ColorComponent({ color: COLORS.TIER.COMMON }),
     );
 
     return longSword;
   },
   getVariant: (variant: SwordEntityVariants) => {
-    switch(variant) {
+    switch (variant) {
       case SwordEntityVariants.LONG_SWORD:
         return SwordEntityFactory.getLongSword();
       default:

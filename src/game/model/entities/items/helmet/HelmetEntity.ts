@@ -12,6 +12,8 @@ import { DroppableComponent } from "../../../components/interaction/DroppableCom
 import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
 import { SpikeComponent } from "../../../components/combat/SpikeComponent";
 import type { ItemFactory } from "../../../Factory";
+import { ColorComponent } from "../../../components/display/ColorComponent";
+import { COLORS } from "../../../../../utils/colors";
 
 export const HelmetEntityVariants = {
   DEFAULT: "Helmet",
@@ -40,6 +42,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       DefComponent({ def: getRng(helmet).range(2, 3) }),
       PickupableComponent(),
       DroppableComponent(),
+      ColorComponent({ color: COLORS.TIER.COMMON }),
     );
 
     return helmet;
@@ -63,6 +66,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       InspectDescComponent({ times: 10, text: "Looks horny" }),
       SpikeComponent(),
       SpikeComponent(),
+      ColorComponent({ color: COLORS.TIER.COMMON }),
     );
 
     return helmet;
