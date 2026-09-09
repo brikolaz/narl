@@ -1,5 +1,5 @@
 import { removeEntity } from "../../../core/model/queries/entities/remove";
-import { getTile } from "../../model/queries/tile";
+import { getTile } from "./tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { removeMobById } from "../attack/mobs";

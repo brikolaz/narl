@@ -1,7 +1,7 @@
 // TODO: move outside movement system
 import type { Entity } from "../../../core/model/Entity";
 import { MAX_WORLD_SIZE } from "../../../utils/constants";
-import { getPosition } from "../../model/queries/position";
+import { getPosition } from "../position/position";
 import { Direction } from "../turn/types";
 
 type GetNextPositionParams = {

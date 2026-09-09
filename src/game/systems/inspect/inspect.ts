@@ -6,9 +6,8 @@ import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent";
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent";
 import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
-import { isContainer } from "../../model/queries/containers";
-import { getInspectedTimes } from "../../model/queries/inspect";
-import { isWeapon } from "../../model/queries/weapons";
+import { isContainer } from "../containers/containers";
+import { isWeapon } from "../attack/getAttackWeapon";
 import {
   getBaseChildrenDmgRange,
   getDmgMod,
@@ -19,6 +18,13 @@ import { getBonusStats } from "../bonusStats/bonusStats";
 import { getEffectiveDef, isArmor } from "../def/def";
 import { formatDmgRange } from "../log/format";
 import { getEntityName } from "./getEntityName";
+
+export const getInspectedTimes = (item: Entity) => {
+  return (
+    getComponentByType(item, InspectedComponent)?.times ??
+    InspectedComponent.defaults.times
+  );
+};
 
 export const getInspectDesc = (entity: Entity) => {
   const inspectedTimes = getInspectedTimes(entity);

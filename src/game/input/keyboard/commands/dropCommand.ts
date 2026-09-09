@@ -1,5 +1,5 @@
-import { getPlayer } from "../../../model/queries/player";
-import { getPosition } from "../../../model/queries/position";
+import { getPlayer } from "../../../systems/player/player";
+import { getPosition } from "../../../systems/position/position";
 import { INV_SLOTS } from "../../../render/state/slots";
 import { UI_STATE } from "../../../render/state/state";
 import {

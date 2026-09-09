@@ -1,5 +1,5 @@
-import { getHp } from "../../model/queries/hp";
-import { getPlayer } from "../../model/queries/player";
+import { getHp } from "../hp/hp";
+import { getPlayer } from "../player/player";
 import { GAME_STATUS, STATE } from "../../state/state";
 
 export const shouldEndGame = () =>

@@ -1,4 +1,4 @@
-import { getPlayer } from "../../model/queries/player";
+import { getPlayer } from "../player/player";
 import { getRng } from "../rng/rng";
 import { getDeathContext } from "./death";
 

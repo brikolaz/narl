@@ -2,9 +2,9 @@ import type { Entity } from "../../../core/model/Entity";
 import { BARE_BLOCK } from "../../../utils/constants";
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent";
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent";
-import { getContainerItems } from "../../model/queries/containers";
-import { getDef } from "../../model/queries/def";
-import { getEqSlotByType } from "../../model/queries/eq";
+import { getContainerItems } from "../containers/containers";
+import { getDef } from "../def/def";
+import { getEqSlotByType } from "../eq/eq";
 
 export const getBlockDef = (entity: Entity): number => {
   const handItems = [MainHandSlotComponent, OffhandSlotComponent].flatMap(

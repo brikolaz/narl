@@ -1,8 +1,8 @@
 import type { Entity } from "../../../core/model/Entity";
 import type { Enum, EnumType } from "../../../utils/types/Enum";
 import { HpComponent } from "../../model/components/combat/HpComponent";
-import { getExp } from "../../model/queries/exp";
-import { getHp } from "../../model/queries/hp";
+import { getExp } from "../exp/exp";
+import { getHp } from "../hp/hp";
 
 const PlayerStat = {
   HP: "HP",

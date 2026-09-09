@@ -2,7 +2,7 @@ import { isComponentType } from "../../../core/model/queries/components/has";
 import { getComponentRegistryRecord } from "../../../core/model/registry/componentRegistry";
 import { assert } from "../../../utils/assert";
 import { BleedComponent } from "../../model/components/combat/BleedComponent";
-import { getHp } from "../../model/queries/hp";
+import { getHp } from "../hp/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { initDeath } from "../gameOver/death";

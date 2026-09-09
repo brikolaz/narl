@@ -1,6 +1,6 @@
 import type { Entity } from "../../../../core/model/Entity";
 import { assert } from "../../../../utils/assert";
-import { getPlayer } from "../../../model/queries/player";
+import { getPlayer } from "../../player/player";
 import type { GameAction } from "../../actions/types";
 import { isHostile } from "../../attack/hostililty";
 import { getDirection } from "../../movement/position";

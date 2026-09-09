@@ -21,7 +21,7 @@ import { MovableComponent } from "../../../components/spatial/MovableComponent";
 import { PositionComponent } from "../../../components/spatial/PositionComponent";
 import { UnawareComponent } from "../../../components/ai/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
-import { getEqSlotByType, initEq } from "../../../queries/eq";
+import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity";
 import { SwordEntityFactory } from "../../items/SwordEntity";

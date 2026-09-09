@@ -2,8 +2,8 @@ import type { Entity } from "../../../core/model/Entity";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { removeById } from "../../../utils/removeById";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
-import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { getPosition } from "../position/position";
+import { getTile } from "../world/tile";
 
 // TODO: handle other entity kind (items etc.) movement if needed
 export const moveMob = (entity: Entity, nextPosition: number) => {

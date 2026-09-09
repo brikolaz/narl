@@ -1,10 +1,10 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { ENG_GAME_GATE_POSITION } from "../../../utils/constants";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
-import { hasMobs } from "../../model/queries/mobs";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { hasMobs } from "../mobs/mobs";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
+import { getTile } from "../world/tile";
 import { STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

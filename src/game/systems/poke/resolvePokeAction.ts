@@ -1,8 +1,8 @@
 import { getManual } from "../../model/entities/getManual";
-import { getMob, hasMobs } from "../../model/queries/mobs";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { getMob, hasMobs } from "../mobs/mobs";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
+import { getTile } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";

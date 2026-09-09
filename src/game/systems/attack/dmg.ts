@@ -3,7 +3,7 @@ import { getComponentByType } from "../../../core/model/queries/components/get";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { DmgComponent } from "../../model/components/combat/DmgComponent";
 import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
-import { isContainer } from "../../model/queries/containers";
+import { isContainer } from "../containers/containers";
 import { getBonusDmgMod } from "../bonusStats/bonusStats";
 import { getRng } from "../rng/rng";
 import { getAttackWeapon } from "./getAttackWeapon";

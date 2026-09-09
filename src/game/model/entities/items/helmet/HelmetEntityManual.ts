@@ -6,7 +6,7 @@ import { HeadComponent } from "../../../components/equipment/HeadComponent";
 import { PantsComponent } from "../../../components/equipment/PantsComponent";
 import { SpikeComponent } from "../../../components/combat/SpikeComponent";
 import type { Manual } from "../../../Manual";
-import { getInspectedTimes } from "../../../queries/inspect";
+import { getInspectedTimes } from "../../../../systems/inspect/inspect";
 
 export const HelmetEntityManual: Manual = {
   curse(_gameAction, item) {

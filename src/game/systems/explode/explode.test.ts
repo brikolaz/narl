@@ -18,7 +18,7 @@ import { HpComponent } from "../../model/components/combat/HpComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { ContainerEntityFactory } from "../../model/entities/items/container/ContainerEntity";
 import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/BoomerEntity";
-import { getPosition } from "../../model/queries/position";
+import { getPosition } from "../position/position";
 import type { GameState } from "../../state/state";
 import { dispatchGameAction } from "../actions/gameAction/dispatchGameAction";
 import { InternalActionType } from "../internal/type";

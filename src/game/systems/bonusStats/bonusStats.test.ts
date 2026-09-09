@@ -15,7 +15,7 @@ import { DmgComponent } from "../../model/components/combat/DmgComponent";
 import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
 import { BonusStatsEntityFactory } from "../../model/entities/BonusStatsEntity";
 import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity";
-import { getEqSlotByType, initEq } from "../../model/queries/eq";
+import { getEqSlotByType, initEq } from "../eq/eq";
 import { initState } from "../../state/state";
 import { getAttackDmgRange, rollAttackDmg } from "../attack/dmg";
 import { setContainerItemAt } from "../containers/containers";

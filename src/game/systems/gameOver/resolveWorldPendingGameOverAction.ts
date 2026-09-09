@@ -1,4 +1,4 @@
-import { getPlayer } from "../../model/queries/player";
+import { getPlayer } from "../player/player";
 import { GAME_STATUS, STATE } from "../../state/state";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

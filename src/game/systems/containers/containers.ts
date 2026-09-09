@@ -1,24 +1,108 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
+import {
+  getEntitiesByRole,
+  getEntityByRole,
+} from "../../../core/model/queries/entities/get";
+import type { EntityArgument } from "../../../core/model/queries/entities/normalize";
+import { ContainerComponent } from "../../model/components/containers/ContainerComponent";
+import { NestDepthComponent } from "../../model/components/containers/NestDepthComponent";
 import {
   detachEntity,
   removeEntity,
 } from "../../../core/model/queries/entities/remove";
 import { SizeComponent } from "../../model/components/containers/SizeComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
-import {
-  getBackpack,
-  getContainerItemAt,
-  getContainerItems,
-  getFirstEmptyContainerSlot,
-  isContainer,
-} from "../../model/queries/containers";
-import { getPosition } from "../../model/queries/position";
-import { setPosition } from "../position/position";
-import type { ContainerSlot } from "./types";
+import { getPosition, setPosition } from "../position/position";
+import { ALL_CONTAINER_SLOTS, type ContainerSlot } from "./types";
+
+export const getBackpack = (entity: Entity): Entity | undefined => {
+  return getEntityByRole(entity, EntityRole.BACKPACK);
+};
+
+export const getContainerItemAt = (
+  container: Entity,
+  containerSlot: ContainerSlot,
+): Entity | undefined => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  return getEntitiesByRole(container, EntityRole.ITEM).find((item) => {
+    return getPosition(item) === containerSlot;
+  });
+};
+
+export const getContainerItems = (container: Entity): Entity[] => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  return getEntitiesByRole(container, EntityRole.ITEM);
+};
+
+const getContainerSize = (container: Entity) => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  return (
+    getComponentByType(container, SizeComponent)?.size ??
+    SizeComponent.defaults.size
+  );
+};
+
+const getEmptySlots = (container: Entity): Set<ContainerSlot> => {
+  const occupiedSlots = new Set(
+    getContainerItems(container).map((item) => {
+      const position = getPosition(item);
+      if (!position) {
+        throw new Error("Container item has no position component");
+      }
+      return position;
+    }),
+  );
+  const containerSlots = new Set(
+    [...ALL_CONTAINER_SLOTS].slice(0, getContainerSize(container)),
+  );
+  return containerSlots.difference(occupiedSlots);
+};
+
+const getFirstEmptyContainerSlot = (
+  container: Entity,
+): ContainerSlot | undefined => {
+  return getEmptySlots(container).values().next().value;
+};
+
+export const getFirstContainerItem = (
+  container: Entity,
+): Entity | undefined => getContainerItemAt(container, 1);
+
+export const isContainer = (entity: EntityArgument) => {
+  return hasComponentsByType(entity, ContainerComponent);
+};
+
+export const isContainerFull = (container: Entity): boolean => {
+  return getFirstEmptyContainerSlot(container) === undefined;
+};
+
+export const getNestDepth = (entity: Entity): number => {
+  if (!isContainer(entity)) {
+    return 0;
+  }
+  const nestedContainers = getContainerItems(entity).filter(isContainer);
+  return nestedContainers.length
+    ? 1 + Math.max(...nestedContainers.map(getNestDepth))
+    : 1;
+};
+
+export const getMaxNestDepth = (entity: Entity) => {
+  return (
+    getComponentByType(entity, NestDepthComponent)?.nestDepth ??
+    NestDepthComponent.defaults.nestDepth
+  );
+};
 
 export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
   const backpack = getBackpack(entity);

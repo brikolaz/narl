@@ -4,9 +4,9 @@ import { WorldActionType } from "../../../../systems/world/types";
 import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
 import { PantsSlotComponent } from "../../../components/equipment/slots/PantsSlotComponent";
 import type { Manual } from "../../../Manual";
-import { getContainerItemAt } from "../../../queries/containers";
-import { getEqSlotByType } from "../../../queries/eq";
-import { getPlayer } from "../../../queries/player";
+import { getContainerItemAt } from "../../../../systems/containers/containers";
+import { getEqSlotByType } from "../../../../systems/eq/eq";
+import { getPlayer } from "../../../../systems/player/player";
 
 export const RingEntityManual: Manual = {
   shouldBeCursed(item: Entity): boolean {

@@ -2,12 +2,12 @@ import {
   getBackpack,
   isContainer,
   isContainerFull
-} from "../../model/queries/containers";
+} from "../containers/containers";
 import { assert } from "../../../utils/assert";
-import { isCursed } from "../../model/queries/curse";
-import { pickUpItem } from "../../model/queries/pickUp";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
+import { isCursed } from "../curse/curse";
+import { pickUpItem } from "./pickUp";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { unpackContainer } from "../containers/containers";

@@ -1,7 +1,7 @@
 import { assert } from "../../../utils/assert";
-import { getMob, hasMobs } from "../../model/queries/mobs";
-import { getPlayer } from "../../model/queries/player";
-import { getTile } from "../../model/queries/tile";
+import { getMob, hasMobs } from "../mobs/mobs";
+import { getPlayer } from "../player/player";
+import { getTile } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { rollAttackDmg } from "../attack/dmg";

@@ -1,8 +1,8 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
-import { getContainerItems } from "../../model/queries/containers";
-import { getMobById } from "../../model/queries/mobs";
-import { getTile } from "../../model/queries/tile";
+import { getContainerItems } from "../containers/containers";
+import { getMobById } from "../mobs/mobs";
+import { getTile } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";

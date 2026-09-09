@@ -2,11 +2,11 @@ import {
   getBackpack,
   getContainerItemAt,
   isContainerFull,
-} from "../../model/queries/containers";
+} from "../containers/containers";
 import { assert } from "../../../utils/assert";
-import { isRemovable } from "../../model/queries/items";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
+import { isRemovable } from "./eq";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";
@@ -19,7 +19,7 @@ import {
   PlayerDropItemActionReason,
   type PlayerUnequipItemAction,
 } from "../player/types";
-import { getEqSlotByPosition } from "../../model/queries/eq";
+import { getEqSlotByPosition } from "./eq";
 
 export const resolveUnequipAction = (
   gameAction: PlayerUnequipItemAction,

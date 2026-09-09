@@ -1,5 +1,5 @@
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getNextPosition } from "../movement/position";

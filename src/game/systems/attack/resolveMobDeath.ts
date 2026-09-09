@@ -1,8 +1,8 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { getManual } from "../../model/entities/getManual";
-import { getMobById } from "../../model/queries/mobs";
-import { getPosition } from "../../model/queries/position";
+import { getMobById } from "../mobs/mobs";
+import { getPosition } from "../position/position";
 import { STATE } from "../../state/state";
 import type { Action } from "../actions/action";
 import {

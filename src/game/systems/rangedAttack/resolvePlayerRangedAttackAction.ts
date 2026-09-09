@@ -1,8 +1,8 @@
 import { assert } from "../../../utils/assert";
-import { hasMobs } from "../../model/queries/mobs";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { hasMobs } from "../mobs/mobs";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
+import { getTile } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getAttackWeapon } from "../attack/getAttackWeapon";

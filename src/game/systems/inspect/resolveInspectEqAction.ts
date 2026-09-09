@@ -1,7 +1,7 @@
 import { assert } from "../../../utils/assert";
-import { getContainerItemAt } from "../../model/queries/containers";
-import { getEqSlotByPosition } from "../../model/queries/eq";
-import { getPlayer } from "../../model/queries/player";
+import { getContainerItemAt } from "../containers/containers";
+import { getEqSlotByPosition } from "../eq/eq";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { curse } from "../curse/curse";

@@ -1,6 +1,6 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
 import { getEntityByRole } from "../../../core/model/queries/entities/get";
-import { getEqItems } from "../../model/queries/eq";
+import { getEqItems } from "../eq/eq";
 import { getDmgMod } from "../attack/dmg";
 
 export const getBonusStats = (entity: Entity): Entity | undefined => {

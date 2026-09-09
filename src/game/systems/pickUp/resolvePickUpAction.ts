@@ -1,6 +1,6 @@
 import { removeById } from "../../../utils/removeById";
-import { getPlayer } from "../../model/queries/player";
-import { getPosition } from "../../model/queries/position";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {
@@ -9,9 +9,9 @@ import {
 import {
   getBackpack,
   isContainerFull,
-} from "../../model/queries/containers";
+} from "../containers/containers";
 import type { PlayerPickUpAction } from "../player/types";
-import { isPickupable, pickUpItem } from "../../model/queries/pickUp";
+import { isPickupable, pickUpItem } from "./pickUp";
 import { getVisibleTiles } from "../player/getVisibleTiles";
 import { getEntityName } from "../inspect/getEntityName";
 import { curse } from "../curse/curse";

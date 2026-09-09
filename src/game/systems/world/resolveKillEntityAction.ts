@@ -1,8 +1,8 @@
-import { getBackpack } from "../../model/queries/containers";
+import { getBackpack } from "../containers/containers";
 import { assert } from "../../../utils/assert";
-import { getExp } from "../../model/queries/exp";
-import { getMobById } from "../../model/queries/mobs";
-import { getTile } from "../../model/queries/tile";
+import { getExp } from "../exp/exp";
+import { getMobById } from "../mobs/mobs";
+import { getTile } from "./tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";

@@ -3,9 +3,9 @@ import { assert } from "../../../utils/assert";
 import {
   getBackpack,
   getContainerItemAt,
-} from "../../model/queries/containers";
-import { getEqSlotByPosition } from "../../model/queries/eq";
-import { getPlayer } from "../../model/queries/player";
+} from "../containers/containers";
+import { getEqSlotByPosition } from "../eq/eq";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";

@@ -9,7 +9,7 @@ import { ExpComponent } from "../components/state/ExpComponent";
 import { HpComponent } from "../components/combat/HpComponent";
 import { PositionComponent } from "../components/spatial/PositionComponent";
 import type { Factory } from "../Factory";
-import { initEq } from "../queries/eq";
+import { initEq } from "../../systems/eq/eq";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";
 
 const PlayerEntity = getEntityCreator("PLAYER");

@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
-import { getHp } from "../../model/queries/hp";
-import { isPlayer } from "../../model/queries/player";
+import { getHp } from "../hp/hp";
+import { isPlayer } from "../player/player";
 import { getReducedDmg } from "../def/def";
 import { initDeath } from "../gameOver/death";
 

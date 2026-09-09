@@ -1,4 +1,4 @@
-import { getHp } from "../../model/queries/hp";
+import { getHp } from "../hp/hp";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import type { WorldHealAction } from "../world/types";

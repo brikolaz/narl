@@ -1,7 +1,7 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
-import { getPosition } from "../../model/queries/position";
-import { isTileImpassable } from "../../model/queries/tile";
+import { getPosition } from "../position/position";
+import { isTileImpassable } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { type WorldMoveAction } from "../world/types";

@@ -5,9 +5,9 @@ import {
   getNestDepth,
   isContainer,
   isContainerFull,
-} from "../../model/queries/containers";
+} from "../containers/containers";
 import { assert } from "../../../utils/assert";
-import { getPlayer } from "../../model/queries/player";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {

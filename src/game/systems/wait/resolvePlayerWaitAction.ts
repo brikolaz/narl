@@ -1,4 +1,4 @@
-import { getPlayer } from "../../model/queries/player";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getEntityName } from "../inspect/getEntityName";

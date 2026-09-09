@@ -2,9 +2,9 @@ import { removeComponentsByType } from "../../../core/model/queries/components/r
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
 import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
-import { getMobById } from "../../model/queries/mobs";
-import { getPosition } from "../../model/queries/position";
-import { getTile } from "../../model/queries/tile";
+import { getMobById } from "../mobs/mobs";
+import { getPosition } from "../position/position";
+import { getTile } from "../world/tile";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import {

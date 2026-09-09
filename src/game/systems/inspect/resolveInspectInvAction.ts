@@ -2,8 +2,8 @@ import { assert } from "../../../utils/assert";
 import {
   getBackpack,
   getContainerItemAt,
-} from "../../model/queries/containers";
-import { getPlayer } from "../../model/queries/player";
+} from "../containers/containers";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { curse } from "../curse/curse";

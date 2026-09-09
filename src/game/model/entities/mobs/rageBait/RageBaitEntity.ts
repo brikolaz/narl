@@ -22,7 +22,7 @@ import { PeacefulComponent } from "../../../components/ai/PeacefulComponent";
 import { PositionComponent } from "../../../components/spatial/PositionComponent";
 import { UnawareComponent } from "../../../components/ai/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
-import { getEqSlotByType, initEq } from "../../../queries/eq";
+import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
 import { DmgComponent } from "../../../components/combat/DmgComponent";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {

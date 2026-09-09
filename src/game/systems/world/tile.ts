@@ -1,9 +1,33 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
+import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
+import { ImpassableComponent } from "../../model/components/spatial/ImpassableComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";
+import { hasMobs } from "../mobs/mobs";
+import { getPlayer } from "../player/player";
+import { getPosition } from "../position/position";
+
+export const getTile = (position: number): Tile => {
+  const tile = STATE.world[position];
+  if (!tile) {
+    throw new Error(`Tile ${position} does not exist`);
+  }
+  return tile;
+};
+
+export const isTileImpassable = (position: number) => {
+  const tile = getTile(position);
+  return (
+    hasMobs(tile) ||
+    getPosition(getPlayer()) === position ||
+    tile.items.some((item) =>
+      hasComponentsByType(item, ImpassableComponent),
+    )
+  );
+};
 
 export const getDefaultTile = (position: number): Tile => ({
   floor: FloorEntityFactory.getDefault(),

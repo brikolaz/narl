@@ -14,11 +14,11 @@ import { InspectedComponent } from "../../../../components/interaction/Inspected
 import { DefModComponent } from "../../../../components/combat/DefModComponent";
 import { SpikeComponent } from "../../../../components/combat/SpikeComponent";
 import type { Manual } from "../../../../Manual";
-import { getContainerItemAt } from "../../../../queries/containers";
-import { isCursed } from "../../../../queries/curse";
-import { isDisabled } from "../../../../queries/disabled";
-import { getPlayer } from "../../../../queries/player";
-import { getPosition } from "../../../../queries/position";
+import { getContainerItemAt } from "../../../../../systems/containers/containers";
+import { isCursed } from "../../../../../systems/curse/curse";
+import { isDisabled } from "../../../../../systems/disable/disable";
+import { getPlayer } from "../../../../../systems/player/player";
+import { getPosition } from "../../../../../systems/position/position";
 import { DickEntityFactory } from "../../../items/DickEntity";
 
 export const PantsSlotEntityManual: Manual = {

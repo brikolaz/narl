@@ -4,7 +4,7 @@ import { removeComponentsByType } from "../../../core/model/queries/components/r
 import { detachEntity } from "../../../core/model/queries/entities/remove";
 import { DroppableComponent } from "../../model/components/interaction/DroppableComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
-import { getTile } from "../../model/queries/tile";
+import { getTile } from "../world/tile";
 import { setPosition } from "../position/position";
 
 export const dropItem = (item: Entity, targetPosition: number) => {

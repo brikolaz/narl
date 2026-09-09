@@ -1,6 +1,6 @@
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { getManual } from "../../model/entities/getManual";
-import { isPlayer } from "../../model/queries/player";
+import { isPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { resolveMobDeath } from "../attack/resolveMobDeath";

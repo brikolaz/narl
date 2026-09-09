@@ -3,6 +3,7 @@
 ## Action Resolvers
 
 - Use domain helpers instead of ECS helpers when possible
+- Keep game-domain ECS queries in their respective `game/systems` modules; do not create a separate `game/model/queries` layer
 - Keep state mutations inside a single IIFE
 - Action resolvers represent deterministic state transitions
 - The only allowed side effect is mutating the current GameState

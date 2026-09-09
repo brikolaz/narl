@@ -9,11 +9,11 @@ import {
   getBackpack,
   getContainerItemAt,
   getFirstContainerItem,
-} from "../../model/queries/containers";
-import { isDisabled } from "../../model/queries/disabled";
-import { getEq } from "../../model/queries/eq";
-import { getItemSlots } from "../../model/queries/items";
-import { getPlayer } from "../../model/queries/player";
+} from "../containers/containers";
+import { isDisabled } from "../disable/disable";
+import { getEq } from "./eq";
+import { getItemSlots } from "./eq";
+import { getPlayer } from "../player/player";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { addItemToContainer } from "../containers/containers";
