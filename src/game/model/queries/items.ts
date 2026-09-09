@@ -2,7 +2,7 @@ import type { Component } from "../../../core/model/Component";
 import { type Entity } from "../../../core/model/Entity";
 import { getComponentsByTypes } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { ArmorComponent } from "../components/eq/ArmorComponent";
+import { ChestComponent } from "../components/eq/ChestComponent";
 import { BootsComponent } from "../components/eq/BootsComponent";
 import { HeadComponent } from "../components/eq/HeadComponent";
 import { MainHandComponent } from "../components/eq/MainHandComponent";
@@ -12,7 +12,7 @@ import { RemovableComponent } from "../components/eq/RemovableComponent";
 
 export const getItemSlots = (entity: Entity): Component[] => {
   return getComponentsByTypes(entity, [
-    ArmorComponent,
+    ChestComponent,
     HeadComponent,
     MainHandComponent,
     OffhandComponent,

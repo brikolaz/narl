@@ -9,7 +9,7 @@ import { getComponentByType } from "../../../core/model/queries/components/get";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 import { PantsSlotComponent } from "../../model/components/eq/slots/PantsSlotComponent";
-import { ArmorSlotComponent } from "../../model/components/eq/slots/ArmorSlotComponent";
+import { ChestSlotComponent } from "../../model/components/eq/slots/ChestSlotComponent";
 import { MainHandSlotComponent } from "../../model/components/eq/slots/MainHandSlotComponent";
 import { DmgComponent } from "../../model/components/items/DmgComponent";
 import { DmgModComponent } from "../../model/components/items/DmgModComponent";
@@ -56,7 +56,7 @@ describe("attack damage", () => {
       weapon,
     );
     setContainerItemAt(
-      getEqSlotByType(source, ArmorSlotComponent),
+      getEqSlotByType(source, ChestSlotComponent),
       1,
       armor,
     );

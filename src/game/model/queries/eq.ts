@@ -9,7 +9,7 @@ import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
 
 import type { EqSlotComponent } from "../../systems/eq/eq";
 import { EQ_SLOT_COMPONENTS } from "../entities/eq/eq";
-import { ArmorSlotEntityFactory } from "../entities/eq/slots/ArmorSlotEntity";
+import { ChestSlotEntityFactory } from "../entities/eq/slots/ChestSlotEntity";
 import { BootsSlotEntityFactory } from "../entities/eq/slots/BootsSlotEntity";
 import { HeadSlotEntityFactory } from "../entities/eq/slots/HeadSlotEntity";
 import { MainHandSlotEntityFactory } from "../entities/eq/slots/MainHandSlotEntity";
@@ -52,7 +52,7 @@ export const initEq = (entity: Entity) => {
     [EntityRole.EQ]: [
       HeadSlotEntityFactory.getDefault(),
       MainHandSlotEntityFactory.getDefault(),
-      ArmorSlotEntityFactory.getDefault(),
+      ChestSlotEntityFactory.getDefault(),
       OffhandSlotEntityFactory.getDefault(),
       PantsSlotEntityFactory.getDefault(),
       BootsSlotEntityFactory.getDefault(),

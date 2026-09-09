@@ -3,22 +3,22 @@ import { upsertComponents } from "../../../../../core/model/queries/components/a
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { ArmorComponent } from "../../../components/eq/ArmorComponent";
-import { ArmorSlotComponent } from "../../../components/eq/slots/ArmorSlotComponent";
+import { ChestComponent } from "../../../components/eq/ChestComponent";
+import { ChestSlotComponent } from "../../../components/eq/slots/ChestSlotComponent";
 import { PositionComponent } from "../../../components/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
-const ArmorSlotEntity = getEntityCreator("ARMOR_SLOT");
+const ChestSlotEntity = getEntityCreator("CHEST_SLOT");
 
-export const ArmorSlotEntityFactory: ItemFactory = {
+export const ChestSlotEntityFactory: ItemFactory = {
   getDefault: () => {
-    const eqSlot = ArmorSlotEntity();
+    const eqSlot = ChestSlotEntity();
 
     upsertComponents(
       eqSlot,
-      NameComponent({ name: "Armor" }),
-      ArmorSlotComponent(),
-      ArmorComponent(),
+      NameComponent({ name: "Chest" }),
+      ChestSlotComponent(),
+      ChestComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
       PositionComponent({ position: 3 }),
