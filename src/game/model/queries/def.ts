@@ -4,8 +4,8 @@ import {
   getComponentsByType,
 } from "../../../core/model/queries/components/get";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import { DefComponent } from "../components/items/DefComponent";
-import { DefModComponent } from "../components/items/DefModComponent";
+import { DefComponent } from "../components/combat/DefComponent";
+import { DefModComponent } from "../components/combat/DefModComponent";
 import { isContainer } from "./containers";
 
 const getOwnDef = (entity?: Entity): number => {

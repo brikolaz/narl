@@ -1,5 +1,5 @@
 import type { Entity } from "../../../core/model/Entity";
-import { MainHandSlotComponent } from "../../model/components/eq/slots/MainHandSlotComponent";
+import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent";
 import { getManual } from "../../model/entities/getManual";
 import { getContainerItemAt } from "../../model/queries/containers";
 import { getEqSlotByType } from "../../model/queries/eq";

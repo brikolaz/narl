@@ -1,8 +1,8 @@
 import type { Entity } from "../../../../../core/model/Entity";
 import { removeComponentsByType } from "../../../../../core/model/queries/components/remove";
 import { WorldActionType } from "../../../../systems/world/types";
-import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { PantsSlotComponent } from "../../../components/eq/slots/PantsSlotComponent";
+import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
+import { PantsSlotComponent } from "../../../components/equipment/slots/PantsSlotComponent";
 import type { Manual } from "../../../Manual";
 import { getContainerItemAt } from "../../../queries/containers";
 import { getEqSlotByType } from "../../../queries/eq";

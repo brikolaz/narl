@@ -3,7 +3,7 @@ import { upsertComponents } from "../../../../../core/model/queries/components/a
 import type { Action } from "../../../../systems/actions/action";
 import { getRng } from "../../../../systems/rng/rng";
 import { WorldActionType } from "../../../../systems/world/types";
-import { BleedComponent } from "../../../components/BleedComponent";
+import { BleedComponent } from "../../../components/combat/BleedComponent";
 import type { Manual } from "../../../Manual";
 
 export const ZoomerEntityManual: Manual = {

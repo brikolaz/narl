@@ -3,9 +3,9 @@ import { upsertComponents } from "../../../../../core/model/queries/components/a
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { ChestComponent } from "../../../components/eq/ChestComponent";
-import { ChestSlotComponent } from "../../../components/eq/slots/ChestSlotComponent";
-import { PositionComponent } from "../../../components/PositionComponent";
+import { ChestComponent } from "../../../components/equipment/ChestComponent";
+import { ChestSlotComponent } from "../../../components/equipment/slots/ChestSlotComponent";
+import { PositionComponent } from "../../../components/spatial/PositionComponent";
 import type { ItemFactory } from "../../../Factory";
 
 const ChestSlotEntity = getEntityCreator("CHEST_SLOT");

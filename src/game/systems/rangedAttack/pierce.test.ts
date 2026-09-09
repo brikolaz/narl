@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
-import { PierceComponent } from "../../model/components/PierceComponent";
+import { PierceComponent } from "../../model/components/combat/PierceComponent";
 import { initState } from "../../state/state";
 import { canPierce, getPierceRange } from "./pierce";
 

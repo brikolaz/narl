@@ -1,6 +1,6 @@
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { STATE, type Tile } from "../../state/state";
-import { ImpassableComponent } from "../components/ImpassableComponent";
+import { ImpassableComponent } from "../components/spatial/ImpassableComponent";
 
 import { hasMobs } from "./mobs";
 import { getPlayer } from "./player";

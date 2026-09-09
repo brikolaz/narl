@@ -3,9 +3,9 @@ import { upsertComponents } from "../../../../../../core/model/queries/component
 import { ContainerComponent } from "../../../../components/containers/ContainerComponent";
 import { SizeComponent } from "../../../../components/containers/SizeComponent";
 import { NameComponent } from "../../../../components/display/NameComponent";
-import { PantsComponent } from "../../../../components/eq/PantsComponent";
-import { PantsSlotComponent } from "../../../../components/eq/slots/PantsSlotComponent";
-import { PositionComponent } from "../../../../components/PositionComponent";
+import { PantsComponent } from "../../../../components/equipment/PantsComponent";
+import { PantsSlotComponent } from "../../../../components/equipment/slots/PantsSlotComponent";
+import { PositionComponent } from "../../../../components/spatial/PositionComponent";
 import type { ItemFactory } from "../../../../Factory";
 
 export const PantsSlotEntity = getEntityCreator("PANTS_SLOT");

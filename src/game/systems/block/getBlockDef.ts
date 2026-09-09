@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/model/Entity";
 import { BARE_BLOCK } from "../../../utils/constants";
-import { MainHandSlotComponent } from "../../model/components/eq/slots/MainHandSlotComponent";
-import { OffhandSlotComponent } from "../../model/components/eq/slots/OffhandSlotComponent";
+import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent";
+import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent";
 import { getContainerItems } from "../../model/queries/containers";
 import { getDef } from "../../model/queries/def";
 import { getEqSlotByType } from "../../model/queries/eq";

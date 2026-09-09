@@ -1,8 +1,8 @@
 import type { Entity } from "../../../core/model/Entity";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
-import { ExpComponent } from "../../model/components/mobs/ExpComponent";
-import { VisitedComponent } from "../../model/components/VisitedComponent";
+import { ExpComponent } from "../../model/components/state/ExpComponent";
+import { VisitedComponent } from "../../model/components/state/VisitedComponent";
 import { EXP } from "./expTable";
 
 export const addExp = (entity: Entity | undefined, exp: number): void => {

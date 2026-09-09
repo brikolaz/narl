@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { DefComponent } from "../../model/components/items/DefComponent";
+import { DefComponent } from "../../model/components/combat/DefComponent";
 import { getDef, getDefMod } from "../../model/queries/def";
 import { getEq } from "../../model/queries/eq";
 

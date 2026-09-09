@@ -3,9 +3,9 @@ import { upsertComponents } from "../../../core/model/queries/components/add";
 
 import { getComponentByType, getComponentsByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { InspectDescComponent } from "../../model/components/inspect/InspectDescComponent";
-import { InspectedComponent } from "../../model/components/inspect/InspectedComponent";
-import { DmgModComponent } from "../../model/components/items/DmgModComponent";
+import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent";
+import { InspectedComponent } from "../../model/components/interaction/InspectedComponent";
+import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
 import { isContainer } from "../../model/queries/containers";
 import { getInspectedTimes } from "../../model/queries/inspect";
 import { isWeapon } from "../../model/queries/weapons";

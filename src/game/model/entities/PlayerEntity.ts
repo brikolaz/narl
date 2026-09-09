@@ -5,9 +5,9 @@ import { DEFAULT_PLAYER_GLYPH, INITIAL_PLAYER_POSITION } from "../../../utils/co
 import { ColorComponent } from "../components/display/ColorComponent";
 import { GlyphComponent } from "../components/display/GlyphComponent";
 import { NameComponent } from "../components/display/NameComponent";
-import { ExpComponent } from "../components/mobs/ExpComponent";
-import { HpComponent } from "../components/mobs/HpComponent";
-import { PositionComponent } from "../components/PositionComponent";
+import { ExpComponent } from "../components/state/ExpComponent";
+import { HpComponent } from "../components/combat/HpComponent";
+import { PositionComponent } from "../components/spatial/PositionComponent";
 import type { Factory } from "../Factory";
 import { initEq } from "../queries/eq";
 import { ContainerEntityFactory } from "./items/container/ContainerEntity";

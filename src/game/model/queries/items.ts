@@ -2,13 +2,13 @@ import type { Component } from "../../../core/model/Component";
 import { type Entity } from "../../../core/model/Entity";
 import { getComponentsByTypes } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { ChestComponent } from "../components/eq/ChestComponent";
-import { BootsComponent } from "../components/eq/BootsComponent";
-import { HeadComponent } from "../components/eq/HeadComponent";
-import { MainHandComponent } from "../components/eq/MainHandComponent";
-import { OffhandComponent } from "../components/eq/OffhandComponent";
-import { PantsComponent } from "../components/eq/PantsComponent";
-import { RemovableComponent } from "../components/eq/RemovableComponent";
+import { ChestComponent } from "../components/equipment/ChestComponent";
+import { BootsComponent } from "../components/equipment/BootsComponent";
+import { HeadComponent } from "../components/equipment/HeadComponent";
+import { MainHandComponent } from "../components/equipment/MainHandComponent";
+import { OffhandComponent } from "../components/equipment/OffhandComponent";
+import { PantsComponent } from "../components/equipment/PantsComponent";
+import { RemovableComponent } from "../components/equipment/RemovableComponent";
 
 export const getItemSlots = (entity: Entity): Component[] => {
   return getComponentsByTypes(entity, [

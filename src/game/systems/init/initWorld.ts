@@ -1,7 +1,7 @@
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { MAP_SIZE } from "../../../utils/constants";
 import { getDummyArray } from "../../../utils/getDummyArray";
-import { VisitedComponent } from "../../model/components/VisitedComponent";
+import { VisitedComponent } from "../../model/components/state/VisitedComponent";
 import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity";
 import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity";
 import { SwordEntityFactory } from "../../model/entities/items/SwordEntity";

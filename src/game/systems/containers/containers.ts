@@ -8,7 +8,7 @@ import {
   removeEntity,
 } from "../../../core/model/queries/entities/remove";
 import { SizeComponent } from "../../model/components/containers/SizeComponent";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import {
   getBackpack,
   getContainerItemAt,

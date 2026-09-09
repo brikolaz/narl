@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { initState } from "../../state/state";
 import { Direction } from "../turn/types";
 import { getDirection } from "./position";

@@ -1,8 +1,8 @@
 import { EntityRole, type Entity } from "../../../core/model/Entity";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
-import { DmgComponent } from "../../model/components/items/DmgComponent";
-import { DmgModComponent } from "../../model/components/items/DmgModComponent";
+import { DmgComponent } from "../../model/components/combat/DmgComponent";
+import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
 import { isContainer } from "../../model/queries/containers";
 import { getBonusDmgMod } from "../bonusStats/bonusStats";
 import { getRng } from "../rng/rng";

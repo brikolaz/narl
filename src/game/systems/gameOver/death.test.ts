@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { createGame, type Game } from "../../../game";
-import { HpComponent } from "../../model/components/mobs/HpComponent";
+import { HpComponent } from "../../model/components/combat/HpComponent";
 import { getPlayer } from "../../model/queries/player";
 import { InternalActionType } from "../internal/type";
 import { recordDeathTurn } from "./death";

@@ -4,8 +4,8 @@ import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";
 import { getRng } from "../../../../systems/rng/rng";
-import { HostileComponent } from "../../../components/mobs/HostileComponent";
-import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
+import { HostileComponent } from "../../../components/ai/HostileComponent";
+import { PeacefulComponent } from "../../../components/ai/PeacefulComponent";
 import type { Manual } from "../../../Manual";
 
 export const RageBaitEntityManual: Manual = {

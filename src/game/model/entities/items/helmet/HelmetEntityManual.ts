@@ -2,9 +2,9 @@ import type { Entity } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { hasComponentsByType } from "../../../../../core/model/queries/components/has";
 import { removeComponentsByType } from "../../../../../core/model/queries/components/remove";
-import { HeadComponent } from "../../../components/eq/HeadComponent";
-import { PantsComponent } from "../../../components/eq/PantsComponent";
-import { SpikeComponent } from "../../../components/items/SpikeComponent";
+import { HeadComponent } from "../../../components/equipment/HeadComponent";
+import { PantsComponent } from "../../../components/equipment/PantsComponent";
+import { SpikeComponent } from "../../../components/combat/SpikeComponent";
 import type { Manual } from "../../../Manual";
 import { getInspectedTimes } from "../../../queries/inspect";
 

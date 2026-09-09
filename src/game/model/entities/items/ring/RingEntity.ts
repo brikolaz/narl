@@ -8,12 +8,12 @@ import { upsertRoleEntities } from "../../../../../core/model/queries/entities/a
 import { getRng } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { PantsComponent } from "../../../components/eq/PantsComponent";
-import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { RingComponent } from "../../../components/eq/RingComponent";
-import { DmgModComponent } from "../../../components/items/DmgModComponent";
-import { DroppableComponent } from "../../../components/items/DroppableComponent";
-import { PickupableComponent } from "../../../components/items/PickupableComponent";
+import { PantsComponent } from "../../../components/equipment/PantsComponent";
+import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
+import { RingComponent } from "../../../components/equipment/RingComponent";
+import { DmgModComponent } from "../../../components/combat/DmgModComponent";
+import { DroppableComponent } from "../../../components/interaction/DroppableComponent";
+import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
 import type { ItemFactory } from "../../../Factory";
 import { BonusStatsEntityFactory } from "../../BonusStatsEntity";
 

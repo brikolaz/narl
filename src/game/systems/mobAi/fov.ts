@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getComponentByType } from "../../../core/model/queries/components/get";
-import { FovComponent } from "../../model/components/FovComponent";
+import { FovComponent } from "../../model/components/ai/FovComponent";
 import { getPosition } from "../../model/queries/position";
 
 const getFovRange = (entity: Entity) => {

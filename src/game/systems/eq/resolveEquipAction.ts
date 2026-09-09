@@ -2,8 +2,8 @@ import type { Entity } from "../../../core/model/Entity";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { assert } from "../../../utils/assert";
-import { MainHandComponent } from "../../model/components/eq/MainHandComponent";
-import { OffhandComponent } from "../../model/components/eq/OffhandComponent";
+import { MainHandComponent } from "../../model/components/equipment/MainHandComponent";
+import { OffhandComponent } from "../../model/components/equipment/OffhandComponent";
 import { getManual } from "../../model/entities/getManual";
 import {
   getBackpack,

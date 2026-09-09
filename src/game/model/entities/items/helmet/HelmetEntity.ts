@@ -4,13 +4,13 @@ import type { Enum, EnumType } from "../../../../../utils/types/Enum";
 import { getRng } from "../../../../systems/rng/rng";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { HeadComponent } from "../../../components/eq/HeadComponent";
-import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { InspectDescComponent } from "../../../components/inspect/InspectDescComponent";
-import { DefComponent } from "../../../components/items/DefComponent";
-import { DroppableComponent } from "../../../components/items/DroppableComponent";
-import { PickupableComponent } from "../../../components/items/PickupableComponent";
-import { SpikeComponent } from "../../../components/items/SpikeComponent";
+import { HeadComponent } from "../../../components/equipment/HeadComponent";
+import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
+import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent";
+import { DefComponent } from "../../../components/combat/DefComponent";
+import { DroppableComponent } from "../../../components/interaction/DroppableComponent";
+import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
+import { SpikeComponent } from "../../../components/combat/SpikeComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const HelmetEntityVariants = {

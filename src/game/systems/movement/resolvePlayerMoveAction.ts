@@ -1,6 +1,6 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { ENG_GAME_GATE_POSITION } from "../../../utils/constants";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { hasMobs } from "../../model/queries/mobs";
 import { getPlayer } from "../../model/queries/player";
 import { getPosition } from "../../model/queries/position";

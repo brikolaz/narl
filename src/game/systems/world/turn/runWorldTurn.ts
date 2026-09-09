@@ -1,5 +1,5 @@
 import { removeComponentsByType } from "../../../../core/model/queries/components/remove";
-import { UnawareComponent } from "../../../model/components/UnawareComponent";
+import { UnawareComponent } from "../../../model/components/ai/UnawareComponent";
 import {
   drainAction,
   drainDequeuedAction,

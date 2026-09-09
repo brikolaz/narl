@@ -4,13 +4,13 @@ import type { Enum, EnumType } from "../../../../utils/types/Enum";
 import { getRng } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";
-import { MainHandComponent } from "../../components/eq/MainHandComponent";
-import { OffhandComponent } from "../../components/eq/OffhandComponent";
-import { RemovableComponent } from "../../components/eq/RemovableComponent";
-import { DmgComponent } from "../../components/items/DmgComponent";
-import { DroppableComponent } from "../../components/items/DroppableComponent";
-import { PickupableComponent } from "../../components/items/PickupableComponent";
-import { PierceComponent } from "../../components/PierceComponent";
+import { MainHandComponent } from "../../components/equipment/MainHandComponent";
+import { OffhandComponent } from "../../components/equipment/OffhandComponent";
+import { RemovableComponent } from "../../components/equipment/RemovableComponent";
+import { DmgComponent } from "../../components/combat/DmgComponent";
+import { DroppableComponent } from "../../components/interaction/DroppableComponent";
+import { PickupableComponent } from "../../components/interaction/PickupableComponent";
+import { PierceComponent } from "../../components/combat/PierceComponent";
 import type { ItemFactory } from "../../Factory";
 
 const SwordEntityVariants = {

@@ -2,8 +2,8 @@ import type { Entity } from "../../../core/model/Entity";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { detachEntity } from "../../../core/model/queries/entities/remove";
-import { DroppableComponent } from "../../model/components/items/DroppableComponent";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { DroppableComponent } from "../../model/components/interaction/DroppableComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { getTile } from "../../model/queries/tile";
 import { setPosition } from "../position/position";
 

@@ -1,6 +1,6 @@
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
 import { getRandomMob } from "../rng/spawnTable";

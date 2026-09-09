@@ -4,7 +4,7 @@ import type { EntityArgument } from "../../../core/model/queries/entities/normal
 import {
   HpComponent,
   type HpComponentProps,
-} from "../components/mobs/HpComponent";
+} from "../components/combat/HpComponent";
 
 export const getHp = (entity: EntityArgument): Component<HpComponentProps> => {
   const hpComponent = getComponentByType(entity, HpComponent);

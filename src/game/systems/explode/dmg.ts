@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity";
 import { getComponentByType } from "../../../core/model/queries/components/get";
-import { ExplodeComponent } from "../../model/components/ExplodeComponent";
+import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
 import { getRng } from "../rng/rng";
 
 // TODO: somehow combine with ATTACT dmg utils

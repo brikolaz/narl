@@ -1,7 +1,7 @@
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { getEntityById } from "../../../core/model/queries/entities/get";
-import { ExplodeComponent } from "../../model/components/ExplodeComponent";
-import { ExplodeRangeComponent } from "../../model/components/ExplodeRangeComponent";
+import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
+import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
 import { getMobById } from "../../model/queries/mobs";
 import { getPosition } from "../../model/queries/position";
 import { getTile } from "../../model/queries/tile";

@@ -14,16 +14,16 @@ import { getRng } from "../../../../systems/rng/rng";
 import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { MainHandSlotComponent } from "../../../components/eq/slots/MainHandSlotComponent";
-import { ExpComponent } from "../../../components/mobs/ExpComponent";
-import { HostileComponent } from "../../../components/mobs/HostileComponent";
-import { HpComponent } from "../../../components/mobs/HpComponent";
-import { PeacefulComponent } from "../../../components/mobs/PeacefulComponent";
-import { PositionComponent } from "../../../components/PositionComponent";
-import { UnawareComponent } from "../../../components/UnawareComponent";
+import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent";
+import { ExpComponent } from "../../../components/state/ExpComponent";
+import { HostileComponent } from "../../../components/ai/HostileComponent";
+import { HpComponent } from "../../../components/combat/HpComponent";
+import { PeacefulComponent } from "../../../components/ai/PeacefulComponent";
+import { PositionComponent } from "../../../components/spatial/PositionComponent";
+import { UnawareComponent } from "../../../components/ai/UnawareComponent";
 import type { MobFactory } from "../../../Factory";
 import { getEqSlotByType, initEq } from "../../../queries/eq";
-import { DmgComponent } from "../../../components/items/DmgComponent";
+import { DmgComponent } from "../../../components/combat/DmgComponent";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
 import {
   HelmetEntityFactory,

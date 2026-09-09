@@ -3,11 +3,11 @@ import { upsertComponents } from "../../../../core/model/queries/components/add"
 import { getRng } from "../../../systems/rng/rng";
 import { GlyphComponent } from "../../components/display/GlyphComponent";
 import { NameComponent } from "../../components/display/NameComponent";
-import { MainHandComponent } from "../../components/eq/MainHandComponent";
-import { RemovableComponent } from "../../components/eq/RemovableComponent";
-import { DmgComponent } from "../../components/items/DmgComponent";
-import { DroppableComponent } from "../../components/items/DroppableComponent";
-import { PickupableComponent } from "../../components/items/PickupableComponent";
+import { MainHandComponent } from "../../components/equipment/MainHandComponent";
+import { RemovableComponent } from "../../components/equipment/RemovableComponent";
+import { DmgComponent } from "../../components/combat/DmgComponent";
+import { DroppableComponent } from "../../components/interaction/DroppableComponent";
+import { PickupableComponent } from "../../components/interaction/PickupableComponent";
 import type { ItemFactory } from "../../Factory";
 
 const DickEntity = getEntityCreator("DICK");

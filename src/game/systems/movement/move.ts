@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/model/Entity";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { removeById } from "../../../utils/removeById";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { getPosition } from "../../model/queries/position";
 import { getTile } from "../../model/queries/tile";
 

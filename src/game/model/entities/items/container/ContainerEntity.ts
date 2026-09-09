@@ -8,10 +8,10 @@ import { NestDepthComponent } from "../../../components/containers/NestDepthComp
 import { SizeComponent } from "../../../components/containers/SizeComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
-import { MainHandComponent } from "../../../components/eq/MainHandComponent";
-import { RemovableComponent } from "../../../components/eq/RemovableComponent";
-import { DroppableComponent } from "../../../components/items/DroppableComponent";
-import { PickupableComponent } from "../../../components/items/PickupableComponent";
+import { MainHandComponent } from "../../../components/equipment/MainHandComponent";
+import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
+import { DroppableComponent } from "../../../components/interaction/DroppableComponent";
+import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
 import type { ItemFactory } from "../../../Factory";
 
 export const ContainerEntity = getEntityCreator("CONTAINER");

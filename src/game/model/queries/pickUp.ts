@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/model/Entity";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import type { Tile } from "../../state/state";
-import { PickupableComponent } from "../components/items/PickupableComponent";
+import { PickupableComponent } from "../components/interaction/PickupableComponent";
 
 export const pickUpItem = (tile: Tile): Entity | undefined => {
   return tile.items.at(-1);

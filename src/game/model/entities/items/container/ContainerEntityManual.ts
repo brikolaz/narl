@@ -1,8 +1,8 @@
 import type { Entity } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
 import { getRng } from "../../../../systems/rng/rng";
-import { DmgComponent } from "../../../components/items/DmgComponent";
-import { DmgModComponent } from "../../../components/items/DmgModComponent";
+import { DmgComponent } from "../../../components/combat/DmgComponent";
+import { DmgModComponent } from "../../../components/combat/DmgModComponent";
 import type { Manual } from "../../../Manual";
 
 export const ContainerEntityManual: Manual = {

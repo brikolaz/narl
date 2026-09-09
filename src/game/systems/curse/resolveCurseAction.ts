@@ -3,7 +3,7 @@ import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { COLORS } from "../../../utils/colors";
 import { ColorComponent } from "../../model/components/display/ColorComponent";
-import { CursedComponent } from "../../model/components/items/CursedComponent";
+import { CursedComponent } from "../../model/components/state/CursedComponent";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";

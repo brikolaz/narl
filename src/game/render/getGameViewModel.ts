@@ -1,7 +1,7 @@
 import { getComponentByType } from "../../core/model/queries/components/get";
 import { ColorComponent } from "../model/components/display/ColorComponent";
 import { GlyphComponent } from "../model/components/display/GlyphComponent";
-import { PositionComponent } from "../model/components/PositionComponent";
+import { PositionComponent } from "../model/components/spatial/PositionComponent";
 import { getBackpack, getContainerItemAt } from "../model/queries/containers";
 import { getEq } from "../model/queries/eq";
 import { getPlayer } from "../model/queries/player";

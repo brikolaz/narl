@@ -10,12 +10,12 @@ import { patchComponentByType } from "../../../core/model/queries/components/pat
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { createGame, type Game } from "../../../game";
-import { ExplodeComponent } from "../../model/components/ExplodeComponent";
-import { ExplodeRangeComponent } from "../../model/components/ExplodeRangeComponent";
+import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
+import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
 import { NameComponent } from "../../model/components/display/NameComponent";
-import { ExpComponent } from "../../model/components/mobs/ExpComponent";
-import { HpComponent } from "../../model/components/mobs/HpComponent";
-import { PositionComponent } from "../../model/components/PositionComponent";
+import { ExpComponent } from "../../model/components/state/ExpComponent";
+import { HpComponent } from "../../model/components/combat/HpComponent";
+import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { ContainerEntityFactory } from "../../model/entities/items/container/ContainerEntity";
 import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/BoomerEntity";
 import { getPosition } from "../../model/queries/position";
