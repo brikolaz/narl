@@ -1,0 +1,15 @@
+import { getEntityCreator, type Entity } from "{{coreImport}}";
+import { BaseMobFactory } from "{{baseFactoryImport}}";
+import type { MobFactory } from "{{factoryImport}}";
+
+export const {{entityName}}Entity = getEntityCreator("{{entityType}}");
+
+class {{entityName}}Factory extends BaseMobFactory {
+  getDefault(): Entity {
+    const {{entityVariable}} = {{entityName}}Entity();
+
+    return {{entityVariable}};
+  }
+}
+
+export const {{entityName}}EntityFactory: MobFactory = new {{entityName}}Factory();

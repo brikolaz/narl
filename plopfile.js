@@ -82,6 +82,11 @@ const getFactoryImport = (folder) => {
   return `${"../".repeat(1 + depth)}Factory`;
 };
 
+const getBaseMobFactoryImport = (folder) => {
+  const depth = folder ? folder.split("/").length : 0;
+  return `${"../".repeat(1 + depth)}BaseMobFactory`;
+};
+
 const isIdentifier = (node, name) =>
   node?.type === "Identifier" && node.name === name;
 
@@ -494,14 +499,14 @@ export default function plopfile(plop) {
         {
           type: "add",
           path: `${MOBS_PATH}/${toCamelCase(answers.name)}/${name}Entity.ts`,
-          templateFile: "plop-templates/entity/Entity.ts.hbs",
+          templateFile: "plop-templates/entity/MobEntity.ts.hbs",
           data: {
             entityName: name,
             entityVariable: toCamelCase(answers.name),
             entityType: toConstantCase(answers.name),
             coreImport: getCoreImport(folder, "Entity"),
+            baseFactoryImport: getBaseMobFactoryImport(folder),
             factoryImport: getFactoryImport(folder),
-            factoryType: "MobFactory",
           },
         },
         {

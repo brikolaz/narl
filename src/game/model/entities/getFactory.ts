@@ -1,20 +1,12 @@
 import type { EntityType } from "../../../core/model/Entity";
-import type { Factory } from "../Factory";
-import { ITEM_FACTORIES } from "./items/factories";
 import { MOB_FACTORIES } from "./mobs/factories";
 
-const factories : Map<EntityType, Factory>[] = [
-  ITEM_FACTORIES,
-  MOB_FACTORIES,
-]
+export const getMobFactory = (type: EntityType) => {
+  const factory = MOB_FACTORIES.get(type);
 
-export const getFactory = (type: EntityType) => {
-  for (const factory of factories) {
-    const target = factory.get(type);
-    if (target) {
-      return target;
-    }
+  if (!factory) {
+    throw new Error("No entity factory");
+
   }
-
-  throw new Error("No entity factory");
+  return factory
 };

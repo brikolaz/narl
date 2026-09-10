@@ -16,11 +16,14 @@ import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent";
 import { ExpComponent } from "../../../components/state/ExpComponent";
-import { HostileComponent } from "../../../components/ai/HostileComponent";
+import {
+  Hostility,
+  HostilityComponent,
+} from "../../../components/ai/HostilityComponent";
 import { HpComponent } from "../../../components/combat/HpComponent";
-import { PeacefulComponent } from "../../../components/ai/PeacefulComponent";
 import { PositionComponent } from "../../../components/spatial/PositionComponent";
 import { UnawareComponent } from "../../../components/ai/UnawareComponent";
+import { BaseMobFactory } from "../../../BaseMobFactory";
 import type { MobFactory } from "../../../Factory";
 import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
 import { DmgComponent } from "../../../components/combat/DmgComponent";
@@ -64,8 +67,8 @@ const addEq = (entity: Entity) => {
   });
 };
 
-export const RageBaitEntityFactory: MobFactory = {
-  getDefault: () => {
+class RageBaitFactory extends BaseMobFactory {
+  getDefault(): Entity {
     const rageBait = RageBaitEntity();
 
     upsertComponents(
@@ -77,7 +80,11 @@ export const RageBaitEntityFactory: MobFactory = {
       }),
       NameComponent({ name: "Rage Bait" }),
       ColorComponent(),
-      getRng(rageBait).chance(1) ? HostileComponent() : PeacefulComponent(),
+      HostilityComponent({
+        hostility: getRng(rageBait).chance(1)
+          ? Hostility.HOSTILE
+          : Hostility.PEACEFUL,
+      }),
       PositionComponent(),
       UnawareComponent(),
     );
@@ -85,5 +92,7 @@ export const RageBaitEntityFactory: MobFactory = {
     addEq(rageBait);
 
     return rageBait;
-  },
-};
+  }
+}
+
+export const RageBaitEntityFactory: MobFactory = new RageBaitFactory();

@@ -15,11 +15,15 @@ import { MainHandSlotComponent } from "../../../components/equipment/slots/MainH
 import { DmgComponent } from "../../../components/combat/DmgComponent";
 import { FovComponent } from "../../../components/ai/FovComponent";
 import { ExpComponent } from "../../../components/state/ExpComponent";
-import { HostileComponent } from "../../../components/ai/HostileComponent";
+import {
+  Hostility,
+  HostilityComponent,
+} from "../../../components/ai/HostilityComponent";
 import { HpComponent } from "../../../components/combat/HpComponent";
 import { MovableComponent } from "../../../components/spatial/MovableComponent";
 import { PositionComponent } from "../../../components/spatial/PositionComponent";
 import { UnawareComponent } from "../../../components/ai/UnawareComponent";
+import { BaseMobFactory } from "../../../BaseMobFactory";
 import type { MobFactory } from "../../../Factory";
 import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
@@ -54,8 +58,8 @@ const addEq = (entity: Entity) => {
   });
 };
 
-export const ZoomerEntityFactory: MobFactory = {
-  getDefault: () => {
+class ZoomerFactory extends BaseMobFactory {
+  getDefault(): Entity {
     const zoomer = ZoomerEntity();
 
     upsertComponents(
@@ -67,7 +71,7 @@ export const ZoomerEntityFactory: MobFactory = {
       }),
       NameComponent({ name: "Zoomer" }),
       ColorComponent(),
-      HostileComponent(),
+      HostilityComponent({ hostility: Hostility.HOSTILE }),
       MovableComponent(),
       PositionComponent(),
       UnawareComponent(),
@@ -77,5 +81,7 @@ export const ZoomerEntityFactory: MobFactory = {
     addLoot(zoomer);
 
     return zoomer;
-  },
-};
+  }
+}
+
+export const ZoomerEntityFactory: MobFactory = new ZoomerFactory();

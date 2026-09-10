@@ -9,7 +9,10 @@ import { MainHandSlotComponent } from "../../model/components/equipment/slots/Ma
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent";
 import { DefComponent } from "../../model/components/combat/DefComponent";
 import { DmgComponent } from "../../model/components/combat/DmgComponent";
-import { HostileComponent } from "../../model/components/ai/HostileComponent";
+import {
+  Hostility,
+  HostilityComponent,
+} from "../../model/components/ai/HostilityComponent";
 import { HpComponent } from "../../model/components/combat/HpComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { getEqSlotByType, initEq } from "../eq/eq";
@@ -138,7 +141,7 @@ describe("wait and block", () => {
     const weapon = TestItem();
     upsertComponents(
       attacker,
-      HostileComponent(),
+      HostilityComponent({ hostility: Hostility.HOSTILE }),
       NameComponent({ name: "Attacker" }),
       PositionComponent({ position: 1 }),
     );

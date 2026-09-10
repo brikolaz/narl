@@ -3,7 +3,7 @@ import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
 import { ImpassableComponent } from "../../model/components/spatial/ImpassableComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
-import { getRandomMob } from "../rng/spawnTable";
+import { getRandomMob, MobType } from "../rng/spawnTable";
 import { hasMobs } from "../mobs/mobs";
 import { getPlayer } from "../player/player";
 import { getPosition } from "../position/position";
@@ -36,7 +36,9 @@ export const getDefaultTile = (position: number): Tile => ({
 
 const generateTile = (position: number): Tile => {
   const tile = getDefaultTile(position)
-  const mob = getRandomMob(position);
+  const mobType =
+    position < getPosition(getPlayer()) ? MobType.PURSUER : MobType.MOB;
+  const mob = getRandomMob(position, mobType);
   if (mob) {
     tile.mobs.push(mob);
   }

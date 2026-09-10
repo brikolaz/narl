@@ -13,6 +13,10 @@ export const resolveGainExpAction = (
 
   (() => {
     const target = getPlayer();
+    
+    if(exp === 0) {
+      return 
+    }
 
     addExp(target, exp);
     action.info(`Gained ${exp} EXP`);

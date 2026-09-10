@@ -22,7 +22,7 @@ const SwordEntityVariants = {
 type SwordEntityVariants = EnumType<typeof SwordEntityVariants>;
 
 
-export const SwordEntity = getEntityCreator("SWORD");
+const SwordEntity = getEntityCreator("SWORD");
 
 type SwordEntityFactory = ItemFactory & {
   getLongSword: () => Entity;

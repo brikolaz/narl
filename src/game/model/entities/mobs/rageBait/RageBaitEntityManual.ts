@@ -1,11 +1,13 @@
 import type { Entity } from "../../../../../core/model/Entity";
-import { replaceComponentsByType } from "../../../../../core/model/queries/components/patch";
+import { patchComponentByType } from "../../../../../core/model/queries/components/patch";
 import type { Action } from "../../../../systems/actions/action";
 import { isHostile } from "../../../../systems/attack/hostililty";
 import { getEntityName } from "../../../../systems/inspect/getEntityName";
 import { getRng } from "../../../../systems/rng/rng";
-import { HostileComponent } from "../../../components/ai/HostileComponent";
-import { PeacefulComponent } from "../../../components/ai/PeacefulComponent";
+import {
+  Hostility,
+  HostilityComponent,
+} from "../../../components/ai/HostilityComponent";
 import type { Manual } from "../../../Manual";
 
 export const RageBaitEntityManual: Manual = {
@@ -13,7 +15,9 @@ export const RageBaitEntityManual: Manual = {
     if (isHostile(rageBait) || !getRng(rageBait).chance(50)) {
       return;
     }
-    replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
+    patchComponentByType(rageBait, HostilityComponent, (hostility) => {
+      hostility.hostility = Hostility.HOSTILE;
+    });
     const name = getEntityName(rageBait);
     gameAction.info(`${name} is hostile`);
   },
@@ -31,7 +35,9 @@ export const RageBaitEntityManual: Manual = {
     if (!getRng(rageBait).chance(20)) {
       return;
     }
-    replaceComponentsByType(rageBait, PeacefulComponent, HostileComponent());
+    patchComponentByType(rageBait, HostilityComponent, (hostility) => {
+      hostility.hostility = Hostility.HOSTILE;
+    });
     gameAction.info(`${name} is hostile`);
   },
 };
