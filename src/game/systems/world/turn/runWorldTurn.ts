@@ -29,6 +29,9 @@ export const runWorldTurn = (context: DrainContext): DrainedResolution => {
     const worldResult = drainAction(worldAction, context);
 
     consumesTurn ||= worldResult.consumesTurn;
+    if(consumesTurn) {
+      break
+    }
   }
 
   const dequeuedActions = dequeueTimedActions([...context.processedActions]);
