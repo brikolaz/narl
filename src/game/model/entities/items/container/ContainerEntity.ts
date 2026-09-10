@@ -1,11 +1,13 @@
 import { getEntityCreator, type Entity } from "../../../../../core/model/Entity";
 import { upsertComponents } from "../../../../../core/model/queries/components/add";
+import { COLORS } from "../../../../../utils/colors";
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants";
 import type { Enum, EnumType } from "../../../../../utils/types/Enum";
 import { getRng } from "../../../../systems/rng/rng";
 import { ContainerComponent } from "../../../components/containers/ContainerComponent";
 import { NestDepthComponent } from "../../../components/containers/NestDepthComponent";
 import { SizeComponent } from "../../../components/containers/SizeComponent";
+import { ColorComponent } from "../../../components/display/ColorComponent";
 import { GlyphComponent } from "../../../components/display/GlyphComponent";
 import { NameComponent } from "../../../components/display/NameComponent";
 import { MainHandComponent } from "../../../components/equipment/MainHandComponent";
@@ -38,6 +40,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "C" }),
       ContainerComponent(),
       SizeComponent({ size: getRng(container).range(2, 4) }),
+      ColorComponent({ color: COLORS.TIER.COMMON })
     );
     return container;
   },
@@ -52,6 +55,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       ContainerComponent(),
       SizeComponent({ size: getRng(backpack).range(2, 4) }),
       NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
+      ColorComponent({ color: COLORS.TIER.COMMON })
     );
     return backpack;
   },
@@ -65,6 +69,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "*" }),
       ContainerComponent(),
       SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),
+      ColorComponent({ color: COLORS.TIER.COMMON })
     );
     return backpack;
   },

@@ -4,6 +4,7 @@ import { BoomerEntity } from "../../model/entities/mobs/boomer/BoomerEntity";
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
 import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity";
 import { STATE } from "../../state/state";
+import { setPosition } from "../position/position";
 import { getZone, Zone } from "./zones";
 
 type SpawnTable = Map<EntityType, number>;
@@ -40,21 +41,49 @@ const getSpawnTable = (zone: Zone): SpawnTable => {
   return table;
 };
 
-export const getRandomMob = (position: number): Entity | undefined => {
-  const zone = getZone(position);
-  const table = getSpawnTable(zone);
+const getSpawnTableTotal = (table: SpawnTable): number =>
+  table.values().toArray().reduce((sum, chance) => sum + chance, 0);
 
-  let mob: Entity | undefined = undefined;
-  const roll = STATE.rng.mobs.roll();
+const rollMob = (table: SpawnTable, roll: number): Entity | undefined => {
   let current = 0;
 
   for (const [mobClass, chance] of table) {
     current += chance;
     if (roll <= current) {
-      mob = getFactory(mobClass).getDefault();
-      break;
+      return getFactory(mobClass).getDefault();
     }
   }
+};
+
+export const getRandomMob = (position: number): Entity | undefined => {
+  const zone = getZone(position);
+  const table = getSpawnTable(zone);
+  const mob = rollMob(table, STATE.rng.mobs.roll());
+
+  if (mob) {
+    setPosition(mob, position);
+  }
+
+  return mob
+};
+
+export const canSpawnMobAt = (position: number): boolean =>
+  getSpawnTableTotal(getSpawnTable(getZone(position))) > 0;
+
+export const getGuaranteedRandomMob = (
+  position: number,
+): Entity => {
+  const table = getSpawnTable(getZone(position));
+  const total = getSpawnTableTotal(table);
+  if (total === 0) {
+    throw new Error('No mob to spawn');
+  }
+  const mob = rollMob(table, STATE.rng.mobs.range(1, total));
+  if (!mob) {
+    throw new Error('No mob to spawn');
+  }
+
+  setPosition(mob, position);
 
   return mob;
 };

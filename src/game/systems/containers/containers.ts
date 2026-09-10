@@ -175,6 +175,13 @@ export const clearContainerItemAt = (
   removeEntity(item.id);
 };
 
+export const clearContainer = (container: Entity): void => {
+  if (!isContainer(container)) {
+    throw new Error("Entity is not a container");
+  }
+  getContainerItems(container).forEach((item) => removeEntity(item));
+};
+
 export const unpackContainer = (container: Entity) => {
   const items = getContainerItems(container);
   items.forEach((item) => detachEntity(item));

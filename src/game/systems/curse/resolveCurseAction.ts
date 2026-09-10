@@ -1,4 +1,5 @@
 import { upsertComponents } from "../../../core/model/queries/components/add";
+import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { getEntityById } from "../../../core/model/queries/entities/get";
 import { assert } from "../../../utils/assert";
 import { COLORS } from "../../../utils/colors";
@@ -29,9 +30,12 @@ export const resolveCurseAction = (
     manual?.curse?.(action, entity);
     const curseComponents = [
       CursedComponent(),
-      ColorComponent({ color: COLORS.CURSED }),
     ];
+    
     upsertComponents(entity, ...curseComponents);
+    patchComponentByType(entity, ColorComponent, (component) => {
+      component.color = COLORS.CURSED
+    })
     action.info(`${name} got cursed`);
   })();
 

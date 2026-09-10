@@ -9,6 +9,7 @@ import {
 import { dequeueTimedActions } from "../../actions/timedActions/timedActions";
 import type { GameAction } from "../../actions/types";
 import { getVisibleTiles } from "../../player/getVisibleTiles";
+import { replenishPursuers } from "../../pursuer/pursuer";
 import { enqueueMobActions } from "./scheduleMobActions";
 
 const makeMobsAware = () => {
@@ -19,6 +20,8 @@ const makeMobsAware = () => {
 };
 
 export const runWorldTurn = (context: DrainContext): DrainedResolution => {
+  replenishPursuers();
+  
   let consumesTurn = false;
   const queue: GameAction[] = enqueueMobActions();
 

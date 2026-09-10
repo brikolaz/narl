@@ -35,7 +35,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       helmet,
       NameComponent({ name: "Helmet" }),
       GlyphComponent({
-        glyph: "H",
+        glyph: "h",
       }),
       RemovableComponent(),
       HeadComponent(),
@@ -55,7 +55,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       helmet,
       NameComponent({ name: "Horned Helmet" }),
       GlyphComponent({
-        glyph: "H",
+        glyph: "h",
       }),
       RemovableComponent(),
       HeadComponent(),

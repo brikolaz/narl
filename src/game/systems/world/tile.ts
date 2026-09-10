@@ -1,7 +1,5 @@
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { hasComponentsByType } from "../../../core/model/queries/components/has";
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants";
-import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { ImpassableComponent } from "../../model/components/spatial/ImpassableComponent";
 import { FloorEntityFactory } from "../../model/entities/FloorEntity";
 import { STATE, type Tile } from "../../state/state";
@@ -39,9 +37,6 @@ export const getDefaultTile = (position: number): Tile => ({
 const generateTile = (position: number): Tile => {
   const tile = getDefaultTile(position)
   const mob = getRandomMob(position);
-  patchComponentByType(mob, PositionComponent, (component) => {
-    component.position = position;
-  });
   if (mob) {
     tile.mobs.push(mob);
   }

@@ -20,3 +20,4 @@ export const MAX_VISIBLE_LOGS = 10 as const;
 
 export const ENG_GAME_GATE_POSITION = 50 - 1;
 export const BARE_BLOCK = 1;
+export const PURSUERS_BREAKPOINT = 10;
