@@ -9,7 +9,7 @@ export type Manual<T = Entity> = {
   getAttackWeapon?: (entity: T) => Entity;
   curse?: (gameAction: Action, item: T) => void;
   shouldBeCursed?: (item: T) => boolean;
-  poke?: (gameAction: Action, entity: T) => void;
+  afterPoke?: (gameAction: Action, source: T, target: T) => void;
   disable?: (gameAction: Action, entity: T) => void;
   canAdd?: (parent: T, child: T) => boolean;
 };

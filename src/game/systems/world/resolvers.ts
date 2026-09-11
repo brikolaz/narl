@@ -22,6 +22,7 @@ import { resolveWorldDealDamageAction } from "../dealDamage/resolveWorldDealDama
 import { resolveWorldBlockAction } from "../block/resolveWorldBlockAction";
 import { resolveWorldCleanupBlockAction } from "../block/resolveWorldCleanupBlockAction";
 import { resolveWorldInitBlockAction } from "../block/resolveWorldInitBlockAction";
+import { resolveWorldPokeAction } from "../poke/resolveWorldPokeAction";
 import { WorldActionType, type WorldAction } from "./types";
 
 export const worldActionResolvers = {
@@ -48,4 +49,5 @@ export const worldActionResolvers = {
   [WorldActionType.BLOCK]: resolveWorldBlockAction,
   [WorldActionType.CLEANUP_BLOCK]: resolveWorldCleanupBlockAction,
   [WorldActionType.INIT_BLOCK]: resolveWorldInitBlockAction,
+  [WorldActionType.POKE]: resolveWorldPokeAction,
 } satisfies ActionResolverMap<WorldAction>;

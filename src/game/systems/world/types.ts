@@ -26,6 +26,7 @@ export const WorldActionType = {
   BLOCK: "WORLD_BLOCK",
   CLEANUP_BLOCK: "WORLD_CLEANUP_BLOCK",
   INIT_BLOCK: "WORLD_INIT_BLOCK",
+  POKE: "WORLD_POKE",
 } as const satisfies Enum;
 export type WorldActionType = EnumType<typeof WorldActionType>;
 
@@ -159,5 +160,11 @@ export type WorldInitBlockAction = {
   entityId: Id;
 };
 
+export type WorldPokeAction = {
+  type: typeof WorldActionType.POKE;
+  sourceId: Id;
+  direction: Direction;
+};
+
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction | WorldBlockAction | WorldCleanupBlockAction | WorldInitBlockAction;
+  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction | WorldBlockAction | WorldCleanupBlockAction | WorldInitBlockAction | WorldPokeAction;

@@ -1,21 +1,22 @@
-import {
-  PlayerActionType
-} from "../../../systems/player/types";
+import { getPlayer } from "../../../systems/player/player";
 import { Direction } from "../../../systems/turn/types";
+import { WorldActionType } from "../../../systems/world/types";
 import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
 
 const getPokeActionCommands = (): KeyboardToAction => {
   return {
     ArrowLeft: {
       action: {
-        type: PlayerActionType.POKE,
+        type: WorldActionType.POKE,
+        sourceId: getPlayer().id,
         direction: Direction.LEFT,
       },
     },
     ArrowRight: {
       action: {
-        type: PlayerActionType.POKE,
-        direction: Direction.RIGHT
+        type: WorldActionType.POKE,
+        sourceId: getPlayer().id,
+        direction: Direction.RIGHT,
 
       },
     },

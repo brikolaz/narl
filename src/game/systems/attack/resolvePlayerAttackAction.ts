@@ -4,6 +4,7 @@ import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
 import { getNextPosition } from "../movement/position";
 import { PlayerActionType, type PlayerAttackAction } from "../player/types";
+import { WorldActionType } from "../world/types";
 import { canPierce } from "../rangedAttack/pierce";
 import { getAttackWeapon } from "./getAttackWeapon";
 
@@ -23,8 +24,9 @@ export const resolvePlayerAttackAction = (
 
     if (!weapon) {
       return action.addPendingImmediateAction({
-        type: PlayerActionType.POKE,
-        direction
+        type: WorldActionType.POKE,
+        sourceId: source.id,
+        direction,
       });
     }
 

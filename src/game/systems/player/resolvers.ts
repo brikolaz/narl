@@ -9,7 +9,6 @@ import { resolveMoveItemAction } from "../moveItem/resolveMoveItemAction";
 import { resolvePlayerMoveAction } from "../movement/resolvePlayerMoveAction";
 import { resolvePickUpAction } from "../pickUp/resolvePickUpAction";
 import { resolvePickUpUnpack } from "../pickUp/resolvePickUpUnpack";
-import { resolvePokeAction } from "../poke/resolvePokeAction";
 import { resolvePlayerWaitAction } from "../wait/resolvePlayerWaitAction";
 import { resolvePlayerMeleeAttackAction } from "../meleeAttack/resolvePlayerMeleeAttackAction";
 import { resolvePlayerRangedAttackAction } from "../rangedAttack/resolvePlayerRangedAttackAction";
@@ -27,7 +26,6 @@ export const playerActionResolvers = {
   [PlayerActionType.DROP_ITEM]: resolvePlayerDropItemAction,
   [PlayerActionType.INSPECT_INV]: resolveInspectInvAction,
   [PlayerActionType.INSPECT_EQ]: resolveInspectEqAction,
-  [PlayerActionType.POKE]: resolvePokeAction,
   [PlayerActionType.WAIT]: resolvePlayerWaitAction,
   [PlayerActionType.MELEE_ATTACK]: resolvePlayerMeleeAttackAction,
   [PlayerActionType.RANGED_ATTACK]: resolvePlayerRangedAttackAction,

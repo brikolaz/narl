@@ -3,8 +3,8 @@ import { assert } from "../../../utils/assert";
 import { getManual } from "../../model/entities/getManual";
 import { Action } from "../actions/action";
 import type { ActionResolution } from "../actions/types";
+import { getDirection } from "../movement/position";
 import { rollAttackDmg } from "./dmg";
-import { getEntityName } from "../inspect/getEntityName";
 import {
   WorldActionType,
   WorldDealDamageActionReason,
@@ -23,9 +23,6 @@ export const resolveWorldAttackAction = (
     const source = assert(getEntityById(sourceId), "No source");
     const target = assert(getEntityById(targetId), "No target");
 
-    const sourceName = getEntityName(source);
-    const targetName = getEntityName(target);
-
     if (getManual(source)?.onAttack) {
       getManual(source)?.onAttack?.(action, source, target);
       return
@@ -34,7 +31,11 @@ export const resolveWorldAttackAction = (
 
     const weapon = getAttackWeapon(source);
     if (!weapon) {
-      return action.success(`${sourceName} poked ${targetName}`); // TODO: add poke resolver?
+      return action.addPendingImmediateAction({
+        type: WorldActionType.POKE,
+        sourceId: source.id,
+        direction: assert(getDirection(source, target), "No poke direction"),
+      });
     }
     action.addPendingImmediateAction({
       type: WorldActionType.DEAL_DAMAGE,

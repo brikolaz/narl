@@ -14,7 +14,6 @@ export const PlayerActionType = {
   DROP_ITEM: "PLAYER_DROP_ITEM",
   INSPECT_INV: "PLAYER_INSPECT_INV",
   INSPECT_EQ: "PLAYER_INSPECT_EQ",
-  POKE: "PLAYER_POKE",
   WAIT: "PLAYER_WAIT",
   MELEE_ATTACK: "PLAYER_MELEE_ATTACK",
   RANGED_ATTACK: "PLAYER_RANGED_ATTACK",
@@ -56,10 +55,6 @@ export type PlayerAttackAction = {
   type: typeof PlayerActionType.ATTACK;
   direction: Direction;
 };
-export type PlayerPokeAction = {
-  type: typeof PlayerActionType.POKE;
-  direction: Direction;
-};
 export type PlayerInspectInvAction = {
   type: typeof PlayerActionType.INSPECT_INV;
   invSlot: InvSlot;
@@ -97,7 +92,6 @@ export type PlayerAction =
   | PlayerMoveItemAction
   | PlayerInspectInvAction
   | PlayerInspectEqAction
-  | PlayerPokeAction
   | PlayerWaitAction
   | PlayerMeleeAttackAction
   | PlayerRangedAttackAction;

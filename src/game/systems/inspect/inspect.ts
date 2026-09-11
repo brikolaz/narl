@@ -49,25 +49,25 @@ const getEffectiveDmgRange = (entity: Entity, eqSlot?: Entity) => {
 export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
   const stats = [];
 
-if (isContainer(entity)) {
-  const childrenDmgRange = getBaseChildrenDmgRange(entity);
-  const childrenDmgMod = getDmgMod(entity);
+  if (isContainer(entity)) {
+    const childrenDmgRange = getBaseChildrenDmgRange(entity);
+    const childrenDmgMod = getDmgMod(entity);
 
-  if (childrenDmgRange) {
-    const effectiveChildrenDmgRange = getChildrenDmgRange(entity)
+    if (childrenDmgRange) {
+      const effectiveChildrenDmgRange = getChildrenDmgRange(entity)
 
-    const totalDmgRange = getDmgRange(entity)
+      const totalDmgRange = getDmgRange(entity)
 
-    stats.push(
-      `${formatDmgRange(totalDmgRange)} DMG`
-    );
+      stats.push(
+        `${formatDmgRange(totalDmgRange)} DMG`
+      );
 
-    stats.push(
-      `Contents: ${formatDmgRange(effectiveChildrenDmgRange)} DMG ` +
-      `(${formatDmgRange(childrenDmgRange)} x${childrenDmgMod})`
-    );
-  }
-} else {
+      stats.push(
+        `Contents: ${formatDmgRange(effectiveChildrenDmgRange)} DMG ` +
+        `(${formatDmgRange(childrenDmgRange)} x${childrenDmgMod})`
+      );
+    }
+  } else {
     if (isWeapon(entity)) {
       stats.push(`${formatDmgRange(getEffectiveDmgRange(entity, eqSlot))} DMG`);
     }
@@ -103,9 +103,9 @@ if (isContainer(entity)) {
   return lines.join(". ");
 };
 
-export const increaseInspected = (item: Entity) => {
+export const increaseInspected = (entity: Entity) => {
   const inspected =
-    getComponentByType(item, InspectedComponent) ?? InspectedComponent();
+    getComponentByType(entity, InspectedComponent) ?? InspectedComponent();
   inspected.times = inspected.times + 1;
-  upsertComponents(item, inspected);
+  upsertComponents(entity, inspected);
 };

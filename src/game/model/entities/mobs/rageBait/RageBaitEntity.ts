@@ -33,6 +33,8 @@ import {
   HelmetEntityVariants,
 } from "../../items/helmet/HelmetEntity";
 import { SwordEntityFactory } from "../../items/SwordEntity";
+import { InspectedComponent } from "../../../components/interaction/InspectedComponent";
+import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent";
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
 
@@ -87,6 +89,8 @@ class RageBaitFactory extends BaseMobFactory {
       }),
       PositionComponent(),
       UnawareComponent(),
+      InspectedComponent(),
+      InspectDescComponent({text: 'It looks cute.'})
     );
     addLoot(rageBait);
     addEq(rageBait);

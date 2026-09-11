@@ -22,22 +22,13 @@ export const RageBaitEntityManual: Manual = {
     gameAction.info(`${name} is hostile`);
   },
 
-  poke(gameAction: Action, rageBait: Entity) {
-    const name = getEntityName(rageBait);
-
-    if (isHostile(rageBait)) {
-      gameAction.success(`Poked ${name}`);
-      return;
-    }
-
-    gameAction.success(`Poked ${name}. It looks cute`);
-
-    if (!getRng(rageBait).chance(20)) {
+  afterPoke(gameAction: Action, source: Entity, rageBait: Entity) {
+    if (isHostile(rageBait) || !getRng(rageBait).chance(20)) {
       return;
     }
     patchComponentByType(rageBait, HostilityComponent, (hostility) => {
       hostility.hostility = Hostility.HOSTILE;
     });
-    gameAction.info(`${name} is hostile`);
+    gameAction.info(`${getEntityName(source)} enraged ${getEntityName(rageBait)}`);
   },
 };
