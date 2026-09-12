@@ -1,17 +1,18 @@
-import path from "node:path";
-import process from "node:process";
-import { fileURLToPath } from "node:url";
+import path from "node:path"
+import process from "node:process"
+import { fileURLToPath } from "node:url"
 import {
   findSourceMatches,
   generateTest,
   normalizeTarget,
   resolveDestination,
-} from "../test-generator.js";
+} from "../test-generator.js"
+import { formatGeneratedFiles } from "../format.js"
 
 const REPO_ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../..",
-);
+)
 
 export const registerTestGenerator = (plop) => {
   plop.setGenerator("test", {
@@ -23,10 +24,10 @@ export const registerTestGenerator = (plop) => {
         message: "Test path/name:",
         validate: (value) => {
           try {
-            normalizeTarget(value);
-            return true;
+            normalizeTarget(value)
+            return true
           } catch (error) {
-            return error.message;
+            return error.message
           }
         },
       },
@@ -40,12 +41,12 @@ export const registerTestGenerator = (plop) => {
             value: match,
           })),
         when: async (answers) => {
-          const target = normalizeTarget(answers.target);
+          const target = normalizeTarget(answers.target)
           if (target.includes("/")) {
-            return false;
+            return false
           }
-          answers.sourceMatches = await findSourceMatches(REPO_ROOT, target);
-          return answers.sourceMatches.length > 1;
+          answers.sourceMatches = await findSourceMatches(REPO_ROOT, target)
+          return answers.sourceMatches.length > 1
         },
       },
       {
@@ -70,18 +71,19 @@ export const registerTestGenerator = (plop) => {
             findSourceMatches(REPO_ROOT, normalizeTarget(answers.target)),
           chooseMatch: async () => answers.sourceMatch,
           confirmFallback: async () => answers.createInCwd,
-        });
+        })
 
         if (!resolution) {
-          return "No test created";
+          return "No test created"
         }
 
         const destination = await generateTest({
           destination: resolution.destination,
           repoRoot: REPO_ROOT,
-        });
-        return path.relative(REPO_ROOT, destination);
+        })
+        await formatGeneratedFiles([destination])
+        return path.relative(REPO_ROOT, destination)
       },
     ],
-  });
-};
+  })
+}

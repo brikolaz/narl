@@ -1,66 +1,62 @@
 import {
   getBackpack,
   isContainer,
-  isContainerFull
-} from "../containers/containers";
-import { assert } from "../../../utils/assert";
-import { isCursed } from "../curse/curse";
-import { pickUpItem } from "./pickUp";
-import { getPlayer } from "../player/player";
-import { getPosition } from "../position/position";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { unpackContainer } from "../containers/containers";
-import { getEntityName } from "../inspect/getEntityName";
-import { getVisibleTiles } from "../player/getVisibleTiles";
+  isContainerFull,
+  unpackContainer,
+} from "../containers/containers"
+import { assert } from "../../../utils/assert"
+import { isCursed } from "../curse/curse"
+import { pickUpItem, replaceFloorItem } from "./pickUp"
+import { getPlayer } from "../player/player"
+import { getPosition } from "../position/position"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import { getEntityName } from "../inspect/getEntityName"
+import { getVisibleTiles } from "../player/getVisibleTiles"
 import {
   PlayerActionType,
   type PlayerPickUpUnpackAction,
-} from "../player/types";
-import { replaceFloorItem } from "./pickUp";
+} from "../player/types"
 
 export const resolvePickUpUnpack = (
   gameAction: PlayerPickUpUnpackAction,
 ): ActionResolution => {
-  const action: Action = new Action(gameAction);
-  (() => {
-    const player = getPlayer();
-    const playerPosition = getPosition(player);
+  const action: Action = new Action(gameAction)
+  ;(() => {
+    const player = getPlayer()
+    const playerPosition = getPosition(player)
     getVisibleTiles().forEach((tile) => {
       if (playerPosition !== tile.position) {
-        return;
+        return
       }
 
-      const backpack = assert(
-        getBackpack(player),
-        "Player has no backpack.",
-      );
+      const backpack = assert(getBackpack(player), "Player has no backpack.")
 
-      const itemToPickUp = pickUpItem(tile);
+      const itemToPickUp = pickUpItem(tile)
       if (!itemToPickUp) {
-        return action.fail("Nothing to pick up");
+        return action.fail("Nothing to pick up")
       }
       if (isContainerFull(backpack)) {
-        return action.fail("Can't pick up item. Backpack is full");
+        return action.fail("Can't pick up item. Backpack is full")
       }
 
       if (!isContainer(itemToPickUp) || isCursed(itemToPickUp)) {
         return action.addPendingImmediateAction({
           type: PlayerActionType.PICK_UP,
-        });
+        })
       }
-      const unpackedContainer = unpackContainer(itemToPickUp);
-      replaceFloorItem(tile, itemToPickUp.id, ...unpackedContainer);
+      const unpackedContainer = unpackContainer(itemToPickUp)
+      replaceFloorItem(tile, itemToPickUp.id, ...unpackedContainer)
       action.addPendingImmediateAction({
         type: PlayerActionType.PICK_UP,
-      });
+      })
       if (unpackedContainer.length > 1) {
         return action.info(
           `Dropped ${getEntityName(itemToPickUp)} items to the floor`,
-        );
+        )
       }
-    });
-  })();
+    })
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

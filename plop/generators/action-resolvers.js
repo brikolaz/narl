@@ -3,8 +3,9 @@ import {
   toActionFolder,
   toConstantCase,
   toPascalCase,
-} from "../names.js";
-import { wireActionResolver, wireActionTypes } from "../wiring.js";
+} from "../names.js"
+import { formatGeneratedFiles } from "../format.js"
+import { wireActionResolver, wireActionTypes } from "../wiring.js"
 
 const ACTION_RESOLVER_CONFIG = {
   internal: {
@@ -32,11 +33,11 @@ const ACTION_RESOLVER_CONFIG = {
     resolverMapName: "worldActionResolvers",
     actionValuePrefix: "WORLD_",
   },
-};
+}
 
 export const registerActionResolverGenerators = (plop) => {
   for (const [kind, config] of Object.entries(ACTION_RESOLVER_CONFIG)) {
-    const kindName = toPascalCase(kind);
+    const kindName = toPascalCase(kind)
     plop.setGenerator(`action-resolver:${kind}`, {
       description: `Create and wire a ${kind} action resolver`,
       prompts: [
@@ -50,17 +51,18 @@ export const registerActionResolverGenerators = (plop) => {
         },
       ],
       actions: (answers) => {
-        const name = normalizeActionName(answers.name, kindName);
-        const folder = toActionFolder(name);
-        const actionKey = toConstantCase(name);
-        const actionTypeName = `${kindName}${name}Action`;
-        const resolverName = `resolve${kindName}${name}Action`;
-        const resolverFile = `${resolverName}.ts`;
+        const name = normalizeActionName(answers.name, kindName)
+        const folder = toActionFolder(name)
+        const actionKey = toConstantCase(name)
+        const actionTypeName = `${kindName}${name}Action`
+        const resolverName = `resolve${kindName}${name}Action`
+        const resolverFile = `${resolverName}.ts`
+        const resolverPath = `src/game/systems/${folder}/${resolverFile}`
 
         return [
           {
             type: "add",
-            path: `src/game/systems/${folder}/${resolverFile}`,
+            path: resolverPath,
             templateFile: `plop-templates/action-resolver/${kind}.ts.hbs`,
             data: { actionTypeName, resolverName },
           },
@@ -83,8 +85,14 @@ export const registerActionResolverGenerators = (plop) => {
               actionKey,
               resolverUnionName: config.resolverUnionName,
             }),
-        ];
+          () =>
+            formatGeneratedFiles([
+              resolverPath,
+              config.actionTypeFile,
+              config.resolverMapFile,
+            ]),
+        ]
       },
-    });
+    })
   }
-};
+}

@@ -1,35 +1,35 @@
-import { getEntityCreator, type Entity } from "../../../../../core/model/Entity";
-import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import type { Enum, EnumType } from "../../../../../utils/types/Enum";
-import { getRng } from "../../../../systems/rng/rng";
-import { GlyphComponent } from "../../../components/display/GlyphComponent";
-import { NameComponent } from "../../../components/display/NameComponent";
-import { HeadComponent } from "../../../components/equipment/HeadComponent";
-import { RemovableComponent } from "../../../components/equipment/RemovableComponent";
-import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent";
-import { DefComponent } from "../../../components/combat/DefComponent";
-import { DroppableComponent } from "../../../components/interaction/DroppableComponent";
-import { PickupableComponent } from "../../../components/interaction/PickupableComponent";
-import { SpikeComponent } from "../../../components/combat/SpikeComponent";
-import type { ItemFactory } from "../../../Factory";
-import { ColorComponent } from "../../../components/display/ColorComponent";
-import { COLORS } from "../../../../../utils/colors";
+import { getEntityCreator, type Entity } from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
+import type { Enum, EnumType } from "../../../../../utils/types/Enum"
+import { getRng } from "../../../../systems/rng/rng"
+import { GlyphComponent } from "../../../components/display/GlyphComponent"
+import { NameComponent } from "../../../components/display/NameComponent"
+import { HeadComponent } from "../../../components/equipment/HeadComponent"
+import { RemovableComponent } from "../../../components/equipment/RemovableComponent"
+import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent"
+import { DefComponent } from "../../../components/combat/DefComponent"
+import { DroppableComponent } from "../../../components/interaction/DroppableComponent"
+import { PickupableComponent } from "../../../components/interaction/PickupableComponent"
+import { SpikeComponent } from "../../../components/combat/SpikeComponent"
+import type { ItemFactory } from "../../../Factory"
+import { ColorComponent } from "../../../components/display/ColorComponent"
+import { COLORS } from "../../../../../utils/colors"
 
 export const HelmetEntityVariants = {
   DEFAULT: "Helmet",
   HORNED_HELMET: "Horned Helmet",
-} as const satisfies Enum;
-type HelmetEntityVariants = EnumType<typeof HelmetEntityVariants>;
+} as const satisfies Enum
+type HelmetEntityVariants = EnumType<typeof HelmetEntityVariants>
 
 type HelmetFactory = ItemFactory & {
-  getHornedHelmet: () => Entity;
-};
+  getHornedHelmet: () => Entity
+}
 
-export const HelmetEntity = getEntityCreator("HELMET");
+export const HelmetEntity = getEntityCreator("HELMET")
 
 export const HelmetEntityFactory: HelmetFactory = {
   getDefault: () => {
-    const helmet = HelmetEntity();
+    const helmet = HelmetEntity()
 
     upsertComponents(
       helmet,
@@ -43,13 +43,13 @@ export const HelmetEntityFactory: HelmetFactory = {
       PickupableComponent(),
       DroppableComponent(),
       ColorComponent({ color: COLORS.TIER.COMMON }),
-    );
+    )
 
-    return helmet;
+    return helmet
   },
 
   getHornedHelmet: () => {
-    const helmet = HelmetEntity();
+    const helmet = HelmetEntity()
 
     upsertComponents(
       helmet,
@@ -67,17 +67,17 @@ export const HelmetEntityFactory: HelmetFactory = {
       SpikeComponent(),
       SpikeComponent(),
       ColorComponent({ color: COLORS.TIER.COMMON }),
-    );
+    )
 
-    return helmet;
+    return helmet
   },
 
   getVariant: (variant: HelmetEntityVariants) => {
     switch (variant) {
+      case HelmetEntityVariants.DEFAULT:
+        return HelmetEntityFactory.getDefault()
       case HelmetEntityVariants.HORNED_HELMET:
-        return HelmetEntityFactory.getHornedHelmet();
-      default:
-        return HelmetEntityFactory.getDefault();
+        return HelmetEntityFactory.getHornedHelmet()
     }
   },
-};
+}

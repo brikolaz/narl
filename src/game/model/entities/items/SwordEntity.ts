@@ -1,42 +1,41 @@
-import { getEntityCreator, type Entity } from "../../../../core/model/Entity";
-import { upsertComponents } from "../../../../core/model/queries/components/add";
-import type { Enum, EnumType } from "../../../../utils/types/Enum";
-import { getRng } from "../../../systems/rng/rng";
-import { GlyphComponent } from "../../components/display/GlyphComponent";
-import { NameComponent } from "../../components/display/NameComponent";
-import { MainHandComponent } from "../../components/equipment/MainHandComponent";
-import { OffhandComponent } from "../../components/equipment/OffhandComponent";
-import { RemovableComponent } from "../../components/equipment/RemovableComponent";
-import { DmgComponent } from "../../components/combat/DmgComponent";
-import { DroppableComponent } from "../../components/interaction/DroppableComponent";
-import { PickupableComponent } from "../../components/interaction/PickupableComponent";
-import { PierceComponent } from "../../components/combat/PierceComponent";
-import type { ItemFactory } from "../../Factory";
-import { ColorComponent } from "../../components/display/ColorComponent";
-import { COLORS } from "../../../../utils/colors";
+import { getEntityCreator, type Entity } from "../../../../core/model/Entity"
+import { upsertComponents } from "../../../../core/model/queries/components/add"
+import type { Enum, EnumType } from "../../../../utils/types/Enum"
+import { getRng } from "../../../systems/rng/rng"
+import { GlyphComponent } from "../../components/display/GlyphComponent"
+import { NameComponent } from "../../components/display/NameComponent"
+import { MainHandComponent } from "../../components/equipment/MainHandComponent"
+import { OffhandComponent } from "../../components/equipment/OffhandComponent"
+import { RemovableComponent } from "../../components/equipment/RemovableComponent"
+import { DmgComponent } from "../../components/combat/DmgComponent"
+import { DroppableComponent } from "../../components/interaction/DroppableComponent"
+import { PickupableComponent } from "../../components/interaction/PickupableComponent"
+import { PierceComponent } from "../../components/combat/PierceComponent"
+import type { ItemFactory } from "../../Factory"
+import { ColorComponent } from "../../components/display/ColorComponent"
+import { COLORS } from "../../../../utils/colors"
 
 const SwordEntityVariants = {
   DEFAULT: "Sword",
   LONG_SWORD: "Long Sword",
-} as const satisfies Enum;
-type SwordEntityVariants = EnumType<typeof SwordEntityVariants>;
+} as const satisfies Enum
+type SwordEntityVariants = EnumType<typeof SwordEntityVariants>
 
-
-const SwordEntity = getEntityCreator("SWORD");
+const SwordEntity = getEntityCreator("SWORD")
 
 type SwordEntityFactory = ItemFactory & {
-  getLongSword: () => Entity;
+  getLongSword: () => Entity
 }
 
 export const SwordEntityFactory: SwordEntityFactory = {
   getDefault: () => {
-    const sword = SwordEntity();
-    const minDmg = getRng(sword).range(4, 6);
+    const sword = SwordEntity()
+    const minDmg = getRng(sword).range(4, 6)
 
     upsertComponents(
       sword,
       GlyphComponent({
-        glyph: "/" as string,
+        glyph: "/",
       }),
       NameComponent({ name: "Sword" }),
       RemovableComponent(),
@@ -45,18 +44,18 @@ export const SwordEntityFactory: SwordEntityFactory = {
       DmgComponent({ min: minDmg, max: minDmg + 3 }),
       PickupableComponent(),
       DroppableComponent(),
-    );
+    )
 
-    return sword;
+    return sword
   },
   getLongSword: () => {
-    const longSword = SwordEntity();
-    const minDmg = getRng(longSword).range(5, 6);
+    const longSword = SwordEntity()
+    const minDmg = getRng(longSword).range(5, 6)
 
     upsertComponents(
       longSword,
       GlyphComponent({
-        glyph: "/" as string,
+        glyph: "/",
       }),
       NameComponent({ name: "Long Sword" }),
       RemovableComponent(),
@@ -67,16 +66,16 @@ export const SwordEntityFactory: SwordEntityFactory = {
       PickupableComponent(),
       DroppableComponent(),
       ColorComponent({ color: COLORS.TIER.COMMON }),
-    );
+    )
 
-    return longSword;
+    return longSword
   },
   getVariant: (variant: SwordEntityVariants) => {
     switch (variant) {
-      case SwordEntityVariants.LONG_SWORD:
-        return SwordEntityFactory.getLongSword();
-      default:
+      case SwordEntityVariants.DEFAULT:
         return SwordEntityFactory.getDefault()
+      case SwordEntityVariants.LONG_SWORD:
+        return SwordEntityFactory.getLongSword()
     }
-  }
-};
+  },
+}

@@ -1,13 +1,13 @@
-import { typedEntries } from "../../../../utils/typedEntries";
-import { EntityRole, type Entity } from "../../Entity";
-import type { Id } from "../../Id";
-import { upsertRegistryEntities } from "../../registry/entityRegistry";
+import { typedEntries } from "../../../../utils/typedEntries"
+import type { EntityRole, Entity } from "../../Entity"
+import type { Id } from "../../Id"
+import { upsertRegistryEntities } from "../../registry/entityRegistry"
 import {
   resolveEntity,
   normalizeChildrenEntityRecords,
   type ChildrenInput,
-} from "./normalize";
-import { detachEntity } from "./remove";
+} from "./normalize"
+import { detachEntity } from "./remove"
 
 const upsertDataEntities = (
   entity: Entity,
@@ -15,40 +15,40 @@ const upsertDataEntities = (
 ): void => {
   for (const [entityRole, entities] of typedEntries(children)) {
     for (const child of entities) {
-      entity.entityById.set(child.id, child);
+      entity.entityById.set(child.id, child)
       entity.entityByRole.set(
         entityRole,
         (entity.entityByRole.get(entityRole) ?? new Set())?.add(child),
-      );
+      )
     }
   }
-};
+}
 
 const _upsertEntities = (
   entity: Entity | Id | undefined,
   childrenEntities: ChildrenInput,
 ): void => {
-  const target = resolveEntity(entity);
+  const target = resolveEntity(entity)
   if (!target) {
-    return;
+    return
   }
-  const children = normalizeChildrenEntityRecords(childrenEntities);
+  const children = normalizeChildrenEntityRecords(childrenEntities)
   for (const [role, entities] of typedEntries(children)) {
     for (const child of entities) {
-      detachEntity(child);
-      const childByRole = { [role]: [child] };
-      upsertDataEntities(target, childByRole);
-      upsertRegistryEntities(target, childByRole);
+      detachEntity(child)
+      const childByRole = { [role]: [child] }
+      upsertDataEntities(target, childByRole)
+      upsertRegistryEntities(target, childByRole)
     }
   }
-};
+}
 
 export const upsertEntities = (
   entity: Entity | Id | undefined,
   ...childrenEntities: (undefined | Entity)[]
 ): void => {
-  _upsertEntities(entity, childrenEntities);
-};
+  _upsertEntities(entity, childrenEntities)
+}
 
 export const upsertRoleEntities = (
   entity: Entity | Id | undefined,
@@ -56,5 +56,5 @@ export const upsertRoleEntities = (
     Record<EntityRole, (Entity | undefined)[] | Entity>
   >,
 ): void => {
-  _upsertEntities(entity, childrenEntities);
-};
+  _upsertEntities(entity, childrenEntities)
+}

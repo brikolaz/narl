@@ -1,35 +1,32 @@
-import { assert } from "../../../utils/assert";
-import {
-  getBackpack,
-  getContainerItemAt,
-} from "../containers/containers";
-import { getPlayer } from "../player/player";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { curse } from "../curse/curse";
-import { type PlayerInspectInvAction } from "../player/types";
-import { getItemInspectText, increaseInspected } from "./inspect";
+import { assert } from "../../../utils/assert"
+import { getBackpack, getContainerItemAt } from "../containers/containers"
+import { getPlayer } from "../player/player"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import { curse } from "../curse/curse"
+import type { PlayerInspectInvAction } from "../player/types"
+import { getItemInspectText, increaseInspected } from "./inspect"
 
 export const resolveInspectInvAction = (
   gameAction: PlayerInspectInvAction,
 ): ActionResolution => {
-  const { invSlot } = gameAction;
-  const action: Action = new Action(gameAction);
+  const { invSlot } = gameAction
+  const action: Action = new Action(gameAction)
 
-  (() => {
-    const player = getPlayer();
-    const backpack = assert(getBackpack(player), "Player has no backpack");
+  ;(() => {
+    const player = getPlayer()
+    const backpack = assert(getBackpack(player), "Player has no backpack")
 
-    const item = getContainerItemAt(backpack, invSlot);
+    const item = getContainerItemAt(backpack, invSlot)
 
     if (!item) {
-      return action.info(`No item to inspect`);
+      return action.info(`No item to inspect`)
     }
-    increaseInspected(item);
+    increaseInspected(item)
 
-    action.info(getItemInspectText(item));
-    curse(action, item);
-  })();
+    action.info(getItemInspectText(item))
+    curse(action, item)
+  })()
 
-  return action.resolve(false);
-};
+  return action.resolve(false)
+}

@@ -1,52 +1,43 @@
 import {
+  addItemToEntityBackpack,
+  clearContainerItemAt,
   getBackpack,
   getContainerItemAt,
   isContainerFull,
-} from "../containers/containers";
-import { assert } from "../../../utils/assert";
-import { isRemovable } from "./eq";
-import { getPlayer } from "../player/player";
-import { getPosition } from "../position/position";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { getEntityName } from "../inspect/getEntityName";
-import {
-  addItemToEntityBackpack,
-  clearContainerItemAt,
-} from "../containers/containers";
+} from "../containers/containers"
+import { assert } from "../../../utils/assert"
+import { getEqSlotByPosition, isRemovable } from "./eq"
+import { getPlayer } from "../player/player"
+import { getPosition } from "../position/position"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import { getEntityName } from "../inspect/getEntityName"
 import {
   PlayerActionType,
   PlayerDropItemActionReason,
   type PlayerUnequipItemAction,
-} from "../player/types";
-import { getEqSlotByPosition } from "./eq";
+} from "../player/types"
 
 export const resolveUnequipAction = (
   gameAction: PlayerUnequipItemAction,
 ): ActionResolution => {
-  const { eqSlot: eqSlotIndex } = gameAction;
+  const { eqSlot: eqSlotIndex } = gameAction
 
-  const action: Action = new Action(gameAction);
-  (() => {
-    const player = getPlayer();
-    const backpack = assert(
-      getBackpack(player),
-      "Player has no backpack",
-    );
-    const isFull = isContainerFull(backpack);
+  const action: Action = new Action(gameAction)
+  ;(() => {
+    const player = getPlayer()
+    const backpack = assert(getBackpack(player), "Player has no backpack")
+    const isFull = isContainerFull(backpack)
 
-    const slot = assert(
-      getEqSlotByPosition(player, eqSlotIndex),
-      "No EQ slot",
-    );
-    const slotName = getEntityName(slot);
-    const item = getContainerItemAt(slot, 1);
+    const slot = assert(getEqSlotByPosition(player, eqSlotIndex), "No EQ slot")
+    const slotName = getEntityName(slot)
+    const item = getContainerItemAt(slot, 1)
     if (!item) {
-      return action.fail(`No item at ${slotName} slot`);
+      return action.fail(`No item at ${slotName} slot`)
     }
 
     if (!isRemovable(item)) {
-      return action.fail(`Can't be removed`);
+      return action.fail(`Can't be removed`)
     }
 
     if (isFull) {
@@ -56,15 +47,13 @@ export const resolveUnequipAction = (
         eqSlot: eqSlotIndex,
         invSlot: undefined,
         reason: PlayerDropItemActionReason.BACKPACK_FULL,
-      });
+      })
     }
 
-    addItemToEntityBackpack(player, item);
-    clearContainerItemAt(slot, 1);
-    action.success(
-      `Unequipped ${getEntityName(item)}`,
-    );
-  })();
+    addItemToEntityBackpack(player, item)
+    clearContainerItemAt(slot, 1)
+    action.success(`Unequipped ${getEntityName(item)}`)
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

@@ -10,6 +10,9 @@
     "build:itch": "node scripts/build-itch.mjs",
     "build:itch:web": "tsc -b && vite build --mode itch",
     "deploy:itch": "node scripts/deploy-itch.mjs",
+    "lint-staged": "lint-staged",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "generate:component": "plop component",
     "generate:entity": "plop entity",
     "generate:mob": "plop mob",
@@ -24,6 +27,15 @@
     "prepare": "husky",
     "knip": "knip"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md,toml,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "seedrandom": "^3.0.5"
   },
@@ -37,7 +49,10 @@
     "husky": "^9.1.7",
     "jscodeshift": "^17.4.0",
     "knip": "^6.34.0",
+    "lint-staged": "^17.5.1",
     "plop": "^4.0.5",
+    "prettier": "^3.9.6",
+    "prettier-plugin-toml": "^2.0.6",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",
     "vite": "^7.3.1",

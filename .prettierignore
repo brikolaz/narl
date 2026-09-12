@@ -1,0 +1,7 @@
+dist
+node_modules
+releases
+tmp
+.vite
+.husky/_
+package-lock.json

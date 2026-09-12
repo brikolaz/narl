@@ -1,34 +1,34 @@
-import { getEntityById } from "../../../core/model/queries/entities/get";
-import { assert } from "../../../utils/assert";
-import { getPosition } from "../position/position";
-import { isTileImpassable } from "../world/tile";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { type WorldMoveAction } from "../world/types";
-import { moveMob } from "./move";
-import { getNextPosition } from "./position";
+import { getEntityById } from "../../../core/model/queries/entities/get"
+import { assert } from "../../../utils/assert"
+import { getPosition } from "../position/position"
+import { isTileImpassable } from "../world/tile"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import type { WorldMoveAction } from "../world/types"
+import { moveMob } from "./move"
+import { getNextPosition } from "./position"
 
 export const resolveWorldMoveAction = (
   gameAction: WorldMoveAction,
 ): ActionResolution => {
-  const { entityId, direction } = gameAction;
-  const action = new Action(gameAction);
+  const { entityId, direction } = gameAction
+  const action = new Action(gameAction)
 
-  (() => {
-    const entity = assert(getEntityById(entityId), "No entity to move");
+  ;(() => {
+    const entity = assert(getEntityById(entityId), "No entity to move")
     const nextPosition = getNextPosition({
       currentPosition: getPosition(entity),
       direction,
-    });
+    })
     if (nextPosition === null) {
-      return;
+      return
     }
 
     if (isTileImpassable(nextPosition)) {
-      return;
+      return
     }
-    moveMob(entity, nextPosition);
-  })();
+    moveMob(entity, nextPosition)
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

@@ -1,20 +1,20 @@
-import { type Entity } from "../../Entity";
-import { resolveEntity, type EntityArgument } from "./normalize";
+import type { Entity } from "../../Entity"
+import { resolveEntity, type EntityArgument } from "./normalize"
 
 const patchDataEntity = (
   entity: Entity,
   patcher: (entity: Entity) => void,
 ): void => {
-  patcher(entity);
-};
+  patcher(entity)
+}
 
 export const patchEntity = (
   entity: EntityArgument,
   patcher: (entity: Entity) => void,
 ): void => {
-  const target = resolveEntity(entity);
+  const target = resolveEntity(entity)
   if (!target) {
-    return;
+    return
   }
-  patchDataEntity(target, patcher);
-};
+  patchDataEntity(target, patcher)
+}
