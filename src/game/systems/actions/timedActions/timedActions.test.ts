@@ -1,12 +1,31 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { initState, STATE } from "../../../state/state";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createGame, type Game } from "../../../../game";
+import { clearItems, clearMobs } from "../../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../../tests/integrity";
+import { STATE } from "../../../state/state";
 import { Action } from "../action";
 import { InternalActionType } from "../../internal/type";
 import { applyTimedAction, dequeueTimedActions } from "./timedActions";
 
 describe("applyTimedAction", () => {
+  let game: Game;
+
   beforeEach(() => {
-    initState();
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   const getImmediateAction = (duration: number, priority?: number) => {

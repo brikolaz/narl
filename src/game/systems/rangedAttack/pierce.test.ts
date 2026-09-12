@@ -1,15 +1,34 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
+import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { PierceComponent } from "../../model/components/combat/PierceComponent";
-import { initState } from "../../state/state";
+import { InternalActionType } from "../internal/type";
 import { canPierce, getPierceRange } from "./pierce";
 
 const TestWeapon = getEntityCreator("TEST_PIERCE_WEAPON");
 
 describe("pierce", () => {
+  let game: Game;
+
   beforeEach(() => {
-    initState();
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("can pierce when PierceComponent is present", () => {

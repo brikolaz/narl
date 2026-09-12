@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   EntityRole,
   getEntityCreator,
@@ -10,6 +10,11 @@ import { patchComponentByType } from "../../../core/model/queries/components/pat
 import { removeComponentsByType } from "../../../core/model/queries/components/remove";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
 import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
 import { NameComponent } from "../../model/components/display/NameComponent";
@@ -20,7 +25,6 @@ import { ContainerEntityFactory } from "../../model/entities/items/container/Con
 import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/BoomerEntity";
 import { getPosition } from "../position/position";
 import type { GameState } from "../../state/state";
-import { dispatchGameAction } from "../actions/gameAction/dispatchGameAction";
 import { InternalActionType } from "../internal/type";
 import { PlayerActionType } from "../player/types";
 import { getDefaultTile } from "../world/tile";
@@ -74,10 +78,20 @@ describe("Explode action cycle", () => {
 
   beforeEach(() => {
     game = createGame();
-    dispatchGameAction({ type: InternalActionType.INIT });
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
   });
 
-  it("runs the complete immediate cycle through dispatchGameAction", () => {
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
+  });
+
+  it("runs the complete immediate cycle through game dispatch", () => {
     const explosive = createExplosiveEntity(game.state);
     const targets = [8, 9, 10, 11, 12].map((position) =>
       createTargetEntity(game.state, position),
@@ -88,7 +102,7 @@ describe("Explode action cycle", () => {
       .mockReturnValueOnce(5)
       .mockReturnValueOnce(6);
 
-    dispatchGameAction({
+    game.dispatch({
       type: WorldActionType.INIT_EXPLODE,
       entityId: explosive.id,
     });
@@ -122,7 +136,7 @@ describe("Explode action cycle", () => {
     const explosive = createExplosiveEntity(game.state);
     removeComponentsByType(explosive, missing.type);
 
-    dispatchGameAction({
+    game.dispatch({
       type: WorldActionType.INIT_EXPLODE,
       entityId: explosive.id,
     });
@@ -141,7 +155,7 @@ describe("Explode action cycle", () => {
     );
     game.state.world[10] = getDefaultTile(10);
 
-    dispatchGameAction({
+    game.dispatch({
       type: WorldActionType.INIT_EXPLODE,
       entityId: explosive.id,
     });
@@ -154,7 +168,7 @@ describe("Explode action cycle", () => {
   it("logs death for an Attack Kill reason", () => {
     const explosive = createExplosiveEntity(game.state);
 
-    dispatchGameAction({
+    game.dispatch({
       type: WorldActionType.KILL,
       entityId: explosive.id,
       position: 10,
@@ -180,7 +194,7 @@ describe("Explode action cycle", () => {
     }
 
     expect(() => {
-      dispatchGameAction({
+      game.dispatch({
         type: WorldActionType.INIT_EXPLODE,
         entityId: left.id,
       });
@@ -215,7 +229,7 @@ describe("Explode action cycle", () => {
     }
 
     expect(() => {
-      dispatchGameAction({ type: PlayerActionType.WAIT });
+      game.dispatch({ type: PlayerActionType.WAIT });
     }).not.toThrow();
 
     expect(game.state.entityRegistryById[left.id]).toBeUndefined();

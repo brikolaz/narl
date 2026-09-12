@@ -1,5 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame, type Game } from "../../../game";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { GAME_STATUS } from "../../state/state";
 import { InternalActionType } from "../internal/type";
 import * as seed from "../rng/seed";
@@ -13,6 +17,10 @@ describe("resolveInternalResetGameAction", () => {
   });
 
   afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
     vi.restoreAllMocks();
   });
 

@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
+import { integrityCheckEnabled } from "../../../../tests/integrity";
 import { EntityRole, getEntityCreator } from "../../Entity";
 import { upsertRoleEntities } from "./add";
 import { getEntitiesByRole, getEntityById, getEntityByRole } from "./get";
@@ -14,7 +15,11 @@ describe("entity getters", () => {
     state = initState();
   });
   afterEach(() => {
-    expectEntityStateConsistent(state);
+    if (integrityCheckEnabled()) {
+      expectEntityStateConsistent(state);
+    }
+
+    vi.restoreAllMocks();
   });
 
   describe("getEntityById", () => {

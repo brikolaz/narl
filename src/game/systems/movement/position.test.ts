@@ -1,8 +1,14 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
+import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
-import { initState } from "../../state/state";
+import { InternalActionType } from "../internal/type";
 import { Direction } from "../turn/types";
 import { getDirection } from "./position";
 
@@ -15,8 +21,21 @@ const createAt = (position: number) => {
 };
 
 describe("getDirection", () => {
+  let game: Game;
+
   beforeEach(() => {
-    initState();
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("returns LEFT when target position is lower", () => {

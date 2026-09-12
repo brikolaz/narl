@@ -16,9 +16,11 @@
     "generate:resolver:internal": "plop action-resolver:internal",
     "generate:resolver:player": "plop action-resolver:player",
     "generate:resolver:world": "plop action-resolver:world",
+    "generate:test": "plop test",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:integrity": "TEST_INTEGRITY=1 vitest",
     "prepare": "husky",
     "knip": "knip"
   },

@@ -1,5 +1,10 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { InternalActionType } from "../internal/type";
 import { flushLogs } from "./log";
 
@@ -13,9 +18,21 @@ const flushPickupLog = () => {
 };
 
 describe("flushLogs", () => {
-  let game: Game
+  let game: Game;
+
   beforeEach(() => {
-    game = createGame()
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("stacks identical messages from consecutive turns", () => {
@@ -25,7 +42,11 @@ describe("flushLogs", () => {
     game.state.turn = 60;
     flushPickupLog();
 
-    expect(game.state.log).toMatchObject([
+    expect(
+      game.state.log.filter(
+        ({ action: logAction }) => logAction.type === InternalActionType.LOG,
+      ),
+    ).toMatchObject([
       {
         message: "Picked up Sword",
         startTurn: 60,
@@ -42,7 +63,11 @@ describe("flushLogs", () => {
     game.state.turn = 63;
     flushPickupLog();
 
-    expect(game.state.log).toMatchObject([
+    expect(
+      game.state.log.filter(
+        ({ action: logAction }) => logAction.type === InternalActionType.LOG,
+      ),
+    ).toMatchObject([
       {
         message: "Picked up Sword",
         startTurn: 60,

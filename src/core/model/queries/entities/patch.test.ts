@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
+import { integrityCheckEnabled } from "../../../../tests/integrity";
 import { getEntityCreator } from "../../Entity";
 import { patchEntity } from "./patch";
 import { expectEntityRoot, expectEntityStateConsistent } from "./tests";
@@ -13,7 +14,11 @@ describe("patchEntity", () => {
     state = initState();
   });
   afterEach(() => {
-    expectEntityStateConsistent(state);
+    if (integrityCheckEnabled()) {
+      expectEntityStateConsistent(state);
+    }
+
+    vi.restoreAllMocks();
   });
 
   describe("with entity object", () => {

@@ -1,10 +1,14 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { Random } from "./random";
 
 const createRandom = (): Random =>
   new Random({ seed: "test-seed", namespace: "test" });
 
 describe("Random.pick", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("picks an item from the array", () => {
     const random = createRandom();
     vi.spyOn(random, "random").mockReturnValue(0.5);

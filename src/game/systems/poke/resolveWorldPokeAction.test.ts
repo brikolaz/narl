@@ -6,6 +6,11 @@ import {
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import {
   Hostility,
   HostilityComponent,
@@ -15,7 +20,6 @@ import { InspectDescComponent } from "../../model/components/interaction/Inspect
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/RageBaitEntity";
-import { dispatchGameAction } from "../actions/gameAction/dispatchGameAction";
 import { resolveWorldAttackAction } from "../attack/resolveWorldAttackAction";
 import { getInspectedTimes } from "../inspect/inspect";
 import { InternalActionType } from "../internal/type";
@@ -26,12 +30,6 @@ import { WorldActionType } from "../world/types";
 import { resolveWorldPokeAction } from "./resolveWorldPokeAction";
 
 const TestMob = getEntityCreator("TEST_POKE_MOB");
-
-const clearMobs = (game: Game): void => {
-  game.state.world.forEach((tile) => {
-    tile.mobs = [];
-  });
-};
 
 const placeMob = (game: Game, mob: Entity, position: number): Entity => {
   setPosition(mob, position);
@@ -56,11 +54,16 @@ describe("World Poke action", () => {
 
   beforeEach(() => {
     game = createGame();
-    dispatchGameAction({ type: InternalActionType.INIT });
+    game.dispatch({ type: InternalActionType.INIT });
     clearMobs(game);
+    clearItems(game);
   });
 
   afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
     vi.restoreAllMocks();
   });
 
@@ -69,7 +72,7 @@ describe("World Poke action", () => {
     const target = createTestMob(game, "Target", 1);
     const startingTurn = game.state.turn;
 
-    dispatchGameAction({
+    game.dispatch({
       type: WorldActionType.POKE,
       sourceId: player.id,
       direction: Direction.RIGHT,

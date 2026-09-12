@@ -1,13 +1,27 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createGame, type Game } from "../../../game";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { MOBS_RNG_NAMESPACE } from "../../../utils/constants";
-import { initState, STATE } from "../../state/state";
-import { dispatch } from "../actions/gameAction/dispatchGameAction";
+import { STATE } from "../../state/state";
 import { InternalActionType } from "../internal/type";
 import { Random } from "./random";
 
 describe("world RNG", () => {
+  let game: Game;
+
   beforeEach(() => {
-    initState();
+    game = createGame();
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("uses and preserves the seed known before game initialization", () => {
@@ -17,7 +31,7 @@ describe("world RNG", () => {
       namespace: MOBS_RNG_NAMESPACE,
     });
 
-    dispatch({ type: InternalActionType.INIT });
+    game.dispatch({ type: InternalActionType.INIT });
 
     expect(STATE.seed).toBe(initialSeed);
     expect(STATE.rng.mobs.random()).toBe(expected.random());

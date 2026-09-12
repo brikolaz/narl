@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { initState, type GameState } from "../../../../game/state/state";
+import { integrityCheckEnabled } from "../../../../tests/integrity";
 import { getComponentCreator } from "../../Component";
 import { getEntityCreator } from "../../Entity";
 import { upsertComponents } from "./add";
@@ -23,7 +24,11 @@ describe("component removal", () => {
     state = initState();
   });
   afterEach(() => {
-    expectComponentStateConsistent(state);
+    if (integrityCheckEnabled()) {
+      expectComponentStateConsistent(state);
+    }
+
+    vi.restoreAllMocks();
   });
 
   describe("removeComponents", () => {

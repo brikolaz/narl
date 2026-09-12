@@ -1,9 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getEntityCreator } from "../../../core/model/Entity";
 import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentsByType } from "../../../core/model/queries/components/get";
 import { patchComponentByType } from "../../../core/model/queries/components/patch";
 import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { NameComponent } from "../../model/components/display/NameComponent";
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent";
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent";
@@ -17,7 +22,6 @@ import { HpComponent } from "../../model/components/combat/HpComponent";
 import { PositionComponent } from "../../model/components/spatial/PositionComponent";
 import { getEqSlotByType, initEq } from "../eq/eq";
 import { getPlayer } from "../player/player";
-import { dispatchGameAction } from "../actions/gameAction/dispatchGameAction";
 import { setContainerItemAt } from "../containers/containers";
 import { InternalActionType } from "../internal/type";
 import { PlayerActionType } from "../player/types";
@@ -31,19 +35,22 @@ import { resolvePlayerWaitAction } from "./resolvePlayerWaitAction";
 const TestItem = getEntityCreator("TEST_BLOCK_ITEM");
 const TestAttacker = getEntityCreator("TEST_BLOCK_ATTACKER");
 
-const clearMobs = (game: Game): void => {
-  game.state.world.forEach((tile) => {
-    tile.mobs = [];
-  });
-};
-
 describe("wait and block", () => {
   let game: Game;
 
   beforeEach(() => {
     game = createGame();
-    dispatchGameAction({ type: InternalActionType.INIT });
+    game.dispatch({ type: InternalActionType.INIT });
     clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("validates the target before init queues block", () => {
@@ -117,7 +124,7 @@ describe("wait and block", () => {
       WorldActionType.HEAL,
     ]);
 
-    dispatchGameAction({ type: PlayerActionType.WAIT });
+    game.dispatch({ type: PlayerActionType.WAIT });
 
     expect(getComponentsByType(player, HpComponent)[0].hp).toBe(14);
     expect(getComponentsByType(player, DefComponent)).toEqual([]);
@@ -154,7 +161,7 @@ describe("wait and block", () => {
     );
     game.state.world[1].mobs.push(attacker);
 
-    dispatchGameAction({ type: PlayerActionType.WAIT });
+    game.dispatch({ type: PlayerActionType.WAIT });
 
     expect(getComponentsByType(player, HpComponent)[0].hp).toBe(6);
     expect(getComponentsByType(player, DefComponent).map(({ def }) => def)).toEqual([
@@ -168,7 +175,7 @@ describe("wait and block", () => {
     ).toBe(false);
 
     clearMobs(game);
-    dispatchGameAction({
+    game.dispatch({
       type: PlayerActionType.MOVE,
       direction: Direction.RIGHT,
     });

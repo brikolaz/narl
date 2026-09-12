@@ -1,14 +1,30 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame, type Game } from "../../../../game";
+import { clearItems, clearMobs } from "../../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../../tests/integrity";
 import { InternalActionType } from "../../internal/type";
 import { Action } from "../action";
 import { drainResolution, type DrainContext } from "./dispatchGameAction";
 
 describe("drainResolution", () => {
-  let game: Game
+  let game: Game;
+
   beforeEach(() => {
-    game = createGame()
-    game.dispatch({ type: InternalActionType.INIT })
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("drains pending actions from highest to lowest priority", () => {
@@ -47,7 +63,6 @@ describe("drainResolution", () => {
   });
 
   it("keeps priorities local to the current branch", () => {
-
     const action = new Action({
       type: InternalActionType.LOG,
       message: "parent",
@@ -71,7 +86,7 @@ describe("drainResolution", () => {
 
     expect(context.pendingLogs.map(({ message }) => message)).toEqual([
       "sibling1",
-      "sibling2"
+      "sibling2",
     ]);
   });
 });

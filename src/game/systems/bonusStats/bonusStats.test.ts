@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   EntityRole,
   getEntityCreator,
@@ -8,6 +8,12 @@ import { upsertComponents } from "../../../core/model/queries/components/add";
 import { getComponentByType } from "../../../core/model/queries/components/get";
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get";
+import { createGame, type Game } from "../../../game";
+import { clearItems, clearMobs } from "../../../tests/clear";
+import {
+  expectGameStateConsistent,
+  integrityCheckEnabled,
+} from "../../../tests/integrity";
 import { PantsSlotComponent } from "../../model/components/equipment/slots/PantsSlotComponent";
 import { ChestSlotComponent } from "../../model/components/equipment/slots/ChestSlotComponent";
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent";
@@ -16,9 +22,9 @@ import { DmgModComponent } from "../../model/components/combat/DmgModComponent";
 import { BonusStatsEntityFactory } from "../../model/entities/BonusStatsEntity";
 import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity";
 import { getEqSlotByType, initEq } from "../eq/eq";
-import { initState } from "../../state/state";
 import { getAttackDmgRange, rollAttackDmg } from "../attack/dmg";
 import { setContainerItemAt } from "../containers/containers";
+import { InternalActionType } from "../internal/type";
 import { getBonusStats } from "./bonusStats";
 
 const TestEntity = getEntityCreator("TEST_ATTACK_DMG");
@@ -38,8 +44,21 @@ const createArmor = (dmg: number, dmgMod: number): Entity => {
 };
 
 describe("attack damage", () => {
+  let game: Game;
+
   beforeEach(() => {
-    initState();
+    game = createGame();
+    game.dispatch({ type: InternalActionType.INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (integrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
   });
 
   it("adds armor damage before multiplying all armor damage modifiers", () => {
