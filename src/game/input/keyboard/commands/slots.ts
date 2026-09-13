@@ -1,37 +1,32 @@
-import type { Highlight } from "../../../render/state/highlight";
-import { getAdjacentSlots, type Slots } from "../../../render/state/slots";
-import type { GameAction } from "../../../systems/actions/types";
-import type { KeyboardToAction } from "../chain";
+import type { Highlight } from "../../../render/state/highlight"
+import { getAdjacentSlots, type Slots } from "../../../render/state/slots"
+import type { GameAction } from "../../../systems/actions/types"
+import type { KeyboardToAction } from "../chain"
 
-export const getAdjacentSlotActions = <T extends number>(
-  action: (slot: T) => GameAction | KeyboardToAction | void,
-  highlight: Highlight<T>,
-  slots: Slots<T>,
+export const getAdjacentSlotActions = <Slot extends number>(
+  action: (slot: Slot) => GameAction | KeyboardToAction | void,
+  highlight: Highlight<Slot>,
+  slots: Slots<Slot>,
   getRepeatedCommands: () => KeyboardToAction = () => ({}),
 ): KeyboardToAction => {
-  const move = (slot: T) => {
-    highlight.highlightSlot(slot);
+  const move = (slot: Slot) => {
+    highlight.highlightSlot(slot)
 
-    return getAdjacentSlotActions(
-      action,
-      highlight,
-      slots,
-      getRepeatedCommands,
-    );
-  };
+    return getAdjacentSlotActions(action, highlight, slots, getRepeatedCommands)
+  }
 
-  const { left, right, up, down } = getAdjacentSlots(highlight, slots);
+  const { left, right, up, down } = getAdjacentSlots(highlight, slots)
 
   return {
     Space: {
       action: () => {
-        const slot = highlight.getHighlightedSlot();
+        const slot = highlight.getHighlightedSlot()
 
         if (slot === undefined) {
-          return;
+          return
         }
 
-        return action(slot);
+        return action(slot)
       },
     },
 
@@ -64,5 +59,5 @@ export const getAdjacentSlotActions = <T extends number>(
     }),
 
     ...getRepeatedCommands(),
-  };
-};
+  }
+}

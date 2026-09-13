@@ -1,5 +1,5 @@
-import { getVisibleTiles } from "../player/getVisibleTiles";
-import { isHostile } from "../attack/hostililty";
+import { getVisibleTiles } from "../player/getVisibleTiles"
+import { isHostile } from "../attack/hostility"
 
 export const isInCombat = (): boolean =>
-  getVisibleTiles().some((tile) => tile.mobs.some(isHostile));
+  getVisibleTiles().some((tile) => tile.mobs.some(isHostile))

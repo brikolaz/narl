@@ -1,10 +1,10 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 type PositionComponentProps = {
-  position: number;
-};
+  position: number
+}
 
 export const PositionComponent = getComponentCreator<PositionComponentProps>(
   "POSITION",
   { position: -1 },
-);
+)

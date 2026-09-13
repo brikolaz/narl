@@ -1,7 +1,7 @@
 import type { Entity } from "../../core/model/Entity"
 import type { ComponentRegistryById } from "../../core/model/registry/componentRegistry"
 import type { EntityRegistryById } from "../../core/model/registry/entityRegistry"
-import type { Enum, EnumType } from "../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../utils/types/Enum"
 import type { TimedAction } from "../systems/actions/timedActions/types"
 import type { ActionLog, LogEntry } from "../systems/log/types"
 import { generateSeed, type Seed } from "../systems/rng/seed"
@@ -21,14 +21,14 @@ export type PlayerState = {
   position: number
 }
 
-export const GAME_STATUS = {
-  INACTIVE: "INACTIVE",
-  ACTIVE: "ACTIVE",
-  PENDING_GAME_OVER: "PENDING_GAME_OVER",
-  GAME_OVER: "GAME_OVER",
-  WIN: "WIN",
-} as const satisfies Enum
-type GameStatus = EnumType<typeof GAME_STATUS>
+export const GameStatusEnum = createEnum(
+  "INACTIVE",
+  "ACTIVE",
+  "PENDING_GAME_OVER",
+  "GAME_OVER",
+  "WIN",
+)
+type GameStatusEnum = EnumType<typeof GameStatusEnum>
 
 export type DeathContext = Partial<{
   epitaph: string
@@ -38,7 +38,7 @@ export type DeathContext = Partial<{
 export type GameState = {
   readonly seed: Seed
   readonly rng: WorldRng
-  status: GameStatus
+  status: GameStatusEnum
   world: WorldState
   turn: number
   log: LogEntry[]
@@ -60,7 +60,7 @@ const createInitialState = (): GameState => {
   const state: GameState = {
     seed,
     rng: createWorldRng(seed),
-    status: GAME_STATUS.INACTIVE,
+    status: GameStatusEnum.INACTIVE,
     world: [],
     turn: 0,
     log: [],

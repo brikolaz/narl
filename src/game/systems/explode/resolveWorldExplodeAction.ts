@@ -1,55 +1,55 @@
-import type { Entity } from "../../../core/model/Entity";
-import { getComponentByType } from "../../../core/model/queries/components/get";
-import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { getEntityById } from "../../../core/model/queries/entities/get";
-import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
-import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
-import { HpComponent } from "../../model/components/combat/HpComponent";
-import { getPosition } from "../position/position";
-import { STATE } from "../../state/state";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { getEntityName } from "../inspect/getEntityName";
+import type { Entity } from "../../../core/model/Entity"
+import { getComponentByType } from "../../../core/model/queries/components/get"
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { getEntityById } from "../../../core/model/queries/entities/get"
+import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent"
+import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent"
+import { HpComponent } from "../../model/components/combat/HpComponent"
+import { getPosition } from "../position/position"
+import { STATE } from "../../state/state"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import { getEntityName } from "../inspect/getEntityName"
 import {
-  WorldActionType,
-  WorldDealDamageActionReason,
+  WorldActionTypeEnum,
+  WorldDealDamageActionReasonEnum,
   type WorldExplodeAction,
-} from "../world/types";
-import { rollExplodeDmg } from "./dmg";
+} from "../world/types"
+import { rollExplodeDmg } from "./dmg"
 
 // TODO: handle items with hp
 const getVulnerableTargets = (source: Entity, position: number): Entity[] => {
-  const tile = STATE.world[position];
+  const tile = STATE.world[position]
   if (!tile) {
-    return [];
+    return []
   }
 
-  const player = STATE.player.player;
+  const player = STATE.player.player
   const entities = [
-    ...tile.mobs.filter(mob => mob.id !== source.id),
+    ...tile.mobs.filter((mob) => mob.id !== source.id),
     ...(player && getPosition(player) === position ? [player] : []),
-  ];
+  ]
 
-  return entities.filter((entity) => hasComponentsByType(entity, HpComponent));
-};
+  return entities.filter((entity) => hasComponentsByType(entity, HpComponent))
+}
 
 export const resolveWorldExplodeAction = (
   gameAction: WorldExplodeAction,
 ): ActionResolution => {
-  const action = new Action(gameAction);
+  const action = new Action(gameAction)
 
-  (() => {
-    const source = getEntityById(gameAction.entityId);
+  ;(() => {
+    const source = getEntityById(gameAction.entityId)
     if (!source) {
-      return;
+      return
     }
-    const explode = getComponentByType(source, ExplodeComponent);
-    const explodeRange = getComponentByType(source, ExplodeRangeComponent);
+    const explode = getComponentByType(source, ExplodeComponent)
+    const explodeRange = getComponentByType(source, ExplodeRangeComponent)
     if (!explode || !explodeRange) {
-      return;
+      return
     }
 
-    const position = getPosition(source);
+    const position = getPosition(source)
     action.success(`${getEntityName(source)} explodes`)
 
     for (
@@ -59,24 +59,24 @@ export const resolveWorldExplodeAction = (
     ) {
       for (const target of getVulnerableTargets(source, targetPosition)) {
         action.addPendingImmediateAction({
-          type: WorldActionType.DEAL_DAMAGE,
+          type: WorldActionTypeEnum.WORLD_DEAL_DAMAGE,
           sourceId: source.id,
           targetId: target.id,
           dmg: rollExplodeDmg(source),
-          reason: WorldDealDamageActionReason.EXPLODE,
-        });
+          reason: WorldDealDamageActionReasonEnum.EXPLODE,
+        })
       }
     }
 
     action.addPendingImmediateAction(
       {
-        type: WorldActionType.CLEANUP_EXPLODE,
+        type: WorldActionTypeEnum.WORLD_CLEANUP_EXPLODE,
         entityId: source.id,
       },
       1,
       1,
-    );
-  })();
+    )
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

@@ -1,24 +1,29 @@
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { InternalActionType, type InternalResetGameAction } from "../internal/type";
-import { GAME_STATUS, initState, STATE } from "../../state/state";
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import {
+  InternalActionTypeEnum,
+  type InternalResetGameAction,
+} from "../internal/types"
+import { GameStatusEnum, initState, STATE } from "../../state/state"
 
 export const resolveInternalResetGameAction = (
   gameAction: InternalResetGameAction,
 ): ActionResolution => {
-  const action = new Action(gameAction);
+  const action = new Action(gameAction)
 
-  (() => {
+  ;(() => {
     if (
-      STATE.status !== GAME_STATUS.GAME_OVER &&
-      STATE.status !== GAME_STATUS.WIN
+      STATE.status !== GameStatusEnum.GAME_OVER &&
+      STATE.status !== GameStatusEnum.WIN
     ) {
-      throw new Error("Can't reset an active game");
+      throw new Error("Can't reset an active game")
     }
 
-    initState();
-    action.addPendingImmediateAction({ type: InternalActionType.INIT });
-  })();
+    initState()
+    action.addPendingImmediateAction({
+      type: InternalActionTypeEnum.INTERNAL_INIT,
+    })
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

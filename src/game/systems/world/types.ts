@@ -1,170 +1,189 @@
-import type { Enum, EnumType } from "../../../utils/types/Enum";
-import type { Id } from "../../../core/model/Id";
-import type { Direction } from "../turn/types";
+import { createEnum, type EnumType } from "../../../utils/types/Enum"
+import type { Id } from "../../../core/model/Id"
+import type { DirectionEnum } from "../turn/types"
 
-export const WorldActionType = {
-  DROP_ITEM: "WORLD_DROP_ITEM",
-  GAIN_EXP: "WORLD_GAIN_EXP",
-  KILL: "WORLD_KILL",
-  REMOVE_ENTITY: "WORLD_REMOVE_ENTITY",
-  ATTACK: "WORLD_ATTACK",
-  CURSE: "WORLD_CURSE",
-  DISABLE: "WORLD_DISABLE",
-  BLEED: "WORLD_BLEED",
-  INIT_BLEED: "WORLD_INIT_BLEED",
-  CLEANUP_BLEED: "WORLD_CLEANUP_BLEED",
-  MOVE: "WORLD_MOVE",
-  MOB_AI: "WORLD_MOB_AI",
-  HEAL: "WORLD_HEAL",
-  GAME_OVER: "WORLD_GAME_OVER",
-  PENDING_GAME_OVER: "WORLD_PENDING_GAME_OVER",
-  WIN: "WORLD_WIN",
-  EXPLODE: "WORLD_EXPLODE",
-  INIT_EXPLODE: "WORLD_INIT_EXPLODE",
-  CLEANUP_EXPLODE: "WORLD_CLEANUP_EXPLODE",
-  DEAL_DAMAGE: "WORLD_DEAL_DAMAGE",
-  BLOCK: "WORLD_BLOCK",
-  CLEANUP_BLOCK: "WORLD_CLEANUP_BLOCK",
-  INIT_BLOCK: "WORLD_INIT_BLOCK",
-  POKE: "WORLD_POKE",
-} as const satisfies Enum;
-export type WorldActionType = EnumType<typeof WorldActionType>;
+export const WorldActionTypeEnum = createEnum(
+  "WORLD_DROP_ITEM",
+  "WORLD_GAIN_EXP",
+  "WORLD_KILL",
+  "WORLD_REMOVE_ENTITY",
+  "WORLD_ATTACK",
+  "WORLD_CURSE",
+  "WORLD_DISABLE",
+  "WORLD_BLEED",
+  "WORLD_INIT_BLEED",
+  "WORLD_CLEANUP_BLEED",
+  "WORLD_MOVE",
+  "WORLD_MOB_AI",
+  "WORLD_HEAL",
+  "WORLD_GAME_OVER",
+  "WORLD_PENDING_GAME_OVER",
+  "WORLD_WIN",
+  "WORLD_EXPLODE",
+  "WORLD_INIT_EXPLODE",
+  "WORLD_CLEANUP_EXPLODE",
+  "WORLD_DEAL_DAMAGE",
+  "WORLD_BLOCK",
+  "WORLD_CLEANUP_BLOCK",
+  "WORLD_INIT_BLOCK",
+  "WORLD_POKE",
+)
+export const WorldKillActionReasonEnum = createEnum("ATTACK", "EXPLODE")
+export type WorldKillActionReasonEnum = EnumType<
+  typeof WorldKillActionReasonEnum
+>
 
-export const WorldKillActionReason = {
-  ATTACK: "ATTACK",
-  EXPLODE: "EXPLODE",
-} as const satisfies Enum;
-export type WorldKillActionReason = EnumType<typeof WorldKillActionReason>;
-
-export const WorldDealDamageActionReason = {
-  ATTACK: "ATTACK",
-  EXPLODE: "EXPLODE",
-} as const satisfies Enum;
-export type WorldDealDamageActionReason = EnumType<
-  typeof WorldDealDamageActionReason
->;
+export const WorldDealDamageActionReasonEnum = createEnum("ATTACK", "EXPLODE")
+type WorldDealDamageActionReasonEnum = EnumType<
+  typeof WorldDealDamageActionReasonEnum
+>
 
 export type WorldDropItemAction = {
-  type: typeof WorldActionType.DROP_ITEM;
-  targetPosition: number;
-  entityId: Id;
-  itemId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_DROP_ITEM
+  targetPosition: number
+  entityId: Id
+  itemId: Id
+}
 export type WorldKillAction = {
-  type: typeof WorldActionType.KILL;
-  entityId: Id;
-  position: number;
-  reason: WorldKillActionReason;
-};
+  type: typeof WorldActionTypeEnum.WORLD_KILL
+  entityId: Id
+  position: number
+  reason: WorldKillActionReasonEnum
+}
 export type WorldGainExpAction = {
-  type: typeof WorldActionType.GAIN_EXP;
-  exp: number;
-};
+  type: typeof WorldActionTypeEnum.WORLD_GAIN_EXP
+  exp: number
+}
 export type WorldRemoveEntityAction = {
-  type: typeof WorldActionType.REMOVE_ENTITY;
-  entityId: Id;
-  position: number;
-};
+  type: typeof WorldActionTypeEnum.WORLD_REMOVE_ENTITY
+  entityId: Id
+  position: number
+}
 export type WorldAttackAction = {
-  type: typeof WorldActionType.ATTACK;
-  sourceId: Id;
-  targetId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_ATTACK
+  sourceId: Id
+  targetId: Id
+}
 
 export type WorldCurseAction = {
-  type: typeof WorldActionType.CURSE;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_CURSE
+  entityId: Id
+}
 
 export type WorldDisableAction = {
-  type: typeof WorldActionType.DISABLE;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_DISABLE
+  entityId: Id
+}
 
 export type WorldBleedAction = {
-  type: typeof WorldActionType.BLEED;
-  bleedId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_BLEED
+  bleedId: Id
+}
 
 export type WorldInitBleedAction = {
-  type: typeof WorldActionType.INIT_BLEED;
-  bleedId: Id;
-  duration: number;
-};
+  type: typeof WorldActionTypeEnum.WORLD_INIT_BLEED
+  bleedId: Id
+  duration: number
+}
 
 export type WorldCleanupBleedAction = {
-  type: typeof WorldActionType.CLEANUP_BLEED;
-  bleedId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_CLEANUP_BLEED
+  bleedId: Id
+}
 
 export type WorldMoveAction = {
-  type: typeof WorldActionType.MOVE;
-  entityId: Id;
-  direction: Direction;
-};
+  type: typeof WorldActionTypeEnum.WORLD_MOVE
+  entityId: Id
+  direction: DirectionEnum
+}
 
 export type WorldMobAiAction = {
-  type: typeof WorldActionType.MOB_AI;
-  mobId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_MOB_AI
+  mobId: Id
+}
 
 export type WorldHealAction = {
-  type: typeof WorldActionType.HEAL;
-  entityId: Id;
-  value: number;
-};
+  type: typeof WorldActionTypeEnum.WORLD_HEAL
+  entityId: Id
+  value: number
+}
 
-export type WorldGameOverAction = { type: typeof WorldActionType.GAME_OVER };
+export type WorldGameOverAction = {
+  type: typeof WorldActionTypeEnum.WORLD_GAME_OVER
+}
 
 export type WorldPendingGameOverAction = {
-  type: typeof WorldActionType.PENDING_GAME_OVER;
-};
+  type: typeof WorldActionTypeEnum.WORLD_PENDING_GAME_OVER
+}
 
-export type WorldWinAction = { type: typeof WorldActionType.WIN };
+export type WorldWinAction = { type: typeof WorldActionTypeEnum.WORLD_WIN }
 
 export type WorldExplodeAction = {
-  type: typeof WorldActionType.EXPLODE;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_EXPLODE
+  entityId: Id
+}
 
 export type WorldInitExplodeAction = {
-  type: typeof WorldActionType.INIT_EXPLODE;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_INIT_EXPLODE
+  entityId: Id
+}
 
 export type WorldCleanupExplodeAction = {
-  type: typeof WorldActionType.CLEANUP_EXPLODE;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_CLEANUP_EXPLODE
+  entityId: Id
+}
 
 export type WorldDealDamageAction = {
-  type: typeof WorldActionType.DEAL_DAMAGE;
-  sourceId: Id;
-  targetId: Id;
-  dmg: number;
-  reason: WorldDealDamageActionReason;
-};
+  type: typeof WorldActionTypeEnum.WORLD_DEAL_DAMAGE
+  sourceId: Id
+  targetId: Id
+  dmg: number
+  reason: WorldDealDamageActionReasonEnum
+}
 
 export type WorldBlockAction = {
-  type: typeof WorldActionType.BLOCK;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_BLOCK
+  entityId: Id
+}
 
 export type WorldCleanupBlockAction = {
-  type: typeof WorldActionType.CLEANUP_BLOCK;
-  defId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_CLEANUP_BLOCK
+  defId: Id
+}
 
 export type WorldInitBlockAction = {
-  type: typeof WorldActionType.INIT_BLOCK;
-  entityId: Id;
-};
+  type: typeof WorldActionTypeEnum.WORLD_INIT_BLOCK
+  entityId: Id
+}
 
 export type WorldPokeAction = {
-  type: typeof WorldActionType.POKE;
-  sourceId: Id;
-  direction: Direction;
-};
+  type: typeof WorldActionTypeEnum.WORLD_POKE
+  sourceId: Id
+  direction: DirectionEnum
+}
 
 export type WorldAction =
-  WorldDropItemAction | WorldGainExpAction | WorldKillAction | WorldRemoveEntityAction | WorldAttackAction | WorldCurseAction | WorldDisableAction | WorldBleedAction | WorldInitBleedAction | WorldCleanupBleedAction | WorldMoveAction | WorldMobAiAction | WorldHealAction | WorldGameOverAction | WorldPendingGameOverAction | WorldWinAction | WorldExplodeAction | WorldInitExplodeAction | WorldCleanupExplodeAction | WorldDealDamageAction | WorldBlockAction | WorldCleanupBlockAction | WorldInitBlockAction | WorldPokeAction;
+  | WorldDropItemAction
+  | WorldGainExpAction
+  | WorldKillAction
+  | WorldRemoveEntityAction
+  | WorldAttackAction
+  | WorldCurseAction
+  | WorldDisableAction
+  | WorldBleedAction
+  | WorldInitBleedAction
+  | WorldCleanupBleedAction
+  | WorldMoveAction
+  | WorldMobAiAction
+  | WorldHealAction
+  | WorldGameOverAction
+  | WorldPendingGameOverAction
+  | WorldWinAction
+  | WorldExplodeAction
+  | WorldInitExplodeAction
+  | WorldCleanupExplodeAction
+  | WorldDealDamageAction
+  | WorldBlockAction
+  | WorldCleanupBlockAction
+  | WorldInitBlockAction
+  | WorldPokeAction

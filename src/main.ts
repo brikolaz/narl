@@ -1,41 +1,41 @@
-import { createGame } from "./game";
-import type { KeyboardToActionChain } from "./game/input/keyboard/chain";
-import { mapKeyboardEventToAction } from "./game/input/keyboard/mapKeyboardEventToAction";
-import "./game/render/index.css";
-import { render } from "./game/render/render";
-import { STATE } from "./game/state/state";
-import { InternalActionType } from "./game/systems/internal/type";
-import "./patches";
+import { createGame } from "./game"
+import type { KeyboardToActionChain } from "./game/input/keyboard/chain"
+import { mapKeyboardEventToAction } from "./game/input/keyboard/mapKeyboardEventToAction"
+import "./game/render/index.css"
+import { render } from "./game/render/render"
+import { STATE } from "./game/state/state"
+import { InternalActionTypeEnum } from "./game/systems/internal/types"
+import "./patches"
 
-const game = createGame();
-game.dispatch({ type: InternalActionType.INIT });
+const game = createGame()
+game.dispatch({ type: InternalActionTypeEnum.INTERNAL_INIT })
 
-render(game.view);
-console.debug(STATE);
+render(game.view)
+console.debug(STATE)
 
-let keyboardChain: KeyboardToActionChain = undefined;
+let keyboardChain: KeyboardToActionChain = undefined
 const handleKeyDown = (event: KeyboardEvent) => {
-  event.preventDefault();
+  event.preventDefault()
 
-  const isGameFinished = game.gameOver || game.pendingGameOver || game.win;
+  const isGameFinished = game.gameOver || game.pendingGameOver || game.win
 
   if (isGameFinished && event.repeat) {
-    return;
+    return
   }
 
   if (isGameFinished) {
-    keyboardChain = undefined;
-    game.dispatch();
-    render(game.view);
-    return;
+    keyboardChain = undefined
+    game.dispatch()
+    render(game.view)
+    return
   }
 
-  const result = mapKeyboardEventToAction(event, keyboardChain);
-  keyboardChain = result.keyboardChain;
+  const result = mapKeyboardEventToAction(event, keyboardChain)
+  keyboardChain = result.keyboardChain
 
-  game.dispatch(result.action);
-  render(game.view);
-  console.debug(STATE);
-};
+  game.dispatch(result.action)
+  render(game.view)
+  console.debug(STATE)
+}
 
-window.addEventListener("keydown", handleKeyDown);
+window.addEventListener("keydown", handleKeyDown)

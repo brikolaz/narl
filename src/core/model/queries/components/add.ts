@@ -1,48 +1,48 @@
-import type { Component } from "../../Component";
-import type { Entity } from "../../Entity";
-import { upsertComponentRegistryRecords } from "../../registry/componentRegistry";
-import { resolveEntity, type EntityArgument } from "../entities/normalize";
-import { removeComponents } from "./remove";
+import type { Component } from "../../Component"
+import type { Entity } from "../../Entity"
+import { upsertComponentRegistryRecords } from "../../registry/componentRegistry"
+import { resolveEntity, type EntityArgument } from "../entities/normalize"
+import { removeComponents } from "./remove"
 
 const upsertDataComponents = (
   entity: Entity,
   ...components: Component[]
 ): void => {
   if (!entity) {
-    return;
+    return
   }
 
   for (const component of components) {
-    entity.componentById.set(component.id, component);
+    entity.componentById.set(component.id, component)
     entity.componentByType.set(
       component.type,
       (entity.componentByType.get(component.type) ?? new Map()).set(
         component.id,
         component,
       ),
-    );
+    )
   }
-};
+}
 
 export const upsertComponents = (
   entity: EntityArgument,
   ...components: Component[]
 ): void => {
   if (entity === undefined) {
-    return;
+    return
   }
-  const source = resolveEntity(entity);
+  const source = resolveEntity(entity)
   if (!source) {
-    return;
+    return
   }
 
-  removeComponents(...components);
-  upsertDataComponents(source, ...components);
+  removeComponents(...components)
+  upsertDataComponents(source, ...components)
 
   upsertComponentRegistryRecords(
     ...components.map((component) => ({
       component,
       parent: source,
     })),
-  );
-};
+  )
+}

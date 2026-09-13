@@ -1,10 +1,10 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 type InspectedComponentProps = {
-  times: number;
-};
+  times: number
+}
 
 export const InspectedComponent = getComponentCreator<InspectedComponentProps>(
   "INSPECTED",
   { times: 0 },
-);
+)

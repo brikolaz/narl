@@ -1,7 +1,4 @@
-import type { Enum, EnumType } from "../../../utils/types/Enum";
+import { createEnum, type EnumType } from "../../../utils/types/Enum"
 
-export const Direction = {
-  LEFT: "LEFT",
-  RIGHT: "RIGHT",
-} as const satisfies Enum;
-export type Direction = EnumType<typeof Direction>;
+export const DirectionEnum = createEnum("LEFT", "RIGHT")
+export type DirectionEnum = EnumType<typeof DirectionEnum>

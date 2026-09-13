@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
-export const ContainerComponent = getComponentCreator("CONTAINER");
+export const ContainerComponent = getComponentCreator("CONTAINER")

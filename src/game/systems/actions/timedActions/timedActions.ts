@@ -1,74 +1,74 @@
-import type { Id } from "../../../../core/model/Id";
-import { STATE } from "../../../state/state";
-import { resolveGameAction } from "../gameAction/resolveGameAction";
-import type { ActionResolution } from "../types";
-import type { TimedAction } from "./types";
+import type { Id } from "../../../../core/model/Id"
+import { STATE } from "../../../state/state"
+import { resolveGameAction } from "../gameAction/resolveGameAction"
+import type { ActionResolution } from "../types"
+import type { TimedAction } from "./types"
 
 export const sortTimedActionsByPriority = (
   timedActions: readonly TimedAction[],
 ): TimedAction[] =>
-  timedActions.toSorted((left, right) => right.priority - left.priority);
+  timedActions.toSorted((left, right) => right.priority - left.priority)
 
 const enqueueTimedAction = (pendingAction: TimedAction): void => {
   if (pendingAction.duration === undefined) {
-    throw new Error("Can't schedule actions with no delay");
+    throw new Error("Can't schedule actions with no delay")
   }
-  STATE.timedActions.push(pendingAction);
-};
+  STATE.timedActions.push(pendingAction)
+}
 
 export const applyTimedAction = (
   pendingAction: TimedAction,
 ): ActionResolution | undefined => {
   if (pendingAction.delay > 0) {
-    enqueueTimedAction(pendingAction);
-    return;
+    enqueueTimedAction(pendingAction)
+    return
   }
 
-  const actionResolution = resolveGameAction(pendingAction.action);
+  const actionResolution = resolveGameAction(pendingAction.action)
 
   if (pendingAction.duration < 1) {
-    return actionResolution;
+    return actionResolution
   }
 
   enqueueTimedAction({
     ...pendingAction,
     duration: pendingAction.duration - 1,
-  });
+  })
 
-  return actionResolution;
-};
+  return actionResolution
+}
 
 export const dequeueTimedActions = (
   processedActions: Id[] = [],
 ): TimedAction[] => {
-  const actionsToApply: TimedAction[] = [];
+  const actionsToApply: TimedAction[] = []
 
   STATE.timedActions = STATE.timedActions
     .map((timedAction) => {
       if (processedActions.includes(timedAction.id)) {
-        return timedAction;
+        return timedAction
       }
 
-      const { delay, duration } = timedAction;
+      const { delay, duration } = timedAction
 
       if (delay > 1) {
         return {
           ...timedAction,
           delay: delay - 1,
-        };
+        }
       }
 
-      actionsToApply.push(timedAction);
+      actionsToApply.push(timedAction)
 
       if (duration > 0) {
         return {
           ...timedAction,
           delay,
           duration: duration - 1,
-        };
+        }
       }
     })
-    .filter((timedAction) => timedAction !== undefined);
+    .filter((timedAction) => timedAction !== undefined)
 
-  return sortTimedActionsByPriority(actionsToApply);
-};
+  return sortTimedActionsByPriority(actionsToApply)
+}

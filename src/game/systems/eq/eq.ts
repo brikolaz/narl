@@ -1,5 +1,5 @@
 import type { Component } from "../../../core/model/Component"
-import { EntityRole, type Entity } from "../../../core/model/Entity"
+import { EntityRoleEnum, type Entity } from "../../../core/model/Entity"
 import { getComponentsByTypes } from "../../../core/model/queries/components/get"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import {
@@ -29,7 +29,7 @@ export type EqSlot = number
 export type EqSlotComponent = ComponentTypeArgument
 
 export const getEq = (entity: Entity): Entity[] => {
-  return [...getEntitiesByRole(entity, EntityRole.EQ)].sort(
+  return [...getEntitiesByRole(entity, EntityRoleEnum.EQ)].sort(
     (a, b) => getPosition(a) - getPosition(b),
   )
 }
@@ -54,7 +54,7 @@ export const getEqSlotByType = (
 
 export const initEq = (entity: Entity) => {
   upsertRoleEntities(entity, {
-    [EntityRole.EQ]: [
+    [EntityRoleEnum.EQ]: [
       HeadSlotEntityFactory.getDefault(),
       MainHandSlotEntityFactory.getDefault(),
       ChestSlotEntityFactory.getDefault(),

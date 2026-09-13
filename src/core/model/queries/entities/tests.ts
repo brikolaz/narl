@@ -1,6 +1,6 @@
 import { expect } from "vitest"
 import type { GameState } from "../../../../game/state/state"
-import type { Entity, EntityRole } from "../../Entity"
+import type { Entity, EntityRoleEnum } from "../../Entity"
 
 const expectEntityRegistryRecordConsistent = (
   state: GameState,
@@ -49,7 +49,7 @@ export const expectEntityAttached = (
   state: GameState,
   parent: Entity,
   child: Entity,
-  role: EntityRole,
+  role: EntityRoleEnum,
 ) => {
   expect(parent.entityById.get(child.id)).toBe(child)
   expect(parent.entityByRole.get(role)?.has(child)).toBe(true)
@@ -61,7 +61,7 @@ export const expectEntityAttached = (
 export const expectEntityNotAttached = (
   parent: Entity,
   child: Entity,
-  role: EntityRole,
+  role: EntityRoleEnum,
 ) => {
   expect(parent.entityById.get(child.id)).not.toBe(child)
   expect(parent.entityByRole.get(role)?.has(child)).not.toBe(true)
@@ -71,7 +71,7 @@ export const expectEntityDetached = (
   state: GameState,
   parent: Entity,
   child: Entity,
-  role: EntityRole,
+  role: EntityRoleEnum,
 ) => {
   expectEntityNotAttached(parent, child, role)
   expect(state.entityRegistryById[child.id]?.entity).toBe(child)
@@ -83,7 +83,7 @@ export const expectEntityRemoved = (
   state: GameState,
   parent: Entity,
   child: Entity,
-  role: EntityRole,
+  role: EntityRoleEnum,
 ) => {
   expectEntityNotAttached(parent, child, role)
   expect(state.entityRegistryById[child.id]).toBeUndefined()

@@ -1,41 +1,42 @@
-import { STATE } from "../../game/state/state";
-import { getEcsNamespace, Namespace } from "./namespaces";
-import type { Unique } from "./Unique";
+import { STATE } from "../../game/state/state"
+import { getEcsNamespace, NamespaceEnum } from "./namespaces"
+import type { Unique } from "./Unique"
 
-export type ComponentType = symbol;
+export type ComponentType = symbol
 
 export type Component<Props extends object | undefined = object> = {
-  type: ComponentType;
-  defaults: Props;
-} & Unique & Props;
+  type: ComponentType
+  defaults: Props
+} & Unique &
+  Props
 
 export type ComponentCreator<Props extends object | undefined = undefined> =
   Props extends object
     ? {
-        (props?: Partial<Props>): Component<Props>;
-        type: ComponentType;
-        defaults: Props;
+        (props?: Partial<Props>): Component<Props>
+        type: ComponentType
+        defaults: Props
       }
     : {
-        (): Component;
-        type: ComponentType;
-        defaults: undefined;
-      };
+        (): Component
+        type: ComponentType
+        defaults: undefined
+      }
 
-export function getComponentCreator(type: string): ComponentCreator;
+export function getComponentCreator(type: string): ComponentCreator
 
 export function getComponentCreator<Props extends object>(
   type: string,
   defaults: Props,
-): ComponentCreator<Props>;
+): ComponentCreator<Props>
 
 export function getComponentCreator<Props extends object>(
   type: string,
   defaults?: Props,
 ) {
   const componentType: ComponentType = Symbol(
-    getEcsNamespace(Namespace.COMPONENT, type),
-  );
+    getEcsNamespace(NamespaceEnum.COMPONENT, type),
+  )
 
   const creator = (props?: Partial<Props>) => {
     const component = {
@@ -44,12 +45,12 @@ export function getComponentCreator<Props extends object>(
       defaults: defaults ?? ({} as Props),
       ...(defaults ?? {}),
       ...(props ?? {}),
-    };
-    return component;
-  };
+    }
+    return component
+  }
 
-  creator.type = componentType;
-  creator.defaults = defaults;
+  creator.type = componentType
+  creator.defaults = defaults
 
-  return creator;
+  return creator
 }

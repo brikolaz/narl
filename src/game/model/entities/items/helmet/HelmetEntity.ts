@@ -1,6 +1,6 @@
 import { getEntityCreator, type Entity } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
-import type { Enum, EnumType } from "../../../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../../../utils/types/Enum"
 import { getRng } from "../../../../systems/rng/rng"
 import { GlyphComponent } from "../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../components/display/NameComponent"
@@ -15,11 +15,8 @@ import type { ItemFactory } from "../../../Factory"
 import { ColorComponent } from "../../../components/display/ColorComponent"
 import { COLORS } from "../../../../../utils/colors"
 
-export const HelmetEntityVariants = {
-  DEFAULT: "Helmet",
-  HORNED_HELMET: "Horned Helmet",
-} as const satisfies Enum
-type HelmetEntityVariants = EnumType<typeof HelmetEntityVariants>
+export const HelmetEntityVariantsEnum = createEnum("DEFAULT", "HORNED_HELMET")
+type HelmetEntityVariantsEnum = EnumType<typeof HelmetEntityVariantsEnum>
 
 type HelmetFactory = ItemFactory & {
   getHornedHelmet: () => Entity
@@ -42,7 +39,7 @@ export const HelmetEntityFactory: HelmetFactory = {
       DefComponent({ def: getRng(helmet).range(2, 3) }),
       PickupableComponent(),
       DroppableComponent(),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
 
     return helmet
@@ -66,17 +63,17 @@ export const HelmetEntityFactory: HelmetFactory = {
       InspectDescComponent({ times: 10, text: "Looks horny" }),
       SpikeComponent(),
       SpikeComponent(),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
 
     return helmet
   },
 
-  getVariant: (variant: HelmetEntityVariants) => {
+  getVariant: (variant: HelmetEntityVariantsEnum) => {
     switch (variant) {
-      case HelmetEntityVariants.DEFAULT:
+      case HelmetEntityVariantsEnum.DEFAULT:
         return HelmetEntityFactory.getDefault()
-      case HelmetEntityVariants.HORNED_HELMET:
+      case HelmetEntityVariantsEnum.HORNED_HELMET:
         return HelmetEntityFactory.getHornedHelmet()
     }
   },

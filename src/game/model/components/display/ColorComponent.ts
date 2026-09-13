@@ -1,13 +1,13 @@
-import { getComponentCreator } from "../../../../core/model/Component";
-import { COLORS } from "../../../../utils/colors";
+import { getComponentCreator } from "../../../../core/model/Component"
+import { COLORS } from "../../../../utils/colors"
 
 export type ColorComponentProps = {
-  color: string;
-};
+  color: string
+}
 
 export const ColorComponent = getComponentCreator<ColorComponentProps>(
   "COLOR",
   {
-    color: COLORS.DEFAULT,
+    color: COLORS.default,
   },
-);
+)

@@ -1,24 +1,24 @@
-import type { GameAction } from "../../actions/types";
-import { getAllMobs } from "../../mobs/mobs";
-import { getPlayer } from "../../player/player";
-import { getPosition } from "../../position/position";
-import { WorldActionType } from "../types";
+import type { GameAction } from "../../actions/types"
+import { getAllMobs } from "../../mobs/mobs"
+import { getPlayer } from "../../player/player"
+import { getPosition } from "../../position/position"
+import { WorldActionTypeEnum } from "../types"
 
 export const enqueueMobActions = () => {
-  const nextQueue: GameAction[] = [];
-  const playerPosition = getPosition(getPlayer());
+  const nextQueue: GameAction[] = []
+  const playerPosition = getPosition(getPlayer())
   const mobs = getAllMobs().toSorted(
     (a, b) =>
       Math.abs(getPosition(a) - playerPosition) -
       Math.abs(getPosition(b) - playerPosition),
-  );
+  )
 
   for (const mob of mobs) {
     nextQueue.push({
-      type: WorldActionType.MOB_AI,
+      type: WorldActionTypeEnum.WORLD_MOB_AI,
       mobId: mob.id,
-    });
+    })
   }
 
-  return nextQueue;
-};
+  return nextQueue
+}

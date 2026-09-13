@@ -1,10 +1,10 @@
-import type { ActionResolverMap, GameAction } from "../types";
-import { internalActionResolvers } from "../../internal/resolvers";
-import { playerActionResolvers } from "../../player/resolvers";
-import { worldActionResolvers } from "../../world/resolvers";
+import type { ActionResolverMap, GameAction } from "../types"
+import { INTERNAL_ACTION_RESOLVERS } from "../../internal/resolvers"
+import { PLAYER_ACTION_RESOLVERS } from "../../player/resolvers"
+import { WORLD_ACTION_RESOLVERS } from "../../world/resolvers"
 
-export const actionResolvers = {
-  ...internalActionResolvers,
-  ...playerActionResolvers,
-  ...worldActionResolvers
-} satisfies ActionResolverMap<GameAction>;
+export const ACTION_RESOLVERS = {
+  ...INTERNAL_ACTION_RESOLVERS,
+  ...PLAYER_ACTION_RESOLVERS,
+  ...WORLD_ACTION_RESOLVERS,
+} satisfies ActionResolverMap<GameAction>

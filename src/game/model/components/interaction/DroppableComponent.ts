@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
-export const DroppableComponent = getComponentCreator('DROPPABLE')
+export const DroppableComponent = getComponentCreator("DROPPABLE")

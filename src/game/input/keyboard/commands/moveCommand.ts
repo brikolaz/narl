@@ -1,15 +1,15 @@
 import {
-  PlayerActionType,
+  PlayerActionTypeEnum,
   type PlayerMoveAction,
 } from "../../../systems/player/types"
-import type { Direction } from "../../../systems/turn/types"
+import type { DirectionEnum } from "../../../systems/turn/types"
 import type { KeyboardToActionCommand } from "../chain"
 
 export const getMoveCommand = (
-  direction: Direction,
+  direction: DirectionEnum,
 ): KeyboardToActionCommand => {
   const action: PlayerMoveAction = {
-    type: PlayerActionType.MOVE,
+    type: PlayerActionTypeEnum.PLAYER_MOVE,
     direction,
   }
 

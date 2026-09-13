@@ -1,9 +1,9 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 export type NameComponentProps = {
-  name: string;
-};
+  name: string
+}
 
 export const NameComponent = getComponentCreator<NameComponentProps>("NAME", {
   name: "???",
-});
+})

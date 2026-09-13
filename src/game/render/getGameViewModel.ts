@@ -1,44 +1,47 @@
-import { getComponentByType } from "../../core/model/queries/components/get";
-import { ColorComponent } from "../model/components/display/ColorComponent";
-import { GlyphComponent } from "../model/components/display/GlyphComponent";
-import { PositionComponent } from "../model/components/spatial/PositionComponent";
-import { getBackpack, getContainerItemAt } from "../systems/containers/containers";
-import { getEq } from "../systems/eq/eq";
-import { getPlayer } from "../systems/player/player";
-import { STATE, type DeathContext } from "../state/state";
-import { ALL_CONTAINER_SLOTS } from "../systems/containers/types";
-import { isGameOver } from "../systems/gameOver/gameOver";
-import { getLogEntryCount } from "../systems/log/log";
-import { getEqStats } from "../systems/stats/eqStats";
-import { getPlayerStats } from "../systems/stats/playerStats";
-import { isWin } from "../systems/win/resolveWorldWinAction";
-import { getRenderedMap } from "./getRenderedMap";
-import type { Highlight } from "./state/highlight";
-import { UI_STATE } from "./state/state";
+import { getComponentByType } from "../../core/model/queries/components/get"
+import { ColorComponent } from "../model/components/display/ColorComponent"
+import { GlyphComponent } from "../model/components/display/GlyphComponent"
+import { PositionComponent } from "../model/components/spatial/PositionComponent"
+import {
+  getBackpack,
+  getContainerItemAt,
+} from "../systems/containers/containers"
+import { getEq } from "../systems/eq/eq"
+import { getPlayer } from "../systems/player/player"
+import { STATE, type DeathContext } from "../state/state"
+import { ALL_CONTAINER_SLOTS } from "../systems/containers/types"
+import { isGameOver } from "../systems/gameOver/gameOver"
+import { getLogEntryCount } from "../systems/log/log"
+import { getEqStats } from "../systems/stats/eqStats"
+import { getPlayerStats } from "../systems/stats/playerStats"
+import { isWin } from "../systems/win/resolveWorldWinAction"
+import { getRenderedMap } from "./getRenderedMap"
+import type { Highlight } from "./state/highlight"
+import { UI_STATE } from "./state/state"
 
 export type ColoredGlyphView = {
-  char: string;
-  color?: string;
-  background?: string;
-};
+  char: string
+  color?: string
+  background?: string
+}
 
-type RenderedMap = Array<ColoredGlyphView & { position: number }>;
-export type PlayerStatsView = Record<string, string | number>;
-export type EquipmentView = ColoredGlyphView[];
-export type BackpackView = ColoredGlyphView[];
-export type LogEntryView = { text: string };
+type RenderedMap = Array<ColoredGlyphView & { position: number }>
+export type PlayerStatsView = Record<string, string | number>
+export type EquipmentView = ColoredGlyphView[]
+export type BackpackView = ColoredGlyphView[]
+export type LogEntryView = { text: string }
 
 export type GameViewModel = {
-  gameOver: typeof isGameOver;
-  win: typeof isWin;
-  turn: number;
-  map: RenderedMap;
-  playerStats: PlayerStatsView;
-  equipment: EquipmentView;
-  backpack: BackpackView;
-  logs: LogEntryView[];
-  death: DeathContext;
-};
+  gameOver: typeof isGameOver
+  win: typeof isWin
+  turn: number
+  map: RenderedMap
+  playerStats: PlayerStatsView
+  equipment: EquipmentView
+  backpack: BackpackView
+  logs: LogEntryView[]
+  death: DeathContext
+}
 
 const getGlyphView = (
   entity: Parameters<typeof getComponentByType>[0],
@@ -48,35 +51,35 @@ const getGlyphView = (
       getComponentByType(entity, GlyphComponent)?.glyph ??
       GlyphComponent.defaults.glyph,
     color: getComponentByType(entity, ColorComponent)?.color,
-  };
-};
+  }
+}
 
-const getHighlightedGlyphView = <T extends number>(
+const getHighlightedGlyphView = <Slot extends number>(
   entity: Parameters<typeof getComponentByType>[0],
   position: number,
-  highlight: Highlight<T>,
+  highlight: Highlight<Slot>,
 ): ColoredGlyphView => {
-  const glyph = getGlyphView(entity);
+  const glyph = getGlyphView(entity)
 
   return {
     ...glyph,
     background:
       position === highlight.getHighlightedSlot() ? "#630057" : undefined,
-  };
-};
+  }
+}
 
 const getPlayerStatsView = (): PlayerStatsView => {
-  const player = getPlayer();
+  const player = getPlayer()
 
   return {
     ...getPlayerStats(player),
     ...getEqStats(player),
-  };
-};
+  }
+}
 
 const getEquipmentView = (): EquipmentView => {
-  const player = getPlayer();
-  const slots = getEq(player);
+  const player = getPlayer()
+  const slots = getEq(player)
 
   return slots.map((slot) =>
     getHighlightedGlyphView(
@@ -84,11 +87,11 @@ const getEquipmentView = (): EquipmentView => {
       getComponentByType(slot, PositionComponent)?.position ?? -1,
       UI_STATE.highlights.eqSlot,
     ),
-  );
-};
+  )
+}
 
 const getBackpackView = (): BackpackView => {
-  const backpack = getBackpack(getPlayer());
+  const backpack = getBackpack(getPlayer())
 
   return [...ALL_CONTAINER_SLOTS].map((slot) =>
     getHighlightedGlyphView(
@@ -96,20 +99,20 @@ const getBackpackView = (): BackpackView => {
       slot,
       UI_STATE.highlights.invSlot,
     ),
-  );
-};
+  )
+}
 
-const getLogsView = (): LogEntryView[] => 
+const getLogsView = (): LogEntryView[] =>
   STATE.log.map((entry) => {
-    const spansTurns = entry.startTurn !== entry.endTurn;
+    const spansTurns = entry.startTurn !== entry.endTurn
     const turnLabel = spansTurns
       ? `[${entry.startTurn},${entry.endTurn}]`
-      : `[${entry.endTurn}]`;
-    const count = getLogEntryCount(entry);
-    const countLabel = count > 1 ? ` (x${count})` : "";
+      : `[${entry.endTurn}]`
+    const count = getLogEntryCount(entry)
+    const countLabel = count > 1 ? ` (x${count})` : ""
 
-    return { text: `${turnLabel} ${entry.message}${countLabel}` };
-  });
+    return { text: `${turnLabel} ${entry.message}${countLabel}` }
+  })
 
 export const getGameViewModel = (): GameViewModel => ({
   gameOver: isGameOver,
@@ -125,4 +128,4 @@ export const getGameViewModel = (): GameViewModel => ({
   backpack: getBackpackView(),
   logs: getLogsView(),
   death: STATE.death,
-});
+})

@@ -1,32 +1,26 @@
-import type { Entity } from "../../../core/model/Entity";
-import { assert } from "../../../utils/assert";
+import type { Entity } from "../../../core/model/Entity"
+import { assert } from "../../../utils/assert"
+import { getBackpack, getContainerItemAt } from "../containers/containers"
+import { getEqSlotByPosition } from "../eq/eq"
+import { getPlayer } from "../player/player"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
+import { getEntityName } from "../inspect/getEntityName"
 import {
-  getBackpack,
-  getContainerItemAt,
-} from "../containers/containers";
-import { getEqSlotByPosition } from "../eq/eq";
-import { getPlayer } from "../player/player";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
-import { getEntityName } from "../inspect/getEntityName";
-import {
-  PlayerDropItemActionReason,
+  PlayerDropItemActionReasonEnum,
   type PlayerDropItemAction,
-} from "../player/types";
-import { dropItem } from "./drop";
+} from "../player/types"
+import { dropItem } from "./drop"
 
 // TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
   gameAction: PlayerDropItemAction,
 ): ActionResolution => {
-  const { eqSlot, invSlot, targetPosition, reason } = gameAction;
-  const action: Action = new Action(gameAction);
-  (() => {
-    const player = getPlayer();
-    const backpack = assert(
-      getBackpack(player),
-      "Player has no backpack",
-    );
+  const { eqSlot, invSlot, targetPosition, reason } = gameAction
+  const action: Action = new Action(gameAction)
+  ;(() => {
+    const player = getPlayer()
+    const backpack = assert(getBackpack(player), "Player has no backpack")
     const source = assert(
       eqSlot
         ? getEqSlotByPosition(player, eqSlot)
@@ -34,31 +28,31 @@ export const resolvePlayerDropItemAction = (
           ? backpack
           : undefined,
       "No source to drop item",
-    );
-    let itemToDrop: Entity | undefined = undefined;
+    )
+    let itemToDrop: Entity | undefined = undefined
 
     if (eqSlot !== undefined) {
       itemToDrop = assert(
         getContainerItemAt(source, 1),
         "No item in EQ slot to drop",
-      );
+      )
     } else if (invSlot !== undefined) {
-      itemToDrop = getContainerItemAt(source, invSlot);
+      itemToDrop = getContainerItemAt(source, invSlot)
       if (!itemToDrop) {
-        return action.fail(`No item to drop at slot ${invSlot}`);
+        return action.fail(`No item to drop at slot ${invSlot}`)
       }
     }
-    itemToDrop = assert(itemToDrop, "No item to drop");
-    dropItem(itemToDrop, targetPosition);
+    itemToDrop = assert(itemToDrop, "No item to drop")
+    dropItem(itemToDrop, targetPosition)
 
-    if (reason === PlayerDropItemActionReason.MANUAL) {
-      return action.success(`Dropped ${getEntityName(itemToDrop)}`);
+    if (reason === PlayerDropItemActionReasonEnum.MANUAL) {
+      return action.success(`Dropped ${getEntityName(itemToDrop)}`)
     }
 
     return action.success(
       `Backpack is full. Dropped ${getEntityName(itemToDrop)} to the ground`,
-    );
-  })();
+    )
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

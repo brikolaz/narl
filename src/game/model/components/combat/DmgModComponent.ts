@@ -1,9 +1,12 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 export type DmgModComponentProps = {
-  dmgMod: number;
-};
+  dmgMod: number
+}
 
-export const DmgModComponent = getComponentCreator<DmgModComponentProps>("DMG_MOD", {
-  dmgMod: 1,
-});
+export const DmgModComponent = getComponentCreator<DmgModComponentProps>(
+  "DMG_MOD",
+  {
+    dmgMod: 1,
+  },
+)

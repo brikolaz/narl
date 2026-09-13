@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../../core/model/Component";
+import { getComponentCreator } from "../../../../../core/model/Component"
 
-export const ChestSlotComponent = getComponentCreator("CHEST_SLOT");
+export const ChestSlotComponent = getComponentCreator("CHEST_SLOT")

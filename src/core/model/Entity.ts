@@ -1,42 +1,42 @@
-import { STATE } from "../../game/state/state";
-import { Random } from "../../game/systems/rng/random";
-import type { RNG } from "../../game/systems/rng/rng";
-import type { Component, ComponentType } from "./Component";
-import type { Id } from "./Id";
-import { getEcsNamespace, Namespace } from "./namespaces";
-import { upsertRegistryEntities } from "./registry/entityRegistry";
-import type { Unique } from "./Unique";
+import { STATE } from "../../game/state/state"
+import { Random } from "../../game/systems/rng/random"
+import type { Rng } from "../../game/systems/rng/rng"
+import type { Component, ComponentType } from "./Component"
+import type { Id } from "./Id"
+import { getEcsNamespace, NamespaceEnum } from "./namespaces"
+import { upsertRegistryEntities } from "./registry/entityRegistry"
+import type { Unique } from "./Unique"
+import { createEnum, type EnumType } from "../../utils/types/Enum"
 
-export const EntityRole = {
-  DEFAULT: "DEFAULT",
-  BACKPACK: "BACKPACK",
-  EQ: "EQ",
-  ITEM: "ITEM",
-  BONUS_STATS: "BONUS_STATS",
-} as const;
+export const EntityRoleEnum = createEnum(
+  "DEFAULT",
+  "BACKPACK",
+  "EQ",
+  "ITEM",
+  "BONUS_STATS",
+)
+export type EntityRoleEnum = EnumType<typeof EntityRoleEnum>
 
-export type EntityRole = (typeof EntityRole)[keyof typeof EntityRole];
-
-export type EntityType = symbol;
+export type EntityType = symbol
 
 export type Entity = {
-  type: EntityType;
-  rng: RNG;
-  componentById: Map<Id, Component>;
-  componentByType: Map<ComponentType, Map<Id, Component>>;
-  entityById: Map<Id, Entity>;
-  entityByRole: Map<EntityRole, Set<Entity>>;
-} & Unique;
+  type: EntityType
+  rng: Rng
+  componentById: Map<Id, Component>
+  componentByType: Map<ComponentType, Map<Id, Component>>
+  entityById: Map<Id, Entity>
+  entityByRole: Map<EntityRoleEnum, Set<Entity>>
+} & Unique
 
-export type EntityCreator = { (): Entity; type: EntityType };
+export type EntityCreator = { (): Entity; type: EntityType }
 
 export const getEntityCreator = (type: string): EntityCreator => {
-  const typeNamespace = getEcsNamespace(Namespace.ENTITY, type);
-  const entityType: ComponentType = Symbol(typeNamespace);
-  
+  const typeNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type)
+  const entityType: ComponentType = Symbol(typeNamespace)
+
   const creator: EntityCreator = () => {
-    const id = STATE.getId();
-    const entityNamespace = getEcsNamespace(Namespace.ENTITY, type, id);
+    const id = STATE.getId()
+    const entityNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type, id)
 
     const entity = {
       id,
@@ -45,12 +45,12 @@ export const getEntityCreator = (type: string): EntityCreator => {
       componentById: new Map<Id, Component>(),
       componentByType: new Map<ComponentType, Map<Id, Component>>(),
       entityById: new Map<Id, Entity>(),
-      entityByRole: new Map<EntityRole, Set<Entity>>(),
-    };
-    upsertRegistryEntities(entity);
-    return entity;
-  };
-  creator.type = entityType;
+      entityByRole: new Map<EntityRoleEnum, Set<Entity>>(),
+    }
+    upsertRegistryEntities(entity)
+    return entity
+  }
+  creator.type = entityType
 
-  return creator;
-};
+  return creator
+}

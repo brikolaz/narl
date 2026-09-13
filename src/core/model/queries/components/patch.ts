@@ -10,9 +10,9 @@ import {
 } from "./normalize"
 import { removeComponentsByType } from "./remove"
 
-export const patchComponent = <P extends object>(
-  component: ComponentArgument<P>,
-  patcher: (component: Component<P>) => void,
+export const patchComponent = <Props extends object>(
+  component: ComponentArgument<Props>,
+  patcher: (component: Component<Props>) => void,
 ): void => {
   const resolvedComponent = resolveComponent(component)
   if (!resolvedComponent) {
@@ -21,10 +21,10 @@ export const patchComponent = <P extends object>(
   patcher(resolvedComponent)
 }
 
-export const patchComponentByType = <P extends object>(
+export const patchComponentByType = <Props extends object>(
   entity: EntityArgument,
-  componentType: ComponentTypeArgument<P>,
-  patcher: (component: Component<P>) => void,
+  componentType: ComponentTypeArgument<Props>,
+  patcher: (component: Component<Props>) => void,
 ): void => {
   const type = resolveComponentType(componentType)
   const component = getComponentByType(entity, type)
@@ -33,12 +33,12 @@ export const patchComponentByType = <P extends object>(
     return
   }
 
-  patcher(component as Component<P>)
+  patcher(component as Component<Props>)
 }
 
-export const replaceComponentsByType = <P extends object | undefined>(
+export const replaceComponentsByType = <Props extends object | undefined>(
   entity: EntityArgument,
-  componentType: ComponentTypeArgument<P>,
+  componentType: ComponentTypeArgument<Props>,
   nextComponent: Component,
 ): void => {
   const component = getComponentByType(entity, componentType)

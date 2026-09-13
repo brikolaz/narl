@@ -1,15 +1,15 @@
-import type { Component } from "../../../core/model/Component";
-import { getComponentByType } from "../../../core/model/queries/components/get";
-import type { EntityArgument } from "../../../core/model/queries/entities/normalize";
+import type { Component } from "../../../core/model/Component"
+import { getComponentByType } from "../../../core/model/queries/components/get"
+import type { EntityArgument } from "../../../core/model/queries/entities/normalize"
 import {
   HpComponent,
   type HpComponentProps,
-} from "../../model/components/combat/HpComponent";
+} from "../../model/components/combat/HpComponent"
 
 export const getHp = (entity: EntityArgument): Component<HpComponentProps> => {
-  const hpComponent = getComponentByType(entity, HpComponent);
+  const hpComponent = getComponentByType(entity, HpComponent)
   if (!hpComponent) {
-    throw new Error("Entity does not have an HpComponent");
+    throw new Error("Entity does not have an HpComponent")
   }
-  return hpComponent;
-};
+  return hpComponent
+}

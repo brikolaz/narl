@@ -1,137 +1,137 @@
-import type { Id } from "../../../../core/model/Id";
-import { STATE } from "../../../state/state";
-import { recordDeathTurn } from "../../gameOver/death";
-import { shouldEndGame } from "../../gameOver/endCondition";
-import {
-  isGameOver,
-  isPendingGameOver
-} from "../../gameOver/gameOver";
-import { InternalActionType } from "../../internal/type";
-import { flushLogs, recordPlayerAction } from "../../log/log";
-import type { PendingLog } from "../../log/types";
-import { isPlayerAction } from "../../player/guards";
-import { increaseTurn } from "../../turn/turn";
-import { isWin } from "../../win/resolveWorldWinAction";
-import { runWorldTurn } from "../../world/turn/runWorldTurn";
-import { WorldActionType } from "../../world/types";
+import type { Id } from "../../../../core/model/Id"
+import { STATE } from "../../../state/state"
+import { recordDeathTurn } from "../../gameOver/death"
+import { shouldEndGame } from "../../gameOver/endCondition"
+import { isGameOver, isPendingGameOver } from "../../gameOver/gameOver"
+import { InternalActionTypeEnum } from "../../internal/types"
+import { flushLogs, recordPlayerAction } from "../../log/log"
+import type { PendingLog } from "../../log/types"
+import { isPlayerAction } from "../../player/guards"
+import { increaseTurn } from "../../turn/turn"
+import { isWin } from "../../win/resolveWorldWinAction"
+import { runWorldTurn } from "../../world/turn/runWorldTurn"
+import { WorldActionTypeEnum } from "../../world/types"
 import {
   applyTimedAction,
   sortTimedActionsByPriority,
-} from "../timedActions/timedActions";
-import type { TimedAction } from "../timedActions/types";
-import type { ActionResolution, GameAction } from "../types";
-import { resolveGameAction } from "./resolveGameAction";
+} from "../timedActions/timedActions"
+import type { TimedAction } from "../timedActions/types"
+import type { ActionResolution, GameAction } from "../types"
+import { resolveGameAction } from "./resolveGameAction"
 
 export type DrainedResolution = {
-  consumesTurn: boolean;
-};
+  consumesTurn: boolean
+}
 
 export type DrainContext = {
-  pendingLogs: PendingLog[];
-  processedActions: Set<Id>;
-};
+  pendingLogs: PendingLog[]
+  processedActions: Set<Id>
+}
 
 export const drainResolution = (
   resolution: ActionResolution,
   context: DrainContext,
 ): DrainedResolution => {
-  let consumesTurn = resolution.consumesTurn;
-  context.pendingLogs.push(...resolution.pendingLogs);
-  let pendingActions = sortTimedActionsByPriority(resolution.pendingActions);
+  let consumesTurn = resolution.consumesTurn
+  context.pendingLogs.push(...resolution.pendingLogs)
+  let pendingActions = sortTimedActionsByPriority(resolution.pendingActions)
 
   while (pendingActions.length > 0) {
-    const [pendingAction, ...remainingActions] = pendingActions;
-    pendingActions = remainingActions;
+    const [pendingAction, ...remainingActions] = pendingActions
+    pendingActions = remainingActions
 
-    context.processedActions.add(pendingAction.id);
+    context.processedActions.add(pendingAction.id)
 
-    const pendingResolution = applyTimedAction(pendingAction);
+    const pendingResolution = applyTimedAction(pendingAction)
 
     if (!pendingResolution) {
-      continue;
+      continue
     }
 
-    context.pendingLogs.push(...pendingResolution.pendingLogs);
-    consumesTurn ||= pendingResolution.consumesTurn;
+    context.pendingLogs.push(...pendingResolution.pendingLogs)
+    consumesTurn ||= pendingResolution.consumesTurn
     pendingActions.unshift(
       ...sortTimedActionsByPriority(pendingResolution.pendingActions),
-    );
+    )
   }
 
   return {
     consumesTurn,
-  };
-};
+  }
+}
 
 export const drainAction = (
   action: GameAction,
   context: DrainContext,
 ): DrainedResolution => {
-  const resolution = resolveGameAction(action);
+  const resolution = resolveGameAction(action)
 
-  return drainResolution(resolution, context);
-};
+  return drainResolution(resolution, context)
+}
 
 export const drainDequeuedAction = (
   timedAction: TimedAction,
   context: DrainContext,
 ): DrainedResolution => {
-  context.processedActions.add(timedAction.id);
+  context.processedActions.add(timedAction.id)
 
-  return drainAction(timedAction.action, context);
-};
+  return drainAction(timedAction.action, context)
+}
 
 const dispatchGameAction = (action: GameAction): void => {
   const context: DrainContext = {
     pendingLogs: [],
     processedActions: new Set(),
-  };
-
-  if (isPlayerAction(action)) {
-    recordPlayerAction(action);
   }
 
-  const actionResult = drainAction(action, context);
-  const consumesTurn = actionResult.consumesTurn;
+  if (isPlayerAction(action)) {
+    recordPlayerAction(action)
+  }
+
+  const actionResult = drainAction(action, context)
+  const consumesTurn = actionResult.consumesTurn
 
   if (consumesTurn) {
-    runWorldTurn(context);
+    runWorldTurn(context)
   }
 
   if (shouldEndGame()) {
-    recordDeathTurn(consumesTurn);
-    drainAction({
-      type: WorldActionType.PENDING_GAME_OVER,
-    }, context);
+    recordDeathTurn(consumesTurn)
+    drainAction(
+      {
+        type: WorldActionTypeEnum.WORLD_PENDING_GAME_OVER,
+      },
+      context,
+    )
   }
 
-  flushLogs(context.pendingLogs, consumesTurn);
+  flushLogs(context.pendingLogs, consumesTurn)
 
   if (consumesTurn) {
-    STATE.turn = increaseTurn(STATE.turn);
+    STATE.turn = increaseTurn(STATE.turn)
   }
-};
+}
 
 export const dispatch = (action?: GameAction): void => {
   if (isGameOver() || isWin()) {
     return dispatchGameAction({
-      type: InternalActionType.RESET_GAME,
-    });
+      type: InternalActionTypeEnum.INTERNAL_RESET_GAME,
+    })
   }
 
   if (isPendingGameOver()) {
     return dispatchGameAction({
-      type: WorldActionType.GAME_OVER,
-    });
+      type: WorldActionTypeEnum.WORLD_GAME_OVER,
+    })
   }
 
-  if (!action) return;
+  if (!action) return
 
-  dispatchGameAction(action);
+  dispatchGameAction(action)
 
   if (shouldEndGame()) {
     dispatchGameAction({
-      type: WorldActionType.PENDING_GAME_OVER,
-    });
+      type: WorldActionTypeEnum.WORLD_PENDING_GAME_OVER,
+    })
   }
-};
+}

@@ -1,7 +1,7 @@
-import type { Entity } from "../../../core/model/Entity";
-import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { UnawareComponent } from "../../model/components/ai/UnawareComponent";
+import type { Entity } from "../../../core/model/Entity"
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { UnawareComponent } from "../../model/components/ai/UnawareComponent"
 
 export const isAware = (entity: Entity) => {
-  return !hasComponentsByType(entity, UnawareComponent);
-};
+  return !hasComponentsByType(entity, UnawareComponent)
+}

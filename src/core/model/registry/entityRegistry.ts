@@ -1,6 +1,6 @@
 import { STATE } from "../../../game/state/state"
 import { typedEntries } from "../../../utils/typedEntries"
-import { EntityRole, type Entity } from "../Entity"
+import { EntityRoleEnum, type Entity } from "../Entity"
 import type { Id } from "../Id"
 
 export type EntityRegistryRecord =
@@ -12,7 +12,7 @@ export type EntityRegistryRecord =
   | {
       entity: Entity
       parent: Entity
-      role: EntityRole
+      role: EntityRoleEnum
     }
 
 export type EntityRegistryById = {
@@ -27,7 +27,7 @@ const upsertEntityRegistryRecords = (...records: EntityRegistryRecord[]) => {
 
 export const upsertRegistryEntities = (
   parentEntity: Entity | undefined,
-  childrenEntities: Partial<Record<EntityRole, Entity[]>> | Entity[] = [],
+  childrenEntities: Partial<Record<EntityRoleEnum, Entity[]>> | Entity[] = [],
 ) => {
   if (!parentEntity) {
     return
@@ -41,7 +41,7 @@ export const upsertRegistryEntities = (
     })
   }
   const entitiesToRegister = Array.isArray(childrenEntities)
-    ? { [EntityRole.DEFAULT]: childrenEntities }
+    ? { [EntityRoleEnum.DEFAULT]: childrenEntities }
     : childrenEntities
   for (const [role, children] of typedEntries(entitiesToRegister)) {
     for (const child of children) {

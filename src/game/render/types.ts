@@ -1,19 +1,19 @@
 export type RenderedTileProps = {
-  char: string;
-  background: string;
-  color: string;
-  position: number;
-};
+  char: string
+  background: string
+  color: string
+  position: number
+}
 
 export class RenderedTile implements RenderedTileProps {
-  static DEFAULT_CHAR = "#";
+  static defaultChar = "#"
 
-  char = "";
-  background = "";
-  color = "";
-  position = 0;
+  char = ""
+  background = ""
+  color = ""
+  position = 0
 
   constructor(props: RenderedTileProps) {
-    Object.assign(this, props);
+    Object.assign(this, props)
   }
 }

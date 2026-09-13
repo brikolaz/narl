@@ -1,13 +1,13 @@
 import {
-  PlayerActionType,
+  PlayerActionTypeEnum,
   type PlayerWaitAction,
-} from "../../../systems/player/types";
-import type { KeyboardToActionCommand } from "../chain";
+} from "../../../systems/player/types"
+import type { KeyboardToActionCommand } from "../chain"
 
 export const getWaitCommand = (): KeyboardToActionCommand => {
   const action: PlayerWaitAction = {
-    type: PlayerActionType.WAIT,
-  };
+    type: PlayerActionTypeEnum.PLAYER_WAIT,
+  }
 
-  return { action };
-};
+  return { action }
+}

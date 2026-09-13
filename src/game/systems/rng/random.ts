@@ -1,50 +1,50 @@
-import seedrandom from "seedrandom";
-import { NAMESPACE_SEPARATOR } from "../../../utils/constants";
+import seedrandom from "seedrandom"
+import { NAMESPACE_SEPARATOR } from "../../../utils/constants"
 
 export type RandomContext = {
-  namespace: string;
-  seed: string;
-};
+  namespace: string
+  seed: string
+}
 
 const getRandomContextNamespace = (namespaces: string[]): string => {
-  return namespaces.join(NAMESPACE_SEPARATOR);
-};
+  return namespaces.join(NAMESPACE_SEPARATOR)
+}
 
 export class Random {
-  private static readonly RANDOM_TOTAL_CHANCE = 100 as const;
-  private readonly context: RandomContext;
-  private rolls = 0;
-  rng: () => number;
+  private static readonly randomTotalChance = 100 as const
+  private readonly context: RandomContext
+  private rolls = 0
+  rng: () => number
 
   constructor(context: RandomContext) {
-    this.context = context;
+    this.context = context
     this.rng = seedrandom(
       getRandomContextNamespace([this.context.seed, this.context.namespace]),
-    );
+    )
   }
 
   random(): number {
-    this.rolls++;
-    return this.rng();
+    this.rolls++
+    return this.rng()
   }
 
   chance(percent: number): boolean {
-    return this.random() * Random.RANDOM_TOTAL_CHANCE < percent;
+    return this.random() * Random.randomTotalChance < percent
   }
 
   range(min: number, max: number): number {
-    return Math.floor(this.random() * (max - min + 1)) + min;
+    return Math.floor(this.random() * (max - min + 1)) + min
   }
 
-  pick<T>(...items: readonly T[]): T | undefined {
+  pick<Item>(...items: readonly Item[]): Item | undefined {
     if (items.length === 0) {
-      return undefined;
+      return undefined
     }
 
-    return items[this.range(0, items.length - 1)];
+    return items[this.range(0, items.length - 1)]
   }
 
   roll(): number {
-    return this.range(1, 100);
+    return this.range(1, 100)
   }
 }

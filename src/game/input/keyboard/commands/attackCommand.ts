@@ -1,26 +1,26 @@
-import { PlayerActionType } from "../../../systems/player/types";
-import { Direction } from "../../../systems/turn/types";
-import type { KeyboardToAction, KeyboardToActionCommand } from "../chain";
+import { PlayerActionTypeEnum } from "../../../systems/player/types"
+import { DirectionEnum } from "../../../systems/turn/types"
+import type { KeyboardToAction, KeyboardToActionCommand } from "../chain"
 
 const getAttackActionCommands = (): KeyboardToAction => {
   return {
     ArrowLeft: {
       action: {
-        type: PlayerActionType.ATTACK,
-        direction: Direction.LEFT,
+        type: PlayerActionTypeEnum.PLAYER_ATTACK,
+        direction: DirectionEnum.LEFT,
       },
     },
     ArrowRight: {
       action: {
-        type: PlayerActionType.ATTACK,
-        direction: Direction.RIGHT,
+        type: PlayerActionTypeEnum.PLAYER_ATTACK,
+        direction: DirectionEnum.RIGHT,
       },
     },
-  };
-};
+  }
+}
 
 export const getAttackCommand = (): KeyboardToActionCommand => ({
   action: getAttackActionCommands,
   message: "Left/right? (arrow keys)",
   fallback: "Invalid direction",
-});
+})

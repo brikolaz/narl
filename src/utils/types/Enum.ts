@@ -1,5 +1,10 @@
-export type Enum<T extends string | number = string | number> = Record<
-  string,
-  T
->;
-export type EnumType<T extends Enum> = T[keyof T];
+export type Enum<Value extends string = string> = Record<string, Value>
+
+export type EnumType<EnumObject extends Enum> = EnumObject[keyof EnumObject]
+
+export const createEnum = <const Values extends readonly (string | number)[]>(
+  ...values: Values
+) =>
+  Object.fromEntries(values.map((value) => [value, value])) as {
+    [Value in Values[number]]: Value
+  }

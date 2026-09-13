@@ -1,3 +1,3 @@
-export const typedEntries = <K extends string | number | symbol, V>(
-  obj: Partial<Record<K, V>>,
-) => Object.entries(obj) as [K, V][];
+export const typedEntries = <Key extends string | number | symbol, Value>(
+  obj: Partial<Record<Key, Value>>,
+) => Object.entries(obj) as [Key, Value][]

@@ -1,5 +1,5 @@
-import { GAME_STATUS, STATE } from "../../state/state";
+import { GameStatusEnum, STATE } from "../../state/state"
 
 export const isPendingGameOver = () =>
-  STATE.status === GAME_STATUS.PENDING_GAME_OVER;
-export const isGameOver = () => STATE.status === GAME_STATUS.GAME_OVER;
+  STATE.status === GameStatusEnum.PENDING_GAME_OVER
+export const isGameOver = () => STATE.status === GameStatusEnum.GAME_OVER

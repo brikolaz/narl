@@ -1,13 +1,13 @@
-import { Highlight } from "./highlight";
-import type { EqSlot, InvSlot } from "./slots";
+import { Highlight } from "./highlight"
+import type { EqSlot, InvSlot } from "./slots"
 
 type BaseUiState = {
   highlights: {
-    eqSlot: Highlight<EqSlot>;
-    invSlot: Highlight<InvSlot>;
-  };
-};
-export type UiState = BaseUiState;
+    eqSlot: Highlight<EqSlot>
+    invSlot: Highlight<InvSlot>
+  }
+}
+export type UiState = BaseUiState
 
 const getInitialUiState = (): UiState => {
   return {
@@ -15,7 +15,7 @@ const getInitialUiState = (): UiState => {
       eqSlot: new Highlight<EqSlot>(3),
       invSlot: new Highlight<InvSlot>(5),
     },
-  };
-};
+  }
+}
 
-export const UI_STATE: UiState = getInitialUiState();
+export const UI_STATE: UiState = getInitialUiState()

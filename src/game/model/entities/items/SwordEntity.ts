@@ -1,6 +1,6 @@
 import { getEntityCreator, type Entity } from "../../../../core/model/Entity"
 import { upsertComponents } from "../../../../core/model/queries/components/add"
-import type { Enum, EnumType } from "../../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../../utils/types/Enum"
 import { getRng } from "../../../systems/rng/rng"
 import { GlyphComponent } from "../../components/display/GlyphComponent"
 import { NameComponent } from "../../components/display/NameComponent"
@@ -15,11 +15,8 @@ import type { ItemFactory } from "../../Factory"
 import { ColorComponent } from "../../components/display/ColorComponent"
 import { COLORS } from "../../../../utils/colors"
 
-const SwordEntityVariants = {
-  DEFAULT: "Sword",
-  LONG_SWORD: "Long Sword",
-} as const satisfies Enum
-type SwordEntityVariants = EnumType<typeof SwordEntityVariants>
+const SwordEntityVariantsEnum = createEnum("DEFAULT", "LONG_SWORD")
+type SwordEntityVariantsEnum = EnumType<typeof SwordEntityVariantsEnum>
 
 const SwordEntity = getEntityCreator("SWORD")
 
@@ -40,7 +37,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
       NameComponent({ name: "Sword" }),
       RemovableComponent(),
       MainHandComponent(),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
       DmgComponent({ min: minDmg, max: minDmg + 3 }),
       PickupableComponent(),
       DroppableComponent(),
@@ -65,16 +62,16 @@ export const SwordEntityFactory: SwordEntityFactory = {
       PierceComponent({ pierce: 2 }),
       PickupableComponent(),
       DroppableComponent(),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
 
     return longSword
   },
-  getVariant: (variant: SwordEntityVariants) => {
+  getVariant: (variant: SwordEntityVariantsEnum) => {
     switch (variant) {
-      case SwordEntityVariants.DEFAULT:
+      case SwordEntityVariantsEnum.DEFAULT:
         return SwordEntityFactory.getDefault()
-      case SwordEntityVariants.LONG_SWORD:
+      case SwordEntityVariantsEnum.LONG_SWORD:
         return SwordEntityFactory.getLongSword()
     }
   },

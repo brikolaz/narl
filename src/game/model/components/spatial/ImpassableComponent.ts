@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
-export const ImpassableComponent = getComponentCreator("IMPASSABLE");
+export const ImpassableComponent = getComponentCreator("IMPASSABLE")

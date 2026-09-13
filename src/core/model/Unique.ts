@@ -1,5 +1,5 @@
-import type { Id } from "./Id";
+import type { Id } from "./Id"
 
 export type Unique = {
-  id: Id;
-};
+  id: Id
+}

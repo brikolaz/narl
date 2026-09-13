@@ -1,39 +1,36 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import {
-  initState,
-  type GameState,
-} from "../../../../game/state/state";
-import { integrityCheckEnabled } from "../../../../tests/integrity";
-import { getComponentCreator } from "../../Component";
-import { getEntityCreator, type Entity } from "../../Entity";
-import type { Id } from "../../Id";
-import { upsertComponents } from "./add";
+import { initState, type GameState } from "../../../../game/state/state"
+import { isIntegrityCheckEnabled } from "../../../../tests/integrity"
+import { getComponentCreator } from "../../Component"
+import { getEntityCreator, type Entity } from "../../Entity"
+import type { Id } from "../../Id"
+import { upsertComponents } from "./add"
 import {
   expectComponentAttached,
   expectComponentStateConsistent,
   expectComponentsAttached,
   expectComponentsNotAttachedToEntity,
-} from "./tests";
+} from "./tests"
 
-const TestEntity = getEntityCreator("TEST_ENTITY");
-const TestComponent = getComponentCreator("TEST_COMPONENT");
-const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT");
+const TestEntity = getEntityCreator("TEST_ENTITY")
+const TestComponent = getComponentCreator("TEST_COMPONENT")
+const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT")
 
 describe("upsertComponents", () => {
-  let state: GameState;
+  let state: GameState
 
   beforeEach(() => {
-    state = initState();
-  });
+    state = initState()
+  })
 
   afterEach(() => {
-    if (integrityCheckEnabled()) {
-      expectComponentStateConsistent(state);
+    if (isIntegrityCheckEnabled()) {
+      expectComponentStateConsistent(state)
     }
 
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
   describe.each([
     {
@@ -83,115 +80,113 @@ describe("upsertComponents", () => {
       },
     ])("$name", ({ getEntityInput }) => {
       it("adds", () => {
-        const entity = TestEntity();
-        const components = createNewComponents();
+        const entity = TestEntity()
+        const components = createNewComponents()
 
-        upsertComponents(getEntityInput(entity), ...components);
+        upsertComponents(getEntityInput(entity), ...components)
 
         for (const component of components) {
-          expectComponentAttached(state, entity, component);
+          expectComponentAttached(state, entity, component)
         }
-      });
+      })
 
       it("preserves existing", () => {
-        const entity = TestEntity();
-        const initialComponents = createInitialComponents();
-        const newComponents = createNewComponents();
+        const entity = TestEntity()
+        const initialComponents = createInitialComponents()
+        const newComponents = createNewComponents()
 
-        upsertComponents(getEntityInput(entity), ...initialComponents);
-        upsertComponents(getEntityInput(entity), ...newComponents);
+        upsertComponents(getEntityInput(entity), ...initialComponents)
+        upsertComponents(getEntityInput(entity), ...newComponents)
 
         for (const component of [...initialComponents, ...newComponents]) {
-          expectComponentAttached(state, entity, component);
+          expectComponentAttached(state, entity, component)
         }
-      });
+      })
 
       it("overwrites", () => {
-        const entity = TestEntity();
-        const initialComponents = createInitialComponents();
-        const newComponents = createNewComponents();
-        const updatedComponents = createNewComponents();
+        const entity = TestEntity()
+        const initialComponents = createInitialComponents()
+        const newComponents = createNewComponents()
+        const updatedComponents = createNewComponents()
         for (let i = 0; i < newComponents.length; i++) {
-          updatedComponents[i].id = newComponents[i].id;
+          updatedComponents[i].id = newComponents[i].id
         }
 
-        upsertComponents(getEntityInput(entity), ...initialComponents);
-        upsertComponents(getEntityInput(entity), ...newComponents);
-        upsertComponents(getEntityInput(entity), ...updatedComponents);
+        upsertComponents(getEntityInput(entity), ...initialComponents)
+        upsertComponents(getEntityInput(entity), ...newComponents)
+        upsertComponents(getEntityInput(entity), ...updatedComponents)
 
-
-        expectComponentsNotAttachedToEntity(entity, ...newComponents);
-
+        expectComponentsNotAttachedToEntity(entity, ...newComponents)
 
         expectComponentsAttached(
           state,
           entity,
           ...initialComponents,
           ...updatedComponents,
-        );
-      });
+        )
+      })
 
       it("attaches to a new parent", () => {
-        const firstEntity = TestEntity();
-        const secondEntity = TestEntity();
-        const initialComponents = createInitialComponents();
-        const newComponents = createNewComponents();
+        const firstEntity = TestEntity()
+        const secondEntity = TestEntity()
+        const initialComponents = createInitialComponents()
+        const newComponents = createNewComponents()
 
-        upsertComponents(firstEntity, ...initialComponents, ...newComponents);
-        upsertComponents(secondEntity, ...initialComponents, ...newComponents);
+        upsertComponents(firstEntity, ...initialComponents, ...newComponents)
+        upsertComponents(secondEntity, ...initialComponents, ...newComponents)
 
         expectComponentsNotAttachedToEntity(
           firstEntity,
           ...initialComponents,
           ...newComponents,
-        );
+        )
         expectComponentsAttached(
           state,
           secondEntity,
           ...initialComponents,
           ...newComponents,
-        );
-      });
-    });
-  });
+        )
+      })
+    })
+  })
 
   it("handles the same component provided multiple times", () => {
-    const entity = TestEntity();
-    const component = TestComponent();
+    const entity = TestEntity()
+    const component = TestComponent()
 
-    upsertComponents(entity, component, component);
+    upsertComponents(entity, component, component)
 
-    expectComponentAttached(state, entity, component);
-    expect(entity.componentById.size).toBe(1);
-    expect(entity.componentByType.get(component.type)?.size).toBe(1);
-  });
+    expectComponentAttached(state, entity, component)
+    expect(entity.componentById.size).toBe(1)
+    expect(entity.componentByType.get(component.type)?.size).toBe(1)
+  })
 
   it("does nothing when entity is undefined", () => {
-    const component = TestComponent();
+    const component = TestComponent()
 
-    upsertComponents(undefined, component);
+    upsertComponents(undefined, component)
 
-    expect(state.componentRegistryById[component.id]).toBeUndefined();
-  });
+    expect(state.componentRegistryById[component.id]).toBeUndefined()
+  })
 
   it("does nothing when entity is undefined and no components are provided", () => {
-    expect(() => upsertComponents(undefined)).not.toThrow();
-  });
+    expect(() => upsertComponents(undefined)).not.toThrow()
+  })
 
   it("does nothing when entity id cannot be resolved", () => {
-    const component = TestComponent();
+    const component = TestComponent()
 
-    upsertComponents(Infinity, component);
+    upsertComponents(Infinity, component)
 
-    expect(state.componentRegistryById[component.id]).toBeUndefined();
-  });
+    expect(state.componentRegistryById[component.id]).toBeUndefined()
+  })
 
   it("does nothing when no components are provided", () => {
-    const entity = TestEntity();
+    const entity = TestEntity()
 
-    upsertComponents(entity);
+    upsertComponents(entity)
 
-    expect(entity.componentById.size).toBe(0);
-    expect(entity.componentByType.size).toBe(0);
-  });
-});
+    expect(entity.componentById.size).toBe(0)
+    expect(entity.componentByType.size).toBe(0)
+  })
+})

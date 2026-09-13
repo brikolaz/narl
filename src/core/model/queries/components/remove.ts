@@ -1,77 +1,77 @@
-import type { Id } from "../../Id";
+import type { Id } from "../../Id"
 import {
   getComponentRegistryRecord,
-  removeComponentRegistryRecords
-} from "../../registry/componentRegistry";
-import { resolveEntity, type EntityArgument } from "../entities/normalize";
+  removeComponentRegistryRecords,
+} from "../../registry/componentRegistry"
+import { resolveEntity, type EntityArgument } from "../entities/normalize"
 import {
   resolveComponent,
   resolveComponentType,
   type ComponentArgument,
   type ComponentTypeArgument,
-} from "./normalize";
+} from "./normalize"
 
 const removeDataComponentsByType = (
   entity: EntityArgument,
   ...componentTypes: ComponentTypeArgument[]
 ) => {
-  const source = resolveEntity(entity);
+  const source = resolveEntity(entity)
   if (!source) {
-    return [];
+    return []
   }
-  const ids: Id[] = [];
+  const ids: Id[] = []
   const resolvedComponentTypes = componentTypes.map((componentType) =>
     resolveComponentType(componentType),
-  );
+  )
   for (const componentType of resolvedComponentTypes) {
     const nextIds =
-      source.componentByType.get(componentType)?.keys().toArray() ?? [];
+      source.componentByType.get(componentType)?.keys().toArray() ?? []
 
-    ids.push(...nextIds);
+    ids.push(...nextIds)
     for (const id of nextIds) {
-      source.componentById.delete(id);
+      source.componentById.delete(id)
     }
-    source.componentByType.delete(componentType);
+    source.componentByType.delete(componentType)
   }
-  return ids;
-};
+  return ids
+}
 
-export const removeComponentsByType = <P extends object | undefined>(
+export const removeComponentsByType = <Props extends object | undefined>(
   entity: EntityArgument,
-  ...componentTypes: ComponentTypeArgument<P>[]
+  ...componentTypes: ComponentTypeArgument<Props>[]
 ) => {
   const ids = removeDataComponentsByType(
     resolveEntity(entity),
     ...componentTypes.map((componentType) =>
       resolveComponentType(componentType),
     ),
-  );
-  removeComponentRegistryRecords(...ids);
-};
+  )
+  removeComponentRegistryRecords(...ids)
+}
 
 const removeDataComponentById = (id: Id): void => {
-  const record = getComponentRegistryRecord(id);
-  if (!record) return;
-  const parent = record.parent;
-  const type = record.component.type;
+  const record = getComponentRegistryRecord(id)
+  if (!record) return
+  const parent = record.parent
+  const type = record.component.type
 
-  parent.componentById.delete(id);
-  parent.componentByType.get(type)?.delete(id);
-};
+  parent.componentById.delete(id)
+  parent.componentByType.get(type)?.delete(id)
+}
 
 const removeDataComponentsById = (...ids: Id[]): void => {
   for (const id of ids) {
-    removeDataComponentById(id);
+    removeDataComponentById(id)
   }
-};
+}
 
-export const removeComponents = <P extends object | undefined = undefined>(
-  ...components: ComponentArgument<P>[]
+export const removeComponents = <Props extends object | undefined = undefined>(
+  ...components: ComponentArgument<Props>[]
 ): void => {
   const ids = components.flatMap((component) => {
-    const resolvedComponent = resolveComponent(component);
-    return resolvedComponent ? [resolvedComponent.id] : [];
-  });
-  removeDataComponentsById(...ids);
-  removeComponentRegistryRecords(...ids);
-};
+    const resolvedComponent = resolveComponent(component)
+    return resolvedComponent ? [resolvedComponent.id] : []
+  })
+  removeDataComponentsById(...ids)
+  removeComponentRegistryRecords(...ids)
+}

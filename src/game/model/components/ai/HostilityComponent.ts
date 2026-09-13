@@ -1,18 +1,20 @@
-import { getComponentCreator } from "../../../../core/model/Component";
-import type { Enum, EnumType } from "../../../../utils/types/Enum";
+import { getComponentCreator } from "../../../../core/model/Component"
+import { createEnum, type EnumType } from "../../../../utils/types/Enum"
 
-export const Hostility = {
-  PEACEFUL: "PEACEFUL",
-  HOSTILE: "HOSTILE",
-  FRIENDLY_HOSTILE: "FRIENDLY_HOSTILE",
-} as const satisfies Enum;
-export type Hostility = EnumType<typeof Hostility>;
+export const HostilityEnum = createEnum(
+  "PEACEFUL",
+  "HOSTILE",
+  "FRIENDLY_HOSTILE",
+)
+type HostilityEnum = EnumType<typeof HostilityEnum>
 
 export type HostilityComponentProps = {
-  hostility: Hostility;
-};
+  hostility: HostilityEnum
+}
 
-export const HostilityComponent =
-  getComponentCreator<HostilityComponentProps>("HOSTILITY", {
-    hostility: Hostility.PEACEFUL,
-  });
+export const HostilityComponent = getComponentCreator<HostilityComponentProps>(
+  "HOSTILITY",
+  {
+    hostility: HostilityEnum.PEACEFUL,
+  },
+)

@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
-export const HeadComponent = getComponentCreator("HEAD");
+export const HeadComponent = getComponentCreator("HEAD")

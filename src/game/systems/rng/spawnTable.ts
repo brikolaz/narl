@@ -1,135 +1,123 @@
-import type { Entity, EntityType } from "../../../core/model/Entity";
-import type { Enum, EnumType } from "../../../utils/types/Enum";
-import { getMobFactory } from "../../model/entities/getFactory";
-import { BoomerEntity } from "../../model/entities/mobs/boomer/BoomerEntity";
-import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity";
-import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity";
-import { STATE } from "../../state/state";
-import { setPosition } from "../position/position";
-import { getZone, Zone } from "./zones";
+import type { Entity, EntityType } from "../../../core/model/Entity"
+import { createEnum, type EnumType } from "../../../utils/types/Enum"
+import { getMobFactory } from "../../model/entities/getFactory"
+import { BoomerEntity } from "../../model/entities/mobs/boomer/BoomerEntity"
+import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity"
+import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity"
+import { STATE } from "../../state/state"
+import { setPosition } from "../position/position"
+import { getZone, ZoneEnum } from "./zones"
 
-type SpawnTable = Map<EntityType, number>;
+type SpawnTable = Map<EntityType, number>
 
-export const MobType = {
-  MOB: "mob",
-  PURSUER: "pursuer",
-} as const satisfies Enum;
-type MobType = EnumType<typeof MobType>;
+export const MobTypeEnum = createEnum("MOB", "PURSUER")
+type MobTypeEnum = EnumType<typeof MobTypeEnum>
 
 const SPAWN_TABLE = {
-  [Zone.START]: new Map(),
-  [Zone.EARLY]: new Map([
+  [ZoneEnum.START]: new Map(),
+  [ZoneEnum.EARLY]: new Map([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [Zone.LOW]: new Map(),
-  [Zone.MID]: new Map(),
-  [Zone.HIGH]: new Map(),
-  [Zone.LATE]: new Map(),
-  [Zone.FINAL]: new Map(),
-} satisfies Record<Zone, SpawnTable>;
+  [ZoneEnum.LOW]: new Map(),
+  [ZoneEnum.MID]: new Map(),
+  [ZoneEnum.HIGH]: new Map(),
+  [ZoneEnum.LATE]: new Map(),
+  [ZoneEnum.FINAL]: new Map(),
+} satisfies Record<ZoneEnum, SpawnTable>
 
 const SPAWN_PURSUER_TABLE = {
-  [Zone.START]: new Map(),
-  [Zone.EARLY]: new Map([
+  [ZoneEnum.START]: new Map(),
+  [ZoneEnum.EARLY]: new Map([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [Zone.LOW]: new Map(),
-  [Zone.MID]: new Map(),
-  [Zone.HIGH]: new Map(),
-  [Zone.LATE]: new Map(),
-  [Zone.FINAL]: new Map(),
-} satisfies Record<Zone, SpawnTable>;
+  [ZoneEnum.LOW]: new Map(),
+  [ZoneEnum.MID]: new Map(),
+  [ZoneEnum.HIGH]: new Map(),
+  [ZoneEnum.LATE]: new Map(),
+  [ZoneEnum.FINAL]: new Map(),
+} satisfies Record<ZoneEnum, SpawnTable>
 
 const getSpawnTableTotal = (table: SpawnTable): number =>
   table
     .values()
     .toArray()
-    .reduce((sum, chance) => sum + chance, 0);
+    .reduce((sum, chance) => sum + chance, 0)
 
 const validateSpawnTable = (table: SpawnTable): void => {
-  const total = getSpawnTableTotal(table);
+  const total = getSpawnTableTotal(table)
 
   if (total > 100) {
-    throw new Error(`Spawn table exceeds 100%. Got ${total}%.`);
+    throw new Error(`Spawn table exceeds 100%. Got ${total}%.`)
   }
-};
+}
 
 export const validateSpawnTables = (): void => {
-  Object.values(SPAWN_TABLE).forEach(validateSpawnTable);
-  Object.values(SPAWN_PURSUER_TABLE).forEach(validateSpawnTable);
-};
+  Object.values(SPAWN_TABLE).forEach(validateSpawnTable)
+  Object.values(SPAWN_PURSUER_TABLE).forEach(validateSpawnTable)
+}
 
-const getSpawnTable = (zone: Zone, type: MobType): SpawnTable =>
-  type === MobType.PURSUER
-    ? SPAWN_PURSUER_TABLE[zone]
-    : SPAWN_TABLE[zone];
+const getSpawnTable = (zone: ZoneEnum, type: MobTypeEnum): SpawnTable =>
+  type === MobTypeEnum.PURSUER ? SPAWN_PURSUER_TABLE[zone] : SPAWN_TABLE[zone]
 
 const rollMob = (
   table: SpawnTable,
   roll: number,
-  type: MobType,
+  type: MobTypeEnum,
 ): Entity | undefined => {
-  let current = 0;
+  let current = 0
 
   for (const [mobType, chance] of table) {
-    current += chance;
+    current += chance
 
     if (roll <= current) {
-      const factory = getMobFactory(mobType);
+      const factory = getMobFactory(mobType)
 
-      return type === MobType.PURSUER
+      return type === MobTypeEnum.PURSUER
         ? factory.getPursuer()
-        : factory.getDefault();
+        : factory.getDefault()
     }
   }
-};
+}
 
 export const getRandomMob = (
   position: number,
-  type: MobType,
+  type: MobTypeEnum,
 ): Entity | undefined => {
-  const table = getSpawnTable(getZone(position), type);
-  const mob = rollMob(table, STATE.rng.mobs.roll(), type);
+  const table = getSpawnTable(getZone(position), type)
+  const mob = rollMob(table, STATE.rng.mobs.roll(), type)
 
   if (mob) {
-    setPosition(mob, position);
+    setPosition(mob, position)
   }
 
-  return mob;
-};
+  return mob
+}
 
-export const canSpawnMobAt = (
-  position: number,
-  type: MobType,
-): boolean =>
-  getSpawnTableTotal(getSpawnTable(getZone(position), type)) > 0;
+export const canSpawnMobAt = (position: number, type: MobTypeEnum): boolean =>
+  getSpawnTableTotal(getSpawnTable(getZone(position), type)) > 0
 
 export const getGuaranteedRandomMob = (
   position: number,
-  type: MobType,
+  type: MobTypeEnum,
 ): Entity => {
-  const table = getSpawnTable(getZone(position), type);
-  const total = getSpawnTableTotal(table);
+  const table = getSpawnTable(getZone(position), type)
+  const total = getSpawnTableTotal(table)
 
   if (total === 0) {
-    throw new Error(`No ${type} to spawn`);
+    throw new Error(`No ${type} to spawn`)
   }
 
-  const mob = rollMob(
-    table,
-    STATE.rng.mobs.range(1, total),
-    type,
-  );
+  const mob = rollMob(table, STATE.rng.mobs.range(1, total), type)
 
   if (!mob) {
-    throw new Error(`No ${type} to spawn`);
+    throw new Error(`No ${type} to spawn`)
   }
 
-  setPosition(mob, position);
+  setPosition(mob, position)
 
-  return mob;
-};
+  return mob
+}

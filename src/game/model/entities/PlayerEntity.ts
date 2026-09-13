@@ -1,22 +1,25 @@
-import { EntityRole, getEntityCreator } from "../../../core/model/Entity";
-import { upsertComponents } from "../../../core/model/queries/components/add";
-import { upsertRoleEntities } from "../../../core/model/queries/entities/add";
-import { DEFAULT_PLAYER_GLYPH, INITIAL_PLAYER_POSITION } from "../../../utils/constants";
-import { ColorComponent } from "../components/display/ColorComponent";
-import { GlyphComponent } from "../components/display/GlyphComponent";
-import { NameComponent } from "../components/display/NameComponent";
-import { ExpComponent } from "../components/state/ExpComponent";
-import { HpComponent } from "../components/combat/HpComponent";
-import { PositionComponent } from "../components/spatial/PositionComponent";
-import type { Factory } from "../Factory";
-import { initEq } from "../../systems/eq/eq";
-import { ContainerEntityFactory } from "./items/container/ContainerEntity";
+import { EntityRoleEnum, getEntityCreator } from "../../../core/model/Entity"
+import { upsertComponents } from "../../../core/model/queries/components/add"
+import { upsertRoleEntities } from "../../../core/model/queries/entities/add"
+import {
+  DEFAULT_PLAYER_GLYPH,
+  INITIAL_PLAYER_POSITION,
+} from "../../../utils/constants"
+import { ColorComponent } from "../components/display/ColorComponent"
+import { GlyphComponent } from "../components/display/GlyphComponent"
+import { NameComponent } from "../components/display/NameComponent"
+import { ExpComponent } from "../components/state/ExpComponent"
+import { HpComponent } from "../components/combat/HpComponent"
+import { PositionComponent } from "../components/spatial/PositionComponent"
+import type { Factory } from "../Factory"
+import { initEq } from "../../systems/eq/eq"
+import { ContainerEntityFactory } from "./items/container/ContainerEntity"
 
-const PlayerEntity = getEntityCreator("PLAYER");
+const PlayerEntity = getEntityCreator("PLAYER")
 
 export const PlayerEntityFactory: Factory = {
   getDefault: () => {
-    const player = PlayerEntity();
+    const player = PlayerEntity()
 
     upsertComponents(
       player,
@@ -27,15 +30,15 @@ export const PlayerEntityFactory: Factory = {
       ColorComponent(),
       NameComponent({ name: "You" }),
       HpComponent({ hp: 20, maxHp: 20 }),
-      PositionComponent({ position: INITIAL_PLAYER_POSITION })
-    );
+      PositionComponent({ position: INITIAL_PLAYER_POSITION }),
+    )
 
-    const backpack = ContainerEntityFactory.getPlayerBackpack();
-    initEq(player);
+    const backpack = ContainerEntityFactory.getPlayerBackpack()
+    initEq(player)
     upsertRoleEntities(player, {
-      [EntityRole.BACKPACK]: backpack,
-    });
+      [EntityRoleEnum.BACKPACK]: backpack,
+    })
 
-    return player;
+    return player
   },
-};
+}

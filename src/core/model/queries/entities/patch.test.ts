@@ -1,55 +1,55 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { initState, type GameState } from "../../../../game/state/state";
-import { integrityCheckEnabled } from "../../../../tests/integrity";
-import { getEntityCreator } from "../../Entity";
-import { patchEntity } from "./patch";
-import { expectEntityRoot, expectEntityStateConsistent } from "./tests";
+import { initState, type GameState } from "../../../../game/state/state"
+import { isIntegrityCheckEnabled } from "../../../../tests/integrity"
+import { getEntityCreator } from "../../Entity"
+import { patchEntity } from "./patch"
+import { expectEntityRoot, expectEntityStateConsistent } from "./tests"
 
-const TestEntity = getEntityCreator("TEST_ENTITY");
+const TestEntity = getEntityCreator("TEST_ENTITY")
 
 describe("patchEntity", () => {
-  let state: GameState;
+  let state: GameState
   beforeEach(() => {
-    state = initState();
-  });
+    state = initState()
+  })
   afterEach(() => {
-    if (integrityCheckEnabled()) {
-      expectEntityStateConsistent(state);
+    if (isIntegrityCheckEnabled()) {
+      expectEntityStateConsistent(state)
     }
 
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
   describe("with entity object", () => {
     it("patches the entity", () => {
-      const entity = TestEntity();
-      const replacementType = Symbol("replacement");
+      const entity = TestEntity()
+      const replacementType = Symbol("replacement")
       patchEntity(entity, (target) => {
-        target.type = replacementType;
-      });
-      expect(entity.type).toBe(replacementType);
-      expectEntityRoot(state, entity);
-    });
-  });
+        target.type = replacementType
+      })
+      expect(entity.type).toBe(replacementType)
+      expectEntityRoot(state, entity)
+    })
+  })
 
   describe("with entity id", () => {
     it("patches the entity", () => {
-      const entity = TestEntity();
-      const replacementType = Symbol("replacement");
+      const entity = TestEntity()
+      const replacementType = Symbol("replacement")
       patchEntity(entity.id, (target) => {
-        target.type = replacementType;
-      });
-      expect(entity.type).toBe(replacementType);
-      expectEntityRoot(state, entity);
-    });
-  });
+        target.type = replacementType
+      })
+      expect(entity.type).toBe(replacementType)
+      expectEntityRoot(state, entity)
+    })
+  })
 
   describe("with undefined entity", () => {
     it("does not invoke the patcher", () => {
-      const patcher = vi.fn();
-      patchEntity(undefined, patcher);
-      expect(patcher).not.toHaveBeenCalled();
-    });
-  });
-});
+      const patcher = vi.fn()
+      patchEntity(undefined, patcher)
+      expect(patcher).not.toHaveBeenCalled()
+    })
+  })
+})

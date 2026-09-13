@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
-export const DisabledComponent = getComponentCreator("DISABLED");
+export const DisabledComponent = getComponentCreator("DISABLED")

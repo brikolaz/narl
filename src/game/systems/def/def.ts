@@ -1,4 +1,4 @@
-import { EntityRole, type Entity } from "../../../core/model/Entity"
+import { EntityRoleEnum, type Entity } from "../../../core/model/Entity"
 import {
   getComponentByType,
   getComponentsByType,
@@ -32,7 +32,7 @@ export const getDef = (entity?: Entity): number => {
   if (!isContainer(entity)) {
     return ownDef
   }
-  const childrenDef = getEntitiesByRole(entity, EntityRole.ITEM).reduce(
+  const childrenDef = getEntitiesByRole(entity, EntityRoleEnum.ITEM).reduce(
     (def, child) => def + getDef(child),
     0,
   )

@@ -1,48 +1,48 @@
-import { removeComponentsByType } from "../../../../core/model/queries/components/remove";
-import { UnawareComponent } from "../../../model/components/ai/UnawareComponent";
+import { removeComponentsByType } from "../../../../core/model/queries/components/remove"
+import { UnawareComponent } from "../../../model/components/ai/UnawareComponent"
 import {
   drainAction,
   drainDequeuedAction,
   type DrainContext,
   type DrainedResolution,
-} from "../../actions/gameAction/dispatchGameAction";
-import { dequeueTimedActions } from "../../actions/timedActions/timedActions";
-import type { GameAction } from "../../actions/types";
-import { getVisibleTiles } from "../../player/getVisibleTiles";
-import { replenishPursuers } from "../../pursuer/pursuer";
-import { enqueueMobActions } from "./scheduleMobActions";
+} from "../../actions/gameAction/dispatchGameAction"
+import { dequeueTimedActions } from "../../actions/timedActions/timedActions"
+import type { GameAction } from "../../actions/types"
+import { getVisibleTiles } from "../../player/getVisibleTiles"
+import { replenishPursuers } from "../../pursuer/pursuer"
+import { enqueueMobActions } from "./scheduleMobActions"
 
 const makeMobsAware = () => {
-  const mobs = getVisibleTiles().flatMap((tile) => tile.mobs);
+  const mobs = getVisibleTiles().flatMap((tile) => tile.mobs)
   for (const mob of mobs) {
-    removeComponentsByType(mob, UnawareComponent);
+    removeComponentsByType(mob, UnawareComponent)
   }
-};
+}
 
 export const runWorldTurn = (context: DrainContext): DrainedResolution => {
-  replenishPursuers();
-  
-  let consumesTurn = false;
-  const queue: GameAction[] = enqueueMobActions();
+  replenishPursuers()
+
+  let consumesTurn = false
+  const queue: GameAction[] = enqueueMobActions()
 
   for (const worldAction of queue) {
-    const worldResult = drainAction(worldAction, context);
+    const worldResult = drainAction(worldAction, context)
 
-    consumesTurn ||= worldResult.consumesTurn;
-    if(consumesTurn) {
+    consumesTurn ||= worldResult.consumesTurn
+    if (consumesTurn) {
       break
     }
   }
 
-  const dequeuedActions = dequeueTimedActions([...context.processedActions]);
+  const dequeuedActions = dequeueTimedActions([...context.processedActions])
 
   for (const timedAction of dequeuedActions) {
-    const timedResult = drainDequeuedAction(timedAction, context);
+    const timedResult = drainDequeuedAction(timedAction, context)
 
-    consumesTurn ||= timedResult.consumesTurn;
+    consumesTurn ||= timedResult.consumesTurn
   }
 
-  makeMobsAware();
+  makeMobsAware()
 
-  return { consumesTurn };
-};
+  return { consumesTurn }
+}

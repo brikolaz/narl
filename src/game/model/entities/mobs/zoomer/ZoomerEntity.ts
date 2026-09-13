@@ -1,42 +1,45 @@
 import {
-  EntityRole,
+  EntityRoleEnum,
   getEntityCreator,
   type Entity,
-} from "../../../../../core/model/Entity";
-import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import { patchComponentByType } from "../../../../../core/model/queries/components/patch";
-import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
-import { addItemToContainer, setContainerItemAt } from "../../../../systems/containers/containers";
-import { getRng } from "../../../../systems/rng/rng";
-import { ColorComponent } from "../../../components/display/ColorComponent";
-import { GlyphComponent } from "../../../components/display/GlyphComponent";
-import { NameComponent } from "../../../components/display/NameComponent";
-import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent";
-import { DmgComponent } from "../../../components/combat/DmgComponent";
-import { FovComponent } from "../../../components/ai/FovComponent";
-import { ExpComponent } from "../../../components/state/ExpComponent";
+} from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
+import { patchComponentByType } from "../../../../../core/model/queries/components/patch"
+import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add"
 import {
-  Hostility,
+  addItemToContainer,
+  setContainerItemAt,
+} from "../../../../systems/containers/containers"
+import { getRng } from "../../../../systems/rng/rng"
+import { ColorComponent } from "../../../components/display/ColorComponent"
+import { GlyphComponent } from "../../../components/display/GlyphComponent"
+import { NameComponent } from "../../../components/display/NameComponent"
+import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent"
+import { DmgComponent } from "../../../components/combat/DmgComponent"
+import { FovComponent } from "../../../components/ai/FovComponent"
+import { ExpComponent } from "../../../components/state/ExpComponent"
+import {
+  HostilityEnum,
   HostilityComponent,
-} from "../../../components/ai/HostilityComponent";
-import { HpComponent } from "../../../components/combat/HpComponent";
-import { MovableComponent } from "../../../components/spatial/MovableComponent";
-import { PositionComponent } from "../../../components/spatial/PositionComponent";
-import { UnawareComponent } from "../../../components/ai/UnawareComponent";
-import { BaseMobFactory } from "../../../BaseMobFactory";
-import type { MobFactory } from "../../../Factory";
-import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
-import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
-import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity";
-import { SwordEntityFactory } from "../../items/SwordEntity";
+} from "../../../components/ai/HostilityComponent"
+import { HpComponent } from "../../../components/combat/HpComponent"
+import { MovableComponent } from "../../../components/spatial/MovableComponent"
+import { PositionComponent } from "../../../components/spatial/PositionComponent"
+import { UnawareComponent } from "../../../components/ai/UnawareComponent"
+import { BaseMobFactory } from "../../../BaseMobFactory"
+import type { MobFactory } from "../../../Factory"
+import { getEqSlotByType, initEq } from "../../../../systems/eq/eq"
+import { ContainerEntityFactory } from "../../items/container/ContainerEntity"
+import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity"
+import { SwordEntityFactory } from "../../items/SwordEntity"
 
-export const ZoomerEntity = getEntityCreator("ZOOMER");
+export const ZoomerEntity = getEntityCreator("ZOOMER")
 
 const addLoot = (entity: Entity) => {
-  const backpack = ContainerEntityFactory.getBackpack();
+  const backpack = ContainerEntityFactory.getBackpack()
 
   if (getRng(entity).chance(5)) {
-    ContainerEntityFactory.setDroppable?.(backpack);
+    ContainerEntityFactory.setDroppable?.(backpack)
   }
 
   if (getRng(entity).chance(20)) {
@@ -44,23 +47,23 @@ const addLoot = (entity: Entity) => {
   }
 
   upsertRoleEntities(entity, {
-    [EntityRole.BACKPACK]: backpack,
-  });
-};
+    [EntityRoleEnum.BACKPACK]: backpack,
+  })
+}
 
 const addEq = (entity: Entity) => {
-  initEq(entity);
-  const sword = SwordEntityFactory.getDefault();
-  setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
+  initEq(entity)
+  const sword = SwordEntityFactory.getDefault()
+  setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword)
   patchComponentByType(sword, DmgComponent, (dmg) => {
-    dmg.min = 3;
-    dmg.max = 7;
-  });
-};
+    dmg.min = 3
+    dmg.max = 7
+  })
+}
 
 class ZoomerFactory extends BaseMobFactory {
   getDefault(): Entity {
-    const zoomer = ZoomerEntity();
+    const zoomer = ZoomerEntity()
 
     upsertComponents(
       zoomer,
@@ -71,17 +74,17 @@ class ZoomerFactory extends BaseMobFactory {
       }),
       NameComponent({ name: "Zoomer" }),
       ColorComponent(),
-      HostilityComponent({ hostility: Hostility.HOSTILE }),
+      HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
       MovableComponent(),
       PositionComponent(),
       UnawareComponent(),
       FovComponent({ range: zoomer.rng.range(5, 7) }),
-    );
-    addEq(zoomer);
-    addLoot(zoomer);
+    )
+    addEq(zoomer)
+    addLoot(zoomer)
 
-    return zoomer;
+    return zoomer
   }
 }
 
-export const ZoomerEntityFactory: MobFactory = new ZoomerFactory();
+export const ZoomerEntityFactory: MobFactory = new ZoomerFactory()

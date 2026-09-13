@@ -1,29 +1,29 @@
-import { getEntityCreator } from "../../../../../core/model/Entity";
-import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import { ContainerComponent } from "../../../components/containers/ContainerComponent";
-import { SizeComponent } from "../../../components/containers/SizeComponent";
-import { NameComponent } from "../../../components/display/NameComponent";
-import { MainHandComponent } from "../../../components/equipment/MainHandComponent";
-import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent";
-import { PositionComponent } from "../../../components/spatial/PositionComponent";
-import type { ItemFactory } from "../../../Factory";
+import { getEntityCreator } from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
+import { ContainerComponent } from "../../../components/containers/ContainerComponent"
+import { SizeComponent } from "../../../components/containers/SizeComponent"
+import { NameComponent } from "../../../components/display/NameComponent"
+import { MainHandComponent } from "../../../components/equipment/MainHandComponent"
+import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent"
+import { PositionComponent } from "../../../components/spatial/PositionComponent"
+import type { ItemFactory } from "../../../Factory"
 
-const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT");
+const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT")
 
 export const MainHandSlotEntityFactory: ItemFactory = {
   getDefault: () => {
-    const eqSlot = MainHandSlotEntity();
+    const mainHandSlot = MainHandSlotEntity()
 
     upsertComponents(
-      eqSlot,
+      mainHandSlot,
       NameComponent({ name: "Main Hand" }),
       MainHandSlotComponent(),
       MainHandComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
       PositionComponent({ position: 2 }),
-    );
+    )
 
-    return eqSlot;
+    return mainHandSlot
   },
-};
+}

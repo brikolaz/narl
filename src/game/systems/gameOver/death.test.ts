@@ -1,34 +1,34 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
-import { createGame, type Game } from "../../../game";
-import { clearItems, clearMobs } from "../../../tests/clear";
+import { patchComponentByType } from "../../../core/model/queries/components/patch"
+import { createGame, type Game } from "../../../game"
+import { clearItems, clearMobs } from "../../../tests/clear"
 import {
   expectGameStateConsistent,
-  integrityCheckEnabled,
-} from "../../../tests/integrity";
-import { HpComponent } from "../../model/components/combat/HpComponent";
-import { getPlayer } from "../player/player";
-import { InternalActionType } from "../internal/type";
-import { recordDeathTurn } from "./death";
+  isIntegrityCheckEnabled,
+} from "../../../tests/integrity"
+import { HpComponent } from "../../model/components/combat/HpComponent"
+import { getPlayer } from "../player/player"
+import { InternalActionTypeEnum } from "../internal/types"
+import { recordDeathTurn } from "./death"
 
 describe("recordDeathTurn", () => {
-  let game: Game;
+  let game: Game
 
   beforeEach(() => {
-    game = createGame();
-    game.dispatch({ type: InternalActionType.INIT });
-    clearMobs(game);
-    clearItems(game);
-  });
+    game = createGame()
+    game.dispatch({ type: InternalActionTypeEnum.INTERNAL_INIT })
+    clearMobs(game)
+    clearItems(game)
+  })
 
   afterEach(() => {
-    if (integrityCheckEnabled()) {
-      expectGameStateConsistent(game);
+    if (isIntegrityCheckEnabled()) {
+      expectGameStateConsistent(game)
     }
 
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
   it.each([
     { consumesTurn: true, expectedTurn: 18 },
@@ -36,14 +36,14 @@ describe("recordDeathTurn", () => {
   ])(
     "records turn $expectedTurn when consumesTurn is $consumesTurn",
     ({ consumesTurn, expectedTurn }) => {
-      game.state.turn = 17;
+      game.state.turn = 17
       patchComponentByType(getPlayer(), HpComponent, (hpComponent) => {
-        hpComponent.hp = 0;
-      });
+        hpComponent.hp = 0
+      })
 
-      recordDeathTurn(consumesTurn);
+      recordDeathTurn(consumesTurn)
 
-      expect(game.state.death.turn).toBe(expectedTurn);
+      expect(game.state.death.turn).toBe(expectedTurn)
     },
-  );
-});
+  )
+})

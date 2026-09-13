@@ -1,77 +1,77 @@
 import {
-  EntityRole,
+  EntityRoleEnum,
   getEntityCreator,
   type Entity,
-} from "../../../../../core/model/Entity";
-import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import { patchComponentByType } from "../../../../../core/model/queries/components/patch";
-import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add";
+} from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
+import { patchComponentByType } from "../../../../../core/model/queries/components/patch"
+import { upsertRoleEntities } from "../../../../../core/model/queries/entities/add"
 import {
   addItemToContainer,
   setContainerItemAt,
-} from "../../../../systems/containers/containers";
-import { getRng } from "../../../../systems/rng/rng";
-import { ColorComponent } from "../../../components/display/ColorComponent";
-import { GlyphComponent } from "../../../components/display/GlyphComponent";
-import { NameComponent } from "../../../components/display/NameComponent";
-import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent";
-import { ExpComponent } from "../../../components/state/ExpComponent";
+} from "../../../../systems/containers/containers"
+import { getRng } from "../../../../systems/rng/rng"
+import { ColorComponent } from "../../../components/display/ColorComponent"
+import { GlyphComponent } from "../../../components/display/GlyphComponent"
+import { NameComponent } from "../../../components/display/NameComponent"
+import { MainHandSlotComponent } from "../../../components/equipment/slots/MainHandSlotComponent"
+import { ExpComponent } from "../../../components/state/ExpComponent"
 import {
-  Hostility,
+  HostilityEnum,
   HostilityComponent,
-} from "../../../components/ai/HostilityComponent";
-import { HpComponent } from "../../../components/combat/HpComponent";
-import { PositionComponent } from "../../../components/spatial/PositionComponent";
-import { UnawareComponent } from "../../../components/ai/UnawareComponent";
-import { BaseMobFactory } from "../../../BaseMobFactory";
-import type { MobFactory } from "../../../Factory";
-import { getEqSlotByType, initEq } from "../../../../systems/eq/eq";
-import { DmgComponent } from "../../../components/combat/DmgComponent";
-import { ContainerEntityFactory } from "../../items/container/ContainerEntity";
+} from "../../../components/ai/HostilityComponent"
+import { HpComponent } from "../../../components/combat/HpComponent"
+import { PositionComponent } from "../../../components/spatial/PositionComponent"
+import { UnawareComponent } from "../../../components/ai/UnawareComponent"
+import { BaseMobFactory } from "../../../BaseMobFactory"
+import type { MobFactory } from "../../../Factory"
+import { getEqSlotByType, initEq } from "../../../../systems/eq/eq"
+import { DmgComponent } from "../../../components/combat/DmgComponent"
+import { ContainerEntityFactory } from "../../items/container/ContainerEntity"
 import {
   HelmetEntityFactory,
-  HelmetEntityVariants,
-} from "../../items/helmet/HelmetEntity";
-import { SwordEntityFactory } from "../../items/SwordEntity";
-import { InspectedComponent } from "../../../components/interaction/InspectedComponent";
-import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent";
+  HelmetEntityVariantsEnum,
+} from "../../items/helmet/HelmetEntity"
+import { SwordEntityFactory } from "../../items/SwordEntity"
+import { InspectedComponent } from "../../../components/interaction/InspectedComponent"
+import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent"
 
-export const RageBaitEntity = getEntityCreator("RAGE_BAIT");
+export const RageBaitEntity = getEntityCreator("RAGE_BAIT")
 
 const addLoot = (entity: Entity) => {
-  const backpack = ContainerEntityFactory.getBackpack();
+  const backpack = ContainerEntityFactory.getBackpack()
 
   if (getRng(entity).chance(5)) {
-    ContainerEntityFactory.setDroppable?.(backpack);
+    ContainerEntityFactory.setDroppable?.(backpack)
   }
   if (getRng(entity).chance(20)) {
-    addItemToContainer(backpack, SwordEntityFactory.getDefault());
+    addItemToContainer(backpack, SwordEntityFactory.getDefault())
   }
   if (getRng(entity).chance(20)) {
     addItemToContainer(
       backpack,
-      HelmetEntityFactory.getVariant?.(HelmetEntityVariants.DEFAULT),
-    );
+      HelmetEntityFactory.getVariant?.(HelmetEntityVariantsEnum.DEFAULT),
+    )
   }
 
   upsertRoleEntities(entity, {
-    [EntityRole.BACKPACK]: backpack,
-  });
-};
+    [EntityRoleEnum.BACKPACK]: backpack,
+  })
+}
 
 const addEq = (entity: Entity) => {
-  initEq(entity);
-  const sword = SwordEntityFactory.getDefault();
-  setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword);
+  initEq(entity)
+  const sword = SwordEntityFactory.getDefault()
+  setContainerItemAt(getEqSlotByType(entity, MainHandSlotComponent), 1, sword)
   patchComponentByType(sword, DmgComponent, (dmg) => {
-    dmg.min = 1;
-    dmg.max = 3;
-  });
-};
+    dmg.min = 1
+    dmg.max = 3
+  })
+}
 
 class RageBaitFactory extends BaseMobFactory {
   getDefault(): Entity {
-    const rageBait = RageBaitEntity();
+    const rageBait = RageBaitEntity()
 
     upsertComponents(
       rageBait,
@@ -84,19 +84,19 @@ class RageBaitFactory extends BaseMobFactory {
       ColorComponent(),
       HostilityComponent({
         hostility: getRng(rageBait).chance(1)
-          ? Hostility.HOSTILE
-          : Hostility.PEACEFUL,
+          ? HostilityEnum.HOSTILE
+          : HostilityEnum.PEACEFUL,
       }),
       PositionComponent(),
       UnawareComponent(),
       InspectedComponent(),
-      InspectDescComponent({text: 'It looks cute.'})
-    );
-    addLoot(rageBait);
-    addEq(rageBait);
+      InspectDescComponent({ text: "It looks cute." }),
+    )
+    addLoot(rageBait)
+    addEq(rageBait)
 
-    return rageBait;
+    return rageBait
   }
 }
 
-export const RageBaitEntityFactory: MobFactory = new RageBaitFactory();
+export const RageBaitEntityFactory: MobFactory = new RageBaitFactory()

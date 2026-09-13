@@ -1,7 +1,8 @@
 import type { GameAction } from "../actions/types"
-import { PlayerActionType, type PlayerAction } from "./types"
+import { PlayerActionTypeEnum, type PlayerAction } from "./types"
 
 export const isPlayerAction = (action: GameAction): action is PlayerAction => {
-  return Object.values(PlayerActionType).includes(action.type as PlayerActionType)
+  return Object.values(PlayerActionTypeEnum).includes(
+    action.type as PlayerActionTypeEnum,
+  )
 }
-

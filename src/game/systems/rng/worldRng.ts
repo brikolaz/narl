@@ -1,14 +1,14 @@
 import {
   ITEMS_RNG_NAMESPACE,
   MOBS_RNG_NAMESPACE,
-} from "../../../utils/constants";
-import { Random } from "./random";
-import type { Seed } from "./seed";
+} from "../../../utils/constants"
+import { Random } from "./random"
+import type { Seed } from "./seed"
 
 export type WorldRng = {
-  readonly mobs: Random;
-  readonly items: Random;
-};
+  readonly mobs: Random
+  readonly items: Random
+}
 
 export const createWorldRng = (seed: Seed): WorldRng =>
   Object.freeze({
@@ -20,4 +20,4 @@ export const createWorldRng = (seed: Seed): WorldRng =>
       seed,
       namespace: ITEMS_RNG_NAMESPACE,
     }),
-  });
+  })

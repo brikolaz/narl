@@ -1,12 +1,14 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 export type ExplodeComponentProps = {
-  min: number;
-  max: number;
-};
+  min: number
+  max: number
+}
 
-export const ExplodeComponent =
-  getComponentCreator<ExplodeComponentProps>("EXPLODE", {
+export const ExplodeComponent = getComponentCreator<ExplodeComponentProps>(
+  "EXPLODE",
+  {
     min: 0,
     max: 0,
-  });
+  },
+)

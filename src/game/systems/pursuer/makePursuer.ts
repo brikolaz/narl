@@ -1,51 +1,47 @@
-import type { Entity } from "../../../core/model/Entity";
-import { upsertComponents } from "../../../core/model/queries/components/add";
-import { getComponentByType } from "../../../core/model/queries/components/get";
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
-import { removeComponentsByType } from "../../../core/model/queries/components/remove";
-import { FovComponent } from "../../model/components/ai/FovComponent";
+import type { Entity } from "../../../core/model/Entity"
+import { upsertComponents } from "../../../core/model/queries/components/add"
+import { getComponentByType } from "../../../core/model/queries/components/get"
+import { patchComponentByType } from "../../../core/model/queries/components/patch"
+import { removeComponentsByType } from "../../../core/model/queries/components/remove"
+import { FovComponent } from "../../model/components/ai/FovComponent"
 import {
-  Hostility,
+  HostilityEnum,
   HostilityComponent,
-} from "../../model/components/ai/HostilityComponent";
-import { UnawareComponent } from "../../model/components/ai/UnawareComponent";
-import { DroppableComponent } from "../../model/components/interaction/DroppableComponent";
-import { MovableComponent } from "../../model/components/spatial/MovableComponent";
-import { ExpComponent } from "../../model/components/state/ExpComponent";
-import { clearContainer, getBackpack } from "../containers/containers";
-import { isMovable } from "../mobAi/move";
+} from "../../model/components/ai/HostilityComponent"
+import { UnawareComponent } from "../../model/components/ai/UnawareComponent"
+import { DroppableComponent } from "../../model/components/interaction/DroppableComponent"
+import { MovableComponent } from "../../model/components/spatial/MovableComponent"
+import { ExpComponent } from "../../model/components/state/ExpComponent"
+import { clearContainer, getBackpack } from "../containers/containers"
+import { isMovable } from "../mobAi/move"
 
 const makeBackpackNonDroppable = (mob: Entity): void => {
-  const backpack = getBackpack(mob);
+  const backpack = getBackpack(mob)
   if (!backpack) {
-    return;
+    return
   }
 
-  removeComponentsByType(backpack, DroppableComponent);
-  clearContainer(backpack);
-};
+  removeComponentsByType(backpack, DroppableComponent)
+  clearContainer(backpack)
+}
 
 export const makePursuer = (mob: Entity): void => {
-  removeComponentsByType(mob, UnawareComponent);
-  removeComponentsByType(mob, ExpComponent);
-  makeBackpackNonDroppable(mob);
+  removeComponentsByType(mob, UnawareComponent)
+  removeComponentsByType(mob, ExpComponent)
+  makeBackpackNonDroppable(mob)
 
   if (getComponentByType(mob, FovComponent)) {
     patchComponentByType(mob, FovComponent, (fov) => {
-      fov.range = Infinity;
-    });
+      fov.range = Infinity
+    })
   } else {
-    upsertComponents(mob, FovComponent({ range: Infinity }));
+    upsertComponents(mob, FovComponent({ range: Infinity }))
   }
 
-  patchComponentByType(
-    mob,
-    HostilityComponent,
-    (component) => {
-      component.hostility = Hostility.HOSTILE
-    }
-  );
+  patchComponentByType(mob, HostilityComponent, (component) => {
+    component.hostility = HostilityEnum.HOSTILE
+  })
   if (!isMovable(mob)) {
-    upsertComponents(mob, MovableComponent());
+    upsertComponents(mob, MovableComponent())
   }
-};
+}

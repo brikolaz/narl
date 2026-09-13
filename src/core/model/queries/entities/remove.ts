@@ -1,87 +1,87 @@
-import { EntityRole, type Entity } from "../../Entity";
-import type { Id } from "../../Id";
+import { EntityRoleEnum, type Entity } from "../../Entity"
+import type { Id } from "../../Id"
 import {
   getEntityRegistryRecordById,
   patchEntityRegistryRecordById,
   removeEntityRegistryRecordById,
-} from "../../registry/entityRegistry";
-import { removeComponents } from "../components/remove";
-import { getEntitiesByRole } from "./get";
-import { resolveEntity, type EntityArgument } from "./normalize";
+} from "../../registry/entityRegistry"
+import { removeComponents } from "../components/remove"
+import { getEntitiesByRole } from "./get"
+import { resolveEntity, type EntityArgument } from "./normalize"
 
 const removeDataEntity = (id: Id): void => {
-  const record = getEntityRegistryRecordById(id);
-  if (!record) return;
+  const record = getEntityRegistryRecordById(id)
+  if (!record) return
 
-  const parent = record.parent;
+  const parent = record.parent
   if (parent !== null && record.role !== null) {
-    const siblings = getEntitiesByRole(parent, record.role);
+    const siblings = getEntitiesByRole(parent, record.role)
     parent.entityByRole.set(
       record.role,
       new Set(siblings.filter((e) => e.id !== id)),
-    );
-    parent.entityById.delete(id);
+    )
+    parent.entityById.delete(id)
   }
 
   for (const componentId of record.entity.componentById.keys()) {
-    removeComponents(componentId);
+    removeComponents(componentId)
   }
 
   for (const childId of [...record.entity.entityById.keys()]) {
-    removeDataEntity(childId);
+    removeDataEntity(childId)
   }
 
-  removeEntityRegistryRecordById(id);
-};
+  removeEntityRegistryRecordById(id)
+}
 
 export const removeEntity = (entity: EntityArgument) => {
-  const source = resolveEntity(entity);
+  const source = resolveEntity(entity)
   if (!source) {
-    return;
+    return
   }
-  removeDataEntity(source.id);
-};
+  removeDataEntity(source.id)
+}
 
 export const removeEntitiesByRole = (
   parentEntity: Entity,
-  ...roles: EntityRole[]
+  ...roles: EntityRoleEnum[]
 ): void => {
   for (const role of roles) {
-    const entities = getEntitiesByRole(parentEntity, role);
+    const entities = getEntitiesByRole(parentEntity, role)
 
     for (const child of entities) {
-      removeEntity(child.id);
+      removeEntity(child.id)
     }
   }
-};
+}
 
 export const detachEntity = (entity: EntityArgument) => {
-  const source = resolveEntity(entity);
-  if (!source) return;
-  const record = getEntityRegistryRecordById(source.id);
+  const source = resolveEntity(entity)
+  if (!source) return
+  const record = getEntityRegistryRecordById(source.id)
 
   if (!record) {
-    return;
+    return
   }
 
-  const parent = record.parent === null ? undefined : record.parent;
+  const parent = record.parent === null ? undefined : record.parent
 
   if (!parent) {
-    return;
+    return
   }
 
-  const role = record.role ?? EntityRole.DEFAULT;
+  const role = record.role ?? EntityRoleEnum.DEFAULT
 
-  parent.entityById.delete(source.id);
+  parent.entityById.delete(source.id)
   parent.entityByRole.set(
     role,
     parent.entityByRole.get(role)?.difference(new Set([record.entity])) ??
       new Set(),
-  );
+  )
 
   patchEntityRegistryRecordById(source.id, (r) => ({
     ...r,
     parent: null,
     role: null,
-  }));
-};
+  }))
+}

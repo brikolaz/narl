@@ -2,26 +2,26 @@ import {
   MAP_SIZE,
   MAX_WORLD_POSITION,
   MIN_WORLD_POSITION,
-} from "../../../utils/constants";
-import { getPlayer } from "./player";
-import { getPosition } from "../position/position";
-import { STATE, type Tile } from "../../state/state";
+} from "../../../utils/constants"
+import { getPlayer } from "./player"
+import { getPosition } from "../position/position"
+import { STATE, type Tile } from "../../state/state"
 
 export const getVisibleTiles = (): Tile[] => {
-  const playerPosition = getPosition(getPlayer());
-  const half = Math.floor(MAP_SIZE / 2);
+  const playerPosition = getPosition(getPlayer())
+  const half = Math.floor(MAP_SIZE / 2)
 
-  let start = playerPosition - half;
+  let start = playerPosition - half
 
   if (start < MIN_WORLD_POSITION) {
-    start = MIN_WORLD_POSITION;
+    start = MIN_WORLD_POSITION
   }
 
-  const maxStart = MAX_WORLD_POSITION - MAP_SIZE + 1;
+  const maxStart = MAX_WORLD_POSITION - MAP_SIZE + 1
 
   if (start > maxStart) {
-    start = maxStart;
+    start = maxStart
   }
 
-  return STATE.world.slice(start, start + MAP_SIZE);
-};
+  return STATE.world.slice(start, start + MAP_SIZE)
+}

@@ -1,14 +1,14 @@
-import { STATE, type DeathContext } from "../../state/state";
-import { increaseTurn } from "../turn/turn";
+import { STATE, type DeathContext } from "../../state/state"
+import { increaseTurn } from "../turn/turn"
 
 export const getDeathContext = (): DeathContext => {
-  return STATE.death;
-};
+  return STATE.death
+}
 
 export const initDeath = (op: () => void) => {
-  op();
-};
+  op()
+}
 
 export const recordDeathTurn = (consumesTurn: boolean) => {
-  STATE.death.turn = consumesTurn ? increaseTurn(STATE.turn) : STATE.turn;
-};
+  STATE.death.turn = consumesTurn ? increaseTurn(STATE.turn) : STATE.turn
+}

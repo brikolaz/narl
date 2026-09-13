@@ -1,7 +1,9 @@
-import { getComponentCreator } from "../../../../core/model/Component";
+import { getComponentCreator } from "../../../../core/model/Component"
 
 export type DefComponentProps = {
-  def: number;
-};
+  def: number
+}
 
-export const DefComponent = getComponentCreator<DefComponentProps>("DEF", { def: 0 });
+export const DefComponent = getComponentCreator<DefComponentProps>("DEF", {
+  def: 0,
+})

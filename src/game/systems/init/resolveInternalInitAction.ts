@@ -1,7 +1,7 @@
-import { GAME_STATUS, STATE } from "../../state/state"
+import { GameStatusEnum, STATE } from "../../state/state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import type { InternalInitAction } from "../internal/type"
+import type { InternalInitAction } from "../internal/types"
 import { initGame } from "./initGame"
 
 export const resolveInternalInitAction = (
@@ -9,7 +9,7 @@ export const resolveInternalInitAction = (
 ): ActionResolution => {
   const action = new Action(gameAction)
 
-  if (STATE.status !== GAME_STATUS.INACTIVE) {
+  if (STATE.status !== GameStatusEnum.INACTIVE) {
     throw new Error("Can't reinitialize the game")
   }
 

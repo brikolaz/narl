@@ -1,11 +1,11 @@
-export class EXP {
-  private static visitedTile = 10;
+export class Exp {
+  private static baseVisitedTile = 10
 
-  static get VISITED_TILE() {
-    return this.visitedTile;
+  static get visitedTile() {
+    return this.baseVisitedTile
   }
 
-  static get INITIAL_VISITED_TILE() {
-    return this.visitedTile * 2;
+  static get initialVisitedTile() {
+    return this.baseVisitedTile * 2
   }
 }

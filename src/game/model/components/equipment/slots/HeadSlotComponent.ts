@@ -1,3 +1,3 @@
-import { getComponentCreator } from "../../../../../core/model/Component";
+import { getComponentCreator } from "../../../../../core/model/Component"
 
-export const HeadSlotComponent = getComponentCreator("HEAD_SLOT");
+export const HeadSlotComponent = getComponentCreator("HEAD_SLOT")

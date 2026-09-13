@@ -1,18 +1,16 @@
-import { actionResolvers } from "./resolvers";
-import type { ActionResolution, GameAction } from "../types";
+import { ACTION_RESOLVERS } from "./resolvers"
+import type { ActionResolution, GameAction } from "../types"
 
-export const resolveGameAction = (
-  action: GameAction,
-): ActionResolution => {
+export const resolveGameAction = (action: GameAction): ActionResolution => {
   const actionResolution = (
-    actionResolvers[action.type] as (
+    ACTION_RESOLVERS[action.type] as (
       internalAction: typeof action,
     ) => ActionResolution
-  )(action); // TODO: remove assertion
-  
-  if(!actionResolution) {
-    throw new Error("Invalid game action");
+  )(action) // TODO: remove assertion
+
+  if (!actionResolution) {
+    throw new Error("Invalid game action")
   }
-  
-  return actionResolution;
-};
+
+  return actionResolution
+}

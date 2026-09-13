@@ -1,33 +1,33 @@
-import type { Entity } from "../../../core/model/Entity";
-import { getComponentByType } from "../../../core/model/queries/components/get";
-import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { patchComponentByType } from "../../../core/model/queries/components/patch";
-import { ExpComponent } from "../../model/components/state/ExpComponent";
-import { VisitedComponent } from "../../model/components/state/VisitedComponent";
-import { EXP } from "./expTable";
+import type { Entity } from "../../../core/model/Entity"
+import { getComponentByType } from "../../../core/model/queries/components/get"
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { patchComponentByType } from "../../../core/model/queries/components/patch"
+import { ExpComponent } from "../../model/components/state/ExpComponent"
+import { VisitedComponent } from "../../model/components/state/VisitedComponent"
+import { Exp } from "./expTable"
 
 export const getExp = (entity: Entity) => {
   return (
     getComponentByType(entity, ExpComponent)?.exp ?? ExpComponent.defaults.exp
-  );
-};
+  )
+}
 
 export const addExp = (entity: Entity | undefined, exp: number): void => {
-  if (!entity) throw new Error("Cannot add exp to undefined entity.");
+  if (!entity) throw new Error("Cannot add exp to undefined entity.")
 
   patchComponentByType(entity, ExpComponent, (expComponent) => {
-    expComponent.exp += exp;
-  });
-};
+    expComponent.exp += exp
+  })
+}
 
 export const addExplorationExp = (
   floor: Entity,
   player: Entity | undefined,
 ): Entity => {
-  if (!player) throw new Error("Cannot add exp to undefined player.");
+  if (!player) throw new Error("Cannot add exp to undefined player.")
 
   if (!hasComponentsByType(floor, VisitedComponent)) {
-    addExp(player, EXP.VISITED_TILE);
+    addExp(player, Exp.visitedTile)
   }
-  return player;
-};
+  return player
+}

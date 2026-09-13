@@ -1,48 +1,48 @@
-import { removeComponentsByType } from "../../../core/model/queries/components/remove";
-import { getEntityById } from "../../../core/model/queries/entities/get";
-import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent";
-import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent";
-import { getMobById } from "../mobs/mobs";
-import { getPosition } from "../position/position";
-import { getTile } from "../world/tile";
-import { Action } from "../actions/action";
-import type { ActionResolution } from "../actions/types";
+import { removeComponentsByType } from "../../../core/model/queries/components/remove"
+import { getEntityById } from "../../../core/model/queries/entities/get"
+import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent"
+import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent"
+import { getMobById } from "../mobs/mobs"
+import { getPosition } from "../position/position"
+import { getTile } from "../world/tile"
+import { Action } from "../actions/action"
+import type { ActionResolution } from "../actions/types"
 import {
-  WorldActionType,
-  WorldKillActionReason,
+  WorldActionTypeEnum,
+  WorldKillActionReasonEnum,
   type WorldCleanupExplodeAction,
-} from "../world/types";
+} from "../world/types"
 
 export const resolveWorldCleanupExplodeAction = (
   gameAction: WorldCleanupExplodeAction,
 ): ActionResolution => {
-  const action = new Action(gameAction);
-  const { entityId } = gameAction;
+  const action = new Action(gameAction)
+  const { entityId } = gameAction
 
-  (() => {
-    const target = getEntityById(entityId);
+  ;(() => {
+    const target = getEntityById(entityId)
     if (!target) {
-      return;
+      return
     }
 
-    removeComponentsByType(target, ExplodeComponent);
-    removeComponentsByType(target, ExplodeRangeComponent);
+    removeComponentsByType(target, ExplodeComponent)
+    removeComponentsByType(target, ExplodeRangeComponent)
 
-    const position = getPosition(target);
-    const tile = getTile(position);
-    const mob = getMobById(tile, target.id);
+    const position = getPosition(target)
+    const tile = getTile(position)
+    const mob = getMobById(tile, target.id)
 
     if (!mob) {
-      return;
+      return
     }
 
     action.addPendingImmediateAction({
-      type: WorldActionType.KILL,
+      type: WorldActionTypeEnum.WORLD_KILL,
       entityId: mob.id,
       position,
-      reason: WorldKillActionReason.EXPLODE,
-    });
-  })();
+      reason: WorldKillActionReasonEnum.EXPLODE,
+    })
+  })()
 
-  return action.resolve();
-};
+  return action.resolve()
+}

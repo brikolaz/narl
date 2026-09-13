@@ -1,29 +1,29 @@
-import { getEntityCreator } from "../../../../../core/model/Entity";
-import { upsertComponents } from "../../../../../core/model/queries/components/add";
-import { ContainerComponent } from "../../../components/containers/ContainerComponent";
-import { SizeComponent } from "../../../components/containers/SizeComponent";
-import { NameComponent } from "../../../components/display/NameComponent";
-import { BootsComponent } from "../../../components/equipment/BootsComponent";
-import { BootsSlotComponent } from "../../../components/equipment/slots/BootsSlotComponent";
-import { PositionComponent } from "../../../components/spatial/PositionComponent";
-import type { ItemFactory } from "../../../Factory";
+import { getEntityCreator } from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
+import { ContainerComponent } from "../../../components/containers/ContainerComponent"
+import { SizeComponent } from "../../../components/containers/SizeComponent"
+import { NameComponent } from "../../../components/display/NameComponent"
+import { BootsComponent } from "../../../components/equipment/BootsComponent"
+import { BootsSlotComponent } from "../../../components/equipment/slots/BootsSlotComponent"
+import { PositionComponent } from "../../../components/spatial/PositionComponent"
+import type { ItemFactory } from "../../../Factory"
 
-const BootsSlotEntity = getEntityCreator("BOOTS_SLOT");
+const BootsSlotEntity = getEntityCreator("BOOTS_SLOT")
 
 export const BootsSlotEntityFactory: ItemFactory = {
   getDefault: () => {
-    const eqSlot = BootsSlotEntity();
+    const bootsSlot = BootsSlotEntity()
 
     upsertComponents(
-      eqSlot,
+      bootsSlot,
       NameComponent({ name: "Boots" }),
       BootsSlotComponent(),
       BootsComponent(),
       ContainerComponent(),
       SizeComponent({ size: 1 }),
       PositionComponent({ position: 6 }),
-    );
+    )
 
-    return eqSlot;
+    return bootsSlot
   },
-};
+}

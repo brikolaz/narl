@@ -1,40 +1,40 @@
-import { typedEntries } from "../../../../utils/typedEntries";
-import { EntityRole, type Entity } from "../../Entity";
-import type { Id } from "../../Id";
-import { getEntityById } from "./get";
+import { typedEntries } from "../../../../utils/typedEntries"
+import { EntityRoleEnum, type Entity } from "../../Entity"
+import type { Id } from "../../Id"
+import { getEntityById } from "./get"
 
 export type ChildrenInput =
   | (Entity | undefined)[]
-  | Partial<Record<EntityRole, (Entity | undefined)[] | Entity>>;
+  | Partial<Record<EntityRoleEnum, (Entity | undefined)[] | Entity>>
 
-export type EntityArgument = Entity | Id | undefined;
+export type EntityArgument = Entity | Id | undefined
 
 export const normalizeChildrenEntityRecords = (
   children: ChildrenInput,
-): Partial<Record<EntityRole, Entity[]>> => {
+): Partial<Record<EntityRoleEnum, Entity[]>> => {
   if (Array.isArray(children)) {
     return {
-      [EntityRole.DEFAULT]: children.filter(
+      [EntityRoleEnum.DEFAULT]: children.filter(
         (child): child is Entity => child !== undefined,
       ),
-    };
+    }
   }
 
-  const normalized: Partial<Record<EntityRole, Entity[]>> = {};
+  const normalized: Partial<Record<EntityRoleEnum, Entity[]>> = {}
 
   for (const [role, entities] of typedEntries(children)) {
     normalized[role] = [entities]
       .flat()
-      .filter((child): child is Entity => child !== undefined);
+      .filter((child): child is Entity => child !== undefined)
   }
 
-  return normalized;
-};
+  return normalized
+}
 
 export const resolveEntity = (entity: EntityArgument): Entity | undefined => {
   if (entity === undefined) {
-    return undefined;
+    return undefined
   }
 
-  return typeof entity === "number" ? getEntityById(entity) : entity;
-};
+  return typeof entity === "number" ? getEntityById(entity) : entity
+}

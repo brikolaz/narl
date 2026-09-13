@@ -2,7 +2,7 @@ import { getEntityCreator, type Entity } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
 import { COLORS } from "../../../../../utils/colors"
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants"
-import type { Enum, EnumType } from "../../../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../../../utils/types/Enum"
 import { getRng } from "../../../../systems/rng/rng"
 import { ContainerComponent } from "../../../components/containers/ContainerComponent"
 import { NestDepthComponent } from "../../../components/containers/NestDepthComponent"
@@ -18,12 +18,12 @@ import type { ItemFactory } from "../../../Factory"
 
 export const ContainerEntity = getEntityCreator("CONTAINER")
 
-const ContainerVariants = {
-  DEFAULT: "DEFAULT",
-  BACKPACK: "BACKPACK",
-  PLAYER_BACKPACK: "PLAYER_BACKPACK",
-} as const satisfies Enum
-type ContainerVariants = EnumType<typeof ContainerVariants>
+const ContainerEntityVariantsEnum = createEnum(
+  "DEFAULT",
+  "BACKPACK",
+  "PLAYER_BACKPACK",
+)
+type ContainerEntityVariantsEnum = EnumType<typeof ContainerEntityVariantsEnum>
 
 type ContainerFactory = ItemFactory & {
   getBackpack: () => Entity
@@ -40,7 +40,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "C" }),
       ContainerComponent(),
       SizeComponent({ size: getRng(container).range(2, 4) }),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
     return container
   },
@@ -55,7 +55,7 @@ export const ContainerEntityFactory: ContainerFactory = {
       ContainerComponent(),
       SizeComponent({ size: getRng(backpack).range(2, 4) }),
       NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
     return backpack
   },
@@ -69,18 +69,18 @@ export const ContainerEntityFactory: ContainerFactory = {
       GlyphComponent({ glyph: "*" }),
       ContainerComponent(),
       SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),
-      ColorComponent({ color: COLORS.TIER.COMMON }),
+      ColorComponent({ color: COLORS.tier.common }),
     )
     return backpack
   },
 
-  getVariant(variant: ContainerVariants) {
+  getVariant(variant: ContainerEntityVariantsEnum) {
     switch (variant) {
-      case ContainerVariants.DEFAULT:
+      case ContainerEntityVariantsEnum.DEFAULT:
         return this.getDefault()
-      case ContainerVariants.BACKPACK:
+      case ContainerEntityVariantsEnum.BACKPACK:
         return this.getBackpack()
-      case ContainerVariants.PLAYER_BACKPACK:
+      case ContainerEntityVariantsEnum.PLAYER_BACKPACK:
         return this.getPlayerBackpack()
     }
   },

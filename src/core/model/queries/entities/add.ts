@@ -1,5 +1,5 @@
 import { typedEntries } from "../../../../utils/typedEntries"
-import type { EntityRole, Entity } from "../../Entity"
+import type { Entity, EntityRoleEnum } from "../../Entity"
 import type { Id } from "../../Id"
 import { upsertRegistryEntities } from "../../registry/entityRegistry"
 import {
@@ -11,7 +11,7 @@ import { detachEntity } from "./remove"
 
 const upsertDataEntities = (
   entity: Entity,
-  children: Partial<Record<EntityRole, Entity[]>>,
+  children: Partial<Record<EntityRoleEnum, Entity[]>>,
 ): void => {
   for (const [entityRole, entities] of typedEntries(children)) {
     for (const child of entities) {
@@ -53,7 +53,7 @@ export const upsertEntities = (
 export const upsertRoleEntities = (
   entity: Entity | Id | undefined,
   childrenEntities: Partial<
-    Record<EntityRole, (Entity | undefined)[] | Entity>
+    Record<EntityRoleEnum, (Entity | undefined)[] | Entity>
   >,
 ): void => {
   _upsertEntities(entity, childrenEntities)

@@ -1,3 +1,3 @@
 export const increaseTurn = (turn: number): number => {
-  return turn +1;
-};
+  return turn + 1
+}

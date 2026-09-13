@@ -1,81 +1,81 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createGame, type Game } from "../../../game";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { createGame, type Game } from "../../../game"
 import {
   expectGameStateConsistent,
-  integrityCheckEnabled,
-} from "../../../tests/integrity";
-import { GAME_STATUS } from "../../state/state";
-import { InternalActionType } from "../internal/type";
-import * as seed from "../rng/seed";
-import { WorldActionType } from "../world/types";
+  isIntegrityCheckEnabled,
+} from "../../../tests/integrity"
+import { GameStatusEnum } from "../../state/state"
+import { InternalActionTypeEnum } from "../internal/types"
+import * as seed from "../rng/seed"
+import { WorldActionTypeEnum } from "../world/types"
 
 describe("resolveInternalResetGameAction", () => {
-  let game: Game;
+  let game: Game
 
   beforeEach(() => {
-    game = createGame();
-  });
+    game = createGame()
+  })
 
   afterEach(() => {
-    if (integrityCheckEnabled()) {
-      expectGameStateConsistent(game);
+    if (isIntegrityCheckEnabled()) {
+      expectGameStateConsistent(game)
     }
 
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
   it("generates the initial seed once when creating a game", () => {
     const generateSeed = vi
       .spyOn(seed, "generateSeed")
-      .mockReturnValue("initial-seed");
+      .mockReturnValue("initial-seed")
 
-    createGame();
+    createGame()
 
-    expect(generateSeed).toHaveBeenCalledOnce();
-    expect(game.state.seed).toBe("initial-seed");
-  });
+    expect(generateSeed).toHaveBeenCalledOnce()
+    expect(game.state.seed).toBe("initial-seed")
+  })
 
   describe("starts a new game with a new seed", () => {
     it("with GAME_OVER status", () => {
-      vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed");
+      vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed")
 
-      game.dispatch({ type: InternalActionType.INIT });
-      game.dispatch({ type: WorldActionType.PENDING_GAME_OVER });
-      game.dispatch({ type: WorldActionType.GAME_OVER });
-      game.dispatch();
+      game.dispatch({ type: InternalActionTypeEnum.INTERNAL_INIT })
+      game.dispatch({ type: WorldActionTypeEnum.WORLD_PENDING_GAME_OVER })
+      game.dispatch({ type: WorldActionTypeEnum.WORLD_GAME_OVER })
+      game.dispatch()
 
-      expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
-      expect(seed.generateSeed).toHaveBeenCalledOnce();
-      expect(game.state.seed).toBe("new-seed");
-    });
+      expect(game.state.status).toBe(GameStatusEnum.ACTIVE)
+      expect(seed.generateSeed).toHaveBeenCalledOnce()
+      expect(game.state.seed).toBe("new-seed")
+    })
 
     it("with WIN status", () => {
-      vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed");
+      vi.spyOn(seed, "generateSeed").mockReturnValue("new-seed")
 
-      game.dispatch({ type: WorldActionType.WIN });
-      game.dispatch();
+      game.dispatch({ type: WorldActionTypeEnum.WORLD_WIN })
+      game.dispatch()
 
-      expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
-      expect(seed.generateSeed).toHaveBeenCalledOnce();
-      expect(game.state.seed).toBe("new-seed");
-    });
-  });
+      expect(game.state.status).toBe(GameStatusEnum.ACTIVE)
+      expect(seed.generateSeed).toHaveBeenCalledOnce()
+      expect(game.state.seed).toBe("new-seed")
+    })
+  })
 
   describe("rejects reset", () => {
     it("while game is INACTIVE", () => {
-      expect(game.state.status).toBe(GAME_STATUS.INACTIVE);
+      expect(game.state.status).toBe(GameStatusEnum.INACTIVE)
       expect(() =>
-        game.dispatch({ type: InternalActionType.RESET_GAME }),
-      ).toThrow("Can't reset an active game");
-    });
+        game.dispatch({ type: InternalActionTypeEnum.INTERNAL_RESET_GAME }),
+      ).toThrow("Can't reset an active game")
+    })
 
     it("while game is ACTIVE", () => {
-      game.dispatch({ type: InternalActionType.INIT });
+      game.dispatch({ type: InternalActionTypeEnum.INTERNAL_INIT })
 
-      expect(game.state.status).toBe(GAME_STATUS.ACTIVE);
+      expect(game.state.status).toBe(GameStatusEnum.ACTIVE)
       expect(() =>
-        game.dispatch({ type: InternalActionType.RESET_GAME }),
-      ).toThrow("Can't reset an active game");
-    });
-  });
-});
+        game.dispatch({ type: InternalActionTypeEnum.INTERNAL_RESET_GAME }),
+      ).toThrow("Can't reset an active game")
+    })
+  })
+})

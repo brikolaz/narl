@@ -4,7 +4,7 @@ import type { ActionResolution } from "../actions/types"
 import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerWaitAction } from "../player/types"
 import { getRng } from "../rng/rng"
-import { WorldActionType } from "../world/types"
+import { WorldActionTypeEnum } from "../world/types"
 import { isInCombat } from "./combat"
 
 export const resolvePlayerWaitAction = (
@@ -18,13 +18,13 @@ export const resolvePlayerWaitAction = (
 
     if (inCombat) {
       return action.addPendingImmediateAction({
-        type: WorldActionType.INIT_BLOCK,
+        type: WorldActionTypeEnum.WORLD_INIT_BLOCK,
         entityId: player.id,
       })
     }
     const rng = getRng(player)
     action.addPendingImmediateAction({
-      type: WorldActionType.HEAL,
+      type: WorldActionTypeEnum.WORLD_HEAL,
       entityId: player.id,
       value: rng.range(4, 5),
     })

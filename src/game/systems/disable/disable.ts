@@ -1,7 +1,7 @@
-import type { Entity } from "../../../core/model/Entity";
-import { hasComponentsByType } from "../../../core/model/queries/components/has";
-import { DisabledComponent } from "../../model/components/state/DisabledComponent";
+import type { Entity } from "../../../core/model/Entity"
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { DisabledComponent } from "../../model/components/state/DisabledComponent"
 
 export const isDisabled = (entity: Entity): boolean => {
-  return hasComponentsByType(entity, DisabledComponent);
-};
+  return hasComponentsByType(entity, DisabledComponent)
+}

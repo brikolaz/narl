@@ -1,35 +1,35 @@
-import { STATE } from "../../../game/state/state";
-import type { Component } from "../Component";
-import type { Entity } from "../Entity";
-import type { Id } from "../Id";
+import { STATE } from "../../../game/state/state"
+import type { Component } from "../Component"
+import type { Entity } from "../Entity"
+import type { Id } from "../Id"
 
 type ComponentRegistryRecord<Props extends object | undefined = object> = {
-  component: Component<Props>;
-  parent: Entity;
-};
+  component: Component<Props>
+  parent: Entity
+}
 
 export type ComponentRegistryById = {
-  [id: Id]: ComponentRegistryRecord;
-};
+  [id: Id]: ComponentRegistryRecord
+}
 
 export const upsertComponentRegistryRecords = (
   ...records: ComponentRegistryRecord[]
 ) => {
   for (const record of records) {
-    STATE.componentRegistryById[record.component.id] = record;
+    STATE.componentRegistryById[record.component.id] = record
   }
-};
+}
 
 const removeComponentRegistryRecord = (component: Id) => {
-  delete STATE.componentRegistryById[component];
-};
+  delete STATE.componentRegistryById[component]
+}
 
 export const removeComponentRegistryRecords = (...components: Id[]) => {
   for (const id of components) {
-    removeComponentRegistryRecord(id);
+    removeComponentRegistryRecord(id)
   }
-};
+}
 
 export const getComponentRegistryRecord = (component: Id) => {
-  return STATE.componentRegistryById[component];
-};
+  return STATE.componentRegistryById[component]
+}

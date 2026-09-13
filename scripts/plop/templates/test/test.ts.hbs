@@ -1,0 +1,27 @@
+import { afterEach, beforeEach, describe, vi } from "vitest";
+import { createGame, type Game } from "{{gameImport}}";
+import { InternalActionTypeEnum } from "{{internalActionTypeImport}}";
+import { clearItems, clearMobs } from "{{testHelpersImport}}/clear";
+import {
+  expectGameStateConsistent,
+  isIntegrityCheckEnabled,
+} from "{{testHelpersImport}}/integrity";
+
+describe("{{describeName}}", () => {
+  let game: Game;
+
+  beforeEach(() => {
+    game = createGame();
+    game.dispatch({ type: InternalActionTypeEnum.INTERNAL_INIT });
+    clearMobs(game);
+    clearItems(game);
+  });
+
+  afterEach(() => {
+    if (isIntegrityCheckEnabled()) {
+      expectGameStateConsistent(game);
+    }
+
+    vi.restoreAllMocks();
+  });
+});

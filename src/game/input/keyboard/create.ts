@@ -1,20 +1,19 @@
-import { Direction } from "../../systems/turn/types";
-import type { KeyboardToAction } from "./chain";
-import { getAttackCommand } from "./commands/attackCommand";
-import { getDropCommand } from "./commands/dropCommand";
-import { getEquipCommand } from "./commands/equipCommand";
-import { getInspectCommand } from "./commands/inspectCommand";
-import { getMoveCommand } from "./commands/moveCommand";
-import { getMoveItemCommand } from "./commands/moveItemCommand";
-import { getPickUpCommand } from "./commands/pickupCommand";
-import { getPokeCommand } from "./commands/pokeCommand";
-import { getUnequipCommand } from "./commands/unequipCommand";
-import { getWaitCommand } from "./commands/waitCommand";
+import { DirectionEnum } from "../../systems/turn/types"
+import type { KeyboardToAction } from "./chain"
+import { getAttackCommand } from "./commands/attackCommand"
+import { getDropCommand } from "./commands/dropCommand"
+import { getEquipCommand } from "./commands/equipCommand"
+import { getInspectCommand } from "./commands/inspectCommand"
+import { getMoveCommand } from "./commands/moveCommand"
+import { getMoveItemCommand } from "./commands/moveItemCommand"
+import { getPickUpCommand } from "./commands/pickUpCommand"
+import { getPokeCommand } from "./commands/pokeCommand"
+import { getUnequipCommand } from "./commands/unequipCommand"
+import { getWaitCommand } from "./commands/waitCommand"
 
-export const createKeyboardToAction = ():
-  | KeyboardToAction => ({
-  ArrowLeft: getMoveCommand(Direction.LEFT),
-  ArrowRight: getMoveCommand(Direction.RIGHT),
+export const createKeyboardToAction = (): KeyboardToAction => ({
+  ArrowLeft: getMoveCommand(DirectionEnum.LEFT),
+  ArrowRight: getMoveCommand(DirectionEnum.RIGHT),
   KeyA: getAttackCommand(),
   KeyG: getPickUpCommand(),
   KeyI: getInspectCommand(),
@@ -24,4 +23,4 @@ export const createKeyboardToAction = ():
   KeyD: getDropCommand(),
   KeyP: getPokeCommand(),
   KeyW: getWaitCommand(),
-});
+})

@@ -4,4 +4,6 @@ releases
 tmp
 .vite
 .husky/_
+.agents
+scripts/plop/templates
 package-lock.json
