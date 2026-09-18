@@ -1,6 +1,6 @@
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { Action } from "../actions/action"
-import type { ActionResolution, GameAction } from "../actions/types"
+import type { ActionResolution } from "../actions/types"
 import type { WorldMobAiAction } from "../world/types"
 import { attack } from "./commands/attack"
 import { friendlyAttack } from "./commands/friendlyAttack"
@@ -17,16 +17,10 @@ export const resolveWorldMobAiAction = (
     if (!mob) {
       return
     }
-    const pendingActions: (GameAction | undefined)[] = [
-      attack(mob),
-      friendlyAttack(mob),
-      move(mob),
-    ]
-    pendingActions
-      .filter((pendingAction) => pendingAction !== undefined)
-      .forEach((pendingAction) => {
-        action.addPendingImmediateAction(pendingAction)
-      })
+    const pendingAction = attack(mob) ?? friendlyAttack(mob) ?? move(mob)
+    if (pendingAction) {
+      action.addPendingImmediateAction(pendingAction)
+    }
   })()
 
   return action.resolve()
