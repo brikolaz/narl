@@ -52,7 +52,6 @@ export const resolvePlayerMoveAction = (
       })
     }
 
-    // TODO: hardcoded for now
     if (nextPlayerPosition === END_GAME_GATE_POSITION) {
       return action.addPendingImmediateAction({
         type: WorldActionTypeEnum.WORLD_WIN,
