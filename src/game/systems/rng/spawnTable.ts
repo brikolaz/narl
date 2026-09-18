@@ -20,8 +20,8 @@ const SPAWN_TABLE = {
     [BoomerEntity.type, 15],
   ]),
   [ZoneEnum.LOW]: new Map([
-    [RageBaitEntity.type, 10],
-    [ZoomerEntity.type, 30],
+    [RageBaitEntity.type, 15],
+    [ZoomerEntity.type, 20],
     [BoomerEntity.type, 20],
   ]),
   [ZoneEnum.MID]: new Map(),
@@ -37,8 +37,8 @@ const SPAWN_PURSUER_TABLE = {
     [BoomerEntity.type, 15],
   ]),
   [ZoneEnum.LOW]: new Map([
-    [RageBaitEntity.type, 10],
-    [ZoomerEntity.type, 30],
+    [RageBaitEntity.type, 15],
+    [ZoomerEntity.type, 20],
     [BoomerEntity.type, 20],
   ]),
   [ZoneEnum.MID]: new Map(),
