@@ -46,6 +46,7 @@ export const resolveWorldInitBleedAction = (
         bleedId,
       },
       duration,
+      1,
     )
   })()
 
