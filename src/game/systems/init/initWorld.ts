@@ -1,5 +1,5 @@
 import { upsertComponents } from "../../../core/model/queries/components/add"
-import { MAP_SIZE } from "../../../utils/constants"
+import { END_GAME_GATE_POSITION, MAP_SIZE } from "../../../utils/constants"
 import { getDummyArray } from "../../../utils/getDummyArray"
 import { VisitedComponent } from "../../model/components/state/VisitedComponent"
 import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity"
@@ -38,9 +38,9 @@ export const initWorld = (): WorldState => {
 
   upsertComponents(world[0].floor, VisitedComponent())
 
-  world[49] = getDefaultTile(49)
-  world[49].items.push(WallEntityFactory.getDefault())
-  setPosition(world[49].items[0], 49)
+  world[END_GAME_GATE_POSITION] = getDefaultTile(END_GAME_GATE_POSITION)
+  world[END_GAME_GATE_POSITION].items.push(WallEntityFactory.getDefault())
+  setPosition(world[END_GAME_GATE_POSITION].items[0], END_GAME_GATE_POSITION)
 
   return world
 }
