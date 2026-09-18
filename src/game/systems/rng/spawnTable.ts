@@ -14,13 +14,16 @@ export const MobTypeEnum = createEnum("MOB", "PURSUER")
 type MobTypeEnum = EnumType<typeof MobTypeEnum>
 
 const SPAWN_TABLE = {
-  [ZoneEnum.START]: new Map(),
   [ZoneEnum.EARLY]: new Map([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [ZoneEnum.LOW]: new Map(),
+  [ZoneEnum.LOW]: new Map([
+    [RageBaitEntity.type, 10],
+    [ZoomerEntity.type, 30],
+    [BoomerEntity.type, 20],
+  ]),
   [ZoneEnum.MID]: new Map(),
   [ZoneEnum.HIGH]: new Map(),
   [ZoneEnum.LATE]: new Map(),
@@ -28,13 +31,16 @@ const SPAWN_TABLE = {
 } satisfies Record<ZoneEnum, SpawnTable>
 
 const SPAWN_PURSUER_TABLE = {
-  [ZoneEnum.START]: new Map(),
   [ZoneEnum.EARLY]: new Map([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [ZoneEnum.LOW]: new Map(),
+  [ZoneEnum.LOW]: new Map([
+    [RageBaitEntity.type, 10],
+    [ZoomerEntity.type, 30],
+    [BoomerEntity.type, 20],
+  ]),
   [ZoneEnum.MID]: new Map(),
   [ZoneEnum.HIGH]: new Map(),
   [ZoneEnum.LATE]: new Map(),

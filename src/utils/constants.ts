@@ -2,7 +2,7 @@ export const BASE_NAMESPACE = "narl"
 export const ECS_NAMESPACE = "ecs"
 
 export const MAP_SIZE = 9 as const
-export const MAX_WORLD_SIZE = 2137 as const
+export const MAX_WORLD_SIZE = 214 as const // ceil(2137)
 export const MIN_WORLD_POSITION = 0 as const
 export const MAX_WORLD_POSITION = MAX_WORLD_SIZE - 1
 
