@@ -57,7 +57,7 @@ class BoomerFactory extends BaseMobFactory {
       ColorComponent(),
       HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
       PositionComponent(),
-      ExplodeComponent({ min: 4, max: 8 }),
+      ExplodeComponent({ min: 5, max: 9 }),
       ExplodeRangeComponent({ range: boomer.rng.range(3, 5) }),
       UnawareComponent(),
       MovableComponent(),
