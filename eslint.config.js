@@ -127,6 +127,7 @@ export default defineConfig([
       "local/action-contract": "error",
       "local/ecs-component-contract": "error",
       "local/ecs-entity-contract": "error",
+      "local/entity-creator-inference-contract": "error",
       "local/enum-like-contract": "error",
       "local/module-constant-contract": "error",
       "local/predicate-contract": [

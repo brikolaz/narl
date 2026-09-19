@@ -1,25 +1,26 @@
-import type { Entity, EntityType } from "../../../core/model/Entity"
+import type { Entity } from "../../../core/model/Entity"
 import { createEnum, type EnumType } from "../../../utils/types/Enum"
 import { getMobFactory } from "../../model/entities/getFactory"
 import { BoomerEntity } from "../../model/entities/mobs/boomer/BoomerEntity"
+import type { MobEntityVariants } from "../../model/entities/mobs/factories"
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/RageBaitEntity"
 import { ZoomerEntity } from "../../model/entities/mobs/zoomer/ZoomerEntity"
 import { STATE } from "../../state/state"
 import { setPosition } from "../position/position"
 import { getZone, ZoneEnum } from "./zones"
 
-type SpawnTable = Map<EntityType, number>
+type SpawnTable = Map<MobEntityVariants, number>
 
 export const MobTypeEnum = createEnum("MOB", "PURSUER")
 type MobTypeEnum = EnumType<typeof MobTypeEnum>
 
 const SPAWN_TABLE = {
-  [ZoneEnum.EARLY]: new Map([
+  [ZoneEnum.EARLY]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [ZoneEnum.LOW]: new Map([
+  [ZoneEnum.LOW]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 15],
     [ZoomerEntity.type, 20],
     [BoomerEntity.type, 20],
@@ -31,12 +32,12 @@ const SPAWN_TABLE = {
 } satisfies Record<ZoneEnum, SpawnTable>
 
 const SPAWN_PURSUER_TABLE = {
-  [ZoneEnum.EARLY]: new Map([
+  [ZoneEnum.EARLY]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
     [BoomerEntity.type, 15],
   ]),
-  [ZoneEnum.LOW]: new Map([
+  [ZoneEnum.LOW]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 15],
     [ZoomerEntity.type, 20],
     [BoomerEntity.type, 20],
@@ -83,8 +84,8 @@ const rollMob = (
       const factory = getMobFactory(mobType)
 
       return type === MobTypeEnum.PURSUER
-        ? factory.getPursuer()
-        : factory.getDefault()
+        ? factory.getPursuer(mobType)
+        : factory.getVariant(mobType)
     }
   }
 }

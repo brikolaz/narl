@@ -6,7 +6,9 @@ import { GlyphComponent } from "../components/display/GlyphComponent"
 import type { Factory } from "../Factory"
 
 const FloorEntity = getEntityCreator("FLOOR")
-export const FloorEntityFactory: Factory = {
+export type FloorEntityVariants = typeof FloorEntity.type
+
+export const FloorEntityFactory: Factory<FloorEntityVariants> = {
   getDefault: () => {
     const floor = FloorEntity()
     upsertComponents(

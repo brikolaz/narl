@@ -1,6 +1,5 @@
 import { getEntityCreator, type Entity } from "../../../../core/model/Entity"
 import { upsertComponents } from "../../../../core/model/queries/components/add"
-import { createEnum, type EnumType } from "../../../../utils/types/Enum"
 import { getRng } from "../../../systems/rng/rng"
 import { GlyphComponent } from "../../components/display/GlyphComponent"
 import { NameComponent } from "../../components/display/NameComponent"
@@ -15,16 +14,16 @@ import type { ItemFactory } from "../../Factory"
 import { ColorComponent } from "../../components/display/ColorComponent"
 import { COLORS } from "../../../../utils/colors"
 
-const SwordEntityVariantsEnum = createEnum("DEFAULT", "LONG_SWORD")
-type SwordEntityVariantsEnum = EnumType<typeof SwordEntityVariantsEnum>
-
 const SwordEntity = getEntityCreator("SWORD")
+const LongSwordEntity = getEntityCreator("LONG_SWORD")
 
-type SwordEntityFactory = ItemFactory & {
+type SwordEntityVariants = typeof SwordEntity.type | typeof LongSwordEntity.type
+
+type SwordFactory = ItemFactory<SwordEntityVariants> & {
   getLongSword: () => Entity
 }
 
-export const SwordEntityFactory: SwordEntityFactory = {
+export const SwordEntityFactory: SwordFactory = {
   getDefault: () => {
     const sword = SwordEntity()
     const minDmg = getRng(sword).range(4, 6)
@@ -46,7 +45,7 @@ export const SwordEntityFactory: SwordEntityFactory = {
     return sword
   },
   getLongSword: () => {
-    const longSword = SwordEntity()
+    const longSword = LongSwordEntity()
     const minDmg = getRng(longSword).range(5, 6)
 
     upsertComponents(
@@ -67,12 +66,13 @@ export const SwordEntityFactory: SwordEntityFactory = {
 
     return longSword
   },
-  getVariant: (variant: SwordEntityVariantsEnum) => {
+  getVariant: (variant) => {
     switch (variant) {
-      case SwordEntityVariantsEnum.DEFAULT:
+      case SwordEntity.type:
         return SwordEntityFactory.getDefault()
-      case SwordEntityVariantsEnum.LONG_SWORD:
+      case LongSwordEntity.type:
         return SwordEntityFactory.getLongSword()
     }
+    throw new Error("Unknown sword variant")
   },
 }

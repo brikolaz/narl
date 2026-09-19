@@ -17,7 +17,11 @@ export const EntityRoleEnum = createEnum(
 )
 export type EntityRoleEnum = EnumType<typeof EntityRoleEnum>
 
-export type EntityType = symbol
+declare const entityTypeBrand: unique symbol
+
+export type EntityType<Type extends string = never> = [Type] extends [never]
+  ? symbol
+  : symbol & { readonly [entityTypeBrand]: Type }
 
 export type Entity = {
   type: EntityType
@@ -28,13 +32,18 @@ export type Entity = {
   entityByRole: Map<EntityRoleEnum, Set<Entity>>
 } & Unique
 
-export type EntityCreator = { (): Entity; type: EntityType }
+export type EntityCreator<Type extends string = string> = {
+  (): Entity
+  type: EntityType<Type>
+}
 
-export const getEntityCreator = (type: string): EntityCreator => {
+export const getEntityCreator = <const Type extends string>(
+  type: Type,
+): EntityCreator<Type> => {
   const typeNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type)
-  const entityType: ComponentType = Symbol(typeNamespace)
+  const entityType = Symbol(typeNamespace) as EntityType<Type>
 
-  const creator: EntityCreator = () => {
+  const creator: EntityCreator<Type> = () => {
     const id = STATE.getId()
     const entityNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type, id)
 

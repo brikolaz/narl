@@ -9,8 +9,9 @@ import { PositionComponent } from "../../../components/spatial/PositionComponent
 import type { ItemFactory } from "../../../Factory"
 
 const HeadSlotEntity = getEntityCreator("HEAD_SLOT")
+export type HeadSlotEntityVariants = typeof HeadSlotEntity.type
 
-export const HeadSlotEntityFactory: ItemFactory = {
+export const HeadSlotEntityFactory: ItemFactory<HeadSlotEntityVariants> = {
   getDefault: () => {
     const headSlot = HeadSlotEntity()
 

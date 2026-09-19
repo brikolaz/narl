@@ -1,6 +1,5 @@
 import { getEntityCreator, type Entity } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
-import { createEnum, type EnumType } from "../../../../../utils/types/Enum"
 import { getRng } from "../../../../systems/rng/rng"
 import { GlyphComponent } from "../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../components/display/NameComponent"
@@ -15,14 +14,15 @@ import type { ItemFactory } from "../../../Factory"
 import { ColorComponent } from "../../../components/display/ColorComponent"
 import { COLORS } from "../../../../../utils/colors"
 
-export const HelmetEntityVariantsEnum = createEnum("DEFAULT", "HORNED_HELMET")
-type HelmetEntityVariantsEnum = EnumType<typeof HelmetEntityVariantsEnum>
+export const HelmetEntity = getEntityCreator("HELMET")
+export const HornedHelmetEntity = getEntityCreator("HORNED_HELMET")
 
-type HelmetFactory = ItemFactory & {
+type HelmetEntityVariants =
+  typeof HelmetEntity.type | typeof HornedHelmetEntity.type
+
+type HelmetFactory = ItemFactory<HelmetEntityVariants> & {
   getHornedHelmet: () => Entity
 }
-
-export const HelmetEntity = getEntityCreator("HELMET")
 
 export const HelmetEntityFactory: HelmetFactory = {
   getDefault: () => {
@@ -46,7 +46,7 @@ export const HelmetEntityFactory: HelmetFactory = {
   },
 
   getHornedHelmet: () => {
-    const helmet = HelmetEntity()
+    const helmet = HornedHelmetEntity()
 
     upsertComponents(
       helmet,
@@ -69,12 +69,13 @@ export const HelmetEntityFactory: HelmetFactory = {
     return helmet
   },
 
-  getVariant: (variant: HelmetEntityVariantsEnum) => {
+  getVariant: (variant) => {
     switch (variant) {
-      case HelmetEntityVariantsEnum.DEFAULT:
+      case HelmetEntity.type:
         return HelmetEntityFactory.getDefault()
-      case HelmetEntityVariantsEnum.HORNED_HELMET:
+      case HornedHelmetEntity.type:
         return HelmetEntityFactory.getHornedHelmet()
     }
+    throw new Error("Unknown helmet variant")
   },
 }

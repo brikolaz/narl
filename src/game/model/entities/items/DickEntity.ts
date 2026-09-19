@@ -11,8 +11,9 @@ import { PickupableComponent } from "../../components/interaction/PickupableComp
 import type { ItemFactory } from "../../Factory"
 
 const DickEntity = getEntityCreator("DICK")
+export type DickEntityVariants = typeof DickEntity.type
 
-export const DickEntityFactory: ItemFactory = {
+export const DickEntityFactory: ItemFactory<DickEntityVariants> = {
   getDefault: () => {
     const dick = DickEntity()
     const dmg = getRng(dick).range(1, 3)

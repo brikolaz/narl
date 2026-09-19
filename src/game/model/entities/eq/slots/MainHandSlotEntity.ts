@@ -9,21 +9,23 @@ import { PositionComponent } from "../../../components/spatial/PositionComponent
 import type { ItemFactory } from "../../../Factory"
 
 const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT")
+export type MainHandSlotEntityVariants = typeof MainHandSlotEntity.type
 
-export const MainHandSlotEntityFactory: ItemFactory = {
-  getDefault: () => {
-    const mainHandSlot = MainHandSlotEntity()
+export const MainHandSlotEntityFactory: ItemFactory<MainHandSlotEntityVariants> =
+  {
+    getDefault: () => {
+      const mainHandSlot = MainHandSlotEntity()
 
-    upsertComponents(
-      mainHandSlot,
-      NameComponent({ name: "Main Hand" }),
-      MainHandSlotComponent(),
-      MainHandComponent(),
-      ContainerComponent(),
-      SizeComponent({ size: 1 }),
-      PositionComponent({ position: 2 }),
-    )
+      upsertComponents(
+        mainHandSlot,
+        NameComponent({ name: "Main Hand" }),
+        MainHandSlotComponent(),
+        MainHandComponent(),
+        ContainerComponent(),
+        SizeComponent({ size: 1 }),
+        PositionComponent({ position: 2 }),
+      )
 
-    return mainHandSlot
-  },
-}
+      return mainHandSlot
+    },
+  }

@@ -24,12 +24,12 @@ import { MovableComponent } from "../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../components/spatial/PositionComponent"
 import { UnawareComponent } from "../../../components/ai/UnawareComponent"
 import { BaseMobFactory } from "../../../BaseMobFactory"
-import type { MobFactory } from "../../../Factory"
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity"
 import { SwordEntityFactory } from "../../items/SwordEntity"
 import { patchComponentByType } from "../../../../../core/model/queries/components/patch"
 
 export const BoomerEntity = getEntityCreator("BOOMER")
+export type BoomerEntityVariants = typeof BoomerEntity.type
 
 const addLoot = (boomer: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack()
@@ -44,7 +44,7 @@ const addLoot = (boomer: Entity) => {
   })
 }
 
-class BoomerFactory extends BaseMobFactory {
+class BoomerFactory extends BaseMobFactory<BoomerEntityVariants> {
   getDefault(): Entity {
     const boomer = BoomerEntity()
 
@@ -69,8 +69,8 @@ class BoomerFactory extends BaseMobFactory {
     return boomer
   }
 
-  getPursuer(): Entity {
-    const boomer = super.getPursuer()
+  getPursuer(variant?: BoomerEntityVariants): Entity {
+    const boomer = super.getPursuer(variant)
     patchComponentByType(boomer, HostilityComponent, (component) => {
       component.hostility = HostilityEnum.FRIENDLY_HOSTILE
     })
@@ -78,4 +78,4 @@ class BoomerFactory extends BaseMobFactory {
   }
 }
 
-export const BoomerEntityFactory: MobFactory = new BoomerFactory()
+export const BoomerEntityFactory = new BoomerFactory()

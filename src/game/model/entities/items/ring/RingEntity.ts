@@ -20,6 +20,7 @@ import { COLORS } from "../../../../../utils/colors"
 import { ColorComponent } from "../../../components/display/ColorComponent"
 
 export const RingEntity = getEntityCreator("RING")
+export type RingEntityVariants = typeof RingEntity.type
 
 const addBonusStats = (entity: Entity) => {
   const bonusStats = BonusStatsEntityFactory.getDefault()
@@ -35,7 +36,7 @@ const addBonusStats = (entity: Entity) => {
   })
 }
 
-export const RingEntityFactory: ItemFactory = {
+export const RingEntityFactory: ItemFactory<RingEntityVariants> = {
   getDefault: () => {
     const ring = RingEntity()
 

@@ -1,15 +1,18 @@
-import type { Entity } from "../../core/model/Entity"
-import type { Enum } from "../../utils/types/Enum"
+import type { Entity, EntityType } from "../../core/model/Entity"
 
-export interface Factory<Variants extends Enum = Enum> {
+export interface Factory<Variants extends EntityType = EntityType> {
   getDefault(): Entity
-  getVariant?(variant: Variants[keyof Variants]): Entity
+  getVariant?(variant: Variants): Entity
 }
 
-export interface ItemFactory extends Factory {
+export interface ItemFactory<
+  Variants extends EntityType = EntityType,
+> extends Factory<Variants> {
   setDroppable?: (entity: Entity) => void
 }
 
-export interface MobFactory extends Factory {
-  getPursuer(): Entity
+export interface MobFactory<
+  Variants extends EntityType = EntityType,
+> extends Required<Factory<Variants>> {
+  getPursuer(variant?: Variants): Entity
 }

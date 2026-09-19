@@ -27,13 +27,13 @@ import { MovableComponent } from "../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../components/spatial/PositionComponent"
 import { UnawareComponent } from "../../../components/ai/UnawareComponent"
 import { BaseMobFactory } from "../../../BaseMobFactory"
-import type { MobFactory } from "../../../Factory"
 import { getEqSlotByType, initEq } from "../../../../systems/eq/eq"
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity"
 import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity"
 import { SwordEntityFactory } from "../../items/SwordEntity"
 
 export const ZoomerEntity = getEntityCreator("ZOOMER")
+export type ZoomerEntityVariants = typeof ZoomerEntity.type
 
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack()
@@ -61,7 +61,7 @@ const addEq = (entity: Entity) => {
   })
 }
 
-class ZoomerFactory extends BaseMobFactory {
+class ZoomerFactory extends BaseMobFactory<ZoomerEntityVariants> {
   getDefault(): Entity {
     const zoomer = ZoomerEntity()
 
@@ -87,4 +87,4 @@ class ZoomerFactory extends BaseMobFactory {
   }
 }
 
-export const ZoomerEntityFactory: MobFactory = new ZoomerFactory()
+export const ZoomerEntityFactory = new ZoomerFactory()

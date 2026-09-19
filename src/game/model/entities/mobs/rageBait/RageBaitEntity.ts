@@ -24,19 +24,16 @@ import { HpComponent } from "../../../components/combat/HpComponent"
 import { PositionComponent } from "../../../components/spatial/PositionComponent"
 import { UnawareComponent } from "../../../components/ai/UnawareComponent"
 import { BaseMobFactory } from "../../../BaseMobFactory"
-import type { MobFactory } from "../../../Factory"
 import { getEqSlotByType, initEq } from "../../../../systems/eq/eq"
 import { DmgComponent } from "../../../components/combat/DmgComponent"
 import { ContainerEntityFactory } from "../../items/container/ContainerEntity"
-import {
-  HelmetEntityFactory,
-  HelmetEntityVariantsEnum,
-} from "../../items/helmet/HelmetEntity"
+import { HelmetEntityFactory } from "../../items/helmet/HelmetEntity"
 import { SwordEntityFactory } from "../../items/SwordEntity"
 import { InspectedComponent } from "../../../components/interaction/InspectedComponent"
 import { InspectDescComponent } from "../../../components/interaction/InspectDescComponent"
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT")
+export type RageBaitEntityVariants = typeof RageBaitEntity.type
 
 const addLoot = (entity: Entity) => {
   const backpack = ContainerEntityFactory.getBackpack()
@@ -48,10 +45,7 @@ const addLoot = (entity: Entity) => {
     addItemToContainer(backpack, SwordEntityFactory.getDefault())
   }
   if (getRng(entity).chance(20)) {
-    addItemToContainer(
-      backpack,
-      HelmetEntityFactory.getVariant?.(HelmetEntityVariantsEnum.DEFAULT),
-    )
+    addItemToContainer(backpack, HelmetEntityFactory.getDefault())
   }
 
   upsertRoleEntities(entity, {
@@ -69,7 +63,7 @@ const addEq = (entity: Entity) => {
   })
 }
 
-class RageBaitFactory extends BaseMobFactory {
+class RageBaitFactory extends BaseMobFactory<RageBaitEntityVariants> {
   getDefault(): Entity {
     const rageBait = RageBaitEntity()
 
@@ -99,4 +93,4 @@ class RageBaitFactory extends BaseMobFactory {
   }
 }
 
-export const RageBaitEntityFactory: MobFactory = new RageBaitFactory()
+export const RageBaitEntityFactory = new RageBaitFactory()

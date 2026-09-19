@@ -1,12 +1,19 @@
-import type { Entity } from "../../core/model/Entity"
+import type { Entity, EntityType } from "../../core/model/Entity"
 import { makePursuer } from "../systems/pursuer/makePursuer"
 import type { MobFactory } from "./Factory"
 
-export abstract class BaseMobFactory implements MobFactory {
+export abstract class BaseMobFactory<
+  Variants extends EntityType,
+> implements MobFactory<Variants> {
   abstract getDefault(): Entity
 
-  getPursuer(): Entity {
-    const entity = this.getDefault()
+  getVariant(variant: Variants): Entity {
+    void variant
+    return this.getDefault()
+  }
+
+  getPursuer(variant?: Variants): Entity {
+    const entity = variant ? this.getVariant(variant) : this.getDefault()
     makePursuer(entity)
     return entity
   }

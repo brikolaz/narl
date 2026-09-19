@@ -9,21 +9,23 @@ import { PositionComponent } from "../../../components/spatial/PositionComponent
 import type { ItemFactory } from "../../../Factory"
 
 const OffhandSlotEntity = getEntityCreator("OFFHAND_SLOT")
+export type OffhandSlotEntityVariants = typeof OffhandSlotEntity.type
 
-export const OffhandSlotEntityFactory: ItemFactory = {
-  getDefault: () => {
-    const offhandSlot = OffhandSlotEntity()
+export const OffhandSlotEntityFactory: ItemFactory<OffhandSlotEntityVariants> =
+  {
+    getDefault: () => {
+      const offhandSlot = OffhandSlotEntity()
 
-    upsertComponents(
-      offhandSlot,
-      NameComponent({ name: "Offhand" }),
-      OffhandSlotComponent(),
-      OffhandComponent(),
-      ContainerComponent(),
-      SizeComponent({ size: 1 }),
-      PositionComponent({ position: 4 }),
-    )
+      upsertComponents(
+        offhandSlot,
+        NameComponent({ name: "Offhand" }),
+        OffhandSlotComponent(),
+        OffhandComponent(),
+        ContainerComponent(),
+        SizeComponent({ size: 1 }),
+        PositionComponent({ position: 4 }),
+      )
 
-    return offhandSlot
-  },
-}
+      return offhandSlot
+    },
+  }

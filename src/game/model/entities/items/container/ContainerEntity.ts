@@ -2,7 +2,6 @@ import { getEntityCreator, type Entity } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
 import { COLORS } from "../../../../../utils/colors"
 import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../utils/constants"
-import { createEnum, type EnumType } from "../../../../../utils/types/Enum"
 import { getRng } from "../../../../systems/rng/rng"
 import { ContainerComponent } from "../../../components/containers/ContainerComponent"
 import { NestDepthComponent } from "../../../components/containers/NestDepthComponent"
@@ -17,15 +16,15 @@ import { PickupableComponent } from "../../../components/interaction/PickupableC
 import type { ItemFactory } from "../../../Factory"
 
 export const ContainerEntity = getEntityCreator("CONTAINER")
+export const BackpackEntity = getEntityCreator("BACKPACK")
+export const PlayerBackpackEntity = getEntityCreator("PLAYER_BACKPACK")
 
-const ContainerEntityVariantsEnum = createEnum(
-  "DEFAULT",
-  "BACKPACK",
-  "PLAYER_BACKPACK",
-)
-type ContainerEntityVariantsEnum = EnumType<typeof ContainerEntityVariantsEnum>
+type ContainerEntityVariants =
+  | typeof ContainerEntity.type
+  | typeof BackpackEntity.type
+  | typeof PlayerBackpackEntity.type
 
-type ContainerFactory = ItemFactory & {
+type ContainerFactory = ItemFactory<ContainerEntityVariants> & {
   getBackpack: () => Entity
   getPlayerBackpack: () => Entity
 }
@@ -46,7 +45,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   },
 
   getBackpack() {
-    const backpack = ContainerEntity()
+    const backpack = BackpackEntity()
 
     upsertComponents(
       backpack,
@@ -61,7 +60,7 @@ export const ContainerEntityFactory: ContainerFactory = {
   },
 
   getPlayerBackpack() {
-    const backpack = ContainerEntity()
+    const backpack = PlayerBackpackEntity()
 
     upsertComponents(
       backpack,
@@ -74,15 +73,16 @@ export const ContainerEntityFactory: ContainerFactory = {
     return backpack
   },
 
-  getVariant(variant: ContainerEntityVariantsEnum) {
+  getVariant(variant) {
     switch (variant) {
-      case ContainerEntityVariantsEnum.DEFAULT:
+      case ContainerEntity.type:
         return this.getDefault()
-      case ContainerEntityVariantsEnum.BACKPACK:
+      case BackpackEntity.type:
         return this.getBackpack()
-      case ContainerEntityVariantsEnum.PLAYER_BACKPACK:
+      case PlayerBackpackEntity.type:
         return this.getPlayerBackpack()
     }
+    throw new Error("Unknown container variant")
   },
 
   setDroppable: (entity: Entity) => {

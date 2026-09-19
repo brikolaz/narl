@@ -6,8 +6,9 @@ import { ImpassableComponent } from "../components/spatial/ImpassableComponent"
 import type { Factory } from "../Factory"
 
 const WallEntity = getEntityCreator("WALL")
+export type WallEntityVariants = typeof WallEntity.type
 
-export const WallEntityFactory: Factory = {
+export const WallEntityFactory: Factory<WallEntityVariants> = {
   getDefault: () => {
     const wall = WallEntity()
 

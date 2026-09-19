@@ -9,8 +9,9 @@ import { PositionComponent } from "../../../components/spatial/PositionComponent
 import type { ItemFactory } from "../../../Factory"
 
 const ChestSlotEntity = getEntityCreator("CHEST_SLOT")
+export type ChestSlotEntityVariants = typeof ChestSlotEntity.type
 
-export const ChestSlotEntityFactory: ItemFactory = {
+export const ChestSlotEntityFactory: ItemFactory<ChestSlotEntityVariants> = {
   getDefault: () => {
     const chestSlot = ChestSlotEntity()
 

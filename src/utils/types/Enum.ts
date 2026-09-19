@@ -1,4 +1,4 @@
-export type Enum<Value extends string = string> = Record<string, Value>
+type Enum<Value extends string = string> = Record<string, Value>
 
 export type EnumType<EnumObject extends Enum> = EnumObject[keyof EnumObject]
 

@@ -2,9 +2,10 @@ import { getEntityCreator, type Entity } from "{{coreImport}}";
 import { BaseMobFactory } from "{{baseFactoryImport}}";
 import type { MobFactory } from "{{factoryImport}}";
 
-export const {{entityName}}Entity = getEntityCreator("{{entityType}}");
+const {{entityName}}Entity = getEntityCreator("{{entityType}}");
+export type {{entityName}}EntityVariants = typeof {{entityName}}Entity.type;
 
-class {{entityName}}Factory extends BaseMobFactory {
+class {{entityName}}Factory extends BaseMobFactory<{{entityName}}EntityVariants> {
   getDefault(): Entity {
     const {{entityVariable}} = {{entityName}}Entity();
 
@@ -12,4 +13,5 @@ class {{entityName}}Factory extends BaseMobFactory {
   }
 }
 
-export const {{entityName}}EntityFactory: MobFactory = new {{entityName}}Factory();
+export const {{entityName}}EntityFactory =
+  new {{entityName}}Factory();
