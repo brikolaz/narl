@@ -14,6 +14,7 @@ import { PositionComponent } from "../components/spatial/PositionComponent"
 import type { Factory } from "../Factory"
 import { initEq } from "../../systems/eq/eq"
 import { ContainerEntityFactory } from "./items/container/ContainerEntity"
+import { HealComponent } from "../components/HealComponent"
 
 const PlayerEntity = getEntityCreator("PLAYER")
 
@@ -31,6 +32,7 @@ export const PlayerEntityFactory: Factory = {
       NameComponent({ name: "You" }),
       HpComponent({ hp: 20, maxHp: 20 }),
       PositionComponent({ position: INITIAL_PLAYER_POSITION }),
+      HealComponent({ min: 4, max: 5 }),
     )
 
     const backpack = ContainerEntityFactory.getPlayerBackpack()

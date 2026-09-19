@@ -13,6 +13,7 @@ import { PlayerActionTypeEnum, type PlayerMoveAction } from "../player/types"
 import { WorldActionTypeEnum } from "../world/types"
 import { markAsVisited } from "./exploration"
 import { getNextPosition } from "./position"
+import { isSafe } from "../wait/combat"
 
 const move = (nextPlayerPosition: number): void => {
   const player = getPlayer()
@@ -34,7 +35,8 @@ export const resolvePlayerMoveAction = (
   const { direction } = gameAction
   const action = new Action(gameAction)
   ;(() => {
-    const currentPlayerPosition = getPosition(getPlayer())
+    const player = getPlayer()
+    const currentPlayerPosition = getPosition(player)
     const nextPlayerPosition = getNextPosition({
       currentPosition: currentPlayerPosition,
       direction,
@@ -60,6 +62,14 @@ export const resolvePlayerMoveAction = (
 
     discoverTiles(nextPlayerPosition)
     move(nextPlayerPosition)
+
+    if (isSafe()) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_REST,
+        entityId: player.id,
+      })
+    }
+
     action.success()
   })()
 

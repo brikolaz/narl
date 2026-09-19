@@ -23,6 +23,7 @@ import { resolveWorldBlockAction } from "../block/resolveWorldBlockAction"
 import { resolveWorldCleanupBlockAction } from "../block/resolveWorldCleanupBlockAction"
 import { resolveWorldInitBlockAction } from "../block/resolveWorldInitBlockAction"
 import { resolveWorldPokeAction } from "../poke/resolveWorldPokeAction"
+import { resolveWorldRestAction } from "../rest/resolveWorldRestAction"
 import { WorldActionTypeEnum, type WorldAction } from "./types"
 
 export const WORLD_ACTION_RESOLVERS = {
@@ -40,8 +41,10 @@ export const WORLD_ACTION_RESOLVERS = {
   [WorldActionTypeEnum.WORLD_MOB_AI]: resolveWorldMobAiAction,
   [WorldActionTypeEnum.WORLD_HEAL]: resolveWorldHealAction,
   [WorldActionTypeEnum.WORLD_GAME_OVER]: resolveWorldGameOverAction,
+
   [WorldActionTypeEnum.WORLD_PENDING_GAME_OVER]:
     resolveWorldPendingGameOverAction,
+
   [WorldActionTypeEnum.WORLD_WIN]: resolveWorldWinAction,
   [WorldActionTypeEnum.WORLD_EXPLODE]: resolveWorldExplodeAction,
   [WorldActionTypeEnum.WORLD_INIT_EXPLODE]: resolveWorldInitExplodeAction,
@@ -51,4 +54,5 @@ export const WORLD_ACTION_RESOLVERS = {
   [WorldActionTypeEnum.WORLD_CLEANUP_BLOCK]: resolveWorldCleanupBlockAction,
   [WorldActionTypeEnum.WORLD_INIT_BLOCK]: resolveWorldInitBlockAction,
   [WorldActionTypeEnum.WORLD_POKE]: resolveWorldPokeAction,
+  [WorldActionTypeEnum.WORLD_REST]: resolveWorldRestAction,
 } satisfies ActionResolverMap<WorldAction>

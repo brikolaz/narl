@@ -123,7 +123,7 @@ describe("wait and block", () => {
       type: PlayerActionTypeEnum.PLAYER_WAIT,
     })
     expect(resolution.pendingActions.map(({ action }) => action.type)).toEqual([
-      WorldActionTypeEnum.WORLD_HEAL,
+      WorldActionTypeEnum.WORLD_REST,
     ])
 
     game.dispatch({ type: PlayerActionTypeEnum.PLAYER_WAIT })

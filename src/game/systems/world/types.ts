@@ -27,6 +27,7 @@ export const WorldActionTypeEnum = createEnum(
   "WORLD_CLEANUP_BLOCK",
   "WORLD_INIT_BLOCK",
   "WORLD_POKE",
+  "WORLD_REST",
 )
 export const WorldKillActionReasonEnum = createEnum("ATTACK", "EXPLODE")
 export type WorldKillActionReasonEnum = EnumType<
@@ -162,6 +163,11 @@ export type WorldPokeAction = {
   direction: DirectionEnum
 }
 
+export type WorldRestAction = {
+  type: typeof WorldActionTypeEnum.WORLD_REST
+  entityId: Id
+}
+
 export type WorldAction =
   | WorldDropItemAction
   | WorldGainExpAction
@@ -187,3 +193,4 @@ export type WorldAction =
   | WorldCleanupBlockAction
   | WorldInitBlockAction
   | WorldPokeAction
+  | WorldRestAction
