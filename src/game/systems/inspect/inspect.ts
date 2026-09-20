@@ -9,7 +9,7 @@ import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent"
 import { DmgModComponent } from "../../model/components/combat/DmgModComponent"
-import { isContainer } from "../containers/containers"
+import { getMaxNestDepth, isContainer } from "../containers/containers"
 import { isWeapon } from "../attack/getAttackWeapon"
 import {
   getBaseChildrenDmgRange,
@@ -53,6 +53,8 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
   const stats = []
 
   if (isContainer(entity)) {
+    stats.push(`${getMaxNestDepth(entity)} DEPTH`)
+
     const childrenDmgRange = getBaseChildrenDmgRange(entity)
     const childrenDmgMod = getDmgMod(entity)
 
