@@ -2,9 +2,9 @@ import { EntityRoleEnum, type Entity } from "../../../core/model/Entity"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get"
 import { DmgComponent } from "../../model/components/combat/DmgComponent"
-import { DmgModComponent } from "../../model/components/combat/DmgModComponent"
+import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
 import { isContainer } from "../containers/containers"
-import { getBonusDmgMod } from "../bonusStats/bonusStats"
+import { getBonusDmgMul } from "../bonusStats/bonusStats"
 import { getRng } from "../rng/rng"
 import { getAttackWeapon } from "./getAttackWeapon"
 
@@ -23,10 +23,10 @@ const getOwnDmgRange = (entity: Entity): DmgRange => {
   }
 }
 
-export const getDmgMod = (entity: Entity): number => {
+export const getDmgMul = (entity: Entity): number => {
   return (
-    getComponentByType(entity, DmgModComponent)?.dmgMod ??
-    DmgModComponent.defaults.dmgMod
+    getComponentByType(entity, DmgMulComponent)?.dmgMul ??
+    DmgMulComponent.defaults.dmgMul
   )
 }
 
@@ -39,11 +39,11 @@ export const getBaseChildrenDmgRange = (entity: Entity): DmgRange => {
 
 export const getChildrenDmgRange = (entity: Entity): DmgRange => {
   const childrenDmg = getBaseChildrenDmgRange(entity)
-  const dmgMod = getDmgMod(entity)
+  const dmgMul = getDmgMul(entity)
 
   return {
-    min: Math.ceil(childrenDmg.min * dmgMod),
-    max: Math.ceil(childrenDmg.max * dmgMod),
+    min: Math.ceil(childrenDmg.min * dmgMul),
+    max: Math.ceil(childrenDmg.max * dmgMul),
   }
 }
 
@@ -55,10 +55,10 @@ export const getDmgRange = (entity: Entity): DmgRange => {
   }
 
   const childrenDmg = getBaseChildrenDmgRange(entity)
-  const dmgMod = getDmgMod(entity)
+  const dmgMul = getDmgMul(entity)
   return {
-    min: Math.ceil(ownDmg.min + childrenDmg.min * dmgMod),
-    max: Math.ceil(ownDmg.max + childrenDmg.max * dmgMod),
+    min: Math.ceil(ownDmg.min + childrenDmg.min * dmgMul),
+    max: Math.ceil(ownDmg.max + childrenDmg.max * dmgMul),
   }
 }
 
@@ -68,13 +68,13 @@ export const getAttackDmgRange = (source: Entity): DmgRange => {
     return DmgComponent.defaults
   }
 
-  const bonusDmgMod = getBonusDmgMod(source)
+  const bonusDmgMul = getBonusDmgMul(source)
 
   const weaponDmg = getDmgRange(weapon)
 
   return {
-    min: Math.ceil(weaponDmg.min * bonusDmgMod),
-    max: Math.ceil(weaponDmg.max * bonusDmgMod),
+    min: Math.ceil(weaponDmg.min * bonusDmgMul),
+    max: Math.ceil(weaponDmg.max * bonusDmgMul),
   }
 }
 

@@ -8,12 +8,12 @@ import {
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent"
-import { DmgModComponent } from "../../model/components/combat/DmgModComponent"
+import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
 import { getMaxNestDepth, isContainer } from "../containers/containers"
 import { isWeapon } from "../attack/getAttackWeapon"
 import {
   getBaseChildrenDmgRange,
-  getDmgMod,
+  getDmgMul,
   getDmgRange,
   getChildrenDmgRange,
 } from "../attack/dmg"
@@ -40,10 +40,10 @@ export const getInspectDesc = (entity: Entity) => {
 
 const getEffectiveDmgRange = (entity: Entity, eqSlot?: Entity) => {
   const { min, max } = getDmgRange(entity)
-  const modifier = eqSlot ? getDmgMod(eqSlot) : 1
+  const multiplier = eqSlot ? getDmgMul(eqSlot) : 1
   return {
-    min: Math.ceil(min * modifier),
-    max: Math.ceil(max * modifier),
+    min: Math.ceil(min * multiplier),
+    max: Math.ceil(max * multiplier),
   }
 }
 
@@ -56,7 +56,7 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
     stats.push(`${getMaxNestDepth(entity)} DEPTH`)
 
     const childrenDmgRange = getBaseChildrenDmgRange(entity)
-    const childrenDmgMod = getDmgMod(entity)
+    const childrenDmgMul = getDmgMul(entity)
 
     if (childrenDmgRange) {
       const effectiveChildrenDmgRange = getChildrenDmgRange(entity)
@@ -67,7 +67,7 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
 
       stats.push(
         `Contents: ${formatDmgRange(effectiveChildrenDmgRange)} DMG ` +
-          `(${formatDmgRange(childrenDmgRange)} x${childrenDmgMod})`,
+          `(${formatDmgRange(childrenDmgRange)} x${childrenDmgMul})`,
       )
     }
   } else {
@@ -86,10 +86,10 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
     const bonusStatsText: string[] = []
 
     if (
-      hasComponentsByType(bonusStats, DmgModComponent) &&
-      getDmgMod(bonusStats) !== DmgModComponent.defaults.dmgMod
+      hasComponentsByType(bonusStats, DmgMulComponent) &&
+      getDmgMul(bonusStats) !== DmgMulComponent.defaults.dmgMul
     ) {
-      bonusStatsText.push(`x${getDmgMod(bonusStats)} DMG`)
+      bonusStatsText.push(`x${getDmgMul(bonusStats)} DMG`)
     }
 
     if (bonusStatsText.length > 0) {

@@ -2,7 +2,7 @@ import type { Entity } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
 import { getRng } from "../../../../systems/rng/rng"
 import { DmgComponent } from "../../../components/combat/DmgComponent"
-import { DmgModComponent } from "../../../components/combat/DmgModComponent"
+import { DmgMulComponent } from "../../../components/combat/DmgMulComponent"
 import type { Manual } from "../../../Manual"
 
 export const ContainerEntityManual: Manual = {
@@ -10,7 +10,7 @@ export const ContainerEntityManual: Manual = {
     const dmg = getRng(item).range(1, 3)
     upsertComponents(
       item,
-      DmgModComponent({ dmgMod: 0.5 }),
+      DmgMulComponent({ dmgMul: 0.5 }),
       DmgComponent({ min: dmg, max: dmg }),
     )
   },

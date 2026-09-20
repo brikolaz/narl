@@ -6,7 +6,7 @@ import {
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get"
 import { DefComponent } from "../../model/components/combat/DefComponent"
-import { DefModComponent } from "../../model/components/combat/DefModComponent"
+import { DefMulComponent } from "../../model/components/combat/DefMulComponent"
 import { isContainer } from "../containers/containers"
 import { getEq } from "../eq/eq"
 
@@ -17,10 +17,10 @@ const getOwnDef = (entity?: Entity): number => {
   )
 }
 
-const getDefMod = (entity: Entity): number => {
+const getDefMul = (entity: Entity): number => {
   return (
-    getComponentByType(entity, DefModComponent)?.defMod ??
-    DefModComponent.defaults.defMod
+    getComponentByType(entity, DefMulComponent)?.defMul ??
+    DefMulComponent.defaults.defMul
   )
 }
 
@@ -36,7 +36,7 @@ export const getDef = (entity?: Entity): number => {
     (def, child) => def + getDef(child),
     0,
   )
-  return Math.ceil(ownDef + childrenDef * getDefMod(entity))
+  return Math.ceil(ownDef + childrenDef * getDefMul(entity))
 }
 
 export const getTotalDef = (entity: Entity): number => {
@@ -54,5 +54,5 @@ export const isArmor = (entity: Entity) => {
 }
 
 export const getEffectiveDef = (entity: Entity, eqSlot?: Entity) => {
-  return Math.ceil(getDef(entity) * (eqSlot ? getDefMod(eqSlot) : 1))
+  return Math.ceil(getDef(entity) * (eqSlot ? getDefMul(eqSlot) : 1))
 }

@@ -11,7 +11,7 @@ import { DisabledComponent } from "../../../../components/state/DisabledComponen
 import { RingComponent } from "../../../../components/equipment/RingComponent"
 import { InspectDescComponent } from "../../../../components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../../../components/interaction/InspectedComponent"
-import { DefModComponent } from "../../../../components/combat/DefModComponent"
+import { DefMulComponent } from "../../../../components/combat/DefMulComponent"
 import { SpikeComponent } from "../../../../components/combat/SpikeComponent"
 import type { Manual } from "../../../../Manual"
 import { getContainerItemAt } from "../../../../../systems/containers/containers"
@@ -39,7 +39,7 @@ export const PantsSlotEntityManual: Manual = {
       dropItem(itemAtSlot, playerPosition)
       const bleed = BleedComponent({ min: 4, max: 5 })
       upsertComponents(player, bleed)
-      upsertComponents(entity, DefModComponent({ defMod: 2 }))
+      upsertComponents(entity, DefMulComponent({ defMul: 2 }))
       action.addPendingImmediateAction({
         type: WorldActionTypeEnum.WORLD_INIT_BLEED,
         bleedId: bleed.id,

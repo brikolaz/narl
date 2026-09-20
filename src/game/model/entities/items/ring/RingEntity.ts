@@ -11,7 +11,7 @@ import { NameComponent } from "../../../components/display/NameComponent"
 import { PantsComponent } from "../../../components/equipment/PantsComponent"
 import { RemovableComponent } from "../../../components/equipment/RemovableComponent"
 import { RingComponent } from "../../../components/equipment/RingComponent"
-import { DmgModComponent } from "../../../components/combat/DmgModComponent"
+import { DmgMulComponent } from "../../../components/combat/DmgMulComponent"
 import { DroppableComponent } from "../../../components/interaction/DroppableComponent"
 import { PickupableComponent } from "../../../components/interaction/PickupableComponent"
 import type { ItemFactory } from "../../../Factory"
@@ -27,8 +27,8 @@ const addBonusStats = (entity: Entity) => {
 
   upsertComponents(
     bonusStats,
-    DmgModComponent({
-      dmgMod: getRng(entity).pick(1.5, 2) ?? DmgModComponent.defaults.dmgMod,
+    DmgMulComponent({
+      dmgMul: getRng(entity).pick(1.5, 2) ?? DmgMulComponent.defaults.dmgMul,
     }),
   )
   upsertRoleEntities(entity, {

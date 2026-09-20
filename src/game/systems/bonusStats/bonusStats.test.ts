@@ -18,7 +18,7 @@ import { PantsSlotComponent } from "../../model/components/equipment/slots/Pants
 import { ChestSlotComponent } from "../../model/components/equipment/slots/ChestSlotComponent"
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"
 import { DmgComponent } from "../../model/components/combat/DmgComponent"
-import { DmgModComponent } from "../../model/components/combat/DmgModComponent"
+import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
 import { BonusStatsEntityFactory } from "../../model/entities/BonusStatsEntity"
 import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity"
 import { getEqSlotByType, initEq } from "../eq/eq"
@@ -29,13 +29,13 @@ import { getBonusStats } from "./bonusStats"
 
 const TestEntity = getEntityCreator("TEST_ATTACK_DMG")
 
-const createArmor = (dmg: number, dmgMod: number): Entity => {
+const createArmor = (dmg: number, dmgMul: number): Entity => {
   const armor = TestEntity()
   const bonusStats = BonusStatsEntityFactory.getDefault()
   upsertComponents(
     bonusStats,
     DmgComponent({ min: dmg, max: dmg }),
-    DmgModComponent({ dmgMod }),
+    DmgMulComponent({ dmgMul }),
   )
   upsertRoleEntities(armor, {
     [EntityRoleEnum.BONUS_STATS]: bonusStats,
@@ -61,7 +61,7 @@ describe("attack damage", () => {
     vi.restoreAllMocks()
   })
 
-  it("adds armor damage before multiplying all armor damage modifiers", () => {
+  it("adds armor damage before applying all armor damage multipliers", () => {
     const source = TestEntity()
     const weapon = TestEntity()
     const armor = createArmor(2, 1.5)
@@ -88,7 +88,7 @@ describe("attack damage", () => {
     expect(getAttackDmgRange(source)).toEqual(DmgComponent.defaults)
   })
 
-  it("stores the ring damage modifier in its bonus stats entity", () => {
+  it("stores the ring damage multiplier in its bonus stats entity", () => {
     const ring = RingEntityFactory.getDefault()
     const bonusStats = getBonusStats(ring)
 
@@ -96,8 +96,8 @@ describe("attack damage", () => {
       bonusStats,
     ])
     expect(getEntitiesByRole(ring, EntityRoleEnum.DEFAULT)).toEqual([])
-    expect(getComponentByType(ring, DmgModComponent)).toBeUndefined()
-    expect(getComponentByType(bonusStats, DmgModComponent)?.dmgMod).toBeOneOf([
+    expect(getComponentByType(ring, DmgMulComponent)).toBeUndefined()
+    expect(getComponentByType(bonusStats, DmgMulComponent)?.dmgMul).toBeOneOf([
       1.5, 2,
     ])
   })
