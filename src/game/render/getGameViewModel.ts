@@ -64,7 +64,9 @@ const getHighlightedGlyphView = <Slot extends number>(
   return {
     ...glyph,
     background:
-      position === highlight.getHighlightedSlot() ? "#630057" : undefined,
+      position === highlight.getHighlightedSlot()
+        ? highlight.getBackground()
+        : undefined,
   }
 }
 

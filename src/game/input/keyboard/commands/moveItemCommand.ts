@@ -9,6 +9,8 @@ export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
   return [
     {
       action: () => {
+        UI_STATE.highlights.invSlot.setCommandStage(1)
+
         return getAdjacentSlotActions(
           (slot: InvSlot) => {
             sourceSlot = slot
@@ -25,6 +27,8 @@ export const getMoveItemCommand = (): KeyboardToActionCommand[] => {
     },
     {
       action: () => {
+        UI_STATE.highlights.invSlot.setCommandStage(2)
+
         return getAdjacentSlotActions(
           (slot: InvSlot) => {
             UI_STATE.highlights.invSlot.resetHighlightedSlot()
