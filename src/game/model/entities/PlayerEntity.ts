@@ -15,6 +15,7 @@ import type { Factory } from "../Factory"
 import { initEq } from "../../systems/eq/eq"
 import { ContainerEntityFactory } from "./items/container/ContainerEntity"
 import { HealComponent } from "../components/HealComponent"
+import { BlockComponent } from "../components/BlockComponent"
 
 const PlayerEntity = getEntityCreator("PLAYER")
 
@@ -33,6 +34,7 @@ export const PlayerEntityFactory: Factory = {
       HpComponent({ hp: 20, maxHp: 20 }),
       PositionComponent({ position: INITIAL_PLAYER_POSITION }),
       HealComponent({ min: 4, max: 5 }),
+      BlockComponent({ def: 1 }),
     )
 
     const backpack = ContainerEntityFactory.getPlayerBackpack()

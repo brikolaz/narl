@@ -11,7 +11,7 @@ import {
 } from "../../../tests/integrity"
 import { NameComponent } from "../../model/components/display/NameComponent"
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"
-import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
+import { BlockComponent } from "../../model/components/BlockComponent"
 import { DefComponent } from "../../model/components/combat/DefComponent"
 import { DmgComponent } from "../../model/components/combat/DmgComponent"
 import {
@@ -62,21 +62,11 @@ describe("wait and block", () => {
     ).toThrow("No entity to block")
   })
 
-  it("adds a DefComponent using hand DEF and a 1 DEF fallback per held item", () => {
+  it("adds a DefComponent using the entity's BlockComponent DEF", () => {
     const player = getPlayer()
-    const mainHandItem = TestItem()
-    const offhandItem = TestItem()
-    upsertComponents(mainHandItem, DefComponent({ def: 3 }))
-    setContainerItemAt(
-      getEqSlotByType(player, MainHandSlotComponent),
-      1,
-      mainHandItem,
-    )
-    setContainerItemAt(
-      getEqSlotByType(player, OffhandSlotComponent),
-      1,
-      offhandItem,
-    )
+    patchComponentByType(player, BlockComponent, (block) => {
+      block.def = 4
+    })
 
     const resolution = resolveWorldInitBlockAction({
       type: WorldActionTypeEnum.WORLD_INIT_BLOCK,
@@ -136,15 +126,9 @@ describe("wait and block", () => {
 
   it("does not heal in combat, logs block, and applies it for one world turn", () => {
     const player = getPlayer()
-    const heldItem = TestItem()
     patchComponentByType(player, HpComponent, (hp) => {
       hp.hp = 10
     })
-    setContainerItemAt(
-      getEqSlotByType(player, MainHandSlotComponent),
-      1,
-      heldItem,
-    )
 
     const attacker = TestAttacker()
     const weapon = TestItem()

@@ -24,7 +24,7 @@ const getDefMul = (entity: Entity): number => {
   )
 }
 
-export const getDef = (entity?: Entity): number => {
+const getDef = (entity?: Entity): number => {
   if (!entity) {
     return DefComponent.defaults.def
   }
