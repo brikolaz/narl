@@ -23,8 +23,8 @@ export type EntityType<Type extends string = never> = [Type] extends [never]
   ? symbol
   : symbol & { readonly [entityTypeBrand]: Type }
 
-export type Entity = {
-  type: EntityType
+export type Entity<Type extends string = never> = {
+  type: EntityType<Type>
   rng: Rng
   componentById: Map<Id, Component>
   componentByType: Map<ComponentType, Map<Id, Component>>
@@ -33,7 +33,7 @@ export type Entity = {
 } & Unique
 
 export type EntityCreator<Type extends string = string> = {
-  (): Entity
+  (): Entity<Type>
   type: EntityType<Type>
 }
 
@@ -47,18 +47,24 @@ export const getEntityCreator = <const Type extends string>(
     const id = STATE.getId()
     const entityNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type, id)
 
-    const entity = {
+    const entity: Entity<Type> = {
       id,
       type: entityType,
-      rng: new Random({ namespace: entityNamespace, seed: STATE.seed }),
-      componentById: new Map<Id, Component>(),
-      componentByType: new Map<ComponentType, Map<Id, Component>>(),
-      entityById: new Map<Id, Entity>(),
-      entityByRole: new Map<EntityRoleEnum, Set<Entity>>(),
+      rng: new Random({
+        namespace: entityNamespace,
+        seed: STATE.seed,
+      }),
+      componentById: new Map(),
+      componentByType: new Map(),
+      entityById: new Map(),
+      entityByRole: new Map(),
     }
+
     upsertRegistryEntities(entity)
+
     return entity
   }
+
   creator.type = entityType
 
   return creator
