@@ -34,7 +34,7 @@ const addComponents = (babyBoomer: Entity<"BABY_BOOMER">): void => {
     HpComponent({ hp: 5, maxHp: 5 }),
     ExpComponent({ exp: 25 }),
     GlyphComponent({ glyph: "B" }),
-    NameComponent({ name: "Boomer" }),
+    NameComponent({ name: "Baby Boomer" }),
     ColorComponent(),
     HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
     PositionComponent(),

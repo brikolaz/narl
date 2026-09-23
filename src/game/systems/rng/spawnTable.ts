@@ -1,6 +1,7 @@
 import type { Entity } from "../../../core/model/Entity"
 import { createEnum, type EnumType } from "../../../utils/types/Enum"
 import { getMobFactory } from "../../model/entities/getFactory"
+import { BabyBoomerEntity } from "../../model/entities/mobs/boomer/variants/BabyBoomer/BabyBoomerEntity"
 import { BoomerEntity } from "../../model/entities/mobs/boomer/variants/Boomer/BoomerEntity"
 import type { MobEntityVariants } from "../../model/entities/mobs/factories"
 import { RageBaitEntity } from "../../model/entities/mobs/rageBait/variants/RageBait/RageBaitEntity"
@@ -18,7 +19,7 @@ const SPAWN_TABLE = {
   [ZoneEnum.EARLY]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
-    [BoomerEntity.type, 15],
+    [BabyBoomerEntity.type, 15],
   ]),
   [ZoneEnum.LOW]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 15],
@@ -35,7 +36,7 @@ const SPAWN_PURSUER_TABLE = {
   [ZoneEnum.EARLY]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 10],
     [ZoomerEntity.type, 15],
-    [BoomerEntity.type, 15],
+    [BabyBoomerEntity.type, 15],
   ]),
   [ZoneEnum.LOW]: new Map<MobEntityVariants, number>([
     [RageBaitEntity.type, 15],

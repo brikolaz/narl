@@ -184,6 +184,10 @@ describe("Explode action cycle", () => {
     const left = placeMob(game.state, BoomerEntityFactory.getDefault(), 10)
     const right = placeMob(game.state, BoomerEntityFactory.getDefault(), 11)
     for (const boomer of [left, right]) {
+      patchComponentByType(boomer, HpComponent, (component) => {
+        component.hp = 5
+        component.maxHp = 5
+      })
       patchComponentByType(boomer, ExplodeComponent, (component) => {
         component.min = 5
         component.max = 5
@@ -222,6 +226,10 @@ describe("Explode action cycle", () => {
       playerPosition + 2,
     )
     for (const boomer of [left, right]) {
+      patchComponentByType(boomer, HpComponent, (component) => {
+        component.hp = 5
+        component.maxHp = 5
+      })
       patchComponentByType(boomer, ExplodeComponent, (component) => {
         component.min = 5
         component.max = 5
