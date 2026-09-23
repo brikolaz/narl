@@ -43,7 +43,7 @@ export const getContainerItems = (container: Entity): Entity[] => {
   return getEntitiesByRole(container, EntityRoleEnum.ITEM)
 }
 
-const getContainerSize = (container: Entity) => {
+export const getContainerSize = (container: Entity) => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container")
   }
