@@ -11,6 +11,7 @@ export const getEpitaph = () => {
     "Death, I guess",
     "Touching things you shouldn't",
     `Turn [${deathContext.turn}]`,
+    "Unforeseen consequences",
   ]
 
   return (
