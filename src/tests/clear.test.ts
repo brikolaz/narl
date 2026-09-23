@@ -2,10 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import type { Entity } from "../core/model/Entity"
 import { createGame, type Game } from "../game"
 import { MainHandSlotComponent } from "../game/model/components/equipment/slots/MainHandSlotComponent"
-import { SwordEntityFactory } from "../game/model/entities/items/SwordEntity"
-import { ContainerEntityFactory } from "../game/model/entities/items/container/ContainerEntity"
-import { HelmetEntityFactory } from "../game/model/entities/items/helmet/HelmetEntity"
-import { RageBaitEntityFactory } from "../game/model/entities/mobs/rageBait/RageBaitEntity"
+import { SwordEntityFactory } from "../game/model/entities/items/sword/factory"
+import { ContainerEntityFactory } from "../game/model/entities/items/container/factory"
+import { HelmetEntityFactory } from "../game/model/entities/items/helmet/factory"
+import { RageBaitEntityFactory } from "../game/model/entities/mobs/rageBait/factory"
 import {
   addItemToContainer,
   addItemToEntityBackpack,

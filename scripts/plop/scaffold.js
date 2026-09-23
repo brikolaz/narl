@@ -40,7 +40,17 @@ export const getFactoryImport = (folder) => {
   return `${"../".repeat(1 + depth)}Factory`
 }
 
+export const getManualImport = (folder) => {
+  const depth = folder ? folder.split("/").length : 0
+  return `${"../".repeat(1 + depth)}Manual`
+}
+
 export const getBaseMobFactoryImport = (folder) => {
   const depth = folder ? folder.split("/").length : 0
   return `${"../".repeat(1 + depth)}BaseMobFactory`
+}
+
+export const getBaseItemFactoryImport = (folder) => {
+  const depth = folder ? folder.split("/").length : 0
+  return `${"../".repeat(1 + depth)}BaseItemFactory`
 }

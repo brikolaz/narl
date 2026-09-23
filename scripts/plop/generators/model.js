@@ -1,6 +1,7 @@
 import { toCamelCase, toConstantCase } from "../names.js"
 import { formatGeneratedFiles } from "../format.js"
 import {
+  getBaseItemFactoryImport,
   getCoreImport,
   getFactoryImport,
   getScaffoldTarget,
@@ -53,24 +54,53 @@ export const registerEntityGenerator = (plop) => {
     ],
     actions: (answers) => {
       const { folder, name } = getScaffoldTarget(answers.target, "Entity")
-      const targetFolder = folder ? `${folder}/` : ""
-      const outputPath = `src/game/model/entities/${targetFolder}${name}Entity.ts`
+      const familyFolder = folder
+        ? `${folder}/${toCamelCase(name)}`
+        : toCamelCase(name)
+      const itemFactory =
+        folder === "items" ||
+        folder.startsWith("items/") ||
+        folder === "eq/slots" ||
+        folder.startsWith("eq/slots/")
+      const variantFolder = `${familyFolder}/variants/${name}`
+      const entityPath = `src/game/model/entities/${variantFolder}/${name}Entity.ts`
+      const variantsPath = `src/game/model/entities/${familyFolder}/variants/variants.ts`
+      const factoryPath = `src/game/model/entities/${familyFolder}/factory.ts`
 
       return [
         {
           type: "add",
-          path: outputPath,
+          path: entityPath,
           templateFile: "scripts/plop/templates/entity/Entity.ts.hbs",
           data: {
             entityName: name,
             entityVariable: toCamelCase(name),
             entityType: toConstantCase(name),
-            coreImport: getCoreImport(folder, "Entity"),
-            factoryImport: getFactoryImport(folder),
-            factoryType: "Factory",
+            coreImport: getCoreImport(variantFolder, "Entity"),
           },
         },
-        () => formatGeneratedFiles([outputPath]),
+        {
+          type: "add",
+          path: variantsPath,
+          templateFile: "scripts/plop/templates/entity/variants.ts.hbs",
+          data: { entityName: name },
+        },
+        {
+          type: "add",
+          path: factoryPath,
+          templateFile: itemFactory
+            ? "scripts/plop/templates/entity/ItemFactory.ts.hbs"
+            : "scripts/plop/templates/entity/factory.ts.hbs",
+          data: {
+            entityName: name,
+            coreImport: getCoreImport(familyFolder, "Entity"),
+            factoryImport: getFactoryImport(familyFolder),
+            factoryType: itemFactory ? "ItemFactory" : "Factory",
+            itemFactory,
+            baseItemFactoryImport: getBaseItemFactoryImport(familyFolder),
+          },
+        },
+        () => formatGeneratedFiles([entityPath, variantsPath, factoryPath]),
       ]
     },
   })

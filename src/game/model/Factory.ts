@@ -5,11 +5,9 @@ export interface Factory<Variants extends EntityType = EntityType> {
   getVariant?(variant: Variants): Entity
 }
 
-export interface ItemFactory<
-  Variants extends EntityType = EntityType,
-> extends Factory<Variants> {
-  setDroppable?: (entity: Entity) => void
-}
+export type ItemFactory<Variants extends EntityType = EntityType> = Required<
+  Factory<Variants>
+>
 
 export interface MobFactory<
   Variants extends EntityType = EntityType,

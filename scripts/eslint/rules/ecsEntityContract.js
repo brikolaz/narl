@@ -47,6 +47,7 @@ export const ecsEntityContract = {
     const basename = path.basename(filename, ".ts")
     const isManual = basename.endsWith("EntityManual")
     const isEntity = basename.endsWith("Entity")
+    const isVariantEntity = filename.includes("/variants/")
 
     const declarators = []
     return {
@@ -95,10 +96,13 @@ export const ecsEntityContract = {
         const factory = declarators.find(
           (node) => getName(node.id) === factoryName,
         )
-        for (const [declaration, expected] of [
-          [creator, basename],
-          [factory, factoryName],
-        ]) {
+        const requiredDeclarations = isVariantEntity
+          ? [[creator, basename]]
+          : [
+              [creator, basename],
+              [factory, factoryName],
+            ]
+        for (const [declaration, expected] of requiredDeclarations) {
           if (!declaration) {
             context.report({
               node: program,

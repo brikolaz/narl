@@ -1,0 +1,10 @@
+import type { Entity } from "{{coreImport}}";
+import type { {{factoryType}} } from "{{factoryImport}}";
+import { {{entityName}}Entity } from "./variants/{{entityName}}/{{entityName}}Entity";
+import type { {{entityName}}EntityVariants } from "./variants/variants";
+
+export const {{entityName}}EntityFactory: {{factoryType}}<{{entityName}}EntityVariants> = {
+  getDefault(): Entity {
+    return {{entityName}}Entity();
+  },
+};

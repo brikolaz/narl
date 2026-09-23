@@ -1,7 +1,7 @@
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { MAP_SIZE, MAX_WORLD_SIZE } from "../../../utils/constants"
 import { ImpassableComponent } from "../../model/components/spatial/ImpassableComponent"
-import { FloorEntityFactory } from "../../model/entities/FloorEntity"
+import { FloorEntityFactory } from "../../model/entities/floor/factory"
 import { STATE, type Tile } from "../../state/state"
 import { getRandomMob, MobTypeEnum } from "../rng/spawnTable"
 import { hasMobs } from "../mobs/mobs"

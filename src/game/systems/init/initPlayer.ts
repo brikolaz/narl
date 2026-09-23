@@ -1,4 +1,4 @@
-import { PlayerEntityFactory } from "../../model/entities/PlayerEntity"
+import { PlayerEntityFactory } from "../../model/entities/player/factory"
 import { getPosition } from "../position/position"
 import type { PlayerState } from "../../state/state"
 

@@ -1,13 +1,21 @@
-import { getEntityCreator } from "{{coreImport}}";
-import type { {{factoryType}} } from "{{factoryImport}}";
+import { getEntityCreator, type Entity } from "{{coreImport}}";
 
-const {{entityName}}Entity = getEntityCreator("{{entityType}}");
-export type {{entityName}}EntityVariants = typeof {{entityName}}Entity.type;
-
-export const {{entityName}}EntityFactory: {{factoryType}}<{{entityName}}EntityVariants> = {
-  getDefault: () => {
-    const {{entityVariable}} = {{entityName}}Entity();
-
-    return {{entityVariable}};
-  },
+const addComponents = (
+  {{entityVariable}}: Entity<"{{entityType}}">,
+): void => {
+  void {{entityVariable}};
 };
+
+const addLoot = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
+  void {{entityVariable}};
+};
+
+const addEq = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
+  void {{entityVariable}};
+};
+
+export const {{entityName}}Entity = getEntityCreator("{{entityType}}", {
+  components: addComponents,
+  eq: addEq,
+  loot: addLoot,
+});

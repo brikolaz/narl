@@ -1,17 +1,21 @@
 import { getEntityCreator, type Entity } from "{{coreImport}}";
-import { BaseMobFactory } from "{{baseFactoryImport}}";
-import type { MobFactory } from "{{factoryImport}}";
 
-const {{entityName}}Entity = getEntityCreator("{{entityType}}");
-export type {{entityName}}EntityVariants = typeof {{entityName}}Entity.type;
+const addComponents = (
+  {{entityVariable}}: Entity<"{{entityType}}">,
+): void => {
+  void {{entityVariable}};
+};
 
-class {{entityName}}Factory extends BaseMobFactory<{{entityName}}EntityVariants> {
-  getDefault(): Entity {
-    const {{entityVariable}} = {{entityName}}Entity();
+const addLoot = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
+  void {{entityVariable}};
+};
 
-    return {{entityVariable}};
-  }
-}
+const addEq = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
+  void {{entityVariable}};
+};
 
-export const {{entityName}}EntityFactory =
-  new {{entityName}}Factory();
+export const {{entityName}}Entity = getEntityCreator("{{entityType}}", {
+  components: addComponents,
+  eq: addEq,
+  loot: addLoot,
+});

@@ -37,8 +37,15 @@ export type EntityCreator<Type extends string = string> = {
   type: EntityType<Type>
 }
 
+type EntityCreatorOptions<Type extends string> = {
+  components?: (entity: Entity<Type>) => void
+  eq?: (entity: Entity<Type>) => void
+  loot?: (entity: Entity<Type>) => void
+}
+
 export const getEntityCreator = <const Type extends string>(
   type: Type,
+  { components, eq, loot }: EntityCreatorOptions<Type> = {},
 ): EntityCreator<Type> => {
   const typeNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type)
   const entityType = Symbol(typeNamespace) as EntityType<Type>
@@ -61,6 +68,9 @@ export const getEntityCreator = <const Type extends string>(
     }
 
     upsertRegistryEntities(entity)
+    components?.(entity)
+    eq?.(entity)
+    loot?.(entity)
 
     return entity
   }

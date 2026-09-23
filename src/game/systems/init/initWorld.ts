@@ -2,11 +2,12 @@ import { upsertComponents } from "../../../core/model/queries/components/add"
 import { END_GAME_GATE_POSITION, MAP_SIZE } from "../../../utils/constants"
 import { getDummyArray } from "../../../utils/getDummyArray"
 import { VisitedComponent } from "../../model/components/state/VisitedComponent"
-import { HelmetEntityFactory } from "../../model/entities/items/helmet/HelmetEntity"
-import { RingEntityFactory } from "../../model/entities/items/ring/RingEntity"
-import { SwordEntityFactory } from "../../model/entities/items/SwordEntity"
-import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/RageBaitEntity"
-import { WallEntityFactory } from "../../model/entities/WallEntity"
+import { HelmetEntityFactory } from "../../model/entities/items/helmet/factory"
+import { HornedHelmetEntity } from "../../model/entities/items/helmet/variants/HornedHelmet/HornedHelmetEntity"
+import { RingEntityFactory } from "../../model/entities/items/ring/factory"
+import { SwordEntityFactory } from "../../model/entities/items/sword/factory"
+import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/factory"
+import { WallEntityFactory } from "../../model/entities/wall/factory"
 import type { WorldState } from "../../state/state"
 import { setPosition } from "../position/position"
 import { getDefaultTile } from "../world/tile"
@@ -24,7 +25,7 @@ export const initWorld = (): WorldState => {
   world[3].items.push(sword)
   setPosition(sword, 3)
 
-  const hornedHelmet = HelmetEntityFactory.getHornedHelmet()
+  const hornedHelmet = HelmetEntityFactory.getVariant(HornedHelmetEntity.type)
   world[4].items.push(hornedHelmet)
   setPosition(hornedHelmet, 4)
 

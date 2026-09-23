@@ -1,0 +1,12 @@
+import type { Entity } from "{{coreImport}}";
+import { BaseMobFactory } from "{{baseFactoryImport}}";
+import { {{entityName}}Entity } from "./variants/{{entityName}}/{{entityName}}Entity";
+import type { {{entityName}}EntityVariants } from "./variants/variants";
+
+class {{entityName}}Factory extends BaseMobFactory<{{entityName}}EntityVariants> {
+  getDefault(): Entity {
+    return {{entityName}}Entity();
+  }
+}
+
+export const {{entityName}}EntityFactory = new {{entityName}}Factory();
