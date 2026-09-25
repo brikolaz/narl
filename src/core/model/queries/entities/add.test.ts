@@ -13,7 +13,7 @@ import {
 
 const TestEntity = getEntityCreator("TEST_ENTITY")
 
-describe("entity upserting", () => {
+describe("add", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

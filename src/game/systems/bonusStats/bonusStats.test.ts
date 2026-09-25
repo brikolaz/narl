@@ -43,7 +43,7 @@ const createArmor = (dmg: number, dmgMul: number): Entity => {
   return armor
 }
 
-describe("attack damage", () => {
+describe("bonusStats", () => {
   let game: Game
 
   beforeEach(() => {

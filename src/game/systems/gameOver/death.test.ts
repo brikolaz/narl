@@ -12,7 +12,7 @@ import { getPlayer } from "../player/player"
 import { InternalActionTypeEnum } from "../internal/types"
 import { recordDeathTurn } from "./death"
 
-describe("recordDeathTurn", () => {
+describe("death", () => {
   let game: Game
 
   beforeEach(() => {

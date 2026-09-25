@@ -46,7 +46,7 @@ const createTestMob = (game: Game, name: string, position: number): Entity => {
   return placeMob(game, mob, position)
 }
 
-describe("World Poke action", () => {
+describe("resolveWorldPokeAction", () => {
   let game: Game
 
   beforeEach(() => {

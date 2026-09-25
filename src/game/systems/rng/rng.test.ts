@@ -9,7 +9,7 @@ import { STATE } from "../../state/state"
 import { InternalActionTypeEnum } from "../internal/types"
 import { Random } from "./random"
 
-describe("world RNG", () => {
+describe("rng", () => {
   let game: Game
 
   beforeEach(() => {

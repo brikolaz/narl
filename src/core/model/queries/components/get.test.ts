@@ -17,7 +17,7 @@ const TestEntity = getEntityCreator("TEST_ENTITY")
 const TestComponent = getComponentCreator("TEST_COMPONENT")
 const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT")
 
-describe("component getters", () => {
+describe("get", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

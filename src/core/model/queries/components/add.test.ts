@@ -17,7 +17,7 @@ const TestEntity = getEntityCreator("TEST_ENTITY")
 const TestComponent = getComponentCreator("TEST_COMPONENT")
 const AnotherTestComponent = getComponentCreator("ANOTHER_TEST_COMPONENT")
 
-describe("upsertComponents", () => {
+describe("add", () => {
   let state: GameState
 
   beforeEach(() => {

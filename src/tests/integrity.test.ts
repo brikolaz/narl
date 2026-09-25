@@ -10,7 +10,7 @@ import { assert } from "../utils/assert"
 
 const originalTestIntegrity = process.env.TEST_INTEGRITY
 
-describe("integrity test helpers", () => {
+describe("integrity", () => {
   let game: Game
 
   beforeEach(() => {

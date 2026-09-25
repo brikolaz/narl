@@ -9,7 +9,7 @@ import { expectEntityStateConsistent } from "./tests"
 
 const TestEntity = getEntityCreator("TEST_ENTITY")
 
-describe("entity getters", () => {
+describe("get", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

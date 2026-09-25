@@ -20,7 +20,7 @@ const createAt = (position: number) => {
   return entity
 }
 
-describe("getDirection", () => {
+describe("position", () => {
   let game: Game
 
   beforeEach(() => {

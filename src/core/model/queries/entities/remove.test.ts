@@ -17,7 +17,7 @@ import {
 const TestEntity = getEntityCreator("TEST_ENTITY")
 const TestComponent = getComponentCreator("TEST_COMPONENT")
 
-describe("entity removal", () => {
+describe("remove", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

@@ -7,6 +7,7 @@ import { moduleConstantContract } from "./rules/moduleConstantContract.js"
 import { predicateContract } from "./rules/predicateContract.js"
 import { propertyContract } from "./rules/propertyContract.js"
 import { underscoreContract } from "./rules/underscoreContract.js"
+import { testDescribeContract } from "./rules/testDescribeContract.js"
 
 export default {
   rules: {
@@ -19,5 +20,6 @@ export default {
     "predicate-contract": predicateContract,
     "property-contract": propertyContract,
     "underscore-contract": underscoreContract,
+    "test-describe-contract": testDescribeContract,
   },
 }

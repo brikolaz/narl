@@ -35,7 +35,7 @@ import { resolvePlayerWaitAction } from "./resolvePlayerWaitAction"
 const TestItem = getEntityCreator("TEST_BLOCK_ITEM")
 const TestAttacker = getEntityCreator("TEST_BLOCK_ATTACKER")
 
-describe("wait and block", () => {
+describe("resolvePlayerWaitAction", () => {
   let game: Game
 
   beforeEach(() => {

@@ -11,7 +11,7 @@ import { expectComponentStateConsistent } from "./tests"
 const TestEntity = getEntityCreator("TEST_ENTITY")
 const TestComponent = getComponentCreator("TEST_COMPONENT")
 
-describe("component normalization", () => {
+describe("normalize", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

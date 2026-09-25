@@ -9,7 +9,7 @@ import { InternalActionTypeEnum } from "../../internal/types"
 import { Action } from "../action"
 import { drainResolution, type DrainContext } from "./dispatchGameAction"
 
-describe("drainResolution", () => {
+describe("dispatchGameAction", () => {
   let game: Game
 
   beforeEach(() => {

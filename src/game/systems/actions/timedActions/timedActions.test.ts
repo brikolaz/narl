@@ -10,7 +10,7 @@ import { Action } from "../action"
 import { InternalActionTypeEnum } from "../../internal/types"
 import { applyTimedAction, dequeueTimedActions } from "./timedActions"
 
-describe("applyTimedAction", () => {
+describe("timedActions", () => {
   let game: Game
 
   beforeEach(() => {

@@ -17,7 +17,7 @@ const flushPickupLog = () => {
   flushLogs([{ action, message: action.message }], true)
 }
 
-describe("flushLogs", () => {
+describe("log", () => {
   let game: Game
 
   beforeEach(() => {

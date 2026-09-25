@@ -136,6 +136,7 @@ export default defineConfig([
       ],
       "local/property-contract": "error",
       "local/underscore-contract": "error",
+      "local/test-describe-contract": "error",
     },
   },
 ])

@@ -73,7 +73,7 @@ const createTargetEntity = (state: GameState, position: number): Entity => {
   return placeMob(state, target, position)
 }
 
-describe("Explode action cycle", () => {
+describe("explode", () => {
   let game: Game
 
   beforeEach(() => {

@@ -22,7 +22,7 @@ import { assert } from "../utils/assert"
 import { clearItems, clearMobs } from "./clear"
 import { expectGameStateConsistent, isIntegrityCheckEnabled } from "./integrity"
 
-describe("world cleanup test helpers", () => {
+describe("clear", () => {
   let game: Game
 
   beforeEach(() => {

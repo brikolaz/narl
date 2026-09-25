@@ -4,7 +4,7 @@ import { Random } from "./random"
 const createRandom = (): Random =>
   new Random({ seed: "test-seed", namespace: "test" })
 
-describe("Random.pick", () => {
+describe("random", () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })

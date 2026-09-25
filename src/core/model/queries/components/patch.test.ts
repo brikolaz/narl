@@ -24,7 +24,7 @@ const TestComponent = getComponentCreator<TestComponentProps>(
   { value: 0 },
 )
 
-describe("component patching", () => {
+describe("patch", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()

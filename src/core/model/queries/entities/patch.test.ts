@@ -8,7 +8,7 @@ import { expectEntityRoot, expectEntityStateConsistent } from "./tests"
 
 const TestEntity = getEntityCreator("TEST_ENTITY")
 
-describe("patchEntity", () => {
+describe("patch", () => {
   let state: GameState
   beforeEach(() => {
     state = initState()
