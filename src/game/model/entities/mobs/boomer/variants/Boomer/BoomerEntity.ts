@@ -65,7 +65,9 @@ const addLoot = (boomer: Entity<"BOOMER">): void => {
             getRng(longSword).pick(1.5, 2) ?? DmgMulComponent.defaults.dmgMul,
         }),
       )
-      upsertRoleEntities(boomer, { [EntityRoleEnum.BONUS_STATS]: bonusStats })
+      upsertRoleEntities(longSword, {
+        [EntityRoleEnum.BONUS_STATS]: bonusStats,
+      })
     }
   }
 
