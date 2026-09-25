@@ -203,6 +203,7 @@ describe("pursuer", () => {
     const player = getPlayer()
     setPosition(player, 10)
     discoverTiles(5)
+    clearMobs(game)
     for (let i = 0; i < 10; i++) {
       const wall = WallEntityFactory.getDefault()
       setPosition(wall, i)
