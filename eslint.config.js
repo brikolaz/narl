@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint"
 import unusedImports from "eslint-plugin-unused-imports"
 import { defineConfig, globalIgnores } from "eslint/config"
 import localRules from "./scripts/eslint/index.js"
+import chaiFriendly from "eslint-plugin-chai-friendly"
 
 export default defineConfig([
   globalIgnores(["dist"]),
@@ -137,6 +138,16 @@ export default defineConfig([
       "local/property-contract": "error",
       "local/underscore-contract": "error",
       "local/test-describe-contract": "error",
+    },
+  },
+  {
+    files: ["**/*.test.ts"],
+    plugins: {
+      "chai-friendly": chaiFriendly,
+    },
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "off",
+      "chai-friendly/no-unused-expressions": "error",
     },
   },
 ])
