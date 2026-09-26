@@ -3,8 +3,10 @@ import {
   type Entity,
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
+import { COLORS } from "../../../../../../../utils/colors"
 import { getRng } from "../../../../../../systems/rng/rng"
 import { DmgComponent } from "../../../../../components/combat/DmgComponent"
+import { ColorComponent } from "../../../../../components/display/ColorComponent"
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
@@ -19,6 +21,7 @@ const addComponents = (dick: Entity<"DICK">): void => {
     GlyphComponent({ glyph: "=" }),
     NameComponent({ name: "Dick" }),
     DmgComponent({ min: dmg, max: dmg }),
+    ColorComponent({ color: COLORS.tier.common }),
     RemovableComponent(),
     MainHandComponent(),
     PickupableComponent(),
