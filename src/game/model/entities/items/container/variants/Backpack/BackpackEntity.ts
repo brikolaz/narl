@@ -16,7 +16,7 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
   upsertComponents(
     backpack,
     NameComponent({ name: "Backpack" }),
-    GlyphComponent({ glyph: "b" }),
+    GlyphComponent({ glyph: "d" }),
     ContainerComponent(),
     SizeComponent({ size: getRng(backpack).range(2, 4) }),
     NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
