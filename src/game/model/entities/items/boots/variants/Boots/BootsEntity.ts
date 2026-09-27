@@ -9,32 +9,32 @@ import { DefComponent } from "../../../../../components/combat/DefComponent"
 import { ColorComponent } from "../../../../../components/display/ColorComponent"
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
-import { HeadComponent } from "../../../../../components/equipment/HeadComponent"
+import { BootsComponent } from "../../../../../components/equipment/BootsComponent"
 import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
 import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
 
-const addComponents = (helmet: Entity<"HELMET">): void => {
+const addComponents = (boots: Entity<"BOOTS">): void => {
   upsertComponents(
-    helmet,
-    NameComponent({ name: "Helmet" }),
-    GlyphComponent({ glyph: "h" }),
+    boots,
+    NameComponent({ name: "Boots" }),
+    GlyphComponent({ glyph: "b" }),
     RemovableComponent(),
-    HeadComponent(),
-    DefComponent({ def: getRng(helmet).range(1, 2) }),
+    BootsComponent(),
+    DefComponent({ def: getRng(boots).range(1, 2) }),
     PickupableComponent(),
     DroppableComponent(),
     ColorComponent({ color: COLORS.tier.common }),
   )
 }
-const addLoot = (helmet: Entity<"HELMET">): void => {
-  void helmet
+const addLoot = (boots: Entity<"BOOTS">): void => {
+  void boots
 }
-const addEq = (helmet: Entity<"HELMET">): void => {
-  void helmet
+const addEq = (boots: Entity<"BOOTS">): void => {
+  void boots
 }
 
-export const HelmetEntity = getEntityCreator("HELMET", {
+export const BootsEntity = getEntityCreator("BOOTS", {
   components: addComponents,
   eq: addEq,
   loot: addLoot,

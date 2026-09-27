@@ -1,21 +1,25 @@
-import type { Entity } from "../../../../../core/model/Entity"
+import type { EntityByVariant } from "../../../../../core/model/Entity"
+import { upsertComponents } from "../../../../../core/model/queries/components/add"
 import { BaseItemFactory } from "../../../BaseItemFactory"
+import { DroppableComponent } from "../../../components/interaction/DroppableComponent"
 import { BackpackEntity } from "./variants/Backpack/BackpackEntity"
 import { ContainerEntity } from "./variants/Container/ContainerEntity"
 import { PlayerBackpackEntity } from "./variants/PlayerBackpack/PlayerBackpackEntity"
 import type { ContainerEntityVariants } from "./variants/variants"
 
 class ContainerFactory extends BaseItemFactory<ContainerEntityVariants> {
-  getDefault(): Entity {
+  getDefault(): ReturnType<typeof ContainerEntity> {
     return ContainerEntity()
   }
-  getBackpack(): Entity {
+  getBackpack(): ReturnType<typeof BackpackEntity> {
     return BackpackEntity()
   }
-  getPlayerBackpack(): Entity {
+  getPlayerBackpack(): ReturnType<typeof PlayerBackpackEntity> {
     return PlayerBackpackEntity()
   }
-  getVariant(variant: ContainerEntityVariants): Entity {
+  getVariant(
+    variant: ContainerEntityVariants,
+  ): EntityByVariant<ContainerEntityVariants> {
     switch (variant) {
       case BackpackEntity.type:
         return BackpackEntity()
@@ -24,6 +28,9 @@ class ContainerFactory extends BaseItemFactory<ContainerEntityVariants> {
       default:
         return this.getDefault()
     }
+  }
+  setDroppable(entity: EntityByVariant<ContainerEntityVariants>): void {
+    upsertComponents(entity, DroppableComponent())
   }
 }
 

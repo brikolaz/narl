@@ -23,7 +23,7 @@ const addComponents = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
     GlyphComponent({ glyph: "h" }),
     RemovableComponent(),
     HeadComponent(),
-    DefComponent({ def: getRng(hornedHelmet).range(3, 4) }),
+    DefComponent({ def: getRng(hornedHelmet).range(2, 3) }),
     PickupableComponent(),
     DroppableComponent(),
     InspectDescComponent({ times: 5, text: "It has horns" }),

@@ -22,10 +22,6 @@ import { ColorComponent } from "../../../../../components/display/ColorComponent
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MainHandSlotComponent } from "../../../../../components/equipment/slots/MainHandSlotComponent"
-import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
-import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
-import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
-import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
 import { InspectDescComponent } from "../../../../../components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../../../../components/interaction/InspectedComponent"
 import { PositionComponent } from "../../../../../components/spatial/PositionComponent"
@@ -60,13 +56,7 @@ const addLoot = (rageBait: Entity<"RAGE_BAIT">): void => {
   const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
 
   if (getRng(rageBait).chance(5)) {
-    upsertComponents(
-      backpack,
-      DroppableComponent(),
-      PickupableComponent(),
-      RemovableComponent(),
-      MainHandComponent(),
-    )
+    ContainerEntityFactory.setDroppable(backpack)
   }
   if (getRng(rageBait).chance(20)) {
     addItemToContainer(backpack, SwordEntityFactory.getDefault())

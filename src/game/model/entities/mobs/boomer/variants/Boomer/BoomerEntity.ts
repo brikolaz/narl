@@ -27,6 +27,7 @@ import { ExpComponent } from "../../../../../components/state/ExpComponent"
 import { BonusStatsEntityFactory } from "../../../../bonusStats/factory"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
+import { ShieldEntityFactory } from "../../../../items/shield/factory"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
 import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/LongSwordEntity"
 
@@ -69,6 +70,9 @@ const addLoot = (boomer: Entity<"BOOMER">): void => {
         [EntityRoleEnum.BONUS_STATS]: bonusStats,
       })
     }
+  }
+  if (getRng(boomer).chance(5)) {
+    addItemToContainer(backpack, ShieldEntityFactory.getDefault())
   }
 
   upsertRoleEntities(boomer, {

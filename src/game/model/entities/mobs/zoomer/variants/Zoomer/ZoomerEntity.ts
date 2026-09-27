@@ -24,10 +24,6 @@ import { ColorComponent } from "../../../../../components/display/ColorComponent
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MainHandSlotComponent } from "../../../../../components/equipment/slots/MainHandSlotComponent"
-import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
-import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
-import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
-import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
 import { MovableComponent } from "../../../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../../../components/spatial/PositionComponent"
 import { ExpComponent } from "../../../../../components/state/ExpComponent"
@@ -36,6 +32,7 @@ import { BackpackEntity } from "../../../../items/container/variants/Backpack/Ba
 import { HelmetEntityFactory } from "../../../../items/helmet/factory"
 import { HornedHelmetEntity } from "../../../../items/helmet/variants/HornedHelmet/HornedHelmetEntity"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
+import { ArmorEntityFactory } from "../../../../items/armor/factory"
 
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
@@ -57,19 +54,16 @@ const addLoot = (zoomer: Entity<"ZOOMER">): void => {
   const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
 
   if (getRng(zoomer).chance(5)) {
-    upsertComponents(
-      backpack,
-      DroppableComponent(),
-      PickupableComponent(),
-      RemovableComponent(),
-      MainHandComponent(),
-    )
+    ContainerEntityFactory.setDroppable(backpack)
   }
-  if (getRng(zoomer).chance(20)) {
+  if (getRng(zoomer).chance(15)) {
     addItemToContainer(
       backpack,
       HelmetEntityFactory.getVariant(HornedHelmetEntity.type),
     )
+  }
+  if (getRng(zoomer).chance(10)) {
+    addItemToContainer(backpack, ArmorEntityFactory.getDefault())
   }
 
   upsertRoleEntities(zoomer, {

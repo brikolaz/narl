@@ -11,6 +11,9 @@ import { SizeComponent } from "../../../../../components/containers/SizeComponen
 import { ColorComponent } from "../../../../../components/display/ColorComponent"
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
+import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
+import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
+import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
 
 const addComponents = (backpack: Entity<"BACKPACK">): void => {
   upsertComponents(
@@ -18,9 +21,12 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
     NameComponent({ name: "Backpack" }),
     GlyphComponent({ glyph: "d" }),
     ContainerComponent(),
-    SizeComponent({ size: getRng(backpack).range(2, 4) }),
+    SizeComponent({ size: getRng(backpack).range(3, 4) }),
     NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
     ColorComponent({ color: COLORS.tier.common }),
+    PickupableComponent(),
+    RemovableComponent(),
+    MainHandComponent(),
   )
 }
 const addLoot = (backpack: Entity<"BACKPACK">): void => {

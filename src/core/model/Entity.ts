@@ -37,6 +37,9 @@ export type EntityCreator<Type extends string = string> = {
   type: EntityType<Type>
 }
 
+export type EntityByVariant<Variant extends EntityType<string>> =
+  Variant extends EntityType<infer T> ? Entity<T> : never
+
 type EntityCreatorOptions<Type extends string> = {
   components?: (entity: Entity<Type>) => void
   eq?: (entity: Entity<Type>) => void

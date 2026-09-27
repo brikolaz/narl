@@ -23,8 +23,10 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MovableComponent } from "../../../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../../../components/spatial/PositionComponent"
 import { ExpComponent } from "../../../../../components/state/ExpComponent"
+import { BootsEntityFactory } from "../../../../items/boots/factory"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
+import { PantsEntityFactory } from "../../../../items/pants/factory"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
 import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/LongSwordEntity"
 
@@ -53,6 +55,12 @@ const addLoot = (babyBoomer: Entity<"BABY_BOOMER">): void => {
   if (getRng(babyBoomer).chance(15)) {
     const longSword = SwordEntityFactory.getVariant(LongSwordEntity.type)
     addItemToContainer(backpack, longSword)
+  }
+  if (getRng(babyBoomer).chance(20)) {
+    addItemToContainer(backpack, BootsEntityFactory.getDefault())
+  }
+  if (getRng(babyBoomer).chance(20)) {
+    addItemToContainer(backpack, PantsEntityFactory.getDefault())
   }
 
   upsertRoleEntities(babyBoomer, {
