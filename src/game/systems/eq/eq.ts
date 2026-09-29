@@ -87,3 +87,10 @@ export const getItemSlots = (entity: Entity): Component[] => {
 export const isRemovable = (entity: Entity): boolean => {
   return hasComponentsByType(entity, RemovableComponent)
 }
+
+export const isTwoHand = (entity: Entity) => {
+  return (
+    hasComponentsByType(entity, MainHandComponent) &&
+    hasComponentsByType(entity, OffhandComponent)
+  )
+}

@@ -1,9 +1,8 @@
 import type { Entity } from "../../../core/model/Entity"
 import { getComponentByType } from "../../../core/model/queries/components/get"
-import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { assert } from "../../../utils/assert"
 import { MainHandComponent } from "../../model/components/equipment/MainHandComponent"
-import { OffhandComponent } from "../../model/components/equipment/OffhandComponent"
+import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
 import { getManual } from "../../model/entities/getManual"
 import {
   addItemToContainer,
@@ -12,7 +11,7 @@ import {
   getFirstContainerItem,
 } from "../containers/containers"
 import { isDisabled } from "../disable/disable"
-import { getEq, getItemSlots } from "./eq"
+import { getEq, getEqSlotByType, getItemSlots, isTwoHand } from "./eq"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
@@ -20,15 +19,7 @@ import { curse } from "../curse/curse"
 import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerEquipItemAction } from "../player/types"
 
-// TODO: when equipiing sth to offhand, check if 2-hand item in main hand
-const isTwoHand = (entity: Entity) => {
-  return (
-    hasComponentsByType(entity, MainHandComponent) &&
-    hasComponentsByType(entity, OffhandComponent)
-  )
-}
-
-const getCompatibleEqSlot = (
+const getCompatiblePrimaryEqSlot = (
   player: Entity,
   item: Entity,
 ): Entity | undefined => {
@@ -64,12 +55,12 @@ export const resolvePlayerEquipItemAction = (
       return action.fail(`No item to equip`)
     }
 
-    const eqSlot = getCompatibleEqSlot(player, itemToEquip)
+    const eqSlot = getCompatiblePrimaryEqSlot(player, itemToEquip)
     if (!eqSlot) {
       return action.fail(`${getEntityName(itemToEquip)} can't be equipped`)
     }
 
-    const itemInSlot = getFirstContainerItem(eqSlot)
+    const itemInPrimarySlot = getFirstContainerItem(eqSlot)
     const eqSlotName = getEntityName(eqSlot)
 
     if (
@@ -78,10 +69,20 @@ export const resolvePlayerEquipItemAction = (
     ) {
       return action.fail(`Can't equip to disabled ${eqSlotName} slot`)
     }
-    if (itemInSlot) {
+    if (itemInPrimarySlot) {
       return action.fail(
-        `Can't equip. ${getEntityName(itemInSlot)} in ${eqSlotName} slot`,
+        `Can't equip. ${getEntityName(itemInPrimarySlot)} in ${eqSlotName} slot`,
       )
+    }
+
+    if (isTwoHand(itemToEquip)) {
+      const offhandSlot = getEqSlotByType(player, OffhandSlotComponent)
+      const offhandItem = offhandSlot && getFirstContainerItem(offhandSlot)
+      if (offhandItem) {
+        return action.fail(
+          `Can't equip. ${getEntityName(offhandItem)} in ${getEntityName(offhandSlot)} slot`,
+        )
+      }
     }
 
     addItemToContainer(eqSlot, itemToEquip)
