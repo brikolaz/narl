@@ -88,7 +88,7 @@ const renderWin = () => {
     "",
     "You won!",
     "",
-    "Don't get used to it",
+    "Don't get used to it.",
     "",
     "",
     "Press any key to restart",
