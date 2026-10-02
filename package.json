@@ -10,6 +10,7 @@
     "build:itch": "node scripts/itch/build.mjs",
     "build:itch:web": "tsc -b && vite build --mode itch",
     "deploy:itch": "node scripts/itch/deploy.mjs",
+    "release": "node scripts/release.mjs",
     "lint-staged": "lint-staged",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
