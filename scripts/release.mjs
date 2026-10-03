@@ -43,6 +43,11 @@ try {
     ],
     { cwd: repoDir, stdio: "inherit", env: { ...process.env, CI: "true" } },
   )
+
+  execFileSync("git", ["push", "origin", tag], {
+    cwd: repoDir,
+    stdio: "inherit",
+  })
 } catch (error) {
   console.error(error.message)
   process.exit(1)
