@@ -3,8 +3,10 @@ import { getComponentByType } from "../../../core/model/queries/components/get"
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get"
 import { DmgComponent } from "../../model/components/combat/DmgComponent"
 import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
-import { isContainer } from "../containers/containers"
+import { OffensiveContainerCurseComponent } from "../../model/components/curse/OffensiveContainerCurseComponent"
 import { getBonusDmgMul } from "../bonusStats/bonusStats"
+import { isContainer } from "../containers/containers"
+import { getChildrenDef } from "../def/def"
 import { getRng } from "../rng/rng"
 import { getAttackWeapon } from "./getAttackWeapon"
 
@@ -37,13 +39,26 @@ export const getBaseChildrenDmgRange = (entity: Entity): DmgRange => {
   )
 }
 
+export const getChildrenDefToDmg = (entity: Entity): number => {
+  const ratio = getComponentByType(
+    entity,
+    OffensiveContainerCurseComponent,
+  )?.defToDmgMul
+  if (ratio === undefined) {
+    return OffensiveContainerCurseComponent.defaults.defToDmgMul
+  }
+
+  return Math.ceil(getChildrenDef(entity) * ratio)
+}
+
 export const getChildrenDmgRange = (entity: Entity): DmgRange => {
   const childrenDmg = getBaseChildrenDmgRange(entity)
   const dmgMul = getDmgMul(entity)
+  const childrenDefToDmg = getChildrenDefToDmg(entity)
 
   return {
-    min: Math.ceil(childrenDmg.min * dmgMul),
-    max: Math.ceil(childrenDmg.max * dmgMul),
+    min: Math.ceil(childrenDmg.min * dmgMul + childrenDefToDmg),
+    max: Math.ceil(childrenDmg.max * dmgMul + childrenDefToDmg),
   }
 }
 
@@ -56,9 +71,10 @@ export const getDmgRange = (entity: Entity): DmgRange => {
 
   const childrenDmg = getBaseChildrenDmgRange(entity)
   const dmgMul = getDmgMul(entity)
+  const childrenDefDmg = getChildrenDefToDmg(entity)
   return {
-    min: Math.ceil(ownDmg.min + childrenDmg.min * dmgMul),
-    max: Math.ceil(ownDmg.max + childrenDmg.max * dmgMul),
+    min: Math.ceil(ownDmg.min + childrenDmg.min * dmgMul + childrenDefDmg),
+    max: Math.ceil(ownDmg.max + childrenDmg.max * dmgMul + childrenDefDmg),
   }
 }
 

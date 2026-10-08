@@ -4,6 +4,7 @@ type OffensiveContainerCurseComponentProps = {
   minDmg: number
   maxDmg: number
   dmgMul: number
+  defToDmgMul: number
 }
 export const OffensiveContainerCurseComponent =
   getComponentCreator<OffensiveContainerCurseComponentProps>(
@@ -12,5 +13,6 @@ export const OffensiveContainerCurseComponent =
       minDmg: 0,
       maxDmg: 0,
       dmgMul: 1,
+      defToDmgMul: 1,
     },
   )

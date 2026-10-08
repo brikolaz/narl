@@ -8,6 +8,7 @@ import {
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent"
+import { OffensiveContainerCurseComponent } from "../../model/components/curse/OffensiveContainerCurseComponent"
 import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
 import {
   getContainerSize,
@@ -22,7 +23,7 @@ import {
   getChildrenDmgRange,
 } from "../attack/dmg"
 import { getBonusStats } from "../bonusStats/bonusStats"
-import { getEffectiveDef, isArmor } from "../def/def"
+import { getChildrenDef, getEffectiveDef, isArmor } from "../def/def"
 import { formatDmgRange } from "../log/format"
 import { getEntityName } from "./getEntityName"
 
@@ -70,9 +71,18 @@ export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
 
       stats.push(`${formatDmgRange(totalDmgRange)} DMG`)
 
+      const childrenDef = getChildrenDef(entity)
+      const defToDmgMul = getComponentByType(
+        entity,
+        OffensiveContainerCurseComponent,
+      )?.defToDmgMul
+      const defConversion =
+        defToDmgMul === undefined
+          ? ""
+          : ` + ${childrenDef}x${defToDmgMul} from DEF`
       stats.push(
         `Contents: ${formatDmgRange(effectiveChildrenDmgRange)} DMG ` +
-          `(${formatDmgRange(childrenDmgRange)} x${childrenDmgMul})`,
+          `(${formatDmgRange(childrenDmgRange)}x${childrenDmgMul}${defConversion})`,
       )
     }
   } else {

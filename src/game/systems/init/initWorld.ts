@@ -21,6 +21,10 @@ export const initWorld = (): WorldState => {
   world[2].items.push(ring)
   setPosition(ring, 2)
 
+  // const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  // world[2].items.push(backpack)
+  // setPosition(backpack, 2)
+
   const sword = SwordEntityFactory.getDefault()
   world[3].items.push(sword)
   setPosition(sword, 3)

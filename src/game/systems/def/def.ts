@@ -32,11 +32,15 @@ const getDef = (entity?: Entity): number => {
   if (!isContainer(entity)) {
     return ownDef
   }
-  const childrenDef = getEntitiesByRole(entity, EntityRoleEnum.ITEM).reduce(
+  const childrenDef = getChildrenDef(entity)
+  return Math.ceil(ownDef + childrenDef * getDefMul(entity))
+}
+
+export const getChildrenDef = (entity: Entity): number => {
+  return getEntitiesByRole(entity, EntityRoleEnum.ITEM).reduce(
     (def, child) => def + getDef(child),
     0,
   )
-  return Math.ceil(ownDef + childrenDef * getDefMul(entity))
 }
 
 export const getTotalDef = (entity: Entity): number => {

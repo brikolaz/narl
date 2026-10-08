@@ -20,7 +20,12 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
   const dmg = getRng(backpack).range(1, 3)
   upsertComponents(
     backpack,
-    OffensiveContainerCurseComponent({ dmgMul: 0.5, minDmg: dmg, maxDmg: dmg }),
+    OffensiveContainerCurseComponent({
+      dmgMul: 0.5,
+      minDmg: dmg,
+      maxDmg: dmg,
+      defToDmgMul: 0.25,
+    }),
     NameComponent({ name: "Backpack" }),
     GlyphComponent({ glyph: "d" }),
     ContainerComponent(),
