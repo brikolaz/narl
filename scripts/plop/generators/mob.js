@@ -2,11 +2,7 @@ import { existsSync, readFileSync } from "node:fs"
 import { isIdentifier, j, writeAst } from "../ast.js"
 import { toCamelCase, toConstantCase, toPascalCase } from "../names.js"
 import { formatGeneratedFiles } from "../format.js"
-import {
-  getBaseMobFactoryImport,
-  getCoreImport,
-  getManualImport,
-} from "../scaffold.js"
+import { getBaseMobFactoryImport, getCoreImport } from "../scaffold.js"
 import { wireRegistry } from "../wiring.js"
 import { addImport, wireFactoryVariant, wireVariantUnion } from "../variants.js"
 
@@ -80,23 +76,7 @@ const wireMobRegistries = ({ familyFolder, entityName, factoryName }) => {
     entityName: `${entityName}Entity`,
     valueName: `${factoryName}EntityFactory`,
   })
-  const manualResult = wireRegistry({
-    filePath: `${MOBS_PATH}/manuals.ts`,
-    imports: [
-      {
-        source: `./${familyFolder}/variants/${entityName}/${entityName}Entity`,
-        names: [`${entityName}Entity`],
-      },
-      {
-        source: `./${familyFolder}/variants/${entityName}/${entityName}EntityManual`,
-        names: [`${entityName}EntityManual`],
-      },
-    ],
-    mapName: "MOB_MANUALS",
-    entityName: `${entityName}Entity`,
-    valueName: `${entityName}EntityManual`,
-  })
-  return `${factoryResult}; ${manualResult}`
+  return factoryResult
 }
 
 export const registerMobGenerator = (plop) => {
@@ -151,7 +131,6 @@ export const registerMobGenerator = (plop) => {
       const familyPath = `${MOBS_PATH}/${familyFolder}`
       const variantFolder = `mobs/${familyFolder}/variants/${name}`
       const entityPath = `${familyPath}/variants/${name}/${name}Entity.ts`
-      const manualPath = `${familyPath}/variants/${name}/${name}EntityManual.ts`
       const variantsPath = `${familyPath}/variants/variants.ts`
       const factoryPath = `${familyPath}/factory.ts`
 
@@ -165,15 +144,6 @@ export const registerMobGenerator = (plop) => {
             entityVariable: toCamelCase(answers.name),
             entityType: toConstantCase(answers.name),
             coreImport: getCoreImport(variantFolder, "Entity"),
-          },
-        },
-        {
-          type: "add",
-          path: manualPath,
-          templateFile: "scripts/plop/templates/entity/EntityManual.ts.hbs",
-          data: {
-            manualImport: getManualImport(variantFolder),
-            entityName: name,
           },
         },
         {
@@ -196,11 +166,9 @@ export const registerMobGenerator = (plop) => {
         () =>
           formatGeneratedFiles([
             entityPath,
-            manualPath,
             variantsPath,
             factoryPath,
             `${MOBS_PATH}/factories.ts`,
-            `${MOBS_PATH}/manuals.ts`,
           ]),
       ]
     },
@@ -230,7 +198,6 @@ export const registerMobGenerator = (plop) => {
       const variantName = toPascalCase(answers.variant)
       const variantFolder = `mobs/${familyFolder}/variants/${variantName}`
       const entityPath = `${MOBS_PATH}/${familyFolder}/variants/${variantName}/${variantName}Entity.ts`
-      const manualPath = `${MOBS_PATH}/${familyFolder}/variants/${variantName}/${variantName}EntityManual.ts`
 
       return [
         {
@@ -244,24 +211,13 @@ export const registerMobGenerator = (plop) => {
             coreImport: getCoreImport(variantFolder, "Entity"),
           },
         },
-        {
-          type: "add",
-          path: manualPath,
-          templateFile: "scripts/plop/templates/entity/EntityManual.ts.hbs",
-          data: {
-            entityName: variantName,
-            manualImport: getManualImport(variantFolder),
-          },
-        },
         { type: "wireMobVariant" },
         () =>
           formatGeneratedFiles([
             entityPath,
-            manualPath,
             `${MOBS_PATH}/${familyFolder}/variants/variants.ts`,
             `${MOBS_PATH}/${familyFolder}/factory.ts`,
             `${MOBS_PATH}/factories.ts`,
-            `${MOBS_PATH}/manuals.ts`,
           ]),
       ]
     },

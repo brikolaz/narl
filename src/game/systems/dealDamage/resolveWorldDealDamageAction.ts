@@ -1,12 +1,15 @@
+import { getComponentByType } from "../../../core/model/queries/components/get"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { getManual } from "../../model/entities/getManual"
-import { isPlayer } from "../player/player"
+import { ProvokableComponent } from "../../model/components/ai/ProvokableComponent"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { resolveMobDeath } from "../attack/resolveMobDeath"
 import { hit } from "../hit/hit"
 import { getEntityName } from "../inspect/getEntityName"
+import { isPlayer } from "../player/player"
+import { getRng } from "../rng/rng"
 import {
+  WorldActionTypeEnum,
   WorldDealDamageActionReasonEnum,
   WorldKillActionReasonEnum,
   type WorldDealDamageAction,
@@ -47,15 +50,23 @@ export const resolveWorldDealDamageAction = (
     }
 
     if (hitResult.nextHp <= 0 && !isPlayer(target)) {
-      resolveMobDeath(
+      return resolveMobDeath(
         action,
         target,
         gameAction.reason === WorldDealDamageActionReasonEnum.EXPLODE
           ? WorldKillActionReasonEnum.EXPLODE
           : WorldKillActionReasonEnum.ATTACK,
       )
-    } else if (hitResult.nextHp > 0) {
-      getManual(target)?.onAfterTakeDamage?.(action, target)
+    }
+
+    const chanceToProvoke =
+      getComponentByType(target, ProvokableComponent)?.damageChance ??
+      ProvokableComponent.defaults.damageChance
+    if (getRng(target).chance(chanceToProvoke)) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_ENRAGE,
+        entityId: target.id,
+      })
     }
   })()
 

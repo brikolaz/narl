@@ -1,6 +1,6 @@
+import { canExplode } from "../explode/explode"
 import type { Entity } from "../../../core/model/Entity"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { getManual } from "../../model/entities/getManual"
 import { getMobById } from "../mobs/mobs"
 import { getPosition } from "../position/position"
 import { STATE } from "../../state/state"
@@ -18,9 +18,11 @@ export const resolveMobDeath = (
     return
   }
 
-  const onDie = getManual(mob)?.onDie
-  if (onDie) {
-    onDie(action, mob)
+  if (canExplode(mob)) {
+    action.addPendingImmediateAction({
+      type: WorldActionTypeEnum.WORLD_INIT_EXPLODE,
+      entityId: mob.id,
+    })
     return
   }
 

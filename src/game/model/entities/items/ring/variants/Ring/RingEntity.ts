@@ -16,6 +16,7 @@ import { RemovableComponent } from "../../../../../components/equipment/Removabl
 import { RingComponent } from "../../../../../components/equipment/RingComponent"
 import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
+import { SeveringCurseComponent } from "../../../../../components/curse/SeveringCurseComponent"
 import { BonusStatsEntityFactory } from "../../../../bonusStats/factory"
 
 const addComponents = (ring: Entity<"RING">): void => {
@@ -29,11 +30,14 @@ const addComponents = (ring: Entity<"RING">): void => {
     PickupableComponent(),
     DroppableComponent(),
     ColorComponent({ color: COLORS.tier.common }),
+    SeveringCurseComponent(),
   )
 }
 const addLoot = (ring: Entity<"RING">): void => {
   void ring
 }
+
+// wtf
 const addEq = (ring: Entity<"RING">): void => {
   const bonusStats = BonusStatsEntityFactory.getDefault()
   upsertComponents(

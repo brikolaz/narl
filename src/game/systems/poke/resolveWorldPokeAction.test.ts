@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { getEntityCreator, type Entity } from "../../../core/model/Entity"
 import { upsertComponents } from "../../../core/model/queries/components/add"
+import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { createGame, type Game } from "../../../game"
 import { clearItems, clearMobs } from "../../../tests/clear"
@@ -12,6 +13,7 @@ import {
   HostilityEnum,
   HostilityComponent,
 } from "../../model/components/ai/HostilityComponent"
+import { ProvokableComponent } from "../../model/components/ai/ProvokableComponent"
 import { NameComponent } from "../../model/components/display/NameComponent"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent"
@@ -60,8 +62,6 @@ describe("resolveWorldPokeAction", () => {
     if (isIntegrityCheckEnabled()) {
       expectGameStateConsistent(game)
     }
-
-    vi.restoreAllMocks()
   })
 
   it("resolves through the game action map, inspects the target, and consumes a turn", () => {
@@ -141,24 +141,66 @@ describe("resolveWorldPokeAction", () => {
     expect(getInspectedTimes(player)).toBe(1)
   })
 
-  it("runs the target afterPoke hook after increasing its inspected count", () => {
+  it("queues immediate Enrage after inspecting a provoked target", () => {
     const rageBait = placeMob(game, RageBaitEntityFactory.getDefault(), 1)
-    vi.spyOn(rageBait.rng, "chance").mockReturnValue(true) // todo: remove when runtime manuals are ready
+    patchComponentByType(rageBait, HostilityComponent, (component) => {
+      component.hostility = HostilityEnum.PEACEFUL
+    })
+    patchComponentByType(rageBait, ProvokableComponent, (component) => {
+      component.pokeChance = 100
+    })
+    const sourceId = getPlayer().id
 
     const resolution = resolveWorldPokeAction({
       type: WorldActionTypeEnum.WORLD_POKE,
-      sourceId: getPlayer().id,
+      sourceId,
       direction: DirectionEnum.RIGHT,
     })
 
     expect(resolution.consumesTurn).toBe(true)
     expect(resolution.pendingLogs.map(({ message }) => message)).toEqual([
       "You poked Rage Bait. It looks cute.",
-      "You enraged Rage Bait",
     ])
     expect(getInspectedTimes(rageBait)).toBe(1)
+    expect(resolution.pendingActions).toHaveLength(1)
+    expect(resolution.pendingActions[0]).toMatchObject({
+      delay: 0,
+      action: {
+        type: WorldActionTypeEnum.WORLD_ENRAGE,
+        entityId: rageBait.id,
+        sourceId,
+      },
+    })
+    expect(getComponentByType(rageBait, HostilityComponent)?.hostility).toBe(
+      HostilityEnum.PEACEFUL,
+    )
+  })
+
+  it("resolves queued Enrage when Poke is dispatched", () => {
+    const rageBait = placeMob(game, RageBaitEntityFactory.getDefault(), 1)
+    patchComponentByType(rageBait, HostilityComponent, (component) => {
+      component.hostility = HostilityEnum.PEACEFUL
+    })
+    patchComponentByType(rageBait, ProvokableComponent, (component) => {
+      component.pokeChance = 100
+    })
+
+    game.dispatch({
+      type: WorldActionTypeEnum.WORLD_POKE,
+      sourceId: getPlayer().id,
+      direction: DirectionEnum.RIGHT,
+    })
+
     expect(getComponentByType(rageBait, HostilityComponent)?.hostility).toBe(
       HostilityEnum.HOSTILE,
+    )
+    expect(game.state.log).toContainEqual(
+      expect.objectContaining({
+        message: "You enraged Rage Bait",
+        action: expect.objectContaining({
+          type: WorldActionTypeEnum.WORLD_ENRAGE,
+        }),
+      }),
     )
   })
 

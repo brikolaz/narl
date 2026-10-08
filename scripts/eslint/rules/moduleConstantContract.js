@@ -21,7 +21,7 @@ export const moduleConstantContract = {
   create(context) {
     const isEnumLike = (initializer) => Boolean(getEnumObject(initializer))
     const isStructuralException = (name) =>
-      /(?:Component|Entity|Factory|Manual|Variants)$/.test(name)
+      /(?:Component|Entity|Factory|Variants)$/.test(name)
     const containsRegistryType = (type) => {
       if (!type) return false
       if (
@@ -59,7 +59,7 @@ export const moduleConstantContract = {
 
       const name = getName(declarator.id)
       return (
-        /(?:Factories|Manuals|Resolvers|Registry|Table|Map|Set|State|Config)$/.test(
+        /(?:Factories|Resolvers|Registry|Table|Map|Set|State|Config)$/.test(
           name ?? "",
         ) &&
         [

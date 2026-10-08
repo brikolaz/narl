@@ -15,10 +15,12 @@ import { RemovableComponent } from "../../../../../components/equipment/Removabl
 import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
 import { InspectDescComponent } from "../../../../../components/interaction/InspectDescComponent"
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
+import { AssableCurseComponent } from "../../../../../components/curse/AssableCurseComponent"
 
 const addComponents = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
   upsertComponents(
     hornedHelmet,
+    AssableCurseComponent({ inspectedTimes: 10 }),
     NameComponent({ name: "Horned Helmet" }),
     GlyphComponent({ glyph: "h" }),
     RemovableComponent(),

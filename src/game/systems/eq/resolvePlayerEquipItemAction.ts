@@ -1,9 +1,11 @@
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { PantsSlotComponent } from "../../model/components/equipment/slots/PantsSlotComponent"
+import { SpikeComponent } from "../../model/components/combat/SpikeComponent"
 import type { Entity } from "../../../core/model/Entity"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { assert } from "../../../utils/assert"
 import { MainHandComponent } from "../../model/components/equipment/MainHandComponent"
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
-import { getManual } from "../../model/entities/getManual"
 import {
   addItemToContainer,
   getBackpack,
@@ -15,9 +17,9 @@ import { getEq, getEqSlotByType, getItemSlots, isTwoHand } from "./eq"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { curse } from "../curse/curse"
 import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerEquipItemAction } from "../player/types"
+import { triggerOnEquipCurse } from "../curse/triggers/triggerOnEquipCurse"
 
 const getCompatiblePrimaryEqSlot = (
   player: Entity,
@@ -65,7 +67,10 @@ export const resolvePlayerEquipItemAction = (
 
     if (
       isDisabled(eqSlot) &&
-      !getManual(eqSlot)?.canAdd?.(eqSlot, itemToEquip)
+      !(
+        hasComponentsByType(eqSlot, PantsSlotComponent) &&
+        hasComponentsByType(itemToEquip, SpikeComponent)
+      )
     ) {
       return action.fail(`Can't equip to disabled ${eqSlotName} slot`)
     }
@@ -87,7 +92,7 @@ export const resolvePlayerEquipItemAction = (
 
     addItemToContainer(eqSlot, itemToEquip)
     action.success(`Equipped ${getEntityName(itemToEquip)}`)
-    curse(action, itemToEquip)
+    triggerOnEquipCurse(action, player, eqSlot, itemToEquip)
   })()
 
   return action.resolve()

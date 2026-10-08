@@ -14,10 +14,13 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
 import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
+import { OffensiveContainerCurseComponent } from "../../../../../components/curse/OffensiveContainerCurseComponent"
 
 const addComponents = (backpack: Entity<"BACKPACK">): void => {
+  const dmg = getRng(backpack).range(1, 3)
   upsertComponents(
     backpack,
+    OffensiveContainerCurseComponent({ dmgMul: 0.5, minDmg: dmg, maxDmg: dmg }),
     NameComponent({ name: "Backpack" }),
     GlyphComponent({ glyph: "d" }),
     ContainerComponent(),

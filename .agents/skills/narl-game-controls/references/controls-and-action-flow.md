@@ -37,7 +37,6 @@ The on-screen summary is hardcoded in `src/game/render/render.ts`; update it whe
 - Fails without consuming a turn when there is no item or the backpack is full.
 - A normal item or cursed container is picked up directly. A non-cursed container is first unpacked: its contents and the container itself replace it on the floor, then the new last/topmost item is picked up.
 - The actual pickup also requires a backpack, free capacity, and `PickupableComponent`. It moves the item into the first empty backpack slot and removes it from the tile.
-- Picking up may immediately curse an item whose manual says `shouldBeCursed`; this adds `CursedComponent`, cursed color, and runs the manual's curse hook.
 - Successful pickup consumes a turn. Failures do not.
 - Sources: `src/game/systems/pickUp/resolvePickUpUnpack.ts`, `resolvePickUpAction.ts`, and `src/game/model/queries/pickUp.ts`.
 
@@ -89,7 +88,6 @@ The on-screen summary is hardcoded in `src/game/render/render.ts`; update it whe
 
 - `P` starts a direction subcommand; `ArrowLeft`/`ArrowRight` creates `PLAYER_POKE` for the adjacent world position. It never moves the player.
 - Out-of-world targets, empty tiles, or a missing mob fail with `Nothing to poke` and do not consume a turn.
-- If the mob manual defines `poke`, that hook fully decides the action's effects/logging/turn consumption through the shared `Action` object.
 - Without a custom hook, it logs `Poked <mob>` and consumes a turn.
 - Poke is also the unarmed fallback of `PLAYER_ATTACK`.
 - Source: `src/game/systems/poke/resolvePokeAction.ts`.

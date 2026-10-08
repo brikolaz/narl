@@ -1,6 +1,6 @@
+import { upsertComponents } from "../../../core/model/queries/components/add"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { assert } from "../../../utils/assert"
-import { getManual } from "../../model/entities/getManual"
+import { DisabledComponent } from "../../model/components/state/DisabledComponent"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import type { WorldDisableAction } from "../world/types"
@@ -12,9 +12,9 @@ export const resolveWorldDisableAction = (
   const action = new Action(gameAction)
 
   ;(() => {
-    const entity = assert(getEntityById(entityId), "No entity to disable")
-    const manual = getManual(entity)
-    manual?.disable?.(action, entity)
+    const entity = getEntityById(entityId)
+    if (!entity) return
+    upsertComponents(entity, DisabledComponent())
   })()
 
   return action.resolve()

@@ -24,6 +24,10 @@ import { resolveWorldCleanupBlockAction } from "../block/resolveWorldCleanupBloc
 import { resolveWorldInitBlockAction } from "../block/resolveWorldInitBlockAction"
 import { resolveWorldPokeAction } from "../poke/resolveWorldPokeAction"
 import { resolveWorldRestAction } from "../rest/resolveWorldRestAction"
+import { resolveWorldSeverCockAction } from "../severCock/resolveWorldSeverCockAction"
+import { resolveWorldEnrageAction } from "../enrage/resolveWorldEnrageAction"
+import { resolveWorldMakePantsAction } from "../makePants/resolveWorldMakePantsAction"
+import { resolveWorldUpdateDmgAction } from "../updateDmg/resolveWorldUpdateDmgAction"
 import { WorldActionTypeEnum, type WorldAction } from "./types"
 
 export const WORLD_ACTION_RESOLVERS = {
@@ -55,4 +59,8 @@ export const WORLD_ACTION_RESOLVERS = {
   [WorldActionTypeEnum.WORLD_INIT_BLOCK]: resolveWorldInitBlockAction,
   [WorldActionTypeEnum.WORLD_POKE]: resolveWorldPokeAction,
   [WorldActionTypeEnum.WORLD_REST]: resolveWorldRestAction,
+  [WorldActionTypeEnum.WORLD_SEVER_COCK]: resolveWorldSeverCockAction,
+  [WorldActionTypeEnum.WORLD_ENRAGE]: resolveWorldEnrageAction,
+  [WorldActionTypeEnum.WORLD_MAKE_PANTS]: resolveWorldMakePantsAction,
+  [WorldActionTypeEnum.WORLD_UPDATE_DMG]: resolveWorldUpdateDmgAction,
 } satisfies ActionResolverMap<WorldAction>

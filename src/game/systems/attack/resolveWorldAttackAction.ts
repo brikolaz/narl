@@ -1,6 +1,8 @@
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { BleedingEffectComponent } from "../../model/components/combat/BleedingEffectComponent"
+import { canExplode } from "../explode/explode"
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { assert } from "../../../utils/assert"
-import { getManual } from "../../model/entities/getManual"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getDirection } from "../movement/position"
@@ -12,7 +14,6 @@ import {
 } from "../world/types"
 import { getAttackWeapon } from "./getAttackWeapon"
 
-// TODO: onAttack should override the whole attack flow
 export const resolveWorldAttackAction = (
   gameAction: WorldAttackAction,
 ): ActionResolution => {
@@ -23,11 +24,20 @@ export const resolveWorldAttackAction = (
     const source = assert(getEntityById(sourceId), "No source")
     const target = assert(getEntityById(targetId), "No target")
 
-    if (getManual(source)?.onAttack) {
-      getManual(source)?.onAttack?.(action, source, target)
+    if (canExplode(source)) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_INIT_EXPLODE,
+        entityId: source.id,
+      })
       return
     }
-    getManual(source)?.beforeAttack?.(action, source, target)
+    if (hasComponentsByType(source, BleedingEffectComponent)) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_INIT_BLEED,
+        sourceId: source.id,
+        targetId: target.id,
+      })
+    }
 
     const weapon = getAttackWeapon(source)
     if (!weapon) {

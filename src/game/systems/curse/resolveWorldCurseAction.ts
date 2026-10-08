@@ -1,15 +1,14 @@
 import { upsertComponents } from "../../../core/model/queries/components/add"
 import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { assert } from "../../../utils/assert"
 import { COLORS } from "../../../utils/colors"
 import { ColorComponent } from "../../model/components/display/ColorComponent"
 import { CursedComponent } from "../../model/components/state/CursedComponent"
-import { getManual } from "../../model/entities/getManual"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getEntityName } from "../inspect/getEntityName"
 import type { WorldCurseAction } from "../world/types"
+import { isCursed } from "./curse"
 
 export const resolveWorldCurseAction = (
   gameAction: WorldCurseAction,
@@ -18,16 +17,10 @@ export const resolveWorldCurseAction = (
   const action = new Action(gameAction)
 
   ;(() => {
-    const entity = assert(getEntityById(entityId), "No entity to curse")
+    const entity = getEntityById(entityId)
+    if (!entity || isCursed(entity)) return
     const name = getEntityName(entity)
-    const manual = getManual(entity)
-    if (!manual) {
-      return
-    }
-    manual?.curse?.(action, entity)
-    const curseComponents = [CursedComponent()]
-
-    upsertComponents(entity, ...curseComponents)
+    upsertComponents(entity, CursedComponent())
     patchComponentByType(entity, ColorComponent, (component) => {
       component.color = COLORS.cursed
     })

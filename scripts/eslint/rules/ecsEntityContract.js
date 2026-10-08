@@ -23,7 +23,7 @@ export const ecsEntityContract = {
     type: "problem",
     docs: {
       description:
-        "Enforce entity filenames, creators, factories, manuals, and runtime types",
+        "Enforce entity filenames, creators, factories, and runtime types",
     },
     schema: [],
     messages: {
@@ -31,7 +31,6 @@ export const ecsEntityContract = {
         "Entity declaration '{{name}}' must be declared in '{{expected}}'.",
       declaration: "Entity file '{{file}}' must declare '{{expected}}'.",
       literal: "{{name}} must use runtime type '{{expected}}'.",
-      manual: "Entity manual file '{{file}}' must declare '{{expected}}'.",
       variants: "Entity variants '{{actual}}' must be named '{{expected}}'.",
       instance: "The default {{entity}} instance must be named '{{expected}}'.",
     },
@@ -45,7 +44,6 @@ export const ecsEntityContract = {
       return {}
     }
     const basename = path.basename(filename, ".ts")
-    const isManual = basename.endsWith("EntityManual")
     const isEntity = basename.endsWith("Entity")
     const isVariantEntity = filename.includes("/variants/")
 
@@ -55,15 +53,14 @@ export const ecsEntityContract = {
         declarators.push(node)
       },
       "Program:exit"(program) {
-        if (!isManual && !isEntity) {
+        if (!isEntity) {
           for (const declarator of declarators) {
             const name = getName(declarator.id)
             const initializer = unwrapExpression(declarator.init)
             const isCreator =
               initializer?.type === "CallExpression" &&
               getName(initializer.callee) === "getEntityCreator"
-            const isEntityManual = name?.endsWith("EntityManual")
-            if (isCreator || isEntityManual) {
+            if (isCreator) {
               context.report({
                 node: declarator.id,
                 messageId: "filename",
@@ -73,17 +70,6 @@ export const ecsEntityContract = {
           }
           return
         }
-        if (isManual) {
-          if (!declarators.some((node) => getName(node.id) === basename)) {
-            context.report({
-              node: program,
-              messageId: "manual",
-              data: { file: path.basename(filename), expected: basename },
-            })
-          }
-          return
-        }
-
         const creator = declarators.find((node) => {
           const initializer = unwrapExpression(node.init)
           return (

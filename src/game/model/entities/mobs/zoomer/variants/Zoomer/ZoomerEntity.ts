@@ -1,3 +1,4 @@
+import { BleedingEffectComponent } from "../../../../../components/combat/BleedingEffectComponent"
 import {
   EntityRoleEnum,
   getEntityCreator,
@@ -37,6 +38,7 @@ import { ArmorEntityFactory } from "../../../../items/armor/factory"
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
     zoomer,
+    BleedingEffectComponent({ chance: 50, duration: 3, min: 2, max: 3 }),
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 50 }),
     GlyphComponent({ glyph: "Z" }),

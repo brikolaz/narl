@@ -3,7 +3,7 @@ import { getBackpack, getContainerItemAt } from "../containers/containers"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { curse } from "../curse/curse"
+import { triggerOnInspectCurse } from "../curse/triggers/triggerOnInspectCurse"
 import type { PlayerInspectInvAction } from "../player/types"
 import { getItemInspectText, increaseInspected } from "./inspect"
 
@@ -25,7 +25,7 @@ export const resolvePlayerInspectInvAction = (
     increaseInspected(item)
 
     action.info(getItemInspectText(item))
-    curse(action, item)
+    triggerOnInspectCurse(action, item)
   })()
 
   return action.resolve(false)

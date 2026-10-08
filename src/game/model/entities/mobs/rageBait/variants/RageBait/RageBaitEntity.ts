@@ -1,3 +1,4 @@
+import { ProvokableComponent } from "../../../../../components/ai/ProvokableComponent"
 import {
   EntityRoleEnum,
   getEntityCreator,
@@ -35,6 +36,7 @@ import { SwordEntityFactory } from "../../../../items/sword/factory"
 const addComponents = (rageBait: Entity<"RAGE_BAIT">): void => {
   upsertComponents(
     rageBait,
+    ProvokableComponent({ damageChance: 50, pokeChance: 20 }),
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 20 }),
     GlyphComponent({ glyph: "R" }),

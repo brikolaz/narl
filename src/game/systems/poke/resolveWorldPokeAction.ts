@@ -1,5 +1,8 @@
+import { getComponentByType } from "../../../core/model/queries/components/get"
+import { ProvokableComponent } from "../../model/components/ai/ProvokableComponent"
+import { isHostile } from "../attack/hostility"
+import { getRng } from "../rng/rng"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { getManual } from "../../model/entities/getManual"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getEntityName } from "../inspect/getEntityName"
@@ -7,7 +10,7 @@ import { getMob } from "../mobs/mobs"
 import { getNextPosition } from "../movement/position"
 import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"
-import type { WorldPokeAction } from "../world/types"
+import { WorldActionTypeEnum, type WorldPokeAction } from "../world/types"
 import { getTile } from "../world/tile"
 import { getInspectDesc, increaseInspected } from "../inspect/inspect"
 
@@ -47,7 +50,18 @@ export const resolveWorldPokeAction = (
       ].join(". "),
     )
     increaseInspected(target)
-    getManual(target)?.afterPoke?.(action, source, target)
+    const provokable = getComponentByType(target, ProvokableComponent)
+    if (
+      provokable &&
+      !isHostile(target) &&
+      getRng(target).chance(provokable.pokeChance)
+    ) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_ENRAGE,
+        entityId: target.id,
+        sourceId: source.id,
+      })
+    }
   })()
 
   return action.resolve()

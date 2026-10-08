@@ -28,6 +28,10 @@ export const WorldActionTypeEnum = createEnum(
   "WORLD_INIT_BLOCK",
   "WORLD_POKE",
   "WORLD_REST",
+  "WORLD_SEVER_COCK",
+  "WORLD_ENRAGE",
+  "WORLD_MAKE_PANTS",
+  "WORLD_UPDATE_DMG",
 )
 export const WorldKillActionReasonEnum = createEnum("ATTACK", "EXPLODE")
 export type WorldKillActionReasonEnum = EnumType<
@@ -83,8 +87,8 @@ export type WorldBleedAction = {
 
 export type WorldInitBleedAction = {
   type: typeof WorldActionTypeEnum.WORLD_INIT_BLEED
-  bleedId: Id
-  duration: number
+  sourceId: Id
+  targetId: Id
 }
 
 export type WorldCleanupBleedAction = {
@@ -168,6 +172,31 @@ export type WorldRestAction = {
   entityId: Id
 }
 
+export type WorldSeverCockAction = {
+  type: typeof WorldActionTypeEnum.WORLD_SEVER_COCK
+  sourceId: Id
+  targetId: Id
+}
+
+export type WorldEnrageAction = {
+  type: typeof WorldActionTypeEnum.WORLD_ENRAGE
+  entityId: Id
+  sourceId?: Id
+}
+
+export type WorldMakePantsAction = {
+  type: typeof WorldActionTypeEnum.WORLD_MAKE_PANTS
+  entityId: Id
+}
+
+export type WorldUpdateDmgAction = {
+  type: typeof WorldActionTypeEnum.WORLD_UPDATE_DMG
+  entityId: Id
+  dmgMul: number
+  min: number
+  max: number
+}
+
 export type WorldAction =
   | WorldDropItemAction
   | WorldGainExpAction
@@ -194,3 +223,7 @@ export type WorldAction =
   | WorldInitBlockAction
   | WorldPokeAction
   | WorldRestAction
+  | WorldSeverCockAction
+  | WorldEnrageAction
+  | WorldMakePantsAction
+  | WorldUpdateDmgAction
