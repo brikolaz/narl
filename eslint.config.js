@@ -133,7 +133,7 @@ export default defineConfig([
       "local/module-constant-contract": "error",
       "local/predicate-contract": [
         "error",
-        { allowedBooleanNames: ["chance"] },
+        { allowedBooleanNames: ["chance", "namedChance"] },
       ],
       "local/property-contract": "error",
       "local/underscore-contract": "error",

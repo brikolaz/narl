@@ -30,8 +30,11 @@ const addComponents = (ring: Entity<"RING">): void => {
     PickupableComponent(),
     DroppableComponent(),
     ColorComponent({ color: COLORS.tier.common }),
-    SeveringCurseComponent(),
   )
+
+  if (getRng(ring).namedChance(80, "SEVERING_CURSE")) {
+    upsertComponents(ring, SeveringCurseComponent())
+  }
 }
 const addLoot = (ring: Entity<"RING">): void => {
   void ring
