@@ -33,21 +33,21 @@ export const resolvePlayerAttackAction = (
         direction,
       })
     }
-
-    if (canPierce(weapon)) {
-      return action.addPendingImmediateAction({
-        type: PlayerActionTypeEnum.PLAYER_RANGED_ATTACK,
-        direction,
-      })
-    }
-
     if (targetPosition === null) {
       return action.fail("Nothing to attack")
     }
-    action.addPendingImmediateAction({
-      type: PlayerActionTypeEnum.PLAYER_MELEE_ATTACK,
-      targetPosition,
-    })
+    if (canPierce(weapon)) {
+      action.addPendingImmediateAction({
+        type: PlayerActionTypeEnum.PLAYER_RANGED_ATTACK,
+        direction,
+      })
+    } else {
+      action.addPendingImmediateAction({
+        type: PlayerActionTypeEnum.PLAYER_MELEE_ATTACK,
+        targetPosition,
+      })
+    }
+
     if (
       hasComponentsByType(weapon, BleedingEffectComponent) ||
       hasComponentsByType(source, BleedingEffectComponent)
