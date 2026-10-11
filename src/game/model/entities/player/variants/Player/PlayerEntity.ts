@@ -45,6 +45,6 @@ const addEntities = (player: Entity<"PLAYER">): void => {
 }
 export const PlayerEntity = getEntityCreator("PLAYER", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

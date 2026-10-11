@@ -44,6 +44,6 @@ const addEntities = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
 
 export const HornedHelmetEntity = getEntityCreator("HORNED_HELMET", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

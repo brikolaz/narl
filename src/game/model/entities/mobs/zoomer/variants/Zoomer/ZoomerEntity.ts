@@ -77,6 +77,6 @@ const addEntities = (zoomer: Entity<"ZOOMER">): void => {
 
 export const ZoomerEntity = getEntityCreator("ZOOMER", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

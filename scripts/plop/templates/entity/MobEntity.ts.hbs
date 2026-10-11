@@ -16,6 +16,6 @@ const addEntities = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
 
 export const {{entityName}}Entity = getEntityCreator("{{entityType}}", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 });

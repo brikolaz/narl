@@ -28,6 +28,6 @@ const addEntities = (headSlot: Entity<"HEAD_SLOT">): void => {
 }
 export const HeadSlotEntity = getEntityCreator("HEAD_SLOT", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

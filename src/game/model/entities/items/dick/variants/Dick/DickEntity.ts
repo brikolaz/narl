@@ -36,6 +36,6 @@ const addEntities = (dick: Entity<"DICK">): void => {
 }
 export const DickEntity = getEntityCreator("DICK", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

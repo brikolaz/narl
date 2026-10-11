@@ -81,6 +81,6 @@ const addEntities = (rageBait: Entity<"RAGE_BAIT">): void => {
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

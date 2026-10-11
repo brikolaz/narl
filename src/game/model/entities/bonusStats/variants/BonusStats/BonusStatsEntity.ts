@@ -13,6 +13,6 @@ const addEntities = (bonusStats: Entity<"BONUS_STATS">): void => {
 }
 export const BonusStatsEntity = getEntityCreator("BONUS_STATS", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

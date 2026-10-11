@@ -52,6 +52,6 @@ const addEntities = (ring: Entity<"RING">): void => {
 }
 export const RingEntity = getEntityCreator("RING", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

@@ -42,13 +42,13 @@ export type EntityByVariant<Variant extends EntityType<string>> =
 
 type EntityCreatorOptions<Type extends string> = {
   components?: (entity: Entity<Type>) => void
-  eq?: (entity: Entity<Type>) => void
+  entities?: (entity: Entity<Type>) => void
   loot?: (entity: Entity<Type>) => void
 }
 
 export const getEntityCreator = <const Type extends string>(
   type: Type,
-  { components, eq, loot }: EntityCreatorOptions<Type> = {},
+  { components, entities, loot }: EntityCreatorOptions<Type> = {},
 ): EntityCreator<Type> => {
   const typeNamespace = getEcsNamespace(NamespaceEnum.ENTITY, type)
   const entityType = Symbol(typeNamespace) as EntityType<Type>
@@ -72,7 +72,7 @@ export const getEntityCreator = <const Type extends string>(
 
     upsertRegistryEntities(entity)
     components?.(entity)
-    eq?.(entity)
+    entities?.(entity)
     loot?.(entity)
 
     return entity

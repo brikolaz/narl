@@ -22,6 +22,6 @@ const addEntities = (wall: Entity<"WALL">): void => {
 }
 export const WallEntity = getEntityCreator("WALL", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

@@ -36,6 +36,6 @@ const addEntities = (shield: Entity<"SHIELD">): void => {
 
 export const ShieldEntity = getEntityCreator("SHIELD", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

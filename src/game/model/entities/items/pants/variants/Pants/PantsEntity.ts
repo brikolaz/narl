@@ -36,6 +36,6 @@ const addEntities = (pants: Entity<"PANTS">): void => {
 
 export const PantsEntity = getEntityCreator("PANTS", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

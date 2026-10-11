@@ -7,7 +7,6 @@ import {
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
-import { getRng } from "../../../../../../systems/rng/rng"
 import { FovComponent } from "../../../../../components/ai/FovComponent"
 import {
   HostilityComponent,
@@ -15,7 +14,6 @@ import {
 } from "../../../../../components/ai/HostilityComponent"
 import { UnawareComponent } from "../../../../../components/ai/UnawareComponent"
 import { DmgComponent } from "../../../../../components/combat/DmgComponent"
-import { DmgMulComponent } from "../../../../../components/combat/DmgMulComponent"
 import { ExplodeComponent } from "../../../../../components/combat/ExplodeComponent"
 import { ExplodeRangeComponent } from "../../../../../components/combat/ExplodeRangeComponent"
 import { HpComponent } from "../../../../../components/combat/HpComponent"
@@ -25,7 +23,6 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MovableComponent } from "../../../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../../../components/spatial/PositionComponent"
 import { ExpComponent } from "../../../../../components/state/ExpComponent"
-import { BonusStatsEntityFactory } from "../../../../bonusStats/factory"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
 import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/LongSwordEntity"
@@ -53,26 +50,7 @@ const addLoot = (boomer: Entity<"BOOMER">): void => {
   const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
 
   addContainerLoot(backpack, [
-    [
-      15,
-      LongSwordEntity,
-      (longSword) => {
-        if (getRng(boomer).chance(20)) {
-          const bonusStats = BonusStatsEntityFactory.getDefault()
-          upsertComponents(
-            bonusStats,
-            DmgMulComponent({
-              dmgMul:
-                getRng(longSword).pick(1.5, 2) ??
-                DmgMulComponent.defaults.dmgMul,
-            }),
-          )
-          upsertRoleEntities(longSword, {
-            [EntityRoleEnum.BONUS_STATS]: bonusStats,
-          })
-        }
-      },
-    ],
+    [15, LongSwordEntity],
     [5, ShieldEntity],
   ])
 
@@ -87,6 +65,6 @@ const addEntities = (boomer: Entity<"BOOMER">): void => {
 
 export const BoomerEntity = getEntityCreator("BOOMER", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })

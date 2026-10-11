@@ -38,6 +38,6 @@ const addEntities = (sword: Entity<"SWORD">): void => {
 
 export const SwordEntity = getEntityCreator("SWORD", {
   components: addComponents,
-  eq: addEntities,
+  entities: addEntities,
   loot: addLoot,
 })
