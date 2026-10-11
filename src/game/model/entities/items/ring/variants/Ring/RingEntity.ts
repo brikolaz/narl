@@ -40,7 +40,6 @@ const addLoot = (ring: Entity<"RING">): void => {
   void ring
 }
 
-// wtf
 const addEq = (ring: Entity<"RING">): void => {
   const bonusStats = BonusStatsEntityFactory.getDefault()
   upsertComponents(

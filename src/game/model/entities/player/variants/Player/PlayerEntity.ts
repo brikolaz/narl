@@ -36,9 +36,8 @@ const addComponents = (player: Entity<"PLAYER">): void => {
 }
 const addLoot = (player: Entity<"PLAYER">): void => {
   upsertRoleEntities(player, {
-    [EntityRoleEnum.BACKPACK]: ContainerEntityFactory.getVariant(
-      PlayerBackpackEntity.type,
-    ),
+    [EntityRoleEnum.BACKPACK]:
+      ContainerEntityFactory.getVariant(PlayerBackpackEntity),
   })
 }
 const addEq = (player: Entity<"PLAYER">): void => {

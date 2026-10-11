@@ -1,3 +1,5 @@
+import { ShieldEntity } from "../../../../items/shield/variants/Shield/ShieldEntity"
+import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import {
   EntityRoleEnum,
   getEntityCreator,
@@ -5,7 +7,6 @@ import {
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
-import { addItemToContainer } from "../../../../../../systems/containers/containers"
 import { getRng } from "../../../../../../systems/rng/rng"
 import { FovComponent } from "../../../../../components/ai/FovComponent"
 import {
@@ -27,8 +28,6 @@ import { ExpComponent } from "../../../../../components/state/ExpComponent"
 import { BonusStatsEntityFactory } from "../../../../bonusStats/factory"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
-import { ShieldEntityFactory } from "../../../../items/shield/factory"
-import { SwordEntityFactory } from "../../../../items/sword/factory"
 import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/LongSwordEntity"
 
 const addComponents = (boomer: Entity<"BOOMER">): void => {
@@ -51,29 +50,31 @@ const addComponents = (boomer: Entity<"BOOMER">): void => {
 }
 
 const addLoot = (boomer: Entity<"BOOMER">): void => {
-  const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
 
-  if (getRng(boomer).chance(15)) {
-    const longSword = SwordEntityFactory.getVariant(LongSwordEntity.type)
-    addItemToContainer(backpack, longSword)
-
-    if (getRng(boomer).chance(20)) {
-      const bonusStats = BonusStatsEntityFactory.getDefault()
-      upsertComponents(
-        bonusStats,
-        DmgMulComponent({
-          dmgMul:
-            getRng(longSword).pick(1.5, 2) ?? DmgMulComponent.defaults.dmgMul,
-        }),
-      )
-      upsertRoleEntities(longSword, {
-        [EntityRoleEnum.BONUS_STATS]: bonusStats,
-      })
-    }
-  }
-  if (getRng(boomer).chance(5)) {
-    addItemToContainer(backpack, ShieldEntityFactory.getDefault())
-  }
+  addContainerLoot(backpack, [
+    [
+      15,
+      LongSwordEntity,
+      (longSword) => {
+        if (getRng(boomer).chance(20)) {
+          const bonusStats = BonusStatsEntityFactory.getDefault()
+          upsertComponents(
+            bonusStats,
+            DmgMulComponent({
+              dmgMul:
+                getRng(longSword).pick(1.5, 2) ??
+                DmgMulComponent.defaults.dmgMul,
+            }),
+          )
+          upsertRoleEntities(longSword, {
+            [EntityRoleEnum.BONUS_STATS]: bonusStats,
+          })
+        }
+      },
+    ],
+    [5, ShieldEntity],
+  ])
 
   upsertRoleEntities(boomer, {
     [EntityRoleEnum.BACKPACK]: backpack,

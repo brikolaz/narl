@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs"
+import path from "node:path"
 import { isIdentifier, j, parseStatement, writeAst } from "./ast.js"
 
 export const addImport = (program, source, name, typeOnly = false) => {
@@ -70,10 +71,10 @@ export const wireVariantUnion = ({ filePath, familyName, variantName }) => {
   writeAst(filePath, root)
 }
 
-const getVariantMethod = (variantName) => {
+const getVariantMethod = (variantName, familyName) => {
   const root = j(`class Factory {
-    getVariant(variant: Variants): Entity {
-      switch (variant) {
+    getVariant(variant: EntityTypeArgument<${familyName}EntityVariants>): Entity {
+      switch (resolveEntityType(variant)) {
         case ${variantName}Entity.type:
           return ${variantName}Entity()
         default:
@@ -107,10 +108,21 @@ export const wireFactoryVariant = ({ filePath, variantName, familyName }) => {
       member.type === "ClassMethod" && isIdentifier(member.key, "getVariant"),
   )
   if (!method) {
-    const newMethod = getVariantMethod(variantName)
-    newMethod.params[0].typeAnnotation = j.tsTypeAnnotation(
-      j.tsTypeReference(j.identifier(`${familyName}EntityVariants`)),
+    const entityImport = program.body.find(
+      (node) =>
+        node.type === "ImportDeclaration" &&
+        node.source.value.endsWith("core/model/Entity"),
     )
+    if (!entityImport) {
+      throw new Error(`Missing core Entity import in ${filePath}`)
+    }
+    const normalizeSource = path.posix.join(
+      path.posix.dirname(entityImport.source.value),
+      "queries/entities/normalize",
+    )
+    addImport(program, normalizeSource, "resolveEntityType")
+    addImport(program, normalizeSource, "EntityTypeArgument", true)
+    const newMethod = getVariantMethod(variantName, familyName)
     classBody.push(newMethod)
     writeAst(filePath, root)
     return

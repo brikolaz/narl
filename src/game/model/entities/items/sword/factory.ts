@@ -1,3 +1,7 @@
+import {
+  resolveEntityType,
+  type EntityTypeArgument,
+} from "../../../../../core/model/queries/entities/normalize"
 import type { Entity } from "../../../../../core/model/Entity"
 import { BaseItemFactory } from "../../../BaseItemFactory"
 import { LongSwordEntity } from "./variants/LongSword/LongSwordEntity"
@@ -8,8 +12,8 @@ class SwordFactory extends BaseItemFactory<SwordEntityVariants> {
   getDefault(): Entity {
     return SwordEntity()
   }
-  getVariant(variant: SwordEntityVariants): Entity {
-    switch (variant) {
+  getVariant(variant: EntityTypeArgument<SwordEntityVariants>): Entity {
+    switch (resolveEntityType(variant)) {
       case LongSwordEntity.type:
         return LongSwordEntity()
       default:

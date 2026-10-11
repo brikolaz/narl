@@ -1,5 +1,5 @@
 import { typedEntries } from "../../../../utils/typedEntries"
-import { EntityRoleEnum, type Entity } from "../../Entity"
+import { EntityRoleEnum, type Entity, type EntityType } from "../../Entity"
 import type { Id } from "../../Id"
 import { getEntityById } from "./get"
 
@@ -8,6 +8,15 @@ export type ChildrenInput =
   | Partial<Record<EntityRoleEnum, (Entity | undefined)[] | Entity>>
 
 export type EntityArgument = Entity | Id | undefined
+
+export type EntityTypeArgument<Type extends EntityType = EntityType> =
+  Type | { readonly type: Type }
+
+export const resolveEntityType = <Type extends EntityType>(
+  entityType: EntityTypeArgument<Type>,
+): Type => {
+  return typeof entityType === "symbol" ? entityType : entityType.type
+}
 
 export const normalizeChildrenEntityRecords = (
   children: ChildrenInput,

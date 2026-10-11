@@ -21,7 +21,7 @@ export const initWorld = (): WorldState => {
   world[2].items.push(ring)
   setPosition(ring, 2)
 
-  // const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  // const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
   // world[2].items.push(backpack)
   // setPosition(backpack, 2)
 
@@ -29,7 +29,7 @@ export const initWorld = (): WorldState => {
   world[3].items.push(sword)
   setPosition(sword, 3)
 
-  const hornedHelmet = HelmetEntityFactory.getVariant(HornedHelmetEntity.type)
+  const hornedHelmet = HelmetEntityFactory.getVariant(HornedHelmetEntity)
   world[4].items.push(hornedHelmet)
   setPosition(hornedHelmet, 4)
 

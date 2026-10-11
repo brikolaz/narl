@@ -1,3 +1,7 @@
+import {
+  resolveEntityType,
+  type EntityTypeArgument,
+} from "../../../../../core/model/queries/entities/normalize"
 import type { Entity } from "../../../../../core/model/Entity"
 import { patchComponentByType } from "../../../../../core/model/queries/components/patch"
 import {
@@ -14,7 +18,7 @@ class BoomerFactory extends BaseMobFactory<BoomerEntityVariants> {
     return BoomerEntity()
   }
 
-  getPursuer(variant?: BoomerEntityVariants): Entity {
+  getPursuer(variant?: EntityTypeArgument<BoomerEntityVariants>): Entity {
     const boomer = super.getPursuer(variant)
     patchComponentByType(boomer, HostilityComponent, (component) => {
       component.hostility = HostilityEnum.FRIENDLY_HOSTILE
@@ -22,8 +26,8 @@ class BoomerFactory extends BaseMobFactory<BoomerEntityVariants> {
     return boomer
   }
 
-  getVariant(variant: BoomerEntityVariants): Entity {
-    switch (variant) {
+  getVariant(variant: EntityTypeArgument<BoomerEntityVariants>): Entity {
+    switch (resolveEntityType(variant)) {
       case BabyBoomerEntity.type:
         return BabyBoomerEntity()
       default:

@@ -1,3 +1,5 @@
+import { ArmorEntity } from "../../../../items/armor/variants/Armor/ArmorEntity"
+import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import { BleedingEffectComponent } from "../../../../../components/combat/BleedingEffectComponent"
 import {
   EntityRoleEnum,
@@ -7,10 +9,7 @@ import {
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { patchComponentByType } from "../../../../../../../core/model/queries/components/patch"
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
-import {
-  addItemToContainer,
-  setContainerItemAt,
-} from "../../../../../../systems/containers/containers"
+import { setContainerItemAt } from "../../../../../../systems/containers/containers"
 import { getEqSlotByType, initEq } from "../../../../../../systems/eq/eq"
 import { getRng } from "../../../../../../systems/rng/rng"
 import { FovComponent } from "../../../../../components/ai/FovComponent"
@@ -30,10 +29,8 @@ import { PositionComponent } from "../../../../../components/spatial/PositionCom
 import { ExpComponent } from "../../../../../components/state/ExpComponent"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
-import { HelmetEntityFactory } from "../../../../items/helmet/factory"
 import { HornedHelmetEntity } from "../../../../items/helmet/variants/HornedHelmet/HornedHelmetEntity"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
-import { ArmorEntityFactory } from "../../../../items/armor/factory"
 
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
@@ -53,20 +50,15 @@ const addComponents = (zoomer: Entity<"ZOOMER">): void => {
 }
 
 const addLoot = (zoomer: Entity<"ZOOMER">): void => {
-  const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
 
   if (getRng(zoomer).chance(5)) {
     ContainerEntityFactory.setDroppable(backpack)
   }
-  if (getRng(zoomer).chance(15)) {
-    addItemToContainer(
-      backpack,
-      HelmetEntityFactory.getVariant(HornedHelmetEntity.type),
-    )
-  }
-  if (getRng(zoomer).chance(10)) {
-    addItemToContainer(backpack, ArmorEntityFactory.getDefault())
-  }
+  addContainerLoot(backpack, [
+    [15, HornedHelmetEntity],
+    [10, ArmorEntity],
+  ])
 
   upsertRoleEntities(zoomer, {
     [EntityRoleEnum.BACKPACK]: backpack,

@@ -1,3 +1,7 @@
+import {
+  resolveEntityType,
+  type EntityTypeArgument,
+} from "../../../../../core/model/queries/entities/normalize"
 import type { EntityByVariant } from "../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../core/model/queries/components/add"
 import { BaseItemFactory } from "../../../BaseItemFactory"
@@ -18,9 +22,9 @@ class ContainerFactory extends BaseItemFactory<ContainerEntityVariants> {
     return PlayerBackpackEntity()
   }
   getVariant(
-    variant: ContainerEntityVariants,
+    variant: EntityTypeArgument<ContainerEntityVariants>,
   ): EntityByVariant<ContainerEntityVariants> {
-    switch (variant) {
+    switch (resolveEntityType(variant)) {
       case BackpackEntity.type:
         return BackpackEntity()
       case PlayerBackpackEntity.type:

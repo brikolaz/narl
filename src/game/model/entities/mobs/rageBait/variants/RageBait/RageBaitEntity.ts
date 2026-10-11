@@ -1,3 +1,6 @@
+import { HelmetEntity } from "../../../../items/helmet/variants/Helmet/HelmetEntity"
+import { SwordEntity } from "../../../../items/sword/variants/Sword/SwordEntity"
+import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import { ProvokableComponent } from "../../../../../components/ai/ProvokableComponent"
 import {
   EntityRoleEnum,
@@ -7,10 +10,7 @@ import {
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { patchComponentByType } from "../../../../../../../core/model/queries/components/patch"
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
-import {
-  addItemToContainer,
-  setContainerItemAt,
-} from "../../../../../../systems/containers/containers"
+import { setContainerItemAt } from "../../../../../../systems/containers/containers"
 import { getEqSlotByType, initEq } from "../../../../../../systems/eq/eq"
 import { getRng } from "../../../../../../systems/rng/rng"
 import {
@@ -30,7 +30,6 @@ import { ExpComponent } from "../../../../../components/state/ExpComponent"
 import { UnawareComponent } from "../../../../../components/ai/UnawareComponent"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
-import { HelmetEntityFactory } from "../../../../items/helmet/factory"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
 
 const addComponents = (rageBait: Entity<"RAGE_BAIT">): void => {
@@ -55,17 +54,15 @@ const addComponents = (rageBait: Entity<"RAGE_BAIT">): void => {
 }
 
 const addLoot = (rageBait: Entity<"RAGE_BAIT">): void => {
-  const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
 
   if (getRng(rageBait).chance(5)) {
     ContainerEntityFactory.setDroppable(backpack)
   }
-  if (getRng(rageBait).chance(20)) {
-    addItemToContainer(backpack, SwordEntityFactory.getDefault())
-  }
-  if (getRng(rageBait).chance(20)) {
-    addItemToContainer(backpack, HelmetEntityFactory.getDefault())
-  }
+  addContainerLoot(backpack, [
+    [20, SwordEntity],
+    [20, HelmetEntity],
+  ])
 
   upsertRoleEntities(rageBait, {
     [EntityRoleEnum.BACKPACK]: backpack,

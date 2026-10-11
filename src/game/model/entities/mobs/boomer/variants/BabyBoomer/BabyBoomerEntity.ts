@@ -1,3 +1,6 @@
+import { PantsEntity } from "../../../../items/pants/variants/Pants/PantsEntity"
+import { BootsEntity } from "../../../../items/boots/variants/Boots/BootsEntity"
+import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import {
   EntityRoleEnum,
   getEntityCreator,
@@ -5,8 +8,6 @@ import {
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
-import { addItemToContainer } from "../../../../../../systems/containers/containers"
-import { getRng } from "../../../../../../systems/rng/rng"
 import { FovComponent } from "../../../../../components/ai/FovComponent"
 import {
   HostilityComponent,
@@ -23,11 +24,8 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MovableComponent } from "../../../../../components/spatial/MovableComponent"
 import { PositionComponent } from "../../../../../components/spatial/PositionComponent"
 import { ExpComponent } from "../../../../../components/state/ExpComponent"
-import { BootsEntityFactory } from "../../../../items/boots/factory"
 import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
-import { PantsEntityFactory } from "../../../../items/pants/factory"
-import { SwordEntityFactory } from "../../../../items/sword/factory"
 import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/LongSwordEntity"
 
 const addComponents = (babyBoomer: Entity<"BABY_BOOMER">): void => {
@@ -50,18 +48,13 @@ const addComponents = (babyBoomer: Entity<"BABY_BOOMER">): void => {
 }
 
 const addLoot = (babyBoomer: Entity<"BABY_BOOMER">): void => {
-  const backpack = ContainerEntityFactory.getVariant(BackpackEntity.type)
+  const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
 
-  if (getRng(babyBoomer).chance(15)) {
-    const longSword = SwordEntityFactory.getVariant(LongSwordEntity.type)
-    addItemToContainer(backpack, longSword)
-  }
-  if (getRng(babyBoomer).chance(20)) {
-    addItemToContainer(backpack, BootsEntityFactory.getDefault())
-  }
-  if (getRng(babyBoomer).chance(20)) {
-    addItemToContainer(backpack, PantsEntityFactory.getDefault())
-  }
+  addContainerLoot(backpack, [
+    [15, LongSwordEntity],
+    [20, BootsEntity],
+    [20, PantsEntity],
+  ])
 
   upsertRoleEntities(babyBoomer, {
     [EntityRoleEnum.BACKPACK]: backpack,

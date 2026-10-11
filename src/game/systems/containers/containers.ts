@@ -53,7 +53,7 @@ export const getContainerSize = (container: Entity) => {
   )
 }
 
-const getEmptySlots = (container: Entity): Set<ContainerSlot> => {
+export const getEmptySlots = (container: Entity): Set<ContainerSlot> => {
   const occupiedSlots = new Set(
     getContainerItems(container).map((item) => {
       const position = getPosition(item)
