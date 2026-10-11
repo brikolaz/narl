@@ -36,7 +36,7 @@ import { AxeEntity } from "../../../../items/axe/variants/Axe/AxeEntity"
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
     zoomer,
-    BleedingEffectComponent({ chance: 50, duration: 3, min: 2, max: 3 }),
+    BleedingEffectComponent({ chance: 40, duration: 3, min: 1, max: 3 }),
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 50 }),
     GlyphComponent({ glyph: "Z" }),
