@@ -31,6 +31,7 @@ import { ContainerEntityFactory } from "../../../../items/container/factory"
 import { BackpackEntity } from "../../../../items/container/variants/Backpack/BackpackEntity"
 import { HornedHelmetEntity } from "../../../../items/helmet/variants/HornedHelmet/HornedHelmetEntity"
 import { SwordEntityFactory } from "../../../../items/sword/factory"
+import { AxeEntity } from "../../../../items/axe/variants/Axe/AxeEntity"
 
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
@@ -58,6 +59,7 @@ const addLoot = (zoomer: Entity<"ZOOMER">): void => {
   addContainerLoot(backpack, [
     [15, HornedHelmetEntity],
     [10, ArmorEntity],
+    [20, AxeEntity],
   ])
 
   upsertRoleEntities(zoomer, {

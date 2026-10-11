@@ -31,6 +31,11 @@ import type { SwordEntityVariants } from "./sword/variants/variants"
 import { LongSwordEntity } from "./sword/variants/LongSword/LongSwordEntity"
 import { SwordEntity } from "./sword/variants/Sword/SwordEntity"
 
+import { AxeEntity } from "./axe/variants/Axe/AxeEntity"
+import { AxeEntityFactory } from "./axe/factory"
+
+import type { AxeEntityVariants } from "./axe/variants/variants"
+
 export type ItemEntityVariants =
   | ArmorEntityVariants
   | BootsEntityVariants
@@ -41,6 +46,7 @@ export type ItemEntityVariants =
   | RingEntityVariants
   | ShieldEntityVariants
   | SwordEntityVariants
+  | AxeEntityVariants
 
 export const ITEM_FACTORIES = new Map<ItemEntityVariants, ItemFactory>([
   [ArmorEntity.type, ArmorEntityFactory],
@@ -56,4 +62,5 @@ export const ITEM_FACTORIES = new Map<ItemEntityVariants, ItemFactory>([
   [ShieldEntity.type, ShieldEntityFactory],
   [LongSwordEntity.type, SwordEntityFactory],
   [SwordEntity.type, SwordEntityFactory],
+  [AxeEntity.type, AxeEntityFactory],
 ])

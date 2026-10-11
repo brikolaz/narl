@@ -12,6 +12,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getEntityName } from "../inspect/getEntityName"
 import { WorldActionTypeEnum, type WorldInitBleedAction } from "../world/types"
+import { getAttackWeapon } from "../attack/getAttackWeapon"
 
 export const resolveWorldInitBleedAction = (
   gameAction: WorldInitBleedAction,
@@ -23,7 +24,9 @@ export const resolveWorldInitBleedAction = (
     const source = getEntityById(sourceId)
     const target = getEntityById(targetId)
     if (!source || !target) return
-    const bleedingEffect = getComponentByType(source, BleedingEffectComponent)
+    const bleedingEffect =
+      getComponentByType(getAttackWeapon(source), BleedingEffectComponent) ??
+      getComponentByType(source, BleedingEffectComponent)
     if (!bleedingEffect || !getRng(source).chance(bleedingEffect.chance)) return
     const { min, max, duration } = bleedingEffect
     assert(duration > 1, "Bleed must last at least 1 turn")

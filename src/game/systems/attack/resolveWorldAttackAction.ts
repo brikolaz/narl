@@ -31,13 +31,6 @@ export const resolveWorldAttackAction = (
       })
       return
     }
-    if (hasComponentsByType(source, BleedingEffectComponent)) {
-      action.addPendingImmediateAction({
-        type: WorldActionTypeEnum.WORLD_INIT_BLEED,
-        sourceId: source.id,
-        targetId: target.id,
-      })
-    }
 
     const weapon = getAttackWeapon(source)
     if (!weapon) {
@@ -54,6 +47,17 @@ export const resolveWorldAttackAction = (
       dmg: rollAttackDmg(source),
       reason: WorldDealDamageActionReasonEnum.ATTACK,
     })
+
+    if (
+      hasComponentsByType(weapon, BleedingEffectComponent) ||
+      hasComponentsByType(source, BleedingEffectComponent)
+    ) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_INIT_BLEED,
+        sourceId: source.id,
+        targetId: target.id,
+      })
+    }
   })()
 
   return action.resolve()
