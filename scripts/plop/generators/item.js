@@ -1,10 +1,54 @@
-import { existsSync } from "node:fs"
+import { getTypeAlias, isIdentifier, j, writeAst } from "../ast.js"
+import { wireRegistry } from "../wiring.js"
+import { existsSync, readFileSync } from "node:fs"
 import { formatGeneratedFiles } from "../format.js"
 import { toCamelCase, toConstantCase, toPascalCase } from "../names.js"
 import { getCoreImport } from "../scaffold.js"
-import { wireFactoryVariant, wireVariantUnion } from "../variants.js"
+import { addImport, wireFactoryVariant, wireVariantUnion } from "../variants.js"
 
 const ITEMS_PATH = "src/game/model/entities/items"
+
+export const wireItemFamily = ({ familyFolder, familyName }) => {
+  const filePath = `${ITEMS_PATH}/factories.ts`
+  const root = j(readFileSync(filePath, "utf8"))
+  const program = root.find(j.Program).nodes()[0]
+  const variantType = `${familyName}EntityVariants`
+  addImport(program, `./${familyFolder}/variants/variants`, variantType, true)
+  const alias = getTypeAlias(root, "ItemEntityVariants", filePath)
+  const types =
+    alias.typeAnnotation.type === "TSUnionType"
+      ? alias.typeAnnotation.types
+      : [alias.typeAnnotation]
+  if (
+    !types.some(
+      (type) =>
+        type.type === "TSTypeReference" &&
+        isIdentifier(type.typeName, variantType),
+    )
+  ) {
+    alias.typeAnnotation = j.tsUnionType([
+      ...types,
+      j.tsTypeReference(j.identifier(variantType)),
+    ])
+  }
+  writeAst(filePath, root)
+  return wireRegistry({
+    filePath,
+    imports: [
+      {
+        source: `./${familyFolder}/variants/${familyName}/${familyName}Entity`,
+        names: [`${familyName}Entity`],
+      },
+      {
+        source: `./${familyFolder}/factory`,
+        names: [`${familyName}EntityFactory`],
+      },
+    ],
+    mapName: "ITEM_FACTORIES",
+    entityName: `${familyName}Entity`,
+    valueName: `${familyName}EntityFactory`,
+  })
+}
 
 const getItemFamilyPath = (base) => `${ITEMS_PATH}/${toCamelCase(base)}`
 

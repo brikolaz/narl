@@ -35,11 +35,6 @@ export const getCoreImport = (folder, moduleName) => {
   return `${"../".repeat(3 + depth)}core/model/${moduleName}`
 }
 
-export const getFactoryImport = (folder) => {
-  const depth = folder ? folder.split("/").length : 0
-  return `${"../".repeat(1 + depth)}Factory`
-}
-
 export const getBaseMobFactoryImport = (folder) => {
   const depth = folder ? folder.split("/").length : 0
   return `${"../".repeat(1 + depth)}BaseMobFactory`

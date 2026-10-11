@@ -1,9 +1,9 @@
+import { wireItemFamily } from "./item.js"
 import { toCamelCase, toConstantCase } from "../names.js"
 import { formatGeneratedFiles } from "../format.js"
 import {
   getBaseItemFactoryImport,
   getCoreImport,
-  getFactoryImport,
   getScaffoldTarget,
   validateScaffoldTarget,
 } from "../scaffold.js"
@@ -41,27 +41,23 @@ export const registerComponentGenerator = (plop) => {
   })
 }
 
-export const registerEntityGenerator = (plop) => {
-  plop.setGenerator("entity", {
-    description: "Create an entity creator and factory boilerplate",
+export const registerItemFamilyGenerator = (plop) => {
+  plop.setGenerator("item", {
+    description: "Create an item family and register its factory",
     prompts: [
       {
         type: "input",
         name: "target",
-        message: "Entity path/name:",
+        message: "Item path/name:",
         validate: (value) => validateScaffoldTarget(value, "Entity"),
       },
     ],
     actions: (answers) => {
       const { folder, name } = getScaffoldTarget(answers.target, "Entity")
-      const familyFolder = folder
+      const itemFolder = folder
         ? `${folder}/${toCamelCase(name)}`
         : toCamelCase(name)
-      const itemFactory =
-        folder === "items" ||
-        folder.startsWith("items/") ||
-        folder === "eq/slots" ||
-        folder.startsWith("eq/slots/")
+      const familyFolder = `items/${itemFolder}`
       const variantFolder = `${familyFolder}/variants/${name}`
       const entityPath = `src/game/model/entities/${variantFolder}/${name}Entity.ts`
       const variantsPath = `src/game/model/entities/${familyFolder}/variants/variants.ts`
@@ -88,19 +84,21 @@ export const registerEntityGenerator = (plop) => {
         {
           type: "add",
           path: factoryPath,
-          templateFile: itemFactory
-            ? "scripts/plop/templates/entity/ItemFactory.ts.hbs"
-            : "scripts/plop/templates/entity/factory.ts.hbs",
+          templateFile: "scripts/plop/templates/entity/ItemFactory.ts.hbs",
           data: {
             entityName: name,
             coreImport: getCoreImport(familyFolder, "Entity"),
-            factoryImport: getFactoryImport(familyFolder),
-            factoryType: itemFactory ? "ItemFactory" : "Factory",
-            itemFactory,
             baseItemFactoryImport: getBaseItemFactoryImport(familyFolder),
           },
         },
-        () => formatGeneratedFiles([entityPath, variantsPath, factoryPath]),
+        () => wireItemFamily({ familyFolder: itemFolder, familyName: name }),
+        () =>
+          formatGeneratedFiles([
+            entityPath,
+            variantsPath,
+            factoryPath,
+            "src/game/model/entities/items/factories.ts",
+          ]),
       ]
     },
   })

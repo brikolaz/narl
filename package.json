@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate:component": "plop component",
-    "generate:entity": "plop entity",
+    "generate:item": "plop item",
     "generate:item:variant": "plop item:variant",
     "generate:mob": "plop mob",
     "generate:mob:variant": "plop mob:variant",
