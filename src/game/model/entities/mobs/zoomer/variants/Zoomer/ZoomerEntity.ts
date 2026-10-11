@@ -65,7 +65,7 @@ const addLoot = (zoomer: Entity<"ZOOMER">): void => {
   })
 }
 
-const addEq = (zoomer: Entity<"ZOOMER">): void => {
+const addEntities = (zoomer: Entity<"ZOOMER">): void => {
   initEq(zoomer)
   const sword = SwordEntityFactory.getDefault()
   setContainerItemAt(getEqSlotByType(zoomer, MainHandSlotComponent), 1, sword)
@@ -77,6 +77,6 @@ const addEq = (zoomer: Entity<"ZOOMER">): void => {
 
 export const ZoomerEntity = getEntityCreator("ZOOMER", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

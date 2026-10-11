@@ -10,12 +10,12 @@ const addLoot = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
   void {{entityVariable}};
 };
 
-const addEq = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
+const addEntities = ({{entityVariable}}: Entity<"{{entityType}}">): void => {
   void {{entityVariable}};
 };
 
 export const {{entityName}}Entity = getEntityCreator("{{entityType}}", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 });

@@ -24,11 +24,11 @@ const addComponents = (playerBackpack: Entity<"PLAYER_BACKPACK">): void => {
 const addLoot = (playerBackpack: Entity<"PLAYER_BACKPACK">): void => {
   void playerBackpack
 }
-const addEq = (playerBackpack: Entity<"PLAYER_BACKPACK">): void => {
+const addEntities = (playerBackpack: Entity<"PLAYER_BACKPACK">): void => {
   void playerBackpack
 }
 export const PlayerBackpackEntity = getEntityCreator("PLAYER_BACKPACK", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

@@ -30,12 +30,12 @@ const addComponents = (boots: Entity<"BOOTS">): void => {
 const addLoot = (boots: Entity<"BOOTS">): void => {
   void boots
 }
-const addEq = (boots: Entity<"BOOTS">): void => {
+const addEntities = (boots: Entity<"BOOTS">): void => {
   void boots
 }
 
 export const BootsEntity = getEntityCreator("BOOTS", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

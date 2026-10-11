@@ -30,12 +30,12 @@ const addComponents = (shield: Entity<"SHIELD">): void => {
 const addLoot = (shield: Entity<"SHIELD">): void => {
   void shield
 }
-const addEq = (shield: Entity<"SHIELD">): void => {
+const addEntities = (shield: Entity<"SHIELD">): void => {
   void shield
 }
 
 export const ShieldEntity = getEntityCreator("SHIELD", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

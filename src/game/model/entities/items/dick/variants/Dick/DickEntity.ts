@@ -31,11 +31,11 @@ const addComponents = (dick: Entity<"DICK">): void => {
 const addLoot = (dick: Entity<"DICK">): void => {
   void dick
 }
-const addEq = (dick: Entity<"DICK">): void => {
+const addEntities = (dick: Entity<"DICK">): void => {
   void dick
 }
 export const DickEntity = getEntityCreator("DICK", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

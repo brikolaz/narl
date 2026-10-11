@@ -8,11 +8,11 @@ const addComponents = (bonusStats: Entity<"BONUS_STATS">): void => {
 const addLoot = (bonusStats: Entity<"BONUS_STATS">): void => {
   void bonusStats
 }
-const addEq = (bonusStats: Entity<"BONUS_STATS">): void => {
+const addEntities = (bonusStats: Entity<"BONUS_STATS">): void => {
   void bonusStats
 }
 export const BonusStatsEntity = getEntityCreator("BONUS_STATS", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

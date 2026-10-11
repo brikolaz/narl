@@ -23,11 +23,11 @@ const addComponents = (headSlot: Entity<"HEAD_SLOT">): void => {
 const addLoot = (headSlot: Entity<"HEAD_SLOT">): void => {
   void headSlot
 }
-const addEq = (headSlot: Entity<"HEAD_SLOT">): void => {
+const addEntities = (headSlot: Entity<"HEAD_SLOT">): void => {
   void headSlot
 }
 export const HeadSlotEntity = getEntityCreator("HEAD_SLOT", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

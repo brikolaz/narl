@@ -17,11 +17,11 @@ const addComponents = (floor: Entity<"FLOOR">): void => {
 const addLoot = (floor: Entity<"FLOOR">): void => {
   void floor
 }
-const addEq = (floor: Entity<"FLOOR">): void => {
+const addEntities = (floor: Entity<"FLOOR">): void => {
   void floor
 }
 export const FloorEntity = getEntityCreator("FLOOR", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

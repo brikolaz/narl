@@ -69,7 +69,7 @@ const addLoot = (rageBait: Entity<"RAGE_BAIT">): void => {
   })
 }
 
-const addEq = (rageBait: Entity<"RAGE_BAIT">): void => {
+const addEntities = (rageBait: Entity<"RAGE_BAIT">): void => {
   initEq(rageBait)
   const sword = SwordEntityFactory.getDefault()
   setContainerItemAt(getEqSlotByType(rageBait, MainHandSlotComponent), 1, sword)
@@ -81,6 +81,6 @@ const addEq = (rageBait: Entity<"RAGE_BAIT">): void => {
 
 export const RageBaitEntity = getEntityCreator("RAGE_BAIT", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

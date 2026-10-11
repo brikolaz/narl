@@ -30,12 +30,12 @@ const addComponents = (armor: Entity<"ARMOR">): void => {
 const addLoot = (armor: Entity<"ARMOR">): void => {
   void armor
 }
-const addEq = (armor: Entity<"ARMOR">): void => {
+const addEntities = (armor: Entity<"ARMOR">): void => {
   void armor
 }
 
 export const ArmorEntity = getEntityCreator("ARMOR", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

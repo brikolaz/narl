@@ -61,12 +61,12 @@ const addLoot = (babyBoomer: Entity<"BABY_BOOMER">): void => {
   })
 }
 
-const addEq = (babyBoomer: Entity<"BABY_BOOMER">): void => {
+const addEntities = (babyBoomer: Entity<"BABY_BOOMER">): void => {
   void babyBoomer
 }
 
 export const BabyBoomerEntity = getEntityCreator("BABY_BOOMER", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

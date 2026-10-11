@@ -40,11 +40,11 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
 const addLoot = (backpack: Entity<"BACKPACK">): void => {
   void backpack
 }
-const addEq = (backpack: Entity<"BACKPACK">): void => {
+const addEntities = (backpack: Entity<"BACKPACK">): void => {
   void backpack
 }
 export const BackpackEntity = getEntityCreator("BACKPACK", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

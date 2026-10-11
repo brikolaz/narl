@@ -40,7 +40,7 @@ const addLoot = (ring: Entity<"RING">): void => {
   void ring
 }
 
-const addEq = (ring: Entity<"RING">): void => {
+const addEntities = (ring: Entity<"RING">): void => {
   const bonusStats = BonusStatsEntityFactory.getDefault()
   upsertComponents(
     bonusStats,
@@ -52,6 +52,6 @@ const addEq = (ring: Entity<"RING">): void => {
 }
 export const RingEntity = getEntityCreator("RING", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

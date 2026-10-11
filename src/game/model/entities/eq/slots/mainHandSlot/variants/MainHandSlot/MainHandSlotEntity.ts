@@ -23,11 +23,11 @@ const addComponents = (mainHandSlot: Entity<"MAIN_HAND_SLOT">): void => {
 const addLoot = (mainHandSlot: Entity<"MAIN_HAND_SLOT">): void => {
   void mainHandSlot
 }
-const addEq = (mainHandSlot: Entity<"MAIN_HAND_SLOT">): void => {
+const addEntities = (mainHandSlot: Entity<"MAIN_HAND_SLOT">): void => {
   void mainHandSlot
 }
 export const MainHandSlotEntity = getEntityCreator("MAIN_HAND_SLOT", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

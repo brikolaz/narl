@@ -36,12 +36,12 @@ const addComponents = (longSword: Entity<"LONG_SWORD">): void => {
 const addLoot = (longSword: Entity<"LONG_SWORD">): void => {
   void longSword
 }
-const addEq = (longSword: Entity<"LONG_SWORD">): void => {
+const addEntities = (longSword: Entity<"LONG_SWORD">): void => {
   void longSword
 }
 
 export const LongSwordEntity = getEntityCreator("LONG_SWORD", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

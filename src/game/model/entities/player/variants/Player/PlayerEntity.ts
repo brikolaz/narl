@@ -40,11 +40,11 @@ const addLoot = (player: Entity<"PLAYER">): void => {
       ContainerEntityFactory.getVariant(PlayerBackpackEntity),
   })
 }
-const addEq = (player: Entity<"PLAYER">): void => {
+const addEntities = (player: Entity<"PLAYER">): void => {
   initEq(player)
 }
 export const PlayerEntity = getEntityCreator("PLAYER", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })

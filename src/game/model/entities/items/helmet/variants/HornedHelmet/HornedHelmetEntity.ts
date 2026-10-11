@@ -38,12 +38,12 @@ const addComponents = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
 const addLoot = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
   void hornedHelmet
 }
-const addEq = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
+const addEntities = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
   void hornedHelmet
 }
 
 export const HornedHelmetEntity = getEntityCreator("HORNED_HELMET", {
   components: addComponents,
-  eq: addEq,
+  eq: addEntities,
   loot: addLoot,
 })
