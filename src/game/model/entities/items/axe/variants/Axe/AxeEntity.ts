@@ -16,7 +16,7 @@ import { DroppableComponent } from "../../../../../components/interaction/Droppa
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
 
 const addComponents = (axe: Entity<"AXE">): void => {
-  const minDmg = getRng(axe).range(3, 7)
+  const minDmg = getRng(axe).range(3, 5)
   upsertComponents(
     axe,
     GlyphComponent({ glyph: "}" }),
@@ -24,7 +24,7 @@ const addComponents = (axe: Entity<"AXE">): void => {
     RemovableComponent(),
     MainHandComponent(),
     ColorComponent({ color: COLORS.tier.common }),
-    DmgComponent({ min: minDmg, max: minDmg + 3 }),
+    DmgComponent({ min: minDmg, max: minDmg + 2 }),
     PickupableComponent(),
     DroppableComponent(),
     BleedingEffectComponent({
