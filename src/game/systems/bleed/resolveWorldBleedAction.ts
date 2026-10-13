@@ -5,8 +5,10 @@ import { BleedComponent } from "../../model/components/combat/BleedComponent"
 import { getHp } from "../hp/hp"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
+import { resolveMobDeath } from "../attack/resolveMobDeath"
 import { initDeath } from "../gameOver/death"
 import { getEntityName } from "../inspect/getEntityName"
+import { isPlayer } from "../player/player"
 import { getRng } from "../rng/rng"
 import type { WorldBleedAction } from "../world/types"
 
@@ -26,11 +28,15 @@ export const resolveWorldBleedAction = (
     const hp = getHp(parent)
     const dmg = getRng(parent).range(bleed.min, bleed.max)
 
+    action.info(`${getEntityName(parent)} bleed for ${dmg} HP`)
+
     initDeath(() => {
       hp.hp -= dmg
     })
 
-    return action.info(`${getEntityName(parent)} bleed for ${dmg} HP`)
+    if (hp.hp <= 0 && !isPlayer(parent)) {
+      resolveMobDeath(action, parent)
+    }
   })()
 
   return action.resolve()
