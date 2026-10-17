@@ -5,7 +5,6 @@ import { PositionComponent } from "../../model/components/spatial/PositionCompon
 import { getPosition } from "../position/position"
 import { getTile } from "../world/tile"
 
-// TODO: handle other entity kind (items etc.) movement if needed
 export const moveMob = (entity: Entity, nextPosition: number) => {
   const tile = getTile(getPosition(entity))
   removeById(tile.mobs, entity.id)

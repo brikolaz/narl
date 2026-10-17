@@ -53,7 +53,6 @@ const getEffectiveDmgRange = (entity: Entity, eqSlot?: Entity) => {
 }
 
 // todo: move to the renderer
-// TODO: fix bug: include slot stats (effective dmg/def range)
 export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
   const stats = []
 

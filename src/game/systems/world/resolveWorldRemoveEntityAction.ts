@@ -5,7 +5,6 @@ import type { ActionResolution } from "../actions/types"
 import { removeMobById } from "../attack/mobs"
 import type { WorldRemoveEntityAction } from "./types"
 
-// TODO: handle other entity types
 export const resolveWorldRemoveEntityAction = (
   gameAction: WorldRemoveEntityAction,
 ): ActionResolution => {

@@ -14,7 +14,6 @@ import type { ActionResolution } from "../actions/types"
 import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerMoveItemAction } from "../player/types"
 
-// TODO: add swap (new resolver)
 export const resolvePlayerMoveItemAction = (
   gameAction: PlayerMoveItemAction,
 ): ActionResolution => {

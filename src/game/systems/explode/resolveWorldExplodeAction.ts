@@ -17,7 +17,6 @@ import {
 } from "../world/types"
 import { rollExplodeDmg } from "./dmg"
 
-// TODO: handle items with hp
 const getVulnerableTargets = (source: Entity, position: number): Entity[] => {
   const tile = STATE.world[position]
   if (!tile) {

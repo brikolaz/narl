@@ -10,7 +10,6 @@ import {
 import { isHostile } from "../attack/hostility"
 import { getEntityName } from "../inspect/getEntityName"
 
-// TODO: pass hostility (enum)
 export const resolveWorldEnrageAction = (
   gameAction: WorldEnrageAction,
 ): ActionResolution => {
