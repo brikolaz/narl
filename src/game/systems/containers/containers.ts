@@ -108,26 +108,24 @@ export const addItemToEntityBackpack = (entity: Entity, item: Entity): void => {
   if (!backpack) {
     throw new Error("No backpack")
   }
-  addItemToContainer(backpack, item)
+  addItemsToContainer(backpack, item)
 }
 
-// TODO: rewrite to itemS
-export const addItemToContainer = (
+export const addItemsToContainer = (
   container: Entity,
-  item: Entity | undefined,
+  ...items: (Entity | undefined)[]
 ): void => {
   if (!isContainer(container)) {
     throw new Error("Entity is not a container")
   }
-  if (!item) {
-    return
-  }
-  const slot = getFirstEmptyContainerSlot(container)
-
-  if (!slot) {
+  const itemsToAdd = items.filter((item) => item !== undefined)
+  const slots = [...getEmptySlots(container)]
+  if (itemsToAdd.length > slots.length) {
     throw new Error("Container is full")
   }
-  setContainerItemAt(container, slot, item)
+  itemsToAdd.forEach((item, index) => {
+    setContainerItemAt(container, slots[index], item)
+  })
 }
 
 export const setContainerItemAt = (

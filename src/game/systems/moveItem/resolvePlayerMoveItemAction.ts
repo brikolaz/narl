@@ -1,5 +1,5 @@
 import {
-  addItemToContainer,
+  addItemsToContainer,
   getBackpack,
   getContainerItemAt,
   getMaxNestDepth,
@@ -49,7 +49,7 @@ export const resolvePlayerMoveItemAction = (
       }
     }
 
-    addItemToContainer(toItem, fromItem)
+    addItemsToContainer(toItem, fromItem)
 
     action.success(
       `Moved ${getEntityName(fromItem)} to ${getEntityName(toItem)}`,

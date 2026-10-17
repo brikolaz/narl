@@ -7,7 +7,7 @@ import { ContainerEntityFactory } from "../game/model/entities/items/container/f
 import { HelmetEntityFactory } from "../game/model/entities/items/helmet/factory"
 import { RageBaitEntityFactory } from "../game/model/entities/mobs/rageBait/factory"
 import {
-  addItemToContainer,
+  addItemsToContainer,
   addItemToEntityBackpack,
   getBackpack,
   getContainerItems,
@@ -72,7 +72,7 @@ describe("clear", () => {
       game.state.world[1].items.push(groundItem)
       addItemToEntityBackpack(player, inventoryItem)
       setContainerItemAt(mainHand, 1, equippedItem)
-      addItemToContainer(nestedContainer, nestedItem)
+      addItemsToContainer(nestedContainer, nestedItem)
       addItemToEntityBackpack(player, nestedContainer)
 
       clearItems(game)

@@ -6,7 +6,7 @@ import {
 import { getItemFactory } from "../../model/entities/getFactory"
 import type { ContainerEntityVariants } from "../../model/entities/items/container/variants/variants"
 import type { ItemEntityVariants } from "../../model/entities/items/factories"
-import { addItemToContainer, getEmptySlots } from "../containers/containers"
+import { addItemsToContainer, getEmptySlots } from "../containers/containers"
 import { getRng } from "../rng/rng"
 
 type LootEntry = readonly [
@@ -24,6 +24,7 @@ export const addContainerLoot = (
   const freeSlots = getEmptySlots(container).size
   const count = Math.min(freeSlots, candidates.length)
 
+  const items: Entity[] = []
   for (let i = 0; i < count; i++) {
     const index = rng.range(i, candidates.length - 1)
     ;[candidates[i], candidates[index]] = [candidates[index], candidates[i]]
@@ -31,6 +32,7 @@ export const addContainerLoot = (
     const type = resolveEntityType(item)
     const entity = getItemFactory(type).getVariant(type)
     patcher?.(entity)
-    addItemToContainer(container, entity)
+    items.push(entity)
   }
+  addItemsToContainer(container, ...items)
 }

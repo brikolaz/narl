@@ -7,7 +7,7 @@ import { assert } from "../../../utils/assert"
 import { MainHandComponent } from "../../model/components/equipment/MainHandComponent"
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
 import {
-  addItemToContainer,
+  addItemsToContainer,
   getBackpack,
   getContainerItemAt,
   getFirstContainerItem,
@@ -90,7 +90,7 @@ export const resolvePlayerEquipItemAction = (
       }
     }
 
-    addItemToContainer(eqSlot, itemToEquip)
+    addItemsToContainer(eqSlot, itemToEquip)
     action.success(`Equipped ${getEntityName(itemToEquip)}`)
     triggerOnEquipCurse(action, player, eqSlot, itemToEquip)
   })()

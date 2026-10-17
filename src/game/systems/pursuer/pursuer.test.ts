@@ -30,7 +30,7 @@ import { WallEntityFactory } from "../../model/entities/wall/factory"
 import { assert } from "../../../utils/assert"
 import { InternalActionTypeEnum } from "../internal/types"
 import {
-  addItemToContainer,
+  addItemsToContainer,
   getBackpack,
   getContainerItems,
 } from "../containers/containers"
@@ -62,7 +62,7 @@ describe("pursuer", () => {
   it("empties backpack contents", () => {
     const mob = RageBaitEntityFactory.getDefault()
     const backpack = assert(getBackpack(mob), "Mob has no backpack")
-    addItemToContainer(backpack, DickEntityFactory.getDefault())
+    addItemsToContainer(backpack, DickEntityFactory.getDefault())
 
     makePursuer(mob)
 
@@ -74,8 +74,8 @@ describe("pursuer", () => {
     const backpack = assert(getBackpack(mob), "Mob has no backpack")
     const nestedContainer = ContainerEntityFactory.getDefault()
     const nestedItem = DickEntityFactory.getDefault()
-    addItemToContainer(nestedContainer, nestedItem)
-    addItemToContainer(backpack, nestedContainer)
+    addItemsToContainer(nestedContainer, nestedItem)
+    addItemsToContainer(backpack, nestedContainer)
 
     makePursuer(mob)
 
