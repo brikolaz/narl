@@ -1,7 +1,7 @@
 import type { Entity } from "../../../core/model/Entity"
 import { assert } from "../../../utils/assert"
 import { getBackpack, getContainerItemAt } from "../containers/containers"
-import { getEqSlotByPosition } from "../eq/eq"
+import { getEqSlotByPosition, isRemovable } from "../eq/eq"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
@@ -12,7 +12,6 @@ import {
 } from "../player/types"
 import { dropItem } from "./drop"
 
-// TODO: drop directly from EQ
 export const resolvePlayerDropItemAction = (
   gameAction: PlayerDropItemAction,
 ): ActionResolution => {
@@ -32,10 +31,13 @@ export const resolvePlayerDropItemAction = (
     let itemToDrop: Entity | undefined = undefined
 
     if (eqSlot !== undefined) {
-      itemToDrop = assert(
-        getContainerItemAt(source, 1),
-        "No item in EQ slot to drop",
-      )
+      itemToDrop = getContainerItemAt(source, 1)
+      if (!itemToDrop) {
+        return action.fail(`No item at ${getEntityName(source)} slot`)
+      }
+      if (!isRemovable(itemToDrop)) {
+        return action.fail(`Can't be removed`)
+      }
     } else if (invSlot !== undefined) {
       itemToDrop = getContainerItemAt(source, invSlot)
       if (!itemToDrop) {
