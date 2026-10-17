@@ -1,6 +1,7 @@
 import { getBackpack } from "../containers/containers"
 import { assert } from "../../../utils/assert"
 import { getExp } from "../exp/exp"
+import { getPlayer } from "../player/player"
 import { getMobById } from "../mobs/mobs"
 import { getTile } from "./tile"
 import { Action } from "../actions/action"
@@ -32,6 +33,7 @@ export const resolveWorldKillAction = (
     const exp = getExp(mob)
     action.addPendingImmediateAction({
       type: WorldActionTypeEnum.WORLD_GAIN_EXP,
+      targetEntityId: getPlayer().id,
       exp,
     })
     action.addPendingImmediateAction({

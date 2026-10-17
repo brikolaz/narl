@@ -1,20 +1,19 @@
-import { getPlayer } from "../player/player"
+import { getEntityById } from "../../../core/model/queries/entities/get"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import type { WorldGainExpAction } from "../world/types"
 import { addExp } from "./exp"
 
-// TODO: add targetEntityId
 export const resolveWorldGainExpAction = (
   gameAction: WorldGainExpAction,
 ): ActionResolution => {
   const action = new Action(gameAction)
-  const { exp } = gameAction
+  const { exp, targetEntityId } = gameAction
 
   ;(() => {
-    const target = getPlayer()
+    const target = getEntityById(targetEntityId)
 
-    if (exp === 0) {
+    if (!target || exp === 0) {
       return
     }
 

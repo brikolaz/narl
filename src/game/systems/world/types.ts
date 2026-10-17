@@ -57,6 +57,7 @@ export type WorldKillAction = {
 }
 export type WorldGainExpAction = {
   type: typeof WorldActionTypeEnum.WORLD_GAIN_EXP
+  targetEntityId: Id
   exp: number
 }
 export type WorldRemoveEntityAction = {
