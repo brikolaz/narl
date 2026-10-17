@@ -79,7 +79,6 @@ export const drainDequeuedAction = (
 }
 
 const dispatchGameAction = (action: GameAction): void => {
-  // TODO: check if can be removed
   const context: DrainContext = {
     pendingLogs: [],
     processedActions: new Set(),
