@@ -1,12 +1,11 @@
 import { assert } from "../../../utils/assert"
 import { hasMobs } from "../mobs/mobs"
 import { getPlayer } from "../player/player"
-import { getPosition } from "../position/position"
+import { getPosition, getNextPosition } from "../position/position"
 import { getTile } from "../world/tile"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getAttackWeapon } from "../attack/getAttackWeapon"
-import { getNextPosition } from "../movement/position"
 import {
   PlayerActionTypeEnum,
   type PlayerRangedAttackAction,

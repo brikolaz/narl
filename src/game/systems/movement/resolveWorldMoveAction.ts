@@ -1,12 +1,11 @@
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { assert } from "../../../utils/assert"
-import { getPosition } from "../position/position"
+import { getPosition, getNextPosition } from "../position/position"
 import { isTileImpassable } from "../world/tile"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import type { WorldMoveAction } from "../world/types"
 import { moveMob } from "./move"
-import { getNextPosition } from "./position"
 
 export const resolveWorldMoveAction = (
   gameAction: WorldMoveAction,

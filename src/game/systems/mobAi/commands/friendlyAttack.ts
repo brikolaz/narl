@@ -3,9 +3,8 @@ import { isAdjacent } from "../../../../utils/adjacent"
 import type { GameAction } from "../../actions/types"
 import { isFriendlyHostile } from "../../attack/hostility"
 import { getAllMobs } from "../../mobs/mobs"
-import { getDirection } from "../../movement/position"
+import { getDirection, getPosition } from "../../position/position"
 import { getPlayer } from "../../player/player"
-import { getPosition } from "../../position/position"
 import { WorldActionTypeEnum } from "../../world/types"
 
 const getMobTowardsPlayer = (mob: Entity): Entity | undefined => {

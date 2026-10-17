@@ -5,7 +5,7 @@ import { getEntityById } from "../../../core/model/queries/entities/get"
 import { assert } from "../../../utils/assert"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getDirection } from "../movement/position"
+import { getDirection } from "../position/position"
 import { rollAttackDmg } from "./dmg"
 import {
   WorldActionTypeEnum,
