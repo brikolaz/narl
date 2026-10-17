@@ -1,12 +1,10 @@
 import { ACTION_RESOLVERS } from "./resolvers"
-import type { ActionResolution, GameAction } from "../types"
+import type { ActionResolution, GameAction, GameActionOfType } from "../types"
 
-export const resolveGameAction = (action: GameAction): ActionResolution => {
-  const actionResolution = (
-    ACTION_RESOLVERS[action.type] as (
-      internalAction: typeof action,
-    ) => ActionResolution
-  )(action) // TODO: remove assertion
+export const resolveGameAction = <Type extends GameAction["type"]>(
+  action: GameActionOfType<Type>,
+): ActionResolution => {
+  const actionResolution = ACTION_RESOLVERS[action.type](action)
 
   if (!actionResolution) {
     throw new Error("Invalid game action")

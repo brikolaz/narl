@@ -7,6 +7,12 @@ import type { TimedAction } from "./timedActions/types"
 
 export type GameAction = PlayerAction | WorldAction | InternalAction
 
+export type GameActionOfType<
+  Type extends GameAction["type"] = GameAction["type"],
+> = {
+  [Key in Type]: Extract<GameAction, { type: Key }>
+}[Type]
+
 export type ActionResolution = {
   consumesTurn: boolean
   pendingLogs: PendingLog[]
