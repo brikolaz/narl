@@ -10,6 +10,7 @@ import { ColorComponent } from "../../../../../components/display/ColorComponent
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
 import { MainHandComponent } from "../../../../../components/equipment/MainHandComponent"
+import { OffhandComponent } from "../../../../../components/equipment/OffhandComponent"
 import { RemovableComponent } from "../../../../../components/equipment/RemovableComponent"
 import { DroppableComponent } from "../../../../../components/interaction/DroppableComponent"
 import { PickupableComponent } from "../../../../../components/interaction/PickupableComponent"
@@ -22,6 +23,7 @@ const addComponents = (sword: Entity<"SWORD">): void => {
     NameComponent({ name: "ENTITY.SWORD" }),
     RemovableComponent(),
     MainHandComponent(),
+    OffhandComponent(),
     ColorComponent({ color: COLORS.tier.common }),
     DmgComponent({ min: minDmg, max: minDmg + 3 }),
     PickupableComponent(),

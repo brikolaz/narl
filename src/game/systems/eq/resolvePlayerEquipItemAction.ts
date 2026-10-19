@@ -7,6 +7,7 @@ import { getComponentByType } from "../../../core/model/queries/components/get"
 import { assert } from "../../../utils/assert"
 import { MainHandComponent } from "../../model/components/equipment/MainHandComponent"
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
+import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"
 import {
   addItemsToContainer,
   getBackpack,
@@ -81,6 +82,7 @@ export const resolvePlayerEquipItemAction = (
       )
     }
 
+    // TODO: simplify
     if (isTwoHand(itemToEquip)) {
       const offhandSlot = getEqSlotByType(player, OffhandSlotComponent)
       const offhandItem = offhandSlot && getFirstContainerItem(offhandSlot)
@@ -89,6 +91,18 @@ export const resolvePlayerEquipItemAction = (
           "EQUIPMENT.OCCUPIED_SLOT",
           getEntityName(offhandItem),
           getEntityName(offhandSlot),
+        )
+      }
+    }
+
+    if (hasComponentsByType(eqSlot, OffhandSlotComponent)) {
+      const mainHandSlot = getEqSlotByType(player, MainHandSlotComponent)
+      const mainHandItem = mainHandSlot && getFirstContainerItem(mainHandSlot)
+      if (mainHandItem && isTwoHand(mainHandItem)) {
+        return action.fail(
+          "EQUIPMENT.OCCUPIED_SLOT",
+          getEntityName(mainHandItem),
+          getEntityName(eqSlot),
         )
       }
     }
