@@ -1,8 +1,8 @@
-import type { Entity } from "../../../core/model/Entity"
-import { createEnum, type EnumType } from "../../../utils/types/Enum"
-import { getAttackDmgRange } from "../attack/dmg"
-import { getTotalDef } from "../def/def"
-import { formatDmgRange } from "../log/format"
+import type { Entity } from "../../core/model/Entity"
+import { createEnum, type EnumType } from "../../utils/types/Enum"
+import { getAttackDmgRange } from "../systems/attack/dmg"
+import { getTotalDef } from "../systems/def/def"
+import { formatDmgRange } from "./format"
 
 const EqStatEnum = createEnum("DMG", "DEF")
 type EqStatEnum = EnumType<typeof EqStatEnum>
@@ -10,7 +10,6 @@ type EqStatEnum = EnumType<typeof EqStatEnum>
 // TODO; remove duplication in Inspect action
 export type EqStats = Record<EqStatEnum, number | string>
 
-// todo: move formatting to renderer
 export const getEqStats = (entity: Entity): EqStats => {
   const stats: EqStats = {
     [EqStatEnum.DMG]: 0,

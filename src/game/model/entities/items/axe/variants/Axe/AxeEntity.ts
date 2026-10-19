@@ -20,7 +20,7 @@ const addComponents = (axe: Entity<"AXE">): void => {
   upsertComponents(
     axe,
     GlyphComponent({ glyph: "}" }),
-    NameComponent({ name: "Axe" }),
+    NameComponent({ name: "ENTITY.AXE" }),
     RemovableComponent(),
     MainHandComponent(),
     ColorComponent({ color: COLORS.tier.common }),

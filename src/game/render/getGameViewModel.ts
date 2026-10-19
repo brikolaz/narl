@@ -11,8 +11,8 @@ import { getPlayer } from "../systems/player/player"
 import { STATE, type DeathContext } from "../state/state"
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types"
 import { isGameOver } from "../systems/gameOver/gameOver"
-import { getLogEntryCount } from "../systems/log/log"
-import { getEqStats } from "../systems/stats/eqStats"
+import type { LogEntry } from "../systems/log/types"
+import { getEqStats } from "./eqStats"
 import { getPlayerStats } from "../systems/stats/playerStats"
 import { isWin } from "../systems/win/resolveWorldWinAction"
 import { getRenderedMap } from "./getRenderedMap"
@@ -29,7 +29,6 @@ type RenderedMap = Array<ColoredGlyphView & { position: number }>
 export type PlayerStatsView = Record<string, string | number>
 export type EquipmentView = ColoredGlyphView[]
 export type BackpackView = ColoredGlyphView[]
-export type LogEntryView = { text: string }
 
 export type GameViewModel = {
   gameOver: typeof isGameOver
@@ -39,7 +38,7 @@ export type GameViewModel = {
   playerStats: PlayerStatsView
   equipment: EquipmentView
   backpack: BackpackView
-  logs: LogEntryView[]
+  logs: LogEntry[]
   death: DeathContext
 }
 
@@ -104,18 +103,6 @@ const getBackpackView = (): BackpackView => {
   )
 }
 
-const getLogsView = (): LogEntryView[] =>
-  STATE.log.map((entry) => {
-    const spansTurns = entry.startTurn !== entry.endTurn
-    const turnLabel = spansTurns
-      ? `[${entry.startTurn},${entry.endTurn}]`
-      : `[${entry.endTurn}]`
-    const count = getLogEntryCount(entry)
-    const countLabel = count > 1 ? ` (x${count})` : ""
-
-    return { text: `${turnLabel} ${entry.message}${countLabel}` }
-  })
-
 export const getGameViewModel = (): GameViewModel => ({
   gameOver: isGameOver,
   win: isWin,
@@ -128,6 +115,6 @@ export const getGameViewModel = (): GameViewModel => ({
   playerStats: getPlayerStatsView(),
   equipment: getEquipmentView(),
   backpack: getBackpackView(),
-  logs: getLogsView(),
+  logs: STATE.log,
   death: STATE.death,
 })

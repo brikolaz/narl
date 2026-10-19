@@ -1,3 +1,5 @@
+import type { LogMessage } from "../../log/types"
+import { formatLogMessage } from "../../../render/formatLogMessage"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { createGame, type Game } from "../../../../game"
 import { clearItems, clearMobs } from "../../../../tests/clear"
@@ -30,13 +32,19 @@ describe("dispatchGameAction", () => {
   it("drains pending actions from highest to lowest priority", () => {
     const action = new Action({
       type: InternalActionTypeEnum.INTERNAL_LOG,
-      message: "source",
+      message: { key: "LOG.TEXT", replacements: ["source"] },
     })
-    const pendingActions = [
-      { message: "low", priority: -5 },
-      { message: "high first", priority: 10 },
-      { message: "default", priority: 0 },
-      { message: "high second", priority: 10 },
+    const pendingActions: { message: LogMessage; priority: number }[] = [
+      { message: { key: "LOG.TEXT", replacements: ["low"] }, priority: -5 },
+      {
+        message: { key: "LOG.TEXT", replacements: ["high first"] },
+        priority: 10,
+      },
+      { message: { key: "LOG.TEXT", replacements: ["default"] }, priority: 0 },
+      {
+        message: { key: "LOG.TEXT", replacements: ["high second"] },
+        priority: 10,
+      },
     ]
 
     for (const { message, priority } of pendingActions) {
@@ -54,26 +62,29 @@ describe("dispatchGameAction", () => {
 
     drainResolution(action.resolve(), context)
 
-    expect(context.pendingLogs.map(({ message }) => message)).toEqual([
-      "high first",
-      "high second",
-      "default",
-      "low",
-    ])
+    expect(
+      context.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["high first", "high second", "default", "low"])
   })
 
   it("keeps priorities local to the current branch", () => {
     const action = new Action({
       type: InternalActionTypeEnum.INTERNAL_LOG,
-      message: "parent",
+      message: { key: "LOG.TEXT", replacements: ["parent"] },
     })
     action.addPendingImmediateAction(
-      { type: InternalActionTypeEnum.INTERNAL_LOG, message: "sibling1" },
+      {
+        type: InternalActionTypeEnum.INTERNAL_LOG,
+        message: { key: "LOG.TEXT", replacements: ["sibling1"] },
+      },
       1,
       10,
     )
     action.addPendingImmediateAction(
-      { type: InternalActionTypeEnum.INTERNAL_LOG, message: "sibling2" },
+      {
+        type: InternalActionTypeEnum.INTERNAL_LOG,
+        message: { key: "LOG.TEXT", replacements: ["sibling2"] },
+      },
       1,
       5,
     )
@@ -84,9 +95,8 @@ describe("dispatchGameAction", () => {
 
     drainResolution(action.resolve(), context)
 
-    expect(context.pendingLogs.map(({ message }) => message)).toEqual([
-      "sibling1",
-      "sibling2",
-    ])
+    expect(
+      context.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["sibling1", "sibling2"])
   })
 })

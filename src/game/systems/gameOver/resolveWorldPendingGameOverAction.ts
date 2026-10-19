@@ -1,8 +1,8 @@
+import { getEntityName } from "../inspect/getEntityName"
 import { getPlayer } from "../player/player"
 import { GameStatusEnum, STATE } from "../../state/state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import type { WorldPendingGameOverAction } from "../world/types"
 import { getEpitaph } from "./epitaphs"
 
@@ -16,7 +16,7 @@ export const resolveWorldPendingGameOverAction = (
       return action.resolve()
     }
 
-    action.info(`${getEntityName(getPlayer())} died`)
+    action.info("ENTITY.DIED", getEntityName(getPlayer()))
     STATE.status = GameStatusEnum.PENDING_GAME_OVER
 
     STATE.death.epitaph = getEpitaph()

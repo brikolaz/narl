@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { upsertComponents } from "../../../core/model/queries/components/add"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { getEntityById } from "../../../core/model/queries/entities/get"
@@ -25,7 +26,7 @@ export const resolveWorldBlockAction = (
     })
 
     upsertComponents(entity, blockDef)
-    action.success("You block.")
+    action.success("ENTITY.BLOCK", getEntityLogProjection(entity))
     action.addPendingDelayedAction({
       type: WorldActionTypeEnum.WORLD_CLEANUP_BLOCK,
       defId: blockDef.id,

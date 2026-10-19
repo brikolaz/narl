@@ -19,7 +19,7 @@ const addComponents = (dick: Entity<"DICK">): void => {
   upsertComponents(
     dick,
     GlyphComponent({ glyph: "=" }),
-    NameComponent({ name: "Dick" }),
+    NameComponent({ name: "ENTITY.DICK" }),
     DmgComponent({ min: dmg, max: dmg }),
     ColorComponent({ color: COLORS.tier.common }),
     RemovableComponent(),

@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import {
   addItemsToContainer,
   getBackpack,
@@ -11,7 +12,6 @@ import { assert } from "../../../utils/assert"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerMoveItemAction } from "../player/types"
 
 export const resolvePlayerMoveItemAction = (
@@ -26,34 +26,32 @@ export const resolvePlayerMoveItemAction = (
     const toItem = getContainerItemAt(backpack, toSlot)
 
     if (!fromItem || !toItem) {
-      return action.fail("Invalid item selection")
+      return action.fail("ITEM.INVALID_SELECTION")
     }
 
     if (fromItem.id === toItem.id) {
-      return action.fail("Source and target are the same item")
+      return action.fail("ITEM.SAME_SELECTION")
     }
 
     if (!isContainer(toItem)) {
-      return action.fail("Target item is not a container")
+      return action.fail("CONTAINER.INVALID_TARGET")
     }
 
     if (isContainerFull(toItem)) {
-      return action.fail("Target container is full")
+      return action.fail("CONTAINER.FULL")
     }
 
     if (isContainer(fromItem)) {
       const fromItemNestDepth = getNestDepth(fromItem)
       const toItemMaxNextDepth = getMaxNestDepth(toItem)
       if (fromItemNestDepth + 1 > toItemMaxNextDepth) {
-        return action.fail(`Max nest depth (${toItemMaxNextDepth}) reached`)
+        return action.fail("CONTAINER.MAX_DEPTH", toItemMaxNextDepth)
       }
     }
 
     addItemsToContainer(toItem, fromItem)
 
-    action.success(
-      `Moved ${getEntityName(fromItem)} to ${getEntityName(toItem)}`,
-    )
+    action.success("ITEM.MOVED", getEntityName(fromItem), getEntityName(toItem))
   })()
 
   return action.resolve()

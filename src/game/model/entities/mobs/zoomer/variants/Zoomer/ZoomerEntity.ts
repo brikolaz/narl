@@ -40,7 +40,7 @@ const addComponents = (zoomer: Entity<"ZOOMER">): void => {
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 50 }),
     GlyphComponent({ glyph: "Z" }),
-    NameComponent({ name: "Zoomer" }),
+    NameComponent({ name: "ENTITY.ZOOMER" }),
     ColorComponent(),
     HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
     MovableComponent(),

@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { assert } from "../../../utils/assert"
 import { getBackpack, getContainerItemAt } from "../containers/containers"
 import { getPlayer } from "../player/player"
@@ -5,7 +6,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { triggerOnInspectCurse } from "../curse/triggers/triggerOnInspectCurse"
 import type { PlayerInspectInvAction } from "../player/types"
-import { getItemInspectText, increaseInspected } from "./inspect"
+import { increaseInspected } from "./inspect"
 
 export const resolvePlayerInspectInvAction = (
   gameAction: PlayerInspectInvAction,
@@ -20,11 +21,11 @@ export const resolvePlayerInspectInvAction = (
     const item = getContainerItemAt(backpack, invSlot)
 
     if (!item) {
-      return action.info(`No item to inspect`)
+      return action.info("INSPECT.NO_ITEM")
     }
     increaseInspected(item)
 
-    action.info(getItemInspectText(item))
+    action.info("INSPECT.ITEM", getEntityLogProjection(item))
     triggerOnInspectCurse(action, item)
   })()
 

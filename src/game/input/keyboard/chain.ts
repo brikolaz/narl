@@ -1,9 +1,10 @@
+import type { MessageKey } from "../../i18n/types"
 import type { GameAction } from "../../systems/actions/types"
 
 export type KeyboardToActionCommand = {
   action: GameAction | (() => GameAction | void | KeyboardToAction)
-  fallback?: string
-  message?: string
+  fallback?: MessageKey
+  message?: MessageKey
   cleanup?: () => void
 }
 
@@ -30,7 +31,7 @@ export type ActiveKeyboardToActionChain = NonNullable<KeyboardToActionChain>
 
 export const getLastFallbackMessage = (
   keyboardChain: KeyboardToActionChain,
-): string | undefined => {
+): MessageKey | undefined => {
   const last = keyboardChain?.history?.at(-1)?.fallback
   return last
 }

@@ -39,7 +39,7 @@ const addComponents = (rageBait: Entity<"RAGE_BAIT">): void => {
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 20 }),
     GlyphComponent({ glyph: "R" }),
-    NameComponent({ name: "Rage Bait" }),
+    NameComponent({ name: "ENTITY.RAGE_BAIT" }),
     ColorComponent(),
     HostilityComponent({
       hostility: getRng(rageBait).chance(1)

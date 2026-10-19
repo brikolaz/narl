@@ -14,7 +14,7 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 const addComponents = (playerBackpack: Entity<"PLAYER_BACKPACK">): void => {
   upsertComponents(
     playerBackpack,
-    NameComponent({ name: "Backpack" }),
+    NameComponent({ name: "ENTITY.PLAYER_BACKPACK" }),
     GlyphComponent({ glyph: "*" }),
     ContainerComponent(),
     SizeComponent({ size: DEFAULT_PLAYER_BACKPACK_SIZE }),

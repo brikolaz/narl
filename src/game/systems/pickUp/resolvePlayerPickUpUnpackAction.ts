@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import {
   getBackpack,
   isContainer,
@@ -11,7 +12,6 @@ import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import { getVisibleTiles } from "../player/getVisibleTiles"
 import {
   PlayerActionTypeEnum,
@@ -34,10 +34,10 @@ export const resolvePlayerPickUpUnpackAction = (
 
       const itemToPickUp = pickUpItem(tile)
       if (!itemToPickUp) {
-        return action.fail("Nothing to pick up")
+        return action.fail("ITEM.NOTHING_TO_PICK_UP")
       }
       if (isContainerFull(backpack)) {
-        return action.fail("Can't pick up item. Backpack is full")
+        return action.fail("ITEM.BACKPACK_FULL")
       }
 
       if (!isContainer(itemToPickUp) || isCursed(itemToPickUp)) {
@@ -51,9 +51,7 @@ export const resolvePlayerPickUpUnpackAction = (
         type: PlayerActionTypeEnum.PLAYER_PICK_UP,
       })
       if (unpackedContainer.length > 1) {
-        return action.info(
-          `Dropped ${getEntityName(itemToPickUp)} items to the floor`,
-        )
+        return action.info("CONTAINER.UNPACKED", getEntityName(itemToPickUp))
       }
     })
   })()

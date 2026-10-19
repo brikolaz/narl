@@ -42,7 +42,7 @@ const getInvCommands = (): KeyboardToAction => ({
           UI_STATE.highlights.invSlot.resetHighlightedSlot()
           return getEqCommands()
         },
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
       ...(isInvLinkPoint() && {
         ArrowUp: {
@@ -51,7 +51,7 @@ const getInvCommands = (): KeyboardToAction => ({
             UI_STATE.highlights.eqSlot.highlightSlot(6)
             return getEqCommands()
           },
-          fallback: "Invalid direction",
+          fallback: "INPUT.INVALID_DIRECTION",
         },
       }),
     }),
@@ -79,7 +79,7 @@ const getEqCommands = (): KeyboardToAction => ({
           UI_STATE.highlights.eqSlot.resetHighlightedSlot()
           return getInvCommands()
         },
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
       ...(isEqLinkPoint() && {
         ArrowDown: {
@@ -88,7 +88,7 @@ const getEqCommands = (): KeyboardToAction => ({
             UI_STATE.highlights.invSlot.highlightSlot(2)
             return getInvCommands()
           },
-          fallback: "Invalid direction",
+          fallback: "INPUT.INVALID_DIRECTION",
         },
       }),
     }),
@@ -97,7 +97,7 @@ const getEqCommands = (): KeyboardToAction => ({
 
 export const getDropCommand = (): KeyboardToActionCommand => ({
   action: () => getInvCommands(),
-  message: "Drop INV item (arrow keys, Tab for EQ, space to confirm)",
-  fallback: "Invalid direction",
+  message: "INPUT.DROP",
+  fallback: "INPUT.INVALID_DIRECTION",
   cleanup: resetHighlights,
 })

@@ -1,3 +1,5 @@
+import type { MessageKey } from "../../i18n/types"
+import { formatLogMessage } from "../../render/formatLogMessage"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { getEntityCreator, type Entity } from "../../../core/model/Entity"
 import { upsertComponents } from "../../../core/model/queries/components/add"
@@ -36,7 +38,11 @@ const placeMob = (game: Game, mob: Entity, position: number): Entity => {
   return mob
 }
 
-const createTestMob = (game: Game, name: string, position: number): Entity => {
+const createTestMob = (
+  game: Game,
+  name: MessageKey,
+  position: number,
+): Entity => {
   const mob = TestMob()
   upsertComponents(
     mob,
@@ -66,7 +72,7 @@ describe("resolveWorldPokeAction", () => {
 
   it("resolves through the game action map, inspects the target, and consumes a turn", () => {
     const player = getPlayer()
-    const target = createTestMob(game, "Target", 1)
+    const target = createTestMob(game, "ENTITY.BOOMER", 1)
     const startingTurn = game.state.turn
 
     game.dispatch({
@@ -76,9 +82,14 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(getInspectedTimes(target)).toBe(1)
-    expect(game.state.log).toContainEqual(
+    expect(
+      game.state.log.map((entry) => ({
+        ...entry,
+        message: formatLogMessage(entry.message),
+      })),
+    ).toContainEqual(
       expect.objectContaining({
-        message: "You poked Target. Looks testable",
+        message: "You poked Boomer. Looks testable",
         action: expect.objectContaining({
           type: WorldActionTypeEnum.WORLD_POKE,
         }),
@@ -95,9 +106,9 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(resolution.consumesTurn).toBe(false)
-    expect(resolution.pendingLogs.map(({ message }) => message)).toEqual([
-      "Nothing to poke",
-    ])
+    expect(
+      resolution.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["Nothing to poke"])
   })
 
   it("fails without consuming a turn at the world boundary", () => {
@@ -108,9 +119,9 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(resolution.consumesTurn).toBe(false)
-    expect(resolution.pendingLogs.map(({ message }) => message)).toEqual([
-      "Nothing to poke",
-    ])
+    expect(
+      resolution.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["Nothing to poke"])
   })
 
   it("fails without consuming a turn when the source does not exist", () => {
@@ -121,13 +132,13 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(resolution.consumesTurn).toBe(false)
-    expect(resolution.pendingLogs.map(({ message }) => message)).toEqual([
-      "Nothing to poke",
-    ])
+    expect(
+      resolution.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["Nothing to poke"])
   })
 
   it("allows a mob to poke and inspect the player", () => {
-    const source = createTestMob(game, "Poker", 1)
+    const source = createTestMob(game, "ENTITY.RAGE_BAIT", 1)
     const player = getPlayer()
 
     const resolution = resolveWorldPokeAction({
@@ -137,7 +148,9 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(resolution.consumesTurn).toBe(true)
-    expect(resolution.pendingLogs[0].message).toContain("Poker poked You")
+    expect(formatLogMessage(resolution.pendingLogs[0].message)).toContain(
+      "Rage Bait poked You",
+    )
     expect(getInspectedTimes(player)).toBe(1)
   })
 
@@ -158,9 +171,9 @@ describe("resolveWorldPokeAction", () => {
     })
 
     expect(resolution.consumesTurn).toBe(true)
-    expect(resolution.pendingLogs.map(({ message }) => message)).toEqual([
-      "You poked Rage Bait. It looks cute.",
-    ])
+    expect(
+      resolution.pendingLogs.map(({ message }) => formatLogMessage(message)),
+    ).toEqual(["You poked Rage Bait. It looks cute."])
     expect(getInspectedTimes(rageBait)).toBe(1)
     expect(resolution.pendingActions).toHaveLength(1)
     expect(resolution.pendingActions[0]).toMatchObject({
@@ -194,7 +207,12 @@ describe("resolveWorldPokeAction", () => {
     expect(getComponentByType(rageBait, HostilityComponent)?.hostility).toBe(
       HostilityEnum.HOSTILE,
     )
-    expect(game.state.log).toContainEqual(
+    expect(
+      game.state.log.map((entry) => ({
+        ...entry,
+        message: formatLogMessage(entry.message),
+      })),
+    ).toContainEqual(
       expect.objectContaining({
         message: "You enraged Rage Bait",
         action: expect.objectContaining({
@@ -205,7 +223,7 @@ describe("resolveWorldPokeAction", () => {
   })
 
   it("queues World Poke with a direction for an unarmed world attacker", () => {
-    const source = createTestMob(game, "Poker", 1)
+    const source = createTestMob(game, "ENTITY.RAGE_BAIT", 1)
     const player = getPlayer()
 
     const resolution = resolveWorldAttackAction({

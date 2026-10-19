@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import {
   addItemToEntityBackpack,
   clearContainerItemAt,
@@ -11,7 +12,6 @@ import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import {
   PlayerActionTypeEnum,
   PlayerDropItemActionReasonEnum,
@@ -30,14 +30,13 @@ export const resolvePlayerUnequipItemAction = (
     const isFull = isContainerFull(backpack)
 
     const slot = assert(getEqSlotByPosition(player, eqSlotIndex), "No EQ slot")
-    const slotName = getEntityName(slot)
     const item = getContainerItemAt(slot, 1)
     if (!item) {
-      return action.fail(`No item at ${slotName} slot`)
+      return action.fail("ITEM.EMPTY_SLOT", getEntityName(slot))
     }
 
     if (!isRemovable(item)) {
-      return action.fail(`Can't be removed`)
+      return action.fail("ITEM.NOT_REMOVABLE")
     }
 
     if (isFull) {
@@ -52,7 +51,7 @@ export const resolvePlayerUnequipItemAction = (
 
     addItemToEntityBackpack(player, item)
     clearContainerItemAt(slot, 1)
-    action.success(`Unequipped ${getEntityName(item)}`)
+    action.success("ITEM.UNEQUIPPED", getEntityName(item))
   })()
 
   return action.resolve()

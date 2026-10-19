@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { assert } from "../../../utils/assert"
 import { getContainerItemAt } from "../containers/containers"
 import { getEqSlotByPosition } from "../eq/eq"
@@ -6,12 +7,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { triggerOnInspectCurse } from "../curse/triggers/triggerOnInspectCurse"
 import type { PlayerInspectEqAction } from "../player/types"
-import { getEntityName } from "./getEntityName"
-import {
-  getInspectDesc,
-  getItemInspectText,
-  increaseInspected,
-} from "./inspect"
+import { increaseInspected } from "./inspect"
 
 export const resolvePlayerInspectEqAction = (
   gameAction: PlayerInspectEqAction,
@@ -25,13 +21,11 @@ export const resolvePlayerInspectEqAction = (
     const item = getContainerItemAt(slot, 1)
 
     if (!item) {
-      return action.info(
-        getInspectDesc(slot) || `${getEntityName(slot)} slot is empty`,
-      )
+      return action.info("INSPECT.EMPTY_SLOT", getEntityLogProjection(slot))
     }
 
     increaseInspected(item)
-    action.info(getItemInspectText(item, slot))
+    action.info("INSPECT.ITEM", getEntityLogProjection(item))
     triggerOnInspectCurse(action, item)
   })()
 

@@ -1,3 +1,5 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
+import { getEntityName } from "../inspect/getEntityName"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { ProvokableComponent } from "../../model/components/ai/ProvokableComponent"
 import { isHostile } from "../attack/hostility"
@@ -5,13 +7,12 @@ import { getRng } from "../rng/rng"
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import { getMob } from "../mobs/mobs"
 import { getNextPosition, getPosition } from "../position/position"
 import { getPlayer } from "../player/player"
 import { WorldActionTypeEnum, type WorldPokeAction } from "../world/types"
 import { getTile } from "../world/tile"
-import { getInspectDesc, increaseInspected } from "../inspect/inspect"
+import { increaseInspected } from "../inspect/inspect"
 
 export const resolveWorldPokeAction = (
   gameAction: WorldPokeAction,
@@ -22,7 +23,7 @@ export const resolveWorldPokeAction = (
   ;(() => {
     const source = getEntityById(sourceId)
     if (!source) {
-      return action.fail("Nothing to poke")
+      return action.fail("POKE.NO_TARGET")
     }
 
     const targetPosition = getNextPosition({
@@ -30,7 +31,7 @@ export const resolveWorldPokeAction = (
       direction,
     })
     if (targetPosition === null) {
-      return action.fail("Nothing to poke")
+      return action.fail("POKE.NO_TARGET")
     }
 
     const player = getPlayer()
@@ -39,14 +40,13 @@ export const resolveWorldPokeAction = (
         ? player
         : getMob(getTile(targetPosition))
     if (!target) {
-      return action.fail("Nothing to poke")
+      return action.fail("POKE.NO_TARGET")
     }
 
     action.success(
-      [
-        `${getEntityName(source)} poked ${getEntityName(target)}`,
-        getInspectDesc(target),
-      ].join(". "),
+      "POKE.RESULT",
+      getEntityName(source),
+      getEntityLogProjection(target),
     )
     increaseInspected(target)
     const provokable = getComponentByType(target, ProvokableComponent)

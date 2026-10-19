@@ -33,7 +33,7 @@ export const resolvePlayerAttackAction = (
       })
     }
     if (targetPosition === null) {
-      return action.fail("Nothing to attack")
+      return action.fail("ATTACK.NO_TARGET")
     }
     if (canPierce(weapon)) {
       action.addPendingImmediateAction({

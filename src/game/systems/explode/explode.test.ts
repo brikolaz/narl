@@ -1,3 +1,4 @@
+import { formatLogMessage } from "../../render/formatLogMessage"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   EntityRoleEnum,
@@ -54,7 +55,7 @@ const createExplosiveEntity = (state: GameState, position = 10): Entity => {
     explosive,
     ExplodeComponent({ min: 4, max: 6 }),
     ExplodeRangeComponent({ range: 1 }),
-    NameComponent({ name: "Explosive" }),
+    NameComponent({ name: "ENTITY.BOOMER" }),
     ExpComponent({ exp: 0 }),
   )
   upsertRoleEntities(explosive, {
@@ -68,7 +69,7 @@ const createTargetEntity = (state: GameState, position: number): Entity => {
   upsertComponents(
     target,
     HpComponent({ hp: 100, maxHp: 100 }),
-    NameComponent({ name: `Target ${position}` }),
+    NameComponent({ name: "ENTITY.ZOOMER" }),
   )
   return placeMob(state, target, position)
 }
@@ -119,9 +120,12 @@ describe("explode", () => {
     expect(game.state.entityRegistryById[explosive.id]).toBeUndefined()
     expect(game.state.world[10].mobs).not.toContain(explosive)
     expect(game.state.timedActions).toEqual([])
-    expect(game.state.log).not.toContainEqual(
-      expect.objectContaining({ message: "Explosive died" }),
-    )
+    expect(
+      game.state.log.map((entry) => ({
+        ...entry,
+        message: formatLogMessage(entry.message),
+      })),
+    ).not.toContainEqual(expect.objectContaining({ message: "Boomer died" }))
     expect(
       game.state.log.some(
         ({ action }) => action.type === WorldActionTypeEnum.WORLD_ATTACK,
@@ -151,7 +155,7 @@ describe("explode", () => {
       ExplodeComponent({ min: 5, max: 5 }),
       ExplodeRangeComponent({ range: 1 }),
       PositionComponent({ position: 10 }),
-      NameComponent({ name: "Explosive" }),
+      NameComponent({ name: "ENTITY.BOOMER" }),
     )
     game.state.world[10] = getDefaultTile(10)
 
@@ -175,9 +179,12 @@ describe("explode", () => {
       reason: WorldKillActionReasonEnum.ATTACK,
     })
 
-    expect(game.state.log).toContainEqual(
-      expect.objectContaining({ message: "Explosive died" }),
-    )
+    expect(
+      game.state.log.map((entry) => ({
+        ...entry,
+        message: formatLogMessage(entry.message),
+      })),
+    ).toContainEqual(expect.objectContaining({ message: "Boomer died" }))
   })
 
   it("does not recurse indefinitely when adjacent Boomers explode", () => {

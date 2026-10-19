@@ -12,7 +12,7 @@ import { PositionComponent } from "../../../../../../components/spatial/Position
 const addComponents = (mainHandSlot: Entity<"MAIN_HAND_SLOT">): void => {
   upsertComponents(
     mainHandSlot,
-    NameComponent({ name: "Main Hand" }),
+    NameComponent({ name: "ENTITY.MAIN_HAND_SLOT" }),
     MainHandSlotComponent(),
     MainHandComponent(),
     ContainerComponent(),

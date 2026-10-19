@@ -20,8 +20,8 @@ export const getEquipCommand = (): KeyboardToActionCommand => {
         INV_SLOTS,
       )
     },
-    message: `Select item to equip (arrow keys, space to accept)`,
-    fallback: "Invalid direction",
+    message: "INPUT.EQUIP",
+    fallback: "INPUT.INVALID_DIRECTION",
     cleanup: () => {
       UI_STATE.highlights.invSlot.resetHighlightedSlot()
     },

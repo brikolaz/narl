@@ -33,7 +33,7 @@ const addComponents = (boomer: Entity<"BOOMER">): void => {
     HpComponent({ hp: 6, maxHp: 6 }),
     ExpComponent({ exp: 35 }),
     GlyphComponent({ glyph: "B" }),
-    NameComponent({ name: "Boomer" }),
+    NameComponent({ name: "ENTITY.BOOMER" }),
     ColorComponent(),
     HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
     PositionComponent(),

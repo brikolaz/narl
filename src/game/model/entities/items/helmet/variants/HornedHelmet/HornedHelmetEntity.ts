@@ -21,7 +21,7 @@ const addComponents = (hornedHelmet: Entity<"HORNED_HELMET">): void => {
   upsertComponents(
     hornedHelmet,
     AssableCurseComponent({ inspectedTimes: 10 }),
-    NameComponent({ name: "Horned Helmet" }),
+    NameComponent({ name: "ENTITY.HORNED_HELMET" }),
     GlyphComponent({ glyph: "h" }),
     RemovableComponent(),
     HeadComponent(),

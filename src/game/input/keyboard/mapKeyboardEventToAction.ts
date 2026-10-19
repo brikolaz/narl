@@ -43,7 +43,9 @@ const runChainStep = (
   keyboardChain.current = result ?? {}
 
   return {
-    action: command.message ? getInternalLogAction(command.message) : undefined,
+    action: command.message
+      ? getInternalLogAction({ key: command.message })
+      : undefined,
     keyboardChain,
   }
 }
@@ -72,14 +74,18 @@ const cancelChainStep = (
 
     return {
       action: getInternalLogAction(
-        previousMessage ? ["Step canceled", previousMessage] : "Step canceled",
+        previousMessage
+          ? [{ key: "INPUT.STEP_CANCELED" }, { key: previousMessage }]
+          : { key: "INPUT.STEP_CANCELED" },
       ),
       keyboardChain: result.keyboardChain,
     }
   }
 
   return {
-    action: getInternalLogAction("Action canceled"),
+    action: getInternalLogAction({
+      key: "INPUT.ACTION_CANCELED",
+    }),
     keyboardChain: undefined,
   }
 }
@@ -89,7 +95,7 @@ const handleInvalidKeyCode = (keyboardChain: KeyboardToActionChain) => {
 
   if (fallback !== undefined) {
     return {
-      action: getInternalLogAction(fallback),
+      action: getInternalLogAction({ key: fallback }),
       keyboardChain,
     }
   }
@@ -171,7 +177,9 @@ export const mapKeyboardEventToAction = (
   nextKeyboardChain.current = result
   nextKeyboardChain.history.push(command)
   return {
-    action: command.message ? getInternalLogAction(command.message) : undefined,
+    action: command.message
+      ? getInternalLogAction({ key: command.message })
+      : undefined,
     keyboardChain: nextKeyboardChain,
   }
 }

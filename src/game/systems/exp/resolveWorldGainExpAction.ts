@@ -18,7 +18,7 @@ export const resolveWorldGainExpAction = (
     }
 
     addExp(target, exp)
-    action.info(`Gained ${exp} EXP`)
+    action.info("EXP.GAINED", exp)
   })()
 
   return action.resolve()

@@ -1,5 +1,6 @@
-export const BASE_NAMESPACE = "narl"
-export const ECS_NAMESPACE = "ecs"
+export const BASE_NAMESPACE = "narl" as const
+export const ECS_NAMESPACE = "ecs" as const
+export const LOCALE = "en" as const
 
 export const MAP_SIZE = 9 as const
 export const MAX_WORLD_SIZE = 214 as const // ceil(2137)
@@ -10,7 +11,6 @@ export const INITIAL_PLAYER_POSITION = 0
 export const DEFAULT_PLAYER_BACKPACK_SIZE = 9 as const
 export const DEFAULT_PLAYER_GLYPH = "@" as const
 export const INITIAL_TURN = 1 as const
-export const CURSED_PREFIX = "Cursed"
 
 export const NAMESPACE_SEPARATOR = "." as const
 export const MOBS_RNG_NAMESPACE = "mobs" as const

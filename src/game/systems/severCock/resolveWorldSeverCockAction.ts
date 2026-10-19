@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import { upsertComponents } from "../../../core/model/queries/components/add"
 import { removeComponentsByType } from "../../../core/model/queries/components/remove"
 import { getEntityById } from "../../../core/model/queries/entities/get"
@@ -14,7 +15,6 @@ import type { ActionResolution } from "../actions/types"
 import { getContainerItemAt } from "../containers/containers"
 import { dropItem } from "../drop/drop"
 import { getEqSlotByType } from "../eq/eq"
-import { getEntityName } from "../inspect/getEntityName"
 import { getPosition } from "../position/position"
 import { WorldActionTypeEnum, type WorldSeverCockAction } from "../world/types"
 
@@ -57,7 +57,7 @@ export const resolveWorldSeverCockAction = (
       }),
     )
 
-    action.info(`${getEntityName(target)} lost dignity`)
+    action.info("ENTITY.LOST_DIGNITY", getEntityName(target))
   })()
 
   return action.resolve()

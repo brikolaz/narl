@@ -5,27 +5,8 @@ import {
   getComponentByType,
   getComponentsByType,
 } from "../../../core/model/queries/components/get"
-import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { InspectDescComponent } from "../../model/components/interaction/InspectDescComponent"
 import { InspectedComponent } from "../../model/components/interaction/InspectedComponent"
-import { OffensiveContainerCurseComponent } from "../../model/components/curse/OffensiveContainerCurseComponent"
-import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
-import {
-  getContainerSize,
-  getMaxNestDepth,
-  isContainer,
-} from "../containers/containers"
-import { isWeapon } from "../attack/getAttackWeapon"
-import {
-  getBaseChildrenDmgRange,
-  getDmgMul,
-  getDmgRange,
-  getChildrenDmgRange,
-} from "../attack/dmg"
-import { getBonusStats } from "../bonusStats/bonusStats"
-import { getChildrenDef, getEffectiveDef, isArmor } from "../def/def"
-import { formatDmgRange } from "../log/format"
-import { getEntityName } from "./getEntityName"
 
 export const getInspectedTimes = (item: Entity) => {
   return (
@@ -41,83 +22,6 @@ export const getInspectDesc = (entity: Entity) => {
     .sort((a, b) => a.times - b.times)
 
   return inspectDesc.at(-1)?.text ?? ""
-}
-
-const getEffectiveDmgRange = (entity: Entity, eqSlot?: Entity) => {
-  const { min, max } = getDmgRange(entity)
-  const multiplier = eqSlot ? getDmgMul(eqSlot) : 1
-  return {
-    min: Math.ceil(min * multiplier),
-    max: Math.ceil(max * multiplier),
-  }
-}
-
-// todo: move to the renderer
-export const getItemInspectText = (entity: Entity, eqSlot?: Entity): string => {
-  const stats = []
-
-  if (isContainer(entity)) {
-    stats.push(`${getContainerSize(entity)} SIZE`)
-    stats.push(`${getMaxNestDepth(entity)} DEPTH`)
-
-    const childrenDmgRange = getBaseChildrenDmgRange(entity)
-    const childrenDmgMul = getDmgMul(entity)
-
-    if (childrenDmgRange) {
-      const effectiveChildrenDmgRange = getChildrenDmgRange(entity)
-
-      const totalDmgRange = getDmgRange(entity)
-
-      stats.push(`${formatDmgRange(totalDmgRange)} DMG`)
-
-      const childrenDef = getChildrenDef(entity)
-      const defToDmgMul = getComponentByType(
-        entity,
-        OffensiveContainerCurseComponent,
-      )?.defToDmgMul
-      const defConversion =
-        defToDmgMul === undefined
-          ? ""
-          : ` + ${childrenDef}x${defToDmgMul} from DEF`
-      stats.push(
-        `Contents: ${formatDmgRange(effectiveChildrenDmgRange)} DMG ` +
-          `(${formatDmgRange(childrenDmgRange)}x${childrenDmgMul}${defConversion})`,
-      )
-    }
-  } else {
-    if (isWeapon(entity)) {
-      stats.push(`${formatDmgRange(getEffectiveDmgRange(entity, eqSlot))} DMG`)
-    }
-  }
-
-  if (isArmor(entity)) {
-    stats.push(`${getEffectiveDef(entity, eqSlot)} DEF`)
-  }
-
-  const bonusStats = getBonusStats(entity)
-
-  if (bonusStats) {
-    const bonusStatsText: string[] = []
-
-    if (
-      hasComponentsByType(bonusStats, DmgMulComponent) &&
-      getDmgMul(bonusStats) !== DmgMulComponent.defaults.dmgMul
-    ) {
-      bonusStatsText.push(`x${getDmgMul(bonusStats)} DMG`)
-    }
-
-    if (bonusStatsText.length > 0) {
-      stats.push(`Equip: ${bonusStatsText.join(", ")}`)
-    }
-  }
-
-  let lines = []
-  lines.push(getEntityName(entity))
-  lines.push(getInspectDesc(entity))
-  lines.push(stats.join(". "))
-  lines = lines.filter(Boolean)
-
-  return lines.join(". ")
 }
 
 export const increaseInspected = (entity: Entity) => {

@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import {
   getComponentByType,
   getComponentsByType,
@@ -10,7 +11,6 @@ import { assert } from "../../../utils/assert"
 import { BleedComponent } from "../../model/components/combat/BleedComponent"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import { WorldActionTypeEnum, type WorldInitBleedAction } from "../world/types"
 import { getAttackWeapon } from "../attack/getAttackWeapon"
 
@@ -35,9 +35,9 @@ export const resolveWorldInitBleedAction = (
 
     const multiple = getComponentsByType(target, BleedComponent).length > 1
     if (multiple) {
-      action.info(`${getEntityName(target)} bleed some more`)
+      action.info("BLEED.MORE", getEntityLogProjection(target))
     } else {
-      action.info(`${getEntityName(target)} bleed`)
+      action.info("BLEED.STARTED", getEntityLogProjection(target))
     }
 
     action.addPendingDelayedAction(

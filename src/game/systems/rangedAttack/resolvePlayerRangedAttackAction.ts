@@ -54,7 +54,7 @@ export const resolvePlayerRangedAttackAction = (
     )
 
     if (targetPositions.length === 0) {
-      return action.fail("Nothing to attack")
+      return action.fail("ATTACK.NO_TARGET")
     }
 
     for (const targetPosition of targetPositions) {

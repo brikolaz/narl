@@ -23,7 +23,7 @@ const addComponents = (ring: Entity<"RING">): void => {
   upsertComponents(
     ring,
     GlyphComponent({ glyph: "o" }),
-    NameComponent({ name: "Ring" }),
+    NameComponent({ name: "ENTITY.RING" }),
     RemovableComponent(),
     RingComponent(),
     PantsComponent(),

@@ -4,18 +4,15 @@ import type { GameAction } from "../actions/types"
 import { InternalActionTypeEnum } from "../internal/types"
 import type { PlayerAction } from "../player/types"
 import { increaseTurn } from "../turn/turn"
-import type { LogEntry, PendingLog } from "./types"
-
-export const getLogEntryCount = (entry: LogEntry) => {
-  return entry.count
-}
+import { isMessagesEqual } from "./message"
+import type { LogEntry, LogMessage, PendingLog } from "./types"
 
 const stackLog = (logs: LogEntry[], entry: LogEntry): LogEntry[] => {
   const lastLog = logs.at(-1)
 
   if (
     !lastLog ||
-    lastLog.message !== entry.message ||
+    !isMessagesEqual(lastLog.message, entry.message) ||
     entry.startTurn > increaseTurn(lastLog.endTurn)
   ) {
     return [...logs, entry].slice(-MAX_VISIBLE_LOGS)
@@ -50,7 +47,7 @@ export const flushLogs = (
   return STATE
 }
 
-export const getPendingLogs = (action: GameAction, messages: string[]) => {
+export const getPendingLogs = (action: GameAction, messages: LogMessage[]) => {
   return messages.reduce<PendingLog[]>((pendingLogs, message) => {
     pendingLogs.push({
       message,
@@ -61,7 +58,7 @@ export const getPendingLogs = (action: GameAction, messages: string[]) => {
 }
 
 export const getInternalLogAction = (
-  message: string | string[],
+  message: LogMessage | LogMessage[],
 ): GameAction => ({
   type: InternalActionTypeEnum.INTERNAL_LOG,
   message,

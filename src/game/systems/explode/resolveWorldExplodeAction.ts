@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import type { Entity } from "../../../core/model/Entity"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
@@ -9,7 +10,6 @@ import { getPosition } from "../position/position"
 import { STATE } from "../../state/state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import {
   WorldActionTypeEnum,
   WorldDealDamageActionReasonEnum,
@@ -49,7 +49,7 @@ export const resolveWorldExplodeAction = (
     }
 
     const position = getPosition(source)
-    action.success(`${getEntityName(source)} explodes`)
+    action.success("ENTITY.EXPLODE", getEntityLogProjection(source))
 
     for (
       let targetPosition = position - explodeRange.range;

@@ -26,7 +26,7 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
       maxDmg: dmg,
       defToDmgMul: 0.25,
     }),
-    NameComponent({ name: "Backpack" }),
+    NameComponent({ name: "ENTITY.BACKPACK" }),
     GlyphComponent({ glyph: "d" }),
     ContainerComponent(),
     SizeComponent({ size: getRng(backpack).range(3, 4) }),

@@ -25,7 +25,7 @@ const addComponents = (longSword: Entity<"LONG_SWORD">): void => {
   upsertComponents(
     longSword,
     GlyphComponent({ glyph: "/" }),
-    NameComponent({ name: "Long Sword" }),
+    NameComponent({ name: "ENTITY.LONG_SWORD" }),
     RemovableComponent(),
     MainHandComponent(),
     OffhandComponent(),

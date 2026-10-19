@@ -1,6 +1,6 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import { getPlayer } from "../player/player"
 import type { PlayerWaitAction } from "../player/types"
 import { WorldActionTypeEnum } from "../world/types"
@@ -21,7 +21,7 @@ export const resolvePlayerWaitAction = (
       })
     }
 
-    action.success(`${getEntityName(player)} wait`)
+    action.success("ENTITY.WAIT", getEntityLogProjection(player))
     action.addPendingImmediateAction({
       type: WorldActionTypeEnum.WORLD_REST,
       entityId: player.id,

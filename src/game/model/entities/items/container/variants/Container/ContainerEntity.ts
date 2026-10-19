@@ -14,7 +14,7 @@ import { NameComponent } from "../../../../../components/display/NameComponent"
 const addComponents = (container: Entity<"CONTAINER">): void => {
   upsertComponents(
     container,
-    NameComponent({ name: "Container" }),
+    NameComponent({ name: "ENTITY.CONTAINER" }),
     GlyphComponent({ glyph: "C" }),
     ContainerComponent(),
     SizeComponent({ size: getRng(container).range(2, 4) }),

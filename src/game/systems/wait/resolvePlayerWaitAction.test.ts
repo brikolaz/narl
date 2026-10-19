@@ -1,3 +1,4 @@
+import { formatLogMessage } from "../../render/formatLogMessage"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { getEntityCreator } from "../../../core/model/Entity"
 import { upsertComponents } from "../../../core/model/queries/components/add"
@@ -121,7 +122,7 @@ describe("resolvePlayerWaitAction", () => {
     expect(getComponentsByType(player, HpComponent)[0].hp).toBe(14)
     expect(getComponentsByType(player, DefComponent)).toEqual([])
     expect(game.state.timedActions).toEqual([])
-    expect(game.state.log.at(-1)?.message).toBe("You wait")
+    expect(formatLogMessage(game.state.log.at(-1)!.message)).toBe("You wait")
   })
 
   it("does not heal in combat, logs block, and applies it for one world turn", () => {
@@ -135,7 +136,7 @@ describe("resolvePlayerWaitAction", () => {
     upsertComponents(
       attacker,
       HostilityComponent({ hostility: HostilityEnum.HOSTILE }),
-      NameComponent({ name: "Attacker" }),
+      NameComponent({ name: "ENTITY.BOOMER" }),
       PositionComponent({ position: 1 }),
     )
     upsertComponents(weapon, DmgComponent({ min: 5, max: 5 }))
@@ -153,9 +154,11 @@ describe("resolvePlayerWaitAction", () => {
     expect(
       getComponentsByType(player, DefComponent).map(({ def }) => def),
     ).toEqual([1])
-    expect(game.state.log.some(({ message }) => message === "You block.")).toBe(
-      true,
-    )
+    expect(
+      game.state.log.some(
+        ({ message }) => formatLogMessage(message) === "You block.",
+      ),
+    ).toBe(true)
     expect(
       game.state.log.some(
         ({ action }) => action.type === WorldActionTypeEnum.WORLD_HEAL,

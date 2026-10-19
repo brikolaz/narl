@@ -9,7 +9,7 @@ export const resolveInternalLogAction = (
   const action = new Action(gameAction)
 
   for (const entry of Array.isArray(message) ? message : [message]) {
-    action.info(entry)
+    action.info(entry.key, ...(entry.replacements ?? []))
   }
 
   return action.resolve()

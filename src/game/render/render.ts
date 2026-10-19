@@ -1,3 +1,4 @@
+import { formatLogEntry } from "./formatLogMessage"
 import type { ColoredGlyphView, GameViewModel } from "./getGameViewModel"
 
 const root = document.querySelector<HTMLDivElement>("#root")
@@ -250,6 +251,8 @@ export const render = (viewModel: GameViewModel) => {
   renderAsciiGrid(backpack, viewModel.backpack)
   renderEqGrid(eq, viewModel.equipment)
 
-  log.textContent = viewModel.logs.map((entry) => entry.text).join("\n")
+  log.textContent = viewModel.logs
+    .map((entry) => formatLogEntry(entry))
+    .join("\n")
   log.scrollTop = log.scrollHeight
 }

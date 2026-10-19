@@ -1,0 +1,130 @@
+{
+  "INPUT": {
+    "INVALID_DIRECTION": "Invalid direction",
+    "INVALID_ITEM": "Invalid item",
+    "DROP": "Drop INV item (arrow keys, Tab for EQ, space to confirm)",
+    "EQUIP": "Select item to equip (arrow keys, space to accept)",
+    "MOVE_SOURCE": "Select source (arrow keys, space to accept)",
+    "MOVE_TARGET": "Select target (arrow keys, space to accept)",
+    "INSPECT": "Inspect INV item (arrow keys, Tab for EQ, space to confirm)",
+    "UNEQUIP": "Select item to unequip (arrow keys, space to confirm)",
+    "DIRECTION": "Left/right? (arrow keys)",
+    "STEP_CANCELED": "Step canceled",
+    "ACTION_CANCELED": "Action canceled"
+  },
+  "ENTITY": {
+    "PLAYER": "You",
+    "LOST_DIGNITY": "{$arg0} lost dignity",
+    "WAIT": ".input {$person :string}\n.match $person\nplayer {{{$arg0} wait}}\n* {{{$arg0} waits}}",
+    "EXPLODE": ".input {$person :string}\n.match $person\nplayer {{{$arg0} explode}}\n* {{{$arg0} explodes}}",
+    "DIED": "{$arg0} died",
+    "BLOCK": ".input {$person :string}\n.match $person\nplayer {{{$arg0} block.}}\n* {{{$arg0} blocks.}}",
+    "CURSED": "{$arg0} got cursed",
+    "ENRAGED": "{$arg0} enraged {$arg1}",
+    "HOSTILE": ".input {$person :string}\n.match $person\nplayer {{{$arg0} are hostile}}\n* {{{$arg0} is hostile}}",
+    "UNKNOWN": "???",
+    "BOOTS_SLOT": "Boots",
+    "CHEST_SLOT": "Chest",
+    "HEAD_SLOT": "Head",
+    "MAIN_HAND_SLOT": "Main Hand",
+    "OFFHAND_SLOT": "Offhand",
+    "PANTS_SLOT": "Pants",
+    "ARMOR": "Mail Chest",
+    "AXE": "Axe",
+    "BOOTS": "Boots",
+    "BACKPACK": "Backpack",
+    "CONTAINER": "Container",
+    "PLAYER_BACKPACK": "Backpack",
+    "DICK": "Dick",
+    "HELMET": "Helmet",
+    "HORNED_HELMET": "Horned Helmet",
+    "PANTS": "Mail Pants",
+    "RING": "Ring",
+    "SHIELD": "Wooden Shield",
+    "LONG_SWORD": "Long Sword",
+    "SWORD": "Sword",
+    "BABY_BOOMER": "Baby Boomer",
+    "BOOMER": "Boomer",
+    "RAGE_BAIT": "Rage Bait",
+    "ZOOMER": "Zoomer",
+    "WALL": "Wall",
+    "CURSED_NAME": "Cursed {$name}"
+  },
+  "ITEM": {
+    "DROPPED_BY": "{$arg0} dropped {$arg1 :list style=long type=conjunction}",
+    "EMPTY_SLOT": "No item at {$arg0} slot",
+    "NOT_REMOVABLE": "Can't be removed",
+    "NO_DROP_AT_SLOT": "No item to drop at slot {$arg0}",
+    "DROPPED": "Dropped {$arg0}",
+    "DROPPED_BACKPACK_FULL": "Backpack is full. Dropped {$arg0} to the ground",
+    "NOTHING_TO_DROP": "Nothing to drop",
+    "NOTHING_TO_PICK_UP": "Nothing to pick up",
+    "BACKPACK_FULL": "Can't pick up item. Backpack is full",
+    "CANNOT_PICK_UP_FULL": "Can't pick up {$arg0}. Backpack is full",
+    "NOT_PICKUPABLE": "{$arg0} is not pickupable",
+    "PICKED_UP": "Picked up {$arg0}",
+    "NOTHING_TO_EQUIP": "No item to equip",
+    "NOT_EQUIPPABLE": "{$arg0} can't be equipped",
+    "EQUIPPED": "Equipped {$arg0}",
+    "UNEQUIPPED": "Unequipped {$arg0}",
+    "INVALID_SELECTION": "Invalid item selection",
+    "SAME_SELECTION": "Source and target are the same item",
+    "MOVED": "Moved {$arg0} to {$arg1}"
+  },
+  "INSPECT": {
+    "NAME": "{$name}",
+    "DESCRIPTION": "{$description}",
+    "SIZE": "{$size :number} SIZE",
+    "DEPTH": "{$depth :number} DEPTH",
+    "DMG": "{$dmg} DMG",
+    "CONTENTS": ".input {$hasDefConversion :string}\n.match $hasDefConversion\nyes {{Contents: {$dmg} DMG ({$baseDmg}x{$dmgMul :number} + {$def :number}x{$defToDmgMul :number} from DEF)}}\n* {{Contents: {$dmg} DMG ({$baseDmg}x{$dmgMul :number})}}",
+    "DEF": "{$def :number} DEF",
+    "BONUS_DMG": "Equip: x{$bonusDmgMul :number} DMG",
+    "SEPARATOR": "{{. }}",
+    "NO_ITEM": "No item to inspect",
+    "EMPTY_SLOT": ".input {$arg0HasDescription :string}\n.match $arg0HasDescription\nyes {{{$arg0Description}}}\n* {{{$arg0} slot is empty}}",
+    "ITEM": "{$arg0}"
+  },
+  "MOVEMENT": {
+    "CANNOT_MOVE": "Cannot move {$arg0}"
+  },
+  "ATTACK": {
+    "NO_TARGET": "Nothing to attack",
+    "TINGLE": "{$arg0} tingled {$arg1}",
+    "HIT": ".input {$person :string}\n.match $person\nplayer {{{$arg0} hit {$arg1} for {$arg2} HP}}\n* {{{$arg0} hits {$arg1} for {$arg2} HP}}"
+  },
+  "EXP": {
+    "GAINED": "Gained {$arg0} EXP"
+  },
+  "EXPLOSION": {
+    "TINGLE": "Explosion tingled {$arg0}",
+    "DAMAGE": ".input {$person :string}\n.match $person\nplayer {{{$arg0} take {$arg1} explosion DMG}}\n* {{{$arg0} takes {$arg1} explosion DMG}}"
+  },
+  "CONTAINER": {
+    "UNPACKED": "Dropped {$arg0} items to the floor",
+    "INVALID_TARGET": "Target item is not a container",
+    "FULL": "Target container is full",
+    "MAX_DEPTH": "Max nest depth ({$arg0}) reached"
+  },
+  "EQUIPMENT": {
+    "DISABLED_SLOT": "Can't equip to disabled {$arg0} slot",
+    "OCCUPIED_SLOT": "Can't equip. {$arg0} in {$arg1} slot"
+  },
+  "POKE": {
+    "NO_TARGET": "Nothing to poke",
+    "RESULT": "{$arg0} poked {$arg1}. {$arg1Description}"
+  },
+  "GAME": {
+    "STAY_DEAD": "You'd rather stay dead"
+  },
+  "BLEED": {
+    "DAMAGE": ".input {$person :string}\n.match $person\nplayer {{{$arg0} bleed for {$arg1} HP}}\n* {{{$arg0} bleeds for {$arg1} HP}}",
+    "MORE": ".input {$person :string}\n.match $person\nplayer {{{$arg0} bleed some more}}\n* {{{$arg0} bleeds some more}}",
+    "STARTED": ".input {$person :string}\n.match $person\nplayer {{{$arg0} bleed}}\n* {{{$arg0} bleeds}}",
+    "LESS": ".input {$person :string}\n.match $person\nplayer {{{$arg0} bleed a bit less}}\n* {{{$arg0} bleeds a bit less}}",
+    "STOPPED": ".input {$person :string}\n.match $person\nplayer {{{$arg0} no longer bleed}}\n* {{{$arg0} no longer bleeds}}"
+  },
+  "LOG": {
+    "TEXT": "{$arg0}"
+  }
+}

@@ -15,7 +15,7 @@ export const resolveInternalInitAction = (
 
   ;(() => {
     initGame()
-    action.info("You'd rather stay dead")
+    action.info("GAME.STAY_DEAD")
   })()
 
   return action.resolve()

@@ -17,7 +17,7 @@ import { PickupableComponent } from "../../../../../components/interaction/Picku
 const addComponents = (shield: Entity<"SHIELD">): void => {
   upsertComponents(
     shield,
-    NameComponent({ name: "Wooden Shield" }),
+    NameComponent({ name: "ENTITY.SHIELD" }),
     GlyphComponent({ glyph: "s" }),
     RemovableComponent(),
     OffhandComponent(),

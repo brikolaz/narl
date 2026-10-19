@@ -1,3 +1,5 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
+import { getEntityName } from "../inspect/getEntityName"
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
@@ -8,7 +10,6 @@ import {
   HostilityEnum,
 } from "../../model/components/ai/HostilityComponent"
 import { isHostile } from "../attack/hostility"
-import { getEntityName } from "../inspect/getEntityName"
 
 export const resolveWorldEnrageAction = (
   gameAction: WorldEnrageAction,
@@ -26,11 +27,15 @@ export const resolveWorldEnrageAction = (
       gameAction.sourceId !== undefined
         ? getEntityById(gameAction.sourceId)
         : undefined
-    action.info(
-      source
-        ? `${getEntityName(source)} enraged ${getEntityName(entity)}`
-        : `${getEntityName(entity)} is hostile`,
-    )
+    if (source) {
+      action.info(
+        "ENTITY.ENRAGED",
+        getEntityName(source),
+        getEntityName(entity),
+      )
+    } else {
+      action.info("ENTITY.HOSTILE", getEntityLogProjection(entity))
+    }
   })()
   return action.resolve()
 }

@@ -42,7 +42,7 @@ export const resolvePlayerMoveAction = (
     })
 
     if (nextPlayerPosition === null) {
-      return action.fail(`Cannot move ${direction.toLowerCase()}`)
+      return action.fail("MOVEMENT.CANNOT_MOVE", direction.toLowerCase())
     }
 
     const nextTile = getTile(nextPlayerPosition)

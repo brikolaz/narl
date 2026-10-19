@@ -21,6 +21,6 @@ const getAttackActionCommands = (): KeyboardToAction => {
 
 export const getAttackCommand = (): KeyboardToActionCommand => ({
   action: getAttackActionCommands,
-  message: "Left/right? (arrow keys)",
-  fallback: "Invalid direction",
+  message: "INPUT.DIRECTION",
+  fallback: "INPUT.INVALID_DIRECTION",
 })

@@ -1,22 +1,13 @@
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import type { EntityArgument } from "../../../core/model/queries/entities/normalize"
-import { CURSED_PREFIX } from "../../../utils/constants"
+import { formatMessage } from "../../i18n/messages"
 import { NameComponent } from "../../model/components/display/NameComponent"
 import { isCursed } from "../curse/curse"
 
-const getEntityNamePrefix = (entity: EntityArgument) => {
-  return isCursed(entity) ? CURSED_PREFIX : undefined
-}
-
-export const getEntityName = (entity?: EntityArgument) => {
-  if (!entity) {
-    return NameComponent.defaults.name
-  }
-
-  const name = getComponentByType(entity, NameComponent)?.name
-  if (name === undefined) {
-    return NameComponent.defaults.name
-  }
-
-  return [getEntityNamePrefix(entity), name].filter(Boolean).join(" ")
+export const getEntityName = (entity?: EntityArgument): string => {
+  const component = getComponentByType(entity, NameComponent)
+  const name = formatMessage(component?.name ?? NameComponent.defaults.name)
+  return entity && component && isCursed(entity)
+    ? formatMessage("ENTITY.CURSED_NAME", { name })
+    : name
 }

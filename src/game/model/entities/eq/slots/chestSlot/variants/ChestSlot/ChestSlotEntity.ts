@@ -12,7 +12,7 @@ import { PositionComponent } from "../../../../../../components/spatial/Position
 const addComponents = (chestSlot: Entity<"CHEST_SLOT">): void => {
   upsertComponents(
     chestSlot,
-    NameComponent({ name: "Chest" }),
+    NameComponent({ name: "ENTITY.CHEST_SLOT" }),
     ChestSlotComponent(),
     ChestComponent(),
     ContainerComponent(),

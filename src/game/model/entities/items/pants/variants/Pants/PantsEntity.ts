@@ -17,7 +17,7 @@ import { PickupableComponent } from "../../../../../components/interaction/Picku
 const addComponents = (pants: Entity<"PANTS">): void => {
   upsertComponents(
     pants,
-    NameComponent({ name: "Mail Pants" }),
+    NameComponent({ name: "ENTITY.PANTS" }),
     GlyphComponent({ glyph: "p" }),
     RemovableComponent(),
     PantsComponent(),

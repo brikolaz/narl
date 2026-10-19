@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import { removeById } from "../../../utils/removeById"
 import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"
@@ -11,7 +12,6 @@ import {
 import type { PlayerPickUpAction } from "../player/types"
 import { isPickupable, pickUpItem } from "./pickUp"
 import { getVisibleTiles } from "../player/getVisibleTiles"
-import { getEntityName } from "../inspect/getEntityName"
 import { triggerOnPickupCurse } from "../curse/triggers/triggerOnPickupCurse"
 
 export const resolvePlayerPickUpAction = (
@@ -32,21 +32,22 @@ export const resolvePlayerPickUpAction = (
       }
       const itemToPickUp = pickUpItem(tile)
       if (!itemToPickUp) {
-        return action.fail("Nothing to pick up")
+        return action.fail("ITEM.NOTHING_TO_PICK_UP")
       }
 
       if (isContainerFull(backpack)) {
         return action.fail(
-          `Can't pick up ${getEntityName(itemToPickUp)}. Backpack is full`,
+          "ITEM.CANNOT_PICK_UP_FULL",
+          getEntityName(itemToPickUp),
         )
       }
 
       if (!isPickupable(itemToPickUp)) {
-        return action.fail(`${getEntityName(itemToPickUp)} is not pickupable`)
+        return action.fail("ITEM.NOT_PICKUPABLE", getEntityName(itemToPickUp))
       }
       addItemToEntityBackpack(player, itemToPickUp)
       removeById(tile.items, itemToPickUp.id)
-      action.success(`Picked up ${getEntityName(itemToPickUp)}`)
+      action.success("ITEM.PICKED_UP", getEntityName(itemToPickUp))
       triggerOnPickupCurse(action, itemToPickUp)
     })
   })()

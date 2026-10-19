@@ -1,12 +1,18 @@
+import { createLogMessage } from "../log/createLogMessage"
+import type { MessageKey } from "../../i18n/types"
 import { STATE } from "../../state/state"
 import { assert } from "../../../utils/assert"
+import type { LogMessage, LogReplacement } from "../log/types"
 import { getPendingLogs } from "../log/log"
 import type { TimedAction } from "./timedActions/types"
 import type { ActionResolution, GameAction } from "./types"
 
 export class Action {
-  public consumesTurn = false
-  private pendingLogMessages: string[] = [] // TODO: add log object: message, increaseTurn
+  private results: { message?: LogMessage; increaseTurn: boolean }[] = []
+
+  get consumesTurn(): boolean {
+    return this.results.some(({ increaseTurn }) => increaseTurn)
+  }
   private pendingActions: TimedAction[] = []
 
   public readonly gameAction: GameAction
@@ -15,21 +21,28 @@ export class Action {
     this.gameAction = gameAction
   }
 
-  fail = (message: string): void => {
-    this.pendingLogMessages.push(message)
+  fail = (key: MessageKey, ...replacements: LogReplacement[]): void => {
+    this.results.push({
+      message: createLogMessage(key, replacements),
+      increaseTurn: false,
+    })
   }
 
-  success = (message?: string): void => {
-    if (message) {
-      this.pendingLogMessages.push(message)
-    }
-    this.consumesTurn = true
+  success = (key?: MessageKey, ...replacements: LogReplacement[]): void => {
+    this.results.push({
+      message:
+        key === undefined ? undefined : createLogMessage(key, replacements),
+      increaseTurn: true,
+    })
   }
 
   resolve = (consumesTurn?: boolean): ActionResolution => {
     return {
       consumesTurn: consumesTurn ?? this.consumesTurn,
-      pendingLogs: getPendingLogs(this.gameAction, this.pendingLogMessages),
+      pendingLogs: getPendingLogs(
+        this.gameAction,
+        this.results.flatMap(({ message }) => (message ? [message] : [])),
+      ),
       pendingActions: this.pendingActions,
       action: this,
     }
@@ -72,7 +85,10 @@ export class Action {
     })
   }
 
-  info(message: string) {
-    this.pendingLogMessages.push(message)
+  info(key: MessageKey, ...replacements: LogReplacement[]): void {
+    this.results.push({
+      message: createLogMessage(key, replacements),
+      increaseTurn: false,
+    })
   }
 }

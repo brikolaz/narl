@@ -1,9 +1,10 @@
+import type { MessageKey } from "../../../i18n/types"
 import { getComponentCreator } from "../../../../core/model/Component"
 
 export type NameComponentProps = {
-  name: string
+  name: MessageKey
 }
 
 export const NameComponent = getComponentCreator<NameComponentProps>("NAME", {
-  name: "???",
+  name: "ENTITY.UNKNOWN",
 })

@@ -33,28 +33,28 @@ export const getAdjacentSlotActions = <Slot extends number>(
     ...(left !== undefined && {
       ArrowLeft: {
         action: () => move(left),
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
     }),
 
     ...(right !== undefined && {
       ArrowRight: {
         action: () => move(right),
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
     }),
 
     ...(up !== undefined && {
       ArrowUp: {
         action: () => move(up),
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
     }),
 
     ...(down !== undefined && {
       ArrowDown: {
         action: () => move(down),
-        fallback: "Invalid direction",
+        fallback: "INPUT.INVALID_DIRECTION",
       },
     }),
 

@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { PantsSlotComponent } from "../../model/components/equipment/slots/PantsSlotComponent"
 import { SpikeComponent } from "../../model/components/combat/SpikeComponent"
@@ -17,7 +18,6 @@ import { getEq, getEqSlotByType, getItemSlots, isTwoHand } from "./eq"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import type { PlayerEquipItemAction } from "../player/types"
 import { triggerOnEquipCurse } from "../curse/triggers/triggerOnEquipCurse"
 
@@ -54,16 +54,15 @@ export const resolvePlayerEquipItemAction = (
 
     const itemToEquip = getContainerItemAt(backpack, invSlotIndex)
     if (!itemToEquip) {
-      return action.fail(`No item to equip`)
+      return action.fail("ITEM.NOTHING_TO_EQUIP")
     }
 
     const eqSlot = getCompatiblePrimaryEqSlot(player, itemToEquip)
     if (!eqSlot) {
-      return action.fail(`${getEntityName(itemToEquip)} can't be equipped`)
+      return action.fail("ITEM.NOT_EQUIPPABLE", getEntityName(itemToEquip))
     }
 
     const itemInPrimarySlot = getFirstContainerItem(eqSlot)
-    const eqSlotName = getEntityName(eqSlot)
 
     if (
       isDisabled(eqSlot) &&
@@ -72,11 +71,13 @@ export const resolvePlayerEquipItemAction = (
         hasComponentsByType(itemToEquip, SpikeComponent)
       )
     ) {
-      return action.fail(`Can't equip to disabled ${eqSlotName} slot`)
+      return action.fail("EQUIPMENT.DISABLED_SLOT", getEntityName(eqSlot))
     }
     if (itemInPrimarySlot) {
       return action.fail(
-        `Can't equip. ${getEntityName(itemInPrimarySlot)} in ${eqSlotName} slot`,
+        "EQUIPMENT.OCCUPIED_SLOT",
+        getEntityName(itemInPrimarySlot),
+        getEntityName(eqSlot),
       )
     }
 
@@ -85,13 +86,15 @@ export const resolvePlayerEquipItemAction = (
       const offhandItem = offhandSlot && getFirstContainerItem(offhandSlot)
       if (offhandItem) {
         return action.fail(
-          `Can't equip. ${getEntityName(offhandItem)} in ${getEntityName(offhandSlot)} slot`,
+          "EQUIPMENT.OCCUPIED_SLOT",
+          getEntityName(offhandItem),
+          getEntityName(offhandSlot),
         )
       }
     }
 
     addItemsToContainer(eqSlot, itemToEquip)
-    action.success(`Equipped ${getEntityName(itemToEquip)}`)
+    action.success("ITEM.EQUIPPED", getEntityName(itemToEquip))
     triggerOnEquipCurse(action, player, eqSlot, itemToEquip)
   })()
 

@@ -31,10 +31,13 @@ describe("timedActions", () => {
   const getImmediateAction = (duration: number, priority?: number) => {
     const action = new Action({
       type: InternalActionTypeEnum.INTERNAL_LOG,
-      message: "source",
+      message: { key: "LOG.TEXT", replacements: ["source"] },
     })
     action.addPendingImmediateAction(
-      { type: InternalActionTypeEnum.INTERNAL_LOG, message: "tick" },
+      {
+        type: InternalActionTypeEnum.INTERNAL_LOG,
+        message: { key: "LOG.TEXT", replacements: ["tick"] },
+      },
       duration,
       priority,
     )
@@ -44,10 +47,13 @@ describe("timedActions", () => {
   const getDelayedAction = (priority: number) => {
     const action = new Action({
       type: InternalActionTypeEnum.INTERNAL_LOG,
-      message: "source",
+      message: { key: "LOG.TEXT", replacements: ["source"] },
     })
     action.addPendingDelayedAction(
-      { type: InternalActionTypeEnum.INTERNAL_LOG, message: `${priority}` },
+      {
+        type: InternalActionTypeEnum.INTERNAL_LOG,
+        message: { key: "LOG.TEXT", replacements: [`${priority}`] },
+      },
       1,
       1,
       priority,

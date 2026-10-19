@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import { getBackpack } from "../containers/containers"
 import { assert } from "../../../utils/assert"
 import { getExp } from "../exp/exp"
@@ -6,7 +7,6 @@ import { getMobById } from "../mobs/mobs"
 import { getTile } from "./tile"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import {
   WorldActionTypeEnum,
   WorldKillActionReasonEnum,
@@ -26,9 +26,8 @@ export const resolveWorldKillAction = (
     }
     const backpack = assert(getBackpack(mob), "Mob has no backpack")
     action.success(
-      reason === WorldKillActionReasonEnum.ATTACK
-        ? `${getEntityName(mob)} died`
-        : undefined,
+      reason === WorldKillActionReasonEnum.ATTACK ? "ENTITY.DIED" : undefined,
+      getEntityName(mob),
     )
     const exp = getExp(mob)
     action.addPendingImmediateAction({

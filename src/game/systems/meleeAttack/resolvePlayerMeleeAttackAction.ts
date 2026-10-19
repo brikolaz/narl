@@ -22,7 +22,7 @@ export const resolvePlayerMeleeAttackAction = (
     const target = getTile(targetPosition)
 
     if (!target || !hasMobs(target)) {
-      return action.fail("Nothing to attack")
+      return action.fail("ATTACK.NO_TARGET")
     }
     const mob = assert(getMob(target), "No mob to attack")
     action.addPendingImmediateAction({

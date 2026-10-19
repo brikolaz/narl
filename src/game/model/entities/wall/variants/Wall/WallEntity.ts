@@ -9,7 +9,7 @@ import { ImpassableComponent } from "../../../../components/spatial/ImpassableCo
 const addComponents = (wall: Entity<"WALL">): void => {
   upsertComponents(
     wall,
-    NameComponent({ name: "Wall" }),
+    NameComponent({ name: "ENTITY.WALL" }),
     GlyphComponent({ glyph: "#" }),
     ImpassableComponent(),
   )

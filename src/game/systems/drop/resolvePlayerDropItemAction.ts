@@ -1,3 +1,4 @@
+import { getEntityName } from "../inspect/getEntityName"
 import type { Entity } from "../../../core/model/Entity"
 import { assert } from "../../../utils/assert"
 import { getBackpack, getContainerItemAt } from "../containers/containers"
@@ -5,7 +6,6 @@ import { getEqSlotByPosition, isRemovable } from "../eq/eq"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
-import { getEntityName } from "../inspect/getEntityName"
 import {
   PlayerDropItemActionReasonEnum,
   type PlayerDropItemAction,
@@ -33,26 +33,27 @@ export const resolvePlayerDropItemAction = (
     if (eqSlot !== undefined) {
       itemToDrop = getContainerItemAt(source, 1)
       if (!itemToDrop) {
-        return action.fail(`No item at ${getEntityName(source)} slot`)
+        return action.fail("ITEM.EMPTY_SLOT", getEntityName(source))
       }
       if (!isRemovable(itemToDrop)) {
-        return action.fail(`Can't be removed`)
+        return action.fail("ITEM.NOT_REMOVABLE")
       }
     } else if (invSlot !== undefined) {
       itemToDrop = getContainerItemAt(source, invSlot)
       if (!itemToDrop) {
-        return action.fail(`No item to drop at slot ${invSlot}`)
+        return action.fail("ITEM.NO_DROP_AT_SLOT", invSlot)
       }
     }
     itemToDrop = assert(itemToDrop, "No item to drop")
     dropItem(itemToDrop, targetPosition)
 
     if (reason === PlayerDropItemActionReasonEnum.MANUAL) {
-      return action.success(`Dropped ${getEntityName(itemToDrop)}`)
+      return action.success("ITEM.DROPPED", getEntityName(itemToDrop))
     }
 
     return action.success(
-      `Backpack is full. Dropped ${getEntityName(itemToDrop)} to the ground`,
+      "ITEM.DROPPED_BACKPACK_FULL",
+      getEntityName(itemToDrop),
     )
   })()
 

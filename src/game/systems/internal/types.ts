@@ -1,3 +1,4 @@
+import type { LogMessage } from "../log/types"
 import { createEnum } from "../../../utils/types/Enum"
 
 export const InternalActionTypeEnum = createEnum(
@@ -11,7 +12,7 @@ export type InternalInitAction = {
 }
 export type InternalLogAction = {
   type: typeof InternalActionTypeEnum.INTERNAL_LOG
-  message: string | string[]
+  message: LogMessage | LogMessage[]
 }
 export type InternalResetGameAction = {
   type: typeof InternalActionTypeEnum.INTERNAL_RESET_GAME

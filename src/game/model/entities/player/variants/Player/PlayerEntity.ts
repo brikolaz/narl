@@ -27,7 +27,7 @@ const addComponents = (player: Entity<"PLAYER">): void => {
     GlyphComponent({ glyph: DEFAULT_PLAYER_GLYPH }),
     ExpComponent(),
     ColorComponent(),
-    NameComponent({ name: "You" }),
+    NameComponent({ name: "ENTITY.PLAYER" }),
     HpComponent({ hp: 20, maxHp: 20 }),
     PositionComponent({ position: INITIAL_PLAYER_POSITION }),
     HealComponent({ min: 4, max: 5 }),

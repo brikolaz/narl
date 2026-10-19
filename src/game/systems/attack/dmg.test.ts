@@ -1,3 +1,4 @@
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   EntityRoleEnum,
@@ -20,7 +21,9 @@ import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
 import { ContainerComponent } from "../../model/components/containers/ContainerComponent"
 import { OffensiveContainerCurseComponent } from "../../model/components/curse/OffensiveContainerCurseComponent"
 import { NameComponent } from "../../model/components/display/NameComponent"
-import { getItemInspectText } from "../inspect/inspect"
+import { formatLogMessage } from "../../render/formatLogMessage"
+import { Action } from "../actions/action"
+import { InternalActionTypeEnum } from "../internal/types"
 import { getChildrenDefToDmg, getChildrenDmgRange, getDmgRange } from "./dmg"
 
 const TestContainer = getEntityCreator("TEST_CURSED_CONTAINER")
@@ -31,7 +34,7 @@ const createCursedContainer = (): Entity => {
   upsertComponents(
     container,
     ContainerComponent(),
-    NameComponent({ name: "Cursed Backpack" }),
+    NameComponent({ name: "ENTITY.BACKPACK" }),
     DmgMulComponent({ dmgMul: 0.5 }),
     OffensiveContainerCurseComponent({
       dmgMul: 0.5,
@@ -107,7 +110,12 @@ describe("dmg", () => {
     addItem(backpack, DmgComponent({ min: 2, max: 2 }))
     addItem(backpack, DefComponent({ def: 4 }))
 
-    expect(getItemInspectText(backpack)).toContain(
+    const action = new Action({
+      type: InternalActionTypeEnum.INTERNAL_LOG,
+      message: { key: "INSPECT.ITEM", replacements: [] },
+    })
+    action.info("INSPECT.ITEM", getEntityLogProjection(backpack))
+    expect(formatLogMessage(action.resolve().pendingLogs[0].message)).toContain(
       "Contents: 2 DMG (2x0.5 + 4x0.25 from DEF)",
     )
   })
