@@ -141,6 +141,31 @@ export default defineConfig([
     },
   },
   {
+    files: [
+      "src/core/**/*.ts",
+      "src/game/input/**/*.ts",
+      "src/game/model/**/*.ts",
+      "src/game/state/**/*.ts",
+      "src/game/systems/**/*.ts",
+    ],
+    ignores: ["**/*.test.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/i18n", "**/i18n/**"],
+              allowTypeImports: true,
+              message:
+                "Pass translation keys and parameters; translate only when rendering.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ["**/*.test.ts"],
     plugins: {
       "chai-friendly": chaiFriendly,

@@ -1,5 +1,6 @@
 import { formatMessage } from "../i18n/messages"
 import type { EntityLogProjection } from "../systems/log/types"
+import { formatLogMessage } from "./formatLogMessage"
 import { formatDmgRange } from "./format"
 
 export const formatItemInspection = (
@@ -9,7 +10,13 @@ export const formatItemInspection = (
   const { name, description, container, dmg, def, bonusDmgMul } = projection
   const contents = container?.contents
   const parts = [
-    formatMessage("INSPECT.NAME", { name }, locale),
+    formatMessage(
+      "INSPECT.NAME",
+      {
+        name: typeof name === "string" ? name : formatLogMessage(name, locale),
+      },
+      locale,
+    ),
     description
       ? formatMessage("INSPECT.DESCRIPTION", { description }, locale)
       : undefined,

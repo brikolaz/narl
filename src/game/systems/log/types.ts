@@ -4,7 +4,7 @@ import type { GameAction } from "../actions/types"
 import type { PlayerAction } from "../player/types"
 
 export type EntityLogProjection = {
-  name: string
+  name: string | LogMessage
   isPlayer: boolean
   description: string
   dmg?: DmgRange
@@ -24,10 +24,15 @@ export type EntityLogProjection = {
 }
 
 export type LogReplacement =
-  string | number | EntityLogProjection | readonly string[]
+  | string
+  | number
+  | LogMessage
+  | EntityLogProjection
+  | readonly (string | LogMessage)[]
 
 export type LogMessage = {
   key: MessageKey
+  parameters?: Readonly<Record<string, string | number | LogMessage>>
   replacements?: readonly LogReplacement[]
 }
 

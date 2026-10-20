@@ -3,17 +3,24 @@ import { formatMessage } from "../i18n/messages"
 import type { LogEntry, LogMessage, LogReplacement } from "../systems/log/types"
 import { formatItemInspection } from "./formatItemInspection"
 
+// TODO: simplify this file
 const formatReplacement = (
   value: LogReplacement,
   locale: string,
   inspect: boolean,
 ): string | readonly string[] => {
   if (typeof value !== "object") return String(value)
-  if (!("name" in value)) return value
+  if ("key" in value) return formatLogMessage(value, locale)
+  if (!("name" in value))
+    return value.map((item) =>
+      typeof item === "string" ? item : formatLogMessage(item, locale),
+    )
   if (inspect) return formatItemInspection(value, locale)
   return value.isPlayer
     ? formatMessage("ENTITY.PLAYER", {}, locale)
-    : value.name
+    : typeof value.name === "string"
+      ? value.name
+      : formatLogMessage(value.name, locale)
 }
 
 export const formatLogMessage = (
@@ -21,6 +28,10 @@ export const formatLogMessage = (
   locale: string = LOCALE,
 ): string => {
   const parameters: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(message.parameters ?? {})) {
+    parameters[key] =
+      typeof value === "object" ? formatLogMessage(value, locale) : value
+  }
   const replacements = message.replacements ?? []
   replacements.forEach((value, index) => {
     parameters[`arg${index}`] = formatReplacement(

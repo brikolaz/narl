@@ -1,4 +1,3 @@
-import { LOCALE } from "../../../utils/constants"
 import type { MessageKey } from "../../i18n/types"
 import * as messages from "../../i18n/messages"
 import { createMessageFormatter } from "../../i18n/formatMessage"
@@ -96,7 +95,7 @@ describe("log", () => {
     expect(isEntity(entity)).toBe(false)
   })
 
-  it("keeps the translated name after the entity is removed", () => {
+  it("keeps the nested name keys after the entity is removed", () => {
     const entity = createNamedEntity()
     upsertComponents(
       entity,
@@ -106,12 +105,17 @@ describe("log", () => {
     const loggedAction = new Action(action)
     loggedAction.info("ITEM.PICKED_UP", getEntityName(entity))
     const message = loggedAction.resolve().pendingLogs[0].message
-    expect(message.replacements).toEqual(["Cursed Sword"])
+    expect(message.replacements).toEqual([
+      {
+        key: "ENTITY.CURSED_NAME",
+        parameters: { name: { key: "ENTITY.SWORD" } },
+      },
+    ])
     removeEntity(entity)
     expect(formatLogMessage(message)).toBe("Picked up Cursed Sword")
   })
 
-  it("localizes entity names and curses using the configured locale", async () => {
+  it("localizes nested names and lists using the renderer locale", () => {
     const localized = createMessageFormatter(
       {
         en: EN_MESSAGES,
@@ -133,13 +137,8 @@ describe("log", () => {
       "en",
     )
     vi.spyOn(messages, "formatMessage").mockImplementation(
-      (key, parameters, locale = LOCALE) => localized(key, parameters, locale),
+      (key, parameters, locale) => localized(key, parameters, locale),
     )
-    vi.spyOn(
-      await import("../../../utils/constants"),
-      "LOCALE",
-      "get",
-    ).mockReturnValue("pl-PL")
     const sword = createNamedEntity()
     const shield = createNamedEntity()
     upsertComponents(
@@ -155,7 +154,7 @@ describe("log", () => {
     expect(formatLogMessage(message, "pl-PL")).toBe(
       "Podniesiono przeklęty miecz",
     )
-    expect(formatLogMessage(message, "en")).toBe("Picked up przeklęty miecz")
+    expect(formatLogMessage(message, "en")).toBe("Picked up Cursed Sword")
     expect(
       formatLogMessage(
         {
@@ -193,7 +192,7 @@ describe("log", () => {
     })
     const entry = getGameViewModel().logs.at(-1)!
     expect(entry.message.replacements?.[0]).toMatchObject({
-      name: "You",
+      name: { key: "ENTITY.PLAYER" },
       isPlayer: true,
     })
   })
@@ -254,7 +253,7 @@ describe("log", () => {
       .values()
       .next().value!
     Object.assign(name, { name: "ENTITY.AXE" })
-    expect(getEntityName(entity)).toBe("Axe")
+    expect(getEntityName(entity)).toEqual({ key: "ENTITY.AXE" })
     expect(formatLogMessage(message)).toBe("Boomer")
   })
 
@@ -290,6 +289,29 @@ describe("log", () => {
     expect(game.state.log[0].count).toBe(2)
   })
 
+  it("stacks nested parameters by value and keeps different keys separate", () => {
+    game.state.log = []
+    for (const key of ["ENTITY.SWORD", "ENTITY.SWORD", "ENTITY.AXE"] as const) {
+      flushLogs(
+        [
+          {
+            action,
+            message: {
+              key: "ENTITY.CURSED_NAME",
+              parameters: { name: { key } },
+            },
+          },
+        ],
+        true,
+      )
+    }
+    expect(game.state.log).toHaveLength(2)
+    expect(game.state.log.map((entry) => entry.count)).toEqual([2, 1])
+    expect(
+      game.state.log.map((entry) => formatLogMessage(entry.message)),
+    ).toEqual(["Cursed Sword", "Cursed Axe"])
+  })
+
   it("keeps different replacement values separate", () => {
     game.state.log = []
     flushLogs(
@@ -322,7 +344,7 @@ describe("log", () => {
 
   it("formats all optional inspection sections from projected data", () => {
     const projection: EntityLogProjection = {
-      name: "Backpack",
+      name: { key: "ENTITY.BACKPACK" },
       isPlayer: false,
       description: "A sturdy bag",
       container: {
@@ -368,7 +390,7 @@ describe("log", () => {
     removeEntity(item)
     removeEntity(slot)
     expect(projection).toEqual({
-      name: "Sword",
+      name: { key: "ENTITY.SWORD" },
       isPlayer: false,
       description: "",
       dmg: { min: 4, max: 8 },
@@ -385,7 +407,7 @@ describe("log", () => {
     const message = loggedAction.resolve().pendingLogs[0].message
     expect(message.replacements).toEqual([
       expect.objectContaining({
-        name: "You",
+        name: { key: "ENTITY.PLAYER" },
         isPlayer: true,
         description: expect.any(String),
       }),
@@ -415,7 +437,7 @@ describe("log", () => {
       key: "BLEED.DAMAGE",
       replacements: [
         expect.objectContaining({
-          name: "You",
+          name: { key: "ENTITY.PLAYER" },
           isPlayer: true,
           description: expect.any(String),
         }),
