@@ -22,7 +22,7 @@ export const WorldActionTypeEnum = createEnum(
   "WORLD_EXPLODE",
   "WORLD_INIT_EXPLODE",
   "WORLD_CLEANUP_EXPLODE",
-  "WORLD_DEAL_DAMAGE",
+  "WORLD_DEAL_DMG",
   "WORLD_BLOCK",
   "WORLD_CLEANUP_BLOCK",
   "WORLD_INIT_BLOCK",
@@ -38,9 +38,9 @@ export type WorldKillActionReasonEnum = EnumType<
   typeof WorldKillActionReasonEnum
 >
 
-export const WorldDealDamageActionReasonEnum = createEnum("ATTACK", "EXPLODE")
-type WorldDealDamageActionReasonEnum = EnumType<
-  typeof WorldDealDamageActionReasonEnum
+export const WorldDealDmgActionReasonEnum = createEnum("ATTACK", "EXPLODE")
+type WorldDealDmgActionReasonEnum = EnumType<
+  typeof WorldDealDmgActionReasonEnum
 >
 
 export type WorldDropItemAction = {
@@ -139,12 +139,12 @@ export type WorldCleanupExplodeAction = {
   entityId: Id
 }
 
-export type WorldDealDamageAction = {
-  type: typeof WorldActionTypeEnum.WORLD_DEAL_DAMAGE
+export type WorldDealDmgAction = {
+  type: typeof WorldActionTypeEnum.WORLD_DEAL_DMG
   sourceId: Id
   targetId: Id
   dmg: number
-  reason: WorldDealDamageActionReasonEnum
+  reason: WorldDealDmgActionReasonEnum
 }
 
 export type WorldBlockAction = {
@@ -218,7 +218,7 @@ export type WorldAction =
   | WorldExplodeAction
   | WorldInitExplodeAction
   | WorldCleanupExplodeAction
-  | WorldDealDamageAction
+  | WorldDealDmgAction
   | WorldBlockAction
   | WorldCleanupBlockAction
   | WorldInitBlockAction

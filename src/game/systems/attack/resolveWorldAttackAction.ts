@@ -9,7 +9,7 @@ import { getDirection } from "../position/position"
 import { rollAttackDmg } from "./dmg"
 import {
   WorldActionTypeEnum,
-  WorldDealDamageActionReasonEnum,
+  WorldDealDmgActionReasonEnum,
   type WorldAttackAction,
 } from "../world/types"
 import { getAttackWeapon } from "./getAttackWeapon"
@@ -41,11 +41,11 @@ export const resolveWorldAttackAction = (
       })
     }
     action.addPendingImmediateAction({
-      type: WorldActionTypeEnum.WORLD_DEAL_DAMAGE,
+      type: WorldActionTypeEnum.WORLD_DEAL_DMG,
       sourceId: source.id,
       targetId: target.id,
       dmg: rollAttackDmg(source),
-      reason: WorldDealDamageActionReasonEnum.ATTACK,
+      reason: WorldDealDmgActionReasonEnum.ATTACK,
     })
 
     if (

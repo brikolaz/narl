@@ -1,7 +1,7 @@
 import { getComponentCreator } from "../../../../core/model/Component"
-type ProvokableComponentProps = { damageChance: number; pokeChance: number }
+type ProvokableComponentProps = { dmgChance: number; pokeChance: number }
 export const ProvokableComponent =
   getComponentCreator<ProvokableComponentProps>("PROVOKABLE", {
-    damageChance: 0,
+    dmgChance: 0,
     pokeChance: 0,
   })

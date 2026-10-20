@@ -11,13 +11,13 @@ import { isPlayer } from "../player/player"
 import { getRng } from "../rng/rng"
 import {
   WorldActionTypeEnum,
-  WorldDealDamageActionReasonEnum,
+  WorldDealDmgActionReasonEnum,
   WorldKillActionReasonEnum,
-  type WorldDealDamageAction,
+  type WorldDealDmgAction,
 } from "../world/types"
 
-export const resolveWorldDealDamageAction = (
-  gameAction: WorldDealDamageAction,
+export const resolveWorldDealDmgAction = (
+  gameAction: WorldDealDmgAction,
 ): ActionResolution => {
   const action = new Action(gameAction)
 
@@ -26,13 +26,13 @@ export const resolveWorldDealDamageAction = (
     const target = getEntityById(gameAction.targetId)
     if (
       !target ||
-      (gameAction.reason === WorldDealDamageActionReasonEnum.ATTACK && !source)
+      (gameAction.reason === WorldDealDmgActionReasonEnum.ATTACK && !source)
     ) {
       return
     }
     const hitResult = hit(target, gameAction.dmg)
 
-    if (gameAction.reason === WorldDealDamageActionReasonEnum.ATTACK) {
+    if (gameAction.reason === WorldDealDmgActionReasonEnum.ATTACK) {
       if (!source) return
       if (hitResult.dmg === 0) {
         action.success(
@@ -62,15 +62,15 @@ export const resolveWorldDealDamageAction = (
       return resolveMobDeath(
         action,
         target,
-        gameAction.reason === WorldDealDamageActionReasonEnum.EXPLODE
+        gameAction.reason === WorldDealDmgActionReasonEnum.EXPLODE
           ? WorldKillActionReasonEnum.EXPLODE
           : WorldKillActionReasonEnum.ATTACK,
       )
     }
 
     const chanceToProvoke =
-      getComponentByType(target, ProvokableComponent)?.damageChance ??
-      ProvokableComponent.defaults.damageChance
+      getComponentByType(target, ProvokableComponent)?.dmgChance ??
+      ProvokableComponent.defaults.dmgChance
     if (getRng(target).chance(chanceToProvoke)) {
       action.addPendingImmediateAction({
         type: WorldActionTypeEnum.WORLD_ENRAGE,

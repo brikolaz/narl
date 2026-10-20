@@ -36,6 +36,11 @@ export default defineConfig([
       "no-restricted-syntax": [
         "error",
         {
+          selector: "Identifier[name=/damage/i]",
+          message:
+            "Use `Dmg`, `dmg`, or `DMG` instead of `Damage`, `damage`, or `DAMAGE` in identifier names.",
+        },
+        {
           selector: "TSEnumDeclaration",
           message:
             "Use `createEnum(...)` and access its values as `FooEnum.FOO_VALUE` instead of a TypeScript enum.",

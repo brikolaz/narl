@@ -4,22 +4,22 @@ import { isPlayer } from "../player/player"
 import { getReducedDmg } from "../def/def"
 import { initDeath } from "../gameOver/death"
 
-export type Damage = {
+export type Dmg = {
   dmg: number
   nextHp: number
 }
 
-export const hit = (target: Entity, sourceDmg: number): Damage => {
+export const hit = (target: Entity, sourceDmg: number): Dmg => {
   const dmg = getReducedDmg(target, sourceDmg)
   const targetHp = getHp(target)
-  const applyDamage = () => {
+  const applyDmg = () => {
     targetHp.hp -= dmg
   }
 
   if (isPlayer(target)) {
-    initDeath(applyDamage)
+    initDeath(applyDmg)
   } else {
-    applyDamage()
+    applyDmg()
   }
 
   return { dmg, nextHp: targetHp.hp }

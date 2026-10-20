@@ -18,7 +18,7 @@ import { resolveWorldWinAction } from "../win/resolveWorldWinAction"
 import { resolveWorldExplodeAction } from "../explode/resolveWorldExplodeAction"
 import { resolveWorldInitExplodeAction } from "../explode/resolveWorldInitExplodeAction"
 import { resolveWorldCleanupExplodeAction } from "../explode/resolveWorldCleanupExplodeAction"
-import { resolveWorldDealDamageAction } from "../dealDamage/resolveWorldDealDamageAction"
+import { resolveWorldDealDmgAction } from "../dealDmg/resolveWorldDealDmgAction"
 import { resolveWorldBlockAction } from "../block/resolveWorldBlockAction"
 import { resolveWorldCleanupBlockAction } from "../block/resolveWorldCleanupBlockAction"
 import { resolveWorldInitBlockAction } from "../block/resolveWorldInitBlockAction"
@@ -53,7 +53,7 @@ export const WORLD_ACTION_RESOLVERS = {
   [WorldActionTypeEnum.WORLD_EXPLODE]: resolveWorldExplodeAction,
   [WorldActionTypeEnum.WORLD_INIT_EXPLODE]: resolveWorldInitExplodeAction,
   [WorldActionTypeEnum.WORLD_CLEANUP_EXPLODE]: resolveWorldCleanupExplodeAction,
-  [WorldActionTypeEnum.WORLD_DEAL_DAMAGE]: resolveWorldDealDamageAction,
+  [WorldActionTypeEnum.WORLD_DEAL_DMG]: resolveWorldDealDmgAction,
   [WorldActionTypeEnum.WORLD_BLOCK]: resolveWorldBlockAction,
   [WorldActionTypeEnum.WORLD_CLEANUP_BLOCK]: resolveWorldCleanupBlockAction,
   [WorldActionTypeEnum.WORLD_INIT_BLOCK]: resolveWorldInitBlockAction,

@@ -12,7 +12,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import {
   WorldActionTypeEnum,
-  WorldDealDamageActionReasonEnum,
+  WorldDealDmgActionReasonEnum,
   type WorldExplodeAction,
 } from "../world/types"
 import { rollExplodeDmg } from "./dmg"
@@ -58,11 +58,11 @@ export const resolveWorldExplodeAction = (
     ) {
       for (const target of getVulnerableTargets(source, targetPosition)) {
         action.addPendingImmediateAction({
-          type: WorldActionTypeEnum.WORLD_DEAL_DAMAGE,
+          type: WorldActionTypeEnum.WORLD_DEAL_DMG,
           sourceId: source.id,
           targetId: target.id,
           dmg: rollExplodeDmg(source),
-          reason: WorldDealDamageActionReasonEnum.EXPLODE,
+          reason: WorldDealDmgActionReasonEnum.EXPLODE,
         })
       }
     }

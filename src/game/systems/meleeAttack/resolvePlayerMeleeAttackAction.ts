@@ -8,7 +8,7 @@ import { rollAttackDmg } from "../attack/dmg"
 import type { PlayerMeleeAttackAction } from "../player/types"
 import {
   WorldActionTypeEnum,
-  WorldDealDamageActionReasonEnum,
+  WorldDealDmgActionReasonEnum,
 } from "../world/types"
 
 export const resolvePlayerMeleeAttackAction = (
@@ -26,11 +26,11 @@ export const resolvePlayerMeleeAttackAction = (
     }
     const mob = assert(getMob(target), "No mob to attack")
     action.addPendingImmediateAction({
-      type: WorldActionTypeEnum.WORLD_DEAL_DAMAGE,
+      type: WorldActionTypeEnum.WORLD_DEAL_DMG,
       sourceId: source.id,
       targetId: mob.id,
       dmg: rollAttackDmg(source),
-      reason: WorldDealDamageActionReasonEnum.ATTACK,
+      reason: WorldDealDmgActionReasonEnum.ATTACK,
     })
   })()
 
