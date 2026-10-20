@@ -9,6 +9,16 @@ describe("random", () => {
     vi.restoreAllMocks()
   })
 
+  it.each([0, 0.5, 1 - Number.EPSILON])(
+    "returns false for zero chance when the roll is %s",
+    (roll) => {
+      const random = createRandom()
+      vi.spyOn(random, "random").mockReturnValue(roll)
+
+      expect(random.chance(0)).toBe(false)
+    },
+  )
+
   it("picks an item from the array", () => {
     const random = createRandom()
     vi.spyOn(random, "random").mockReturnValue(0.5)
