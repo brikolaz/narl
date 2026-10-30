@@ -8,6 +8,7 @@ const formatReplacement = (
   value: LogReplacement,
   locale: string,
   inspect: boolean,
+  pickup: boolean,
 ): string | readonly string[] => {
   if (typeof value !== "object") return String(value)
   if ("key" in value) return formatLogMessage(value, locale)
@@ -16,6 +17,7 @@ const formatReplacement = (
       typeof item === "string" ? item : formatLogMessage(item, locale),
     )
   if (inspect) return formatItemInspection(value, locale)
+  if (pickup) return formatItemInspection({ ...value, description: "" }, locale)
   return value.isPlayer
     ? formatMessage("ENTITY.PLAYER", {}, locale)
     : typeof value.name === "string"
@@ -38,6 +40,7 @@ export const formatLogMessage = (
       value,
       locale,
       message.key === "INSPECT.ITEM",
+      message.key === "ITEM.PICKED_UP",
     )
     if (typeof value === "object" && "description" in value) {
       parameters[`arg${index}Description`] = value.description

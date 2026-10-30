@@ -13,6 +13,7 @@ import type { PlayerPickUpAction } from "../player/types"
 import { isPickupable, pickUpItem } from "./pickUp"
 import { getVisibleTiles } from "../player/getVisibleTiles"
 import { triggerOnPickupCurse } from "../curse/triggers/triggerOnPickupCurse"
+import { getEntityLogProjection } from "../log/getEntityLogProjection"
 
 export const resolvePlayerPickUpAction = (
   gameAction: PlayerPickUpAction,
@@ -47,7 +48,7 @@ export const resolvePlayerPickUpAction = (
       }
       addItemToEntityBackpack(player, itemToPickUp)
       removeById(tile.items, itemToPickUp.id)
-      action.success("ITEM.PICKED_UP", getEntityName(itemToPickUp))
+      action.success("ITEM.PICKED_UP", getEntityLogProjection(itemToPickUp))
       triggerOnPickupCurse(action, itemToPickUp)
     })
   })()
