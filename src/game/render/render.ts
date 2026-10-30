@@ -40,7 +40,7 @@ const controls = document.createElement("pre")
 controls.className = "controls"
 controls.setAttribute("aria-label", "Keyboard controls")
 controls.textContent =
-  "[←/→] Move  [A] Attack  [G] Pick Up  [I] Inspect  [E] Equip\n[U] Unequip  [M] Move Item  [D] Drop  [P] Poke  [W] Wait"
+  "[←/→] Move  [A] Attack  [G] Pick Up  [I] Inspect  [E] Equip\n[U] Unequip  [M] Move Item  [D] Drop  [W] Wait"
 
 document.body.append(controls)
 

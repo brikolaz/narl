@@ -1,4 +1,5 @@
 import { actionContract } from "./rules/actionContract.js"
+import { actionSuffixContract } from "./rules/actionSuffixContract.js"
 import { ecsComponentContract } from "./rules/ecsComponentContract.js"
 import { ecsEntityContract } from "./rules/ecsEntityContract.js"
 import { entityCreatorInferenceContract } from "./rules/entityCreatorInferenceContract.js"
@@ -12,6 +13,7 @@ import { testDescribeContract } from "./rules/testDescribeContract.js"
 export default {
   rules: {
     "action-contract": actionContract,
+    "action-suffix-contract": actionSuffixContract,
     "ecs-component-contract": ecsComponentContract,
     "ecs-entity-contract": ecsEntityContract,
     "entity-creator-inference-contract": entityCreatorInferenceContract,

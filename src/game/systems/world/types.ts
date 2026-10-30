@@ -32,6 +32,7 @@ export const WorldActionTypeEnum = createEnum(
   "WORLD_ENRAGE",
   "WORLD_MAKE_PANTS",
   "WORLD_UPDATE_DMG",
+  "WORLD_INSPECT",
 )
 export const WorldKillActionReasonEnum = createEnum("ATTACK", "EXPLODE")
 export type WorldKillActionReasonEnum = EnumType<
@@ -198,6 +199,13 @@ export type WorldUpdateDmgAction = {
   max: number
 }
 
+export type WorldInspectAction = {
+  type: typeof WorldActionTypeEnum.WORLD_INSPECT
+  sourceId: Id
+  targetPosition: number
+  floorOnly: boolean
+}
+
 export type WorldAction =
   | WorldDropItemAction
   | WorldGainExpAction
@@ -228,3 +236,4 @@ export type WorldAction =
   | WorldEnrageAction
   | WorldMakePantsAction
   | WorldUpdateDmgAction
+  | WorldInspectAction

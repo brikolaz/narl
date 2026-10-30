@@ -7,7 +7,6 @@ import { getInspectCommand } from "./commands/inspectCommand"
 import { getMoveCommand } from "./commands/moveCommand"
 import { getMoveItemCommand } from "./commands/moveItemCommand"
 import { getPickUpCommand } from "./commands/pickUpCommand"
-import { getPokeCommand } from "./commands/pokeCommand"
 import { getUnequipCommand } from "./commands/unequipCommand"
 import { getWaitCommand } from "./commands/waitCommand"
 
@@ -21,6 +20,5 @@ export const createKeyboardToAction = (): KeyboardToAction => ({
   KeyU: getUnequipCommand(),
   KeyM: getMoveItemCommand(),
   KeyD: getDropCommand(),
-  KeyP: getPokeCommand(),
   KeyW: getWaitCommand(),
 })

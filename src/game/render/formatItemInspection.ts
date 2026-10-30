@@ -7,7 +7,16 @@ export const formatItemInspection = (
   projection: EntityLogProjection,
   locale: string,
 ): string => {
-  const { name, description, container, dmg, def, bonusDmgMul } = projection
+  const {
+    name,
+    description,
+    container,
+    dmg,
+    def,
+    bonusDmgMul,
+    slotDmgMul,
+    slotDefMul,
+  } = projection
   const contents = container?.contents
   const parts = [
     formatMessage(
@@ -49,6 +58,20 @@ export const formatItemInspection = (
       : undefined,
     def !== undefined
       ? formatMessage("INSPECT.DEF", { def }, locale)
+      : undefined,
+    slotDmgMul !== undefined
+      ? formatMessage(
+          "INSPECT.SLOT_DMG_MUL",
+          { multiplier: slotDmgMul },
+          locale,
+        )
+      : undefined,
+    slotDefMul !== undefined
+      ? formatMessage(
+          "INSPECT.SLOT_DEF_MUL",
+          { multiplier: slotDefMul },
+          locale,
+        )
       : undefined,
     bonusDmgMul !== undefined
       ? formatMessage("INSPECT.BONUS_DMG", { bonusDmgMul }, locale)

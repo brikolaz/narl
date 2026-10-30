@@ -7,6 +7,7 @@ import {
   getContainerItemAt,
 } from "../systems/containers/containers"
 import { getEq } from "../systems/eq/eq"
+import { getPosition } from "../systems/position/position"
 import { getPlayer } from "../systems/player/player"
 import { STATE, type DeathContext } from "../state/state"
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types"
@@ -111,6 +112,11 @@ export const getGameViewModel = (): GameViewModel => ({
     char: tile.char ?? " ",
     color: tile.color,
     position: tile.position,
+    background:
+      tile.position - 1 - getPosition(getPlayer()) ===
+      UI_STATE.highlights.map.getHighlightedSlot()
+        ? UI_STATE.highlights.map.getBackground()
+        : undefined,
   })),
   playerStats: getPlayerStatsView(),
   equipment: getEquipmentView(),

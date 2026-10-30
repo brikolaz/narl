@@ -39,7 +39,7 @@ export const formatLogMessage = (
     parameters[`arg${index}`] = formatReplacement(
       value,
       locale,
-      message.key === "INSPECT.ITEM",
+      message.key === "INSPECT.ITEM" || message.key === "INSPECT.EQ_SLOT",
       message.key === "ITEM.PICKED_UP",
     )
     if (typeof value === "object" && "description" in value) {

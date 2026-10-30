@@ -10,6 +10,8 @@ export type EntityLogProjection = {
   dmg?: DmgRange
   def?: number
   bonusDmgMul?: number
+  slotDmgMul?: number
+  slotDefMul?: number
   container?: {
     size: number
     depth: number

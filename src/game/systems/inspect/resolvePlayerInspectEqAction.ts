@@ -1,3 +1,4 @@
+import { getEqSlotInspection } from "./getEqSlotInspection"
 import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { assert } from "../../../utils/assert"
 import { getContainerItemAt } from "../containers/containers"
@@ -19,6 +20,7 @@ export const resolvePlayerInspectEqAction = (
     const player = getPlayer()
     const slot = assert(getEqSlotByPosition(player, eqSlot), "No EQ slot")
     const item = getContainerItemAt(slot, 1)
+    action.info("INSPECT.EQ_SLOT", getEqSlotInspection(slot))
 
     if (!item) {
       return action.info("INSPECT.EMPTY_SLOT", getEntityLogProjection(slot))

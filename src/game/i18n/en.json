@@ -1,12 +1,11 @@
 {
   "INPUT": {
     "INVALID_DIRECTION": "Invalid direction",
-    "INVALID_ITEM": "Invalid item",
     "DROP": "Drop INV item (arrow keys, Tab for EQ, space to confirm)",
     "EQUIP": "Select item to equip (arrow keys, space to accept)",
     "MOVE_SOURCE": "Select source (arrow keys, space to accept)",
     "MOVE_TARGET": "Select target (arrow keys, space to accept)",
-    "INSPECT": "Inspect INV item (arrow keys, Tab for EQ, space to confirm)",
+    "INSPECT": "Inspect (Tab: MAP / EQ / INV, arrows to select, space to confirm)",
     "UNEQUIP": "Select item to unequip (arrow keys, space to confirm)",
     "DIRECTION": "Left/right? (arrow keys)",
     "STEP_CANCELED": "Step canceled",
@@ -72,6 +71,9 @@
     "MOVED": "Moved {$arg0} to {$arg1}"
   },
   "INSPECT": {
+    "EQ_SLOT": "Slot: {$arg0}",
+    "SLOT_DMG_MUL": "x{$multiplier :number} DMG",
+    "SLOT_DEF_MUL": "x{$multiplier :number} DEF",
     "NAME": "{$name}",
     "DESCRIPTION": "{$description}",
     "SIZE": "{$size :number} SIZE",

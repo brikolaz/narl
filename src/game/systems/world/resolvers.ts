@@ -28,6 +28,7 @@ import { resolveWorldSeverCockAction } from "../severCock/resolveWorldSeverCockA
 import { resolveWorldEnrageAction } from "../enrage/resolveWorldEnrageAction"
 import { resolveWorldMakePantsAction } from "../makePants/resolveWorldMakePantsAction"
 import { resolveWorldUpdateDmgAction } from "../updateDmg/resolveWorldUpdateDmgAction"
+import { resolveWorldInspectAction } from "../inspect/resolveWorldInspectAction"
 import { WorldActionTypeEnum, type WorldAction } from "./types"
 
 export const WORLD_ACTION_RESOLVERS = {
@@ -63,4 +64,5 @@ export const WORLD_ACTION_RESOLVERS = {
   [WorldActionTypeEnum.WORLD_ENRAGE]: resolveWorldEnrageAction,
   [WorldActionTypeEnum.WORLD_MAKE_PANTS]: resolveWorldMakePantsAction,
   [WorldActionTypeEnum.WORLD_UPDATE_DMG]: resolveWorldUpdateDmgAction,
+  [WorldActionTypeEnum.WORLD_INSPECT]: resolveWorldInspectAction,
 } satisfies ActionResolverMap<WorldAction>

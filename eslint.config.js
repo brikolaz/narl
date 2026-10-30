@@ -131,6 +131,7 @@ export default defineConfig([
       "@typescript-eslint/no-import-type-side-effects": "error",
       "unused-imports/no-unused-imports": "error",
       "local/action-contract": "error",
+      "local/action-suffix-contract": "error",
       "local/ecs-component-contract": "error",
       "local/ecs-entity-contract": "error",
       "local/entity-creator-inference-contract": "error",
