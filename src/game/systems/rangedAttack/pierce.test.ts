@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { getEntityCreator } from "../../../core/model/Entity"
 import { upsertComponents } from "../../../core/model/queries/components/add"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { PierceComponent } from "../../model/components/combat/PierceComponent"
 import { InternalActionTypeEnum } from "../internal/types"
 import { canPierce, getPierceRange } from "./pierce"

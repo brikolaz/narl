@@ -1,5 +1,5 @@
 import type { Entity } from "../../core/model/Entity"
-import { createEnum, type EnumType } from "../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../core/utils/types/Enum"
 import { getAttackDmgRange } from "../systems/attack/dmg"
 import { getTotalDef } from "../systems/def/def"
 import { formatDmgRange } from "./format"

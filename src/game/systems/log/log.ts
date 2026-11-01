@@ -1,5 +1,5 @@
-import { MAX_VISIBLE_LOGS } from "../../../utils/constants"
-import { STATE, type GameState } from "../../state/state"
+import { MAX_VISIBLE_LOGS } from "../../../core/utils/constants"
+import { STATE, type GameState } from "../../state"
 import type { GameAction } from "../actions/types"
 import { InternalActionTypeEnum } from "../internal/types"
 import type { PlayerAction } from "../player/types"

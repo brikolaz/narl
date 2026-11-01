@@ -1,9 +1,9 @@
 import type { Entity } from "../../../core/model/Entity"
 import type { Id } from "../../../core/model/Id"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
-import { removeById } from "../../../utils/removeById"
+import { removeById } from "../../../core/utils/removeById"
 import { PickupableComponent } from "../../model/components/interaction/PickupableComponent"
-import type { Tile } from "../../state/state"
+import type { Tile } from "../../state"
 import { setPosition } from "../position/position"
 
 export const pickUpItem = (tile: Tile): Entity | undefined => {

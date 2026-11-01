@@ -3,8 +3,8 @@ import {
   type Entity,
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
-import { COLORS } from "../../../../../../../utils/colors"
-import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../../../utils/constants"
+import { COLORS } from "../../../../../../../core/utils/colors"
+import { DEFAULT_PLAYER_BACKPACK_SIZE } from "../../../../../../../core/utils/constants"
 import { ContainerComponent } from "../../../../../components/containers/ContainerComponent"
 import { SizeComponent } from "../../../../../components/containers/SizeComponent"
 import { ColorComponent } from "../../../../../components/display/ColorComponent"

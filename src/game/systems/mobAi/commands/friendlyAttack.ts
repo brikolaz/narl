@@ -1,5 +1,5 @@
 import type { Entity } from "../../../../core/model/Entity"
-import { isAdjacent } from "../../../../utils/adjacent"
+import { isAdjacent } from "../../../../core/utils/adjacent"
 import type { GameAction } from "../../actions/types"
 import { isFriendlyHostile } from "../../attack/hostility"
 import { getAllMobs } from "../../mobs/mobs"

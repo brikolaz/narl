@@ -3,7 +3,7 @@ import {
   type Entity,
 } from "../../../../../../../core/model/Entity"
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
-import { COLORS } from "../../../../../../../utils/colors"
+import { COLORS } from "../../../../../../../core/utils/colors"
 import { getRng } from "../../../../../../systems/rng/rng"
 import { DefComponent } from "../../../../../components/combat/DefComponent"
 import { ColorComponent } from "../../../../../components/display/ColorComponent"

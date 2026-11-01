@@ -8,7 +8,7 @@ import { upsertRoleEntities } from "../../../../../../core/model/queries/entitie
 import {
   DEFAULT_PLAYER_GLYPH,
   INITIAL_PLAYER_POSITION,
-} from "../../../../../../utils/constants"
+} from "../../../../../../core/utils/constants"
 import { initEq } from "../../../../../systems/eq/eq"
 import { BlockComponent } from "../../../../components/BlockComponent"
 import { HealComponent } from "../../../../components/HealComponent"

@@ -2,10 +2,10 @@ import {
   MAP_SIZE,
   MAX_WORLD_POSITION,
   MIN_WORLD_POSITION,
-} from "../../../utils/constants"
+} from "../../../core/utils/constants"
 import { getPlayer } from "./player"
 import { getPosition } from "../position/position"
-import { STATE, type Tile } from "../../state/state"
+import { STATE, type Tile } from "../../state"
 
 export const getVisibleTiles = (): Tile[] => {
   const playerPosition = getPosition(getPlayer())

@@ -3,7 +3,7 @@ import type { KeyboardToActionChain } from "./game/input/keyboard/chain"
 import { mapKeyboardEventToAction } from "./game/input/keyboard/mapKeyboardEventToAction"
 import "./game/render/index.css"
 import { render } from "./game/render/render"
-import { STATE } from "./game/state/state"
+import { STATE } from "./game/state"
 import { InternalActionTypeEnum } from "./game/systems/internal/types"
 import "./patches"
 

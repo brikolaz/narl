@@ -1,5 +1,5 @@
 import { getComponentCreator } from "../../../../core/model/Component"
-import { COLORS } from "../../../../utils/colors"
+import { COLORS } from "../../../../core/utils/colors"
 
 export type ColorComponentProps = {
   color: string

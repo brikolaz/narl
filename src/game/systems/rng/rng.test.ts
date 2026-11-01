@@ -3,9 +3,9 @@ import { createGame, type Game } from "../../../game"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
-import { MOBS_RNG_NAMESPACE } from "../../../utils/constants"
-import { STATE } from "../../state/state"
+} from "../../tests/integrity"
+import { MOBS_RNG_NAMESPACE } from "../../../core/utils/constants"
+import { STATE } from "../../state"
 import { InternalActionTypeEnum } from "../internal/types"
 import { Random } from "./random"
 import { createPrng } from "./rng"

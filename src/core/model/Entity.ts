@@ -1,4 +1,4 @@
-import { STATE } from "../../game/state/state"
+import { STATE } from "../../game/state"
 import { Random } from "../../game/systems/rng/random"
 import type { Rng } from "../../game/systems/rng/rng"
 import type { Component, ComponentType } from "./Component"
@@ -6,7 +6,7 @@ import type { Id } from "./Id"
 import { getEcsNamespace, NamespaceEnum } from "./namespaces"
 import { upsertRegistryEntities } from "./registry/entityRegistry"
 import type { Unique } from "./Unique"
-import { createEnum, type EnumType } from "../../utils/types/Enum"
+import { createEnum, type EnumType } from "../utils/types/Enum"
 
 export const EntityRoleEnum = createEnum(
   "DEFAULT",

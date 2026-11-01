@@ -1,5 +1,5 @@
 import type { Entity } from "../../../core/model/Entity"
-import { createEnum, type EnumType } from "../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../core/utils/types/Enum"
 import { HpComponent } from "../../model/components/combat/HpComponent"
 import { getExp } from "../exp/exp"
 import { getHp } from "../hp/hp"

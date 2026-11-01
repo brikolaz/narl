@@ -4,7 +4,7 @@ import { PantsSlotComponent } from "../../model/components/equipment/slots/Pants
 import { SpikeComponent } from "../../model/components/combat/SpikeComponent"
 import type { Entity } from "../../../core/model/Entity"
 import { getComponentByType } from "../../../core/model/queries/components/get"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { MainHandComponent } from "../../model/components/equipment/MainHandComponent"
 import { OffhandSlotComponent } from "../../model/components/equipment/slots/OffhandSlotComponent"
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"

@@ -1,5 +1,5 @@
 import { getEntityName } from "../inspect/getEntityName"
-import { removeById } from "../../../utils/removeById"
+import { removeById } from "../../../core/utils/removeById"
 import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"
 import { Action } from "../actions/action"

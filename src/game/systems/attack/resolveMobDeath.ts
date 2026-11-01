@@ -3,7 +3,7 @@ import type { Entity } from "../../../core/model/Entity"
 import { getEntityById } from "../../../core/model/queries/entities/get"
 import { getMobById } from "../mobs/mobs"
 import { getPosition } from "../position/position"
-import { STATE } from "../../state/state"
+import { STATE } from "../../state"
 import type { Action } from "../actions/action"
 import { WorldActionTypeEnum, WorldKillActionReasonEnum } from "../world/types"
 

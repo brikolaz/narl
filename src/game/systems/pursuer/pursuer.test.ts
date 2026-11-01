@@ -6,11 +6,11 @@ import {
 } from "../../../core/model/queries/components/get"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { FovComponent } from "../../model/components/ai/FovComponent"
 import {
   HostilityComponent,
@@ -27,7 +27,7 @@ import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/factory"
 import { BabyBoomerEntity } from "../../model/entities/mobs/boomer/variants/BabyBoomer/BabyBoomerEntity"
 import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/factory"
 import { WallEntityFactory } from "../../model/entities/wall/factory"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { InternalActionTypeEnum } from "../internal/types"
 import {
   addItemsToContainer,

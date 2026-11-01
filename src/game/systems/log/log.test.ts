@@ -27,11 +27,11 @@ import { getEntityName } from "../inspect/getEntityName"
 import type { EntityLogProjection, LogMessage } from "./types"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import {
   InternalActionTypeEnum,
   type InternalLogAction,

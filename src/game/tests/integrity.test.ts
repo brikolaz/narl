@@ -2,11 +2,11 @@
 
 import process from "node:process"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { createGame, type Game } from "../game"
-import { InternalActionTypeEnum } from "../game/systems/internal/types"
+import { createGame, type Game } from "../../game"
+import { InternalActionTypeEnum } from "../systems/internal/types"
 import { expectGameStateConsistent, isIntegrityCheckEnabled } from "./integrity"
 import { clearItems, clearMobs } from "./clear"
-import { assert } from "../utils/assert"
+import { assert } from "../../core/utils/assert"
 
 const originalTestIntegrity = process.env.TEST_INTEGRITY
 

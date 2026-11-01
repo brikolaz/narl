@@ -1,5 +1,5 @@
-import { INITIAL_TURN } from "../../../utils/constants"
-import { GameStatusEnum, STATE } from "../../state/state"
+import { INITIAL_TURN } from "../../../core/utils/constants"
+import { GameStatusEnum, STATE } from "../../state"
 import { validateSpawnTables } from "../rng/spawnTable"
 import { initPlayer } from "./initPlayer"
 import { initWorld } from "./initWorld"

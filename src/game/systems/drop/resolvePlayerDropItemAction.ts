@@ -1,6 +1,6 @@
 import { getEntityName } from "../inspect/getEntityName"
 import type { Entity } from "../../../core/model/Entity"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getBackpack, getContainerItemAt } from "../containers/containers"
 import { getEqSlotByPosition, isRemovable } from "../eq/eq"
 import { getPlayer } from "../player/player"

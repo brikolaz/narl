@@ -1,5 +1,5 @@
 import type { Id } from "../../../../core/model/Id"
-import { STATE } from "../../../state/state"
+import { STATE } from "../../../state"
 import { recordDeathTurn } from "../../gameOver/death"
 import { shouldEndGame } from "../../gameOver/endCondition"
 import { isGameOver, isPendingGameOver } from "../../gameOver/gameOver"

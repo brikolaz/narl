@@ -1,5 +1,5 @@
 import type { Id } from "../../../../core/model/Id"
-import { STATE } from "../../../state/state"
+import { STATE } from "../../../state"
 import { resolveGameAction } from "../gameAction/resolveGameAction"
 import type { ActionResolution } from "../types"
 import type { TimedAction } from "./types"

@@ -1,7 +1,7 @@
 import { getEntityLogProjection } from "../log/getEntityLogProjection"
 import { isComponentType } from "../../../core/model/queries/components/has"
 import { getComponentRegistryRecord } from "../../../core/model/registry/componentRegistry"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { BleedComponent } from "../../model/components/combat/BleedComponent"
 import { getHp } from "../hp/hp"
 import { Action } from "../actions/action"

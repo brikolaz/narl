@@ -5,7 +5,7 @@ import {
   isContainerFull,
   unpackContainer,
 } from "../containers/containers"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { isCursed } from "../curse/curse"
 import { pickUpItem, replaceFloorItem } from "./pickUp"
 import { getPlayer } from "../player/player"

@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity"
-import { assert } from "../../../utils/assert"
-import { STATE } from "../../state/state"
+import { assert } from "../../../core/utils/assert"
+import { STATE } from "../../state"
 
 export const getPlayer = (): Entity => {
   return assert(STATE.player.player, "Player is not initialized")

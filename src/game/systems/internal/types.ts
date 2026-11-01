@@ -1,5 +1,5 @@
 import type { LogMessage } from "../log/types"
-import { createEnum } from "../../../utils/types/Enum"
+import { createEnum } from "../../../core/utils/types/Enum"
 
 export const InternalActionTypeEnum = createEnum(
   "INTERNAL_INIT",

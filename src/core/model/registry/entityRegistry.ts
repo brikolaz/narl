@@ -1,5 +1,5 @@
-import { STATE } from "../../../game/state/state"
-import { typedEntries } from "../../../utils/typedEntries"
+import { STATE } from "../../../game/state"
+import { typedEntries } from "../../utils/typedEntries"
 import { EntityRoleEnum, type Entity } from "../Entity"
 import type { Id } from "../Id"
 

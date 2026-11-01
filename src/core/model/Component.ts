@@ -1,4 +1,4 @@
-import { STATE } from "../../game/state/state"
+import { STATE } from "../../game/state"
 import { getEcsNamespace, NamespaceEnum } from "./namespaces"
 import type { Unique } from "./Unique"
 

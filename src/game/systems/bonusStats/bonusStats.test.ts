@@ -9,11 +9,11 @@ import { getComponentByType } from "../../../core/model/queries/components/get"
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add"
 import { getEntitiesByRole } from "../../../core/model/queries/entities/get"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { PantsSlotComponent } from "../../model/components/equipment/slots/PantsSlotComponent"
 import { ChestSlotComponent } from "../../model/components/equipment/slots/ChestSlotComponent"
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"

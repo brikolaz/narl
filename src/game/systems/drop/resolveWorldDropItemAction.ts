@@ -1,6 +1,6 @@
 import { getEntityName } from "../inspect/getEntityName"
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getContainerItems } from "../containers/containers"
 import { getMobById } from "../mobs/mobs"
 import { getTile } from "../world/tile"

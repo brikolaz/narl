@@ -6,7 +6,7 @@ import {
   getContainerItemAt,
   isContainerFull,
 } from "../containers/containers"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getEqSlotByPosition, isRemovable } from "./eq"
 import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"

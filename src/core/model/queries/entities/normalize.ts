@@ -1,4 +1,4 @@
-import { typedEntries } from "../../../../utils/typedEntries"
+import { typedEntries } from "../../../utils/typedEntries"
 import { EntityRoleEnum, type Entity, type EntityType } from "../../Entity"
 import type { Id } from "../../Id"
 import { getEntityById } from "./get"

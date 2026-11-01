@@ -1,4 +1,4 @@
-import type { Tile } from "../../state/state"
+import type { Tile } from "../../state"
 import type { Action } from "../actions/action"
 import { triggerOnInspectCurse } from "../curse/triggers/triggerOnInspectCurse"
 import { getEntityLogProjection } from "../log/getEntityLogProjection"

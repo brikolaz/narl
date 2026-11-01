@@ -1,6 +1,6 @@
 import { getEqSlotInspection } from "./getEqSlotInspection"
 import { getEntityLogProjection } from "../log/getEntityLogProjection"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getContainerItemAt } from "../containers/containers"
 import { getEqSlotByPosition } from "../eq/eq"
 import { getPlayer } from "../player/player"

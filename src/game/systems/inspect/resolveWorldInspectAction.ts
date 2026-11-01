@@ -3,7 +3,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { getPosition } from "../position/position"
 import type { WorldInspectAction } from "../world/types"
-import { STATE } from "../../state/state"
+import { STATE } from "../../state"
 import { poke } from "./poke"
 
 export const resolveWorldInspectAction = (

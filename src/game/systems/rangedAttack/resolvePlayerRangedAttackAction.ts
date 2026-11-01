@@ -1,4 +1,4 @@
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { hasMobs } from "../mobs/mobs"
 import { getPlayer } from "../player/player"
 import { getPosition, getNextPosition } from "../position/position"

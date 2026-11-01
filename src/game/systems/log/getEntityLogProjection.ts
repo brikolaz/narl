@@ -22,7 +22,7 @@ import { getInspectDesc } from "../inspect/inspect"
 import { EntityRoleEnum, type Entity } from "../../../core/model/Entity"
 import { getEntityName } from "../inspect/getEntityName"
 import { isPlayer } from "../player/player"
-import { STATE } from "../../state/state"
+import { STATE } from "../../state"
 import type { EntityLogProjection } from "./types"
 
 export const getEntityLogProjection = (entity: Entity): EntityLogProjection => {

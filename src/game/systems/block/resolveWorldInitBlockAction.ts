@@ -1,5 +1,5 @@
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { WorldActionTypeEnum, type WorldInitBlockAction } from "../world/types"

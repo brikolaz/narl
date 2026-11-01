@@ -1,4 +1,4 @@
-import { createEnum, type EnumType } from "../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../core/utils/types/Enum"
 import type { Id } from "../../../core/model/Id"
 import type { DirectionEnum } from "../turn/types"
 

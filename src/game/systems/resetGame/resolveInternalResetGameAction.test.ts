@@ -3,8 +3,8 @@ import { createGame, type Game } from "../../../game"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
-import { GameStatusEnum } from "../../state/state"
+} from "../../tests/integrity"
+import { GameStatusEnum } from "../../state"
 import { InternalActionTypeEnum } from "../internal/types"
 import * as seed from "../rng/seed"
 import { WorldActionTypeEnum } from "../world/types"

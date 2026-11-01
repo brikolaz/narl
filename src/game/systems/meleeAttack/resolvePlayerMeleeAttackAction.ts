@@ -1,7 +1,7 @@
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { BleedingEffectComponent } from "../../model/components/combat/BleedingEffectComponent"
 import { getAttackWeapon } from "../attack/getAttackWeapon"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getMob, hasMobs } from "../mobs/mobs"
 import { getPlayer } from "../player/player"
 import { getTile } from "../world/tile"

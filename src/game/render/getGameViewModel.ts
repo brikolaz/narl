@@ -9,7 +9,7 @@ import {
 import { getEq } from "../systems/eq/eq"
 import { getPosition } from "../systems/position/position"
 import { getPlayer } from "../systems/player/player"
-import { STATE, type DeathContext } from "../state/state"
+import { STATE, type DeathContext } from "../state"
 import { ALL_CONTAINER_SLOTS } from "../systems/containers/types"
 import { isGameOver } from "../systems/gameOver/gameOver"
 import type { LogEntry } from "../systems/log/types"

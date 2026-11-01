@@ -1,11 +1,11 @@
-import type { Entity } from "../../core/model/Entity"
-import type { ComponentRegistryById } from "../../core/model/registry/componentRegistry"
-import type { EntityRegistryById } from "../../core/model/registry/entityRegistry"
-import { createEnum, type EnumType } from "../../utils/types/Enum"
-import type { TimedAction } from "../systems/actions/timedActions/types"
-import type { ActionLog, LogEntry } from "../systems/log/types"
-import { generateSeed, type Seed } from "../systems/rng/seed"
-import { createWorldRng, type WorldRng } from "../systems/rng/worldRng"
+import type { Entity } from "../core/model/Entity"
+import type { ComponentRegistryById } from "../core/model/registry/componentRegistry"
+import type { EntityRegistryById } from "../core/model/registry/entityRegistry"
+import { createEnum, type EnumType } from "../core/utils/types/Enum"
+import type { TimedAction } from "./systems/actions/timedActions/types"
+import type { ActionLog, LogEntry } from "./systems/log/types"
+import { generateSeed, type Seed } from "./systems/rng/seed"
+import { createWorldRng, type WorldRng } from "./systems/rng/worldRng"
 
 export type Tile = {
   floor: Entity

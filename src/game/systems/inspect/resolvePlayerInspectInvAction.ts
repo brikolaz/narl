@@ -1,5 +1,5 @@
 import { getEntityLogProjection } from "../log/getEntityLogProjection"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getBackpack, getContainerItemAt } from "../containers/containers"
 import { getPlayer } from "../player/player"
 import { Action } from "../actions/action"

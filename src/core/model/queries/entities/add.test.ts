@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, it, vi } from "vitest"
 
-import { initState, type GameState } from "../../../../game/state/state"
-import { isIntegrityCheckEnabled } from "../../../../tests/integrity"
+import { initState, type GameState } from "../../../../game/state"
+import { isIntegrityCheckEnabled } from "../../../../game/tests/integrity"
 import { EntityRoleEnum, getEntityCreator } from "../../Entity"
 import { upsertEntities, upsertRoleEntities } from "./add"
 import {

@@ -1,5 +1,5 @@
 import type { Id } from "../../../core/model/Id"
-import { STATE, type Tile } from "../../state/state"
+import { STATE, type Tile } from "../../state"
 
 export const hasMobs = (tile: Tile) => tile.mobs.length > 0
 

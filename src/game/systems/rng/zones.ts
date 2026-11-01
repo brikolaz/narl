@@ -1,5 +1,5 @@
-import { createEnum, type EnumType } from "../../../utils/types/Enum"
-import { MAX_WORLD_SIZE } from "../../../utils/constants"
+import { createEnum, type EnumType } from "../../../core/utils/types/Enum"
+import { MAX_WORLD_SIZE } from "../../../core/utils/constants"
 
 export const ZoneEnum = createEnum(
   "EARLY",

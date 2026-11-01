@@ -1,5 +1,5 @@
 import { expect } from "vitest"
-import type { GameState } from "../../../../game/state/state"
+import type { GameState } from "../../../../game/state"
 import type { Entity, EntityRoleEnum } from "../../Entity"
 
 const expectEntityRegistryRecordConsistent = (

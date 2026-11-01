@@ -6,11 +6,11 @@ import { upsertComponents } from "../../../core/model/queries/components/add"
 import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { getComponentByType } from "../../../core/model/queries/components/get"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import {
   HostilityEnum,
   HostilityComponent,

@@ -1,4 +1,4 @@
-import { STATE } from "../../../game/state/state"
+import { STATE } from "../../../game/state"
 import type { Component } from "../Component"
 import type { Entity } from "../Entity"
 import type { Id } from "../Id"

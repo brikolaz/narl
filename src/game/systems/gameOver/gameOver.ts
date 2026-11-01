@@ -1,4 +1,4 @@
-import { GameStatusEnum, STATE } from "../../state/state"
+import { GameStatusEnum, STATE } from "../../state"
 
 export const isPendingGameOver = () =>
   STATE.status === GameStatusEnum.PENDING_GAME_OVER

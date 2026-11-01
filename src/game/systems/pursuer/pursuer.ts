@@ -1,6 +1,6 @@
 import type { Entity } from "../../../core/model/Entity"
-import { MAP_SIZE, PURSUERS_BREAKPOINT } from "../../../utils/constants"
-import { STATE } from "../../state/state"
+import { MAP_SIZE, PURSUERS_BREAKPOINT } from "../../../core/utils/constants"
+import { STATE } from "../../state"
 import { getAllMobs, hasMobs } from "../mobs/mobs"
 import { getPlayer } from "../player/player"
 import { getPosition } from "../position/position"

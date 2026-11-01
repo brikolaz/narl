@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { createGame, type Game } from "../../../../game"
-import { clearItems, clearMobs } from "../../../../tests/clear"
+import { clearItems, clearMobs } from "../../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../../tests/integrity"
-import { STATE } from "../../../state/state"
+} from "../../../tests/integrity"
+import { STATE } from "../../../state"
 import { Action } from "../action"
 import { InternalActionTypeEnum } from "../../internal/types"
 import { applyTimedAction, dequeueTimedActions } from "./timedActions"

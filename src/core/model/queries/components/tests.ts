@@ -1,5 +1,5 @@
 import { expect } from "vitest"
-import type { GameState } from "../../../../game/state/state"
+import type { GameState } from "../../../../game/state"
 import type { Component } from "../../Component"
 import type { Entity } from "../../Entity"
 

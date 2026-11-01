@@ -4,7 +4,7 @@ import {
   InternalActionTypeEnum,
   type InternalResetGameAction,
 } from "../internal/types"
-import { GameStatusEnum, initState, STATE } from "../../state/state"
+import { GameStatusEnum, initState, STATE } from "../../state"
 
 export const resolveInternalResetGameAction = (
   gameAction: InternalResetGameAction,

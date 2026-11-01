@@ -1,6 +1,6 @@
 import { getEntityName } from "../inspect/getEntityName"
 import { getBackpack } from "../containers/containers"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getExp } from "../exp/exp"
 import { getPlayer } from "../player/player"
 import { getMobById } from "../mobs/mobs"

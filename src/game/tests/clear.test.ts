@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import type { Entity } from "../core/model/Entity"
-import { createGame, type Game } from "../game"
-import { MainHandSlotComponent } from "../game/model/components/equipment/slots/MainHandSlotComponent"
-import { SwordEntityFactory } from "../game/model/entities/items/sword/factory"
-import { ContainerEntityFactory } from "../game/model/entities/items/container/factory"
-import { HelmetEntityFactory } from "../game/model/entities/items/helmet/factory"
-import { RageBaitEntityFactory } from "../game/model/entities/mobs/rageBait/factory"
+import type { Entity } from "../../core/model/Entity"
+import { createGame, type Game } from "../../game"
+import { MainHandSlotComponent } from "../model/components/equipment/slots/MainHandSlotComponent"
+import { SwordEntityFactory } from "../model/entities/items/sword/factory"
+import { ContainerEntityFactory } from "../model/entities/items/container/factory"
+import { HelmetEntityFactory } from "../model/entities/items/helmet/factory"
+import { RageBaitEntityFactory } from "../model/entities/mobs/rageBait/factory"
 import {
   addItemsToContainer,
   addItemToEntityBackpack,
@@ -13,12 +13,12 @@ import {
   getContainerItems,
   getFirstContainerItem,
   setContainerItemAt,
-} from "../game/systems/containers/containers"
-import { getEqSlotByType } from "../game/systems/eq/eq"
-import { InternalActionTypeEnum } from "../game/systems/internal/types"
-import { getPlayer } from "../game/systems/player/player"
-import { setPosition } from "../game/systems/position/position"
-import { assert } from "../utils/assert"
+} from "../systems/containers/containers"
+import { getEqSlotByType } from "../systems/eq/eq"
+import { InternalActionTypeEnum } from "../systems/internal/types"
+import { getPlayer } from "../systems/player/player"
+import { setPosition } from "../systems/position/position"
+import { assert } from "../../core/utils/assert"
 import { clearItems, clearMobs } from "./clear"
 import { expectGameStateConsistent, isIntegrityCheckEnabled } from "./integrity"
 

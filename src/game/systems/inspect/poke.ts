@@ -1,5 +1,5 @@
 import type { Entity } from "../../../core/model/Entity"
-import type { Tile } from "../../state/state"
+import type { Tile } from "../../state"
 import type { Action } from "../actions/action"
 import { getMob } from "../mobs/mobs"
 import { getPlayer } from "../player/player"

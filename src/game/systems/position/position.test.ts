@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { getEntityCreator } from "../../../core/model/Entity"
 import { upsertComponents } from "../../../core/model/queries/components/add"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { PositionComponent } from "../../model/components/spatial/PositionComponent"
 import { InternalActionTypeEnum } from "../internal/types"
 import { DirectionEnum } from "../turn/types"

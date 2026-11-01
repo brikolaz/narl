@@ -1,7 +1,7 @@
 import {
   ITEMS_RNG_NAMESPACE,
   MOBS_RNG_NAMESPACE,
-} from "../../../utils/constants"
+} from "../../../core/utils/constants"
 import { Random } from "./random"
 import type { Seed } from "./seed"
 

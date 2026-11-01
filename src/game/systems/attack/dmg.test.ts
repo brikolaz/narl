@@ -10,11 +10,11 @@ import { upsertComponents } from "../../../core/model/queries/components/add"
 import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { DefComponent } from "../../model/components/combat/DefComponent"
 import { DmgComponent } from "../../model/components/combat/DmgComponent"
 import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"

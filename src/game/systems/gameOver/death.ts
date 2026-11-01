@@ -1,4 +1,4 @@
-import { STATE, type DeathContext } from "../../state/state"
+import { STATE, type DeathContext } from "../../state"
 import { increaseTurn } from "../turn/turn"
 
 export const getDeathContext = (): DeathContext => {

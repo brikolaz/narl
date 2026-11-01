@@ -2,7 +2,7 @@ import {
   getGameViewModel,
   type GameViewModel,
 } from "./game/render/getGameViewModel"
-import { GameStatusEnum, initState, type GameState } from "./game/state/state"
+import { GameStatusEnum, initState, type GameState } from "./game/state"
 import { dispatch } from "./game/systems/actions/gameAction/dispatchGameAction"
 
 export type Game = {

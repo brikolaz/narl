@@ -1,4 +1,4 @@
-import { LOCALE } from "../../utils/constants"
+import { LOCALE } from "../../core/utils/constants"
 import { formatMessage } from "../i18n/messages"
 import type { LogEntry, LogMessage, LogReplacement } from "../systems/log/types"
 import { formatItemInspection } from "./formatItemInspection"

@@ -2,11 +2,11 @@ import type { LogMessage } from "../../log/types"
 import { formatLogMessage } from "../../../render/formatLogMessage"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { createGame, type Game } from "../../../../game"
-import { clearItems, clearMobs } from "../../../../tests/clear"
+import { clearItems, clearMobs } from "../../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../../tests/integrity"
+} from "../../../tests/integrity"
 import { InternalActionTypeEnum } from "../../internal/types"
 import { Action } from "../action"
 import { drainResolution, type DrainContext } from "./dispatchGameAction"

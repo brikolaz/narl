@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { HpComponent } from "../../model/components/combat/HpComponent"
 import { getPlayer } from "../player/player"
 import { InternalActionTypeEnum } from "../internal/types"

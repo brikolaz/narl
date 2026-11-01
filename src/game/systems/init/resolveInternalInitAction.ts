@@ -1,4 +1,4 @@
-import { GameStatusEnum, STATE } from "../../state/state"
+import { GameStatusEnum, STATE } from "../../state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import type { InternalInitAction } from "../internal/types"

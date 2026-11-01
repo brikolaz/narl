@@ -1,5 +1,5 @@
 import { getEntityById } from "../../../core/model/queries/entities/get"
-import { assert } from "../../../utils/assert"
+import { assert } from "../../../core/utils/assert"
 import { getPosition, getNextPosition } from "../position/position"
 import { isTileImpassable } from "../world/tile"
 import { Action } from "../actions/action"

@@ -2,8 +2,8 @@ import {
   BASE_NAMESPACE,
   ECS_NAMESPACE,
   NAMESPACE_SEPARATOR,
-} from "../../utils/constants"
-import { createEnum } from "../../utils/types/Enum"
+} from "../utils/constants"
+import { createEnum } from "../utils/types/Enum"
 
 export const NamespaceEnum = createEnum("COMPONENT", "ENTITY")
 

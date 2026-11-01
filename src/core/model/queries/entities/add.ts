@@ -1,4 +1,4 @@
-import { typedEntries } from "../../../../utils/typedEntries"
+import { typedEntries } from "../../../utils/typedEntries"
 import type { Entity, EntityRoleEnum } from "../../Entity"
 import type { Id } from "../../Id"
 import { upsertRegistryEntities } from "../../registry/entityRegistry"

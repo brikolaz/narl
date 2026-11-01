@@ -1,4 +1,4 @@
-import { NAMESPACE_SEPARATOR } from "../../../utils/constants"
+import { NAMESPACE_SEPARATOR } from "../../../core/utils/constants"
 import { createPrng } from "./rng"
 
 export type RandomContext = {

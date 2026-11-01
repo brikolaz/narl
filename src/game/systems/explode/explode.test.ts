@@ -11,11 +11,11 @@ import { patchComponentByType } from "../../../core/model/queries/components/pat
 import { removeComponentsByType } from "../../../core/model/queries/components/remove"
 import { upsertRoleEntities } from "../../../core/model/queries/entities/add"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent"
 import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent"
 import { NameComponent } from "../../model/components/display/NameComponent"
@@ -25,7 +25,7 @@ import { PositionComponent } from "../../model/components/spatial/PositionCompon
 import { ContainerEntityFactory } from "../../model/entities/items/container/factory"
 import { BoomerEntityFactory } from "../../model/entities/mobs/boomer/factory"
 import { getPosition } from "../position/position"
-import type { GameState } from "../../state/state"
+import type { GameState } from "../../state"
 import { InternalActionTypeEnum } from "../internal/types"
 import { PlayerActionTypeEnum } from "../player/types"
 import { getDefaultTile } from "../world/tile"

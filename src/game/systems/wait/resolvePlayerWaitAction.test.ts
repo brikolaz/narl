@@ -5,11 +5,11 @@ import { upsertComponents } from "../../../core/model/queries/components/add"
 import { getComponentsByType } from "../../../core/model/queries/components/get"
 import { patchComponentByType } from "../../../core/model/queries/components/patch"
 import { createGame, type Game } from "../../../game"
-import { clearItems, clearMobs } from "../../../tests/clear"
+import { clearItems, clearMobs } from "../../tests/clear"
 import {
   expectGameStateConsistent,
   isIntegrityCheckEnabled,
-} from "../../../tests/integrity"
+} from "../../tests/integrity"
 import { NameComponent } from "../../model/components/display/NameComponent"
 import { MainHandSlotComponent } from "../../model/components/equipment/slots/MainHandSlotComponent"
 import { BlockComponent } from "../../model/components/BlockComponent"

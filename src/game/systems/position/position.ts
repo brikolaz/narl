@@ -6,7 +6,7 @@ import {
 } from "../../../core/model/queries/components/get"
 import type { EntityArgument } from "../../../core/model/queries/entities/normalize"
 import { removeComponents } from "../../../core/model/queries/components/remove"
-import { MAX_WORLD_SIZE } from "../../../utils/constants"
+import { MAX_WORLD_SIZE } from "../../../core/utils/constants"
 import { DirectionEnum } from "../turn/types"
 import { PositionComponent } from "../../model/components/spatial/PositionComponent"
 

@@ -1,4 +1,4 @@
-import { LOCALE } from "../../utils/constants"
+import { LOCALE } from "../../core/utils/constants"
 import { MESSAGE_LANGUAGES } from "./languages"
 import { createMessageFormatter } from "./formatMessage"
 import type { MessageKey } from "./types"

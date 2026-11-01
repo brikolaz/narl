@@ -1,6 +1,6 @@
 import { getEntityName } from "../inspect/getEntityName"
 import { getPlayer } from "../player/player"
-import { GameStatusEnum, STATE } from "../../state/state"
+import { GameStatusEnum, STATE } from "../../state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import type { WorldPendingGameOverAction } from "../world/types"

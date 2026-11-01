@@ -7,7 +7,7 @@ import { ExplodeComponent } from "../../model/components/combat/ExplodeComponent
 import { ExplodeRangeComponent } from "../../model/components/combat/ExplodeRangeComponent"
 import { HpComponent } from "../../model/components/combat/HpComponent"
 import { getPosition } from "../position/position"
-import { STATE } from "../../state/state"
+import { STATE } from "../../state"
 import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import {

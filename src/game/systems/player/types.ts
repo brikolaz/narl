@@ -1,6 +1,6 @@
 import type { InvSlot } from "../containers/types"
 import type { DirectionEnum } from "../turn/types"
-import { createEnum, type EnumType } from "../../../utils/types/Enum"
+import { createEnum, type EnumType } from "../../../core/utils/types/Enum"
 import type { EqSlot } from "../eq/eq"
 
 export const PlayerActionTypeEnum = createEnum(
