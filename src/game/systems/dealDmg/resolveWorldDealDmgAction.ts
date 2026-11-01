@@ -7,6 +7,7 @@ import { Action } from "../actions/action"
 import type { ActionResolution } from "../actions/types"
 import { resolveMobDeath } from "../attack/resolveMobDeath"
 import { hit } from "../hit/hit"
+import { isHostile } from "../attack/hostility"
 import { isPlayer } from "../player/player"
 import { getRng } from "../rng/rng"
 import {
@@ -68,10 +69,12 @@ export const resolveWorldDealDmgAction = (
       )
     }
 
-    const chanceToProvoke =
-      getComponentByType(target, ProvokableComponent)?.dmgChance ??
-      ProvokableComponent.defaults.dmgChance
-    if (getRng(target).chance(chanceToProvoke)) {
+    const provokable = getComponentByType(target, ProvokableComponent)
+    if (
+      provokable &&
+      !isHostile(target) &&
+      getRng(target).chance(provokable.dmgChance)
+    ) {
       action.addPendingImmediateAction({
         type: WorldActionTypeEnum.WORLD_ENRAGE,
         entityId: target.id,

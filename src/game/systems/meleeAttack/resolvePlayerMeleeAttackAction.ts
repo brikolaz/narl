@@ -1,3 +1,6 @@
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { BleedingEffectComponent } from "../../model/components/combat/BleedingEffectComponent"
+import { getAttackWeapon } from "../attack/getAttackWeapon"
 import { assert } from "../../../utils/assert"
 import { getMob, hasMobs } from "../mobs/mobs"
 import { getPlayer } from "../player/player"
@@ -32,6 +35,17 @@ export const resolvePlayerMeleeAttackAction = (
       dmg: rollAttackDmg(source),
       reason: WorldDealDmgActionReasonEnum.ATTACK,
     })
+
+    if (
+      hasComponentsByType(getAttackWeapon(source), BleedingEffectComponent) ||
+      hasComponentsByType(source, BleedingEffectComponent)
+    ) {
+      action.addPendingImmediateAction({
+        type: WorldActionTypeEnum.WORLD_INIT_BLEED,
+        sourceId: source.id,
+        targetId: mob.id,
+      })
+    }
   })()
 
   return action.resolve()

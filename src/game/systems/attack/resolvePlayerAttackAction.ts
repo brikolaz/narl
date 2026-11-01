@@ -6,10 +6,6 @@ import { PlayerActionTypeEnum, type PlayerAttackAction } from "../player/types"
 import { WorldActionTypeEnum } from "../world/types"
 import { canPierce } from "../rangedAttack/pierce"
 import { getAttackWeapon } from "./getAttackWeapon"
-import { hasComponentsByType } from "../../../core/model/queries/components/has"
-import { BleedingEffectComponent } from "../../model/components/combat/BleedingEffectComponent"
-import { getMob } from "../mobs/mobs"
-import { getTile } from "../world/tile"
 
 export const resolvePlayerAttackAction = (
   gameAction: PlayerAttackAction,
@@ -44,17 +40,6 @@ export const resolvePlayerAttackAction = (
       action.addPendingImmediateAction({
         type: PlayerActionTypeEnum.PLAYER_MELEE_ATTACK,
         targetPosition,
-      })
-    }
-
-    if (
-      hasComponentsByType(weapon, BleedingEffectComponent) ||
-      hasComponentsByType(source, BleedingEffectComponent)
-    ) {
-      action.addPendingImmediateAction({
-        type: WorldActionTypeEnum.WORLD_INIT_BLEED,
-        sourceId: source.id,
-        targetId: getMob(getTile(targetPosition)).id,
       })
     }
   })()
