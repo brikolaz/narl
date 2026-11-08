@@ -1,3 +1,5 @@
+import { WokeCurseComponent } from "../../../../../components/curse/WokeCurseComponent"
+import { FemaleComponent } from "../../../../../components/gender/FemaleComponent"
 import { HelmetEntity } from "../../../../items/helmet/variants/Helmet/HelmetEntity"
 import { SwordEntity } from "../../../../items/sword/variants/Sword/SwordEntity"
 import { addContainerLoot } from "../../../../../../systems/loot/loot"
@@ -35,6 +37,8 @@ import { SwordEntityFactory } from "../../../../items/sword/factory"
 const addComponents = (rageBait: Entity<"RAGE_BAIT">): void => {
   upsertComponents(
     rageBait,
+    FemaleComponent(),
+    WokeCurseComponent({ chance: 10 }),
     ProvokableComponent({ dmgChance: 50, pokeChance: 20 }),
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 20 }),

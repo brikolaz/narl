@@ -1,3 +1,6 @@
+import { hasComponentsByType } from "../../../core/model/queries/components/has"
+import { WokedComponent } from "../../model/components/state/WokedComponent"
+import { triggerOnPokeCurse } from "../curse/triggers/triggerOnPokeCurse"
 import type { Entity } from "../../../core/model/Entity"
 import type { Action } from "../actions/action"
 import { getEntityLogProjection } from "../log/getEntityLogProjection"
@@ -14,11 +17,15 @@ export const pokeMob = (
   source: Entity,
   target: Entity,
 ): void => {
-  action.success(
-    "POKE.RESULT",
-    getEntityName(source),
-    getEntityLogProjection(target),
-  )
+  if (hasComponentsByType(source, WokedComponent)) {
+    action.success("INSPECT.WOKED", getEntityName(target))
+  } else {
+    action.success(
+      "POKE.RESULT",
+      getEntityName(source),
+      getEntityLogProjection(target),
+    )
+  }
   increaseInspected(target)
   const provokable = getComponentByType(target, ProvokableComponent)
   if (
@@ -32,4 +39,5 @@ export const pokeMob = (
       sourceId: source.id,
     })
   }
+  triggerOnPokeCurse(action, source, target)
 }

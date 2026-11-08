@@ -175,8 +175,11 @@ describe("resolveWorldPokeAction", () => {
       resolution.pendingLogs.map(({ message }) => formatLogMessage(message)),
     ).toEqual(["You poked Rage Bait. It looks cute."])
     expect(getInspectedTimes(rageBait)).toBe(1)
-    expect(resolution.pendingActions).toHaveLength(1)
-    expect(resolution.pendingActions[0]).toMatchObject({
+    const enrageActions = resolution.pendingActions.filter(
+      ({ action }) => action.type === WorldActionTypeEnum.WORLD_ENRAGE,
+    )
+    expect(enrageActions).toHaveLength(1)
+    expect(enrageActions[0]).toMatchObject({
       delay: 0,
       action: {
         type: WorldActionTypeEnum.WORLD_ENRAGE,

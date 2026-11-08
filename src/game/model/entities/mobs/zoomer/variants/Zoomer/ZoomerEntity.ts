@@ -1,3 +1,4 @@
+import { MaleComponent } from "../../../../../components/gender/MaleComponent"
 import { OffensiveRingEntity } from "../../../../items/ring/variants/OffensiveRing/OffensiveRingEntity"
 import { DefensiveRingEntity } from "../../../../items/ring/variants/DefensiveRing/DefensiveRingEntity"
 import { ArmorEntity } from "../../../../items/armor/variants/Armor/ArmorEntity"
@@ -38,6 +39,7 @@ import { AxeEntity } from "../../../../items/axe/variants/Axe/AxeEntity"
 const addComponents = (zoomer: Entity<"ZOOMER">): void => {
   upsertComponents(
     zoomer,
+    MaleComponent(),
     BleedingEffectComponent({ chance: 40, duration: 3, min: 1, max: 3 }),
     HpComponent({ hp: 10, maxHp: 10 }),
     ExpComponent({ exp: 50 }),

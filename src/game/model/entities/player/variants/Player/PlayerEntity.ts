@@ -1,3 +1,4 @@
+import { MaleComponent } from "../../../../components/gender/MaleComponent"
 import {
   EntityRoleEnum,
   getEntityCreator,
@@ -24,6 +25,7 @@ import { PlayerBackpackEntity } from "../../../items/container/variants/PlayerBa
 const addComponents = (player: Entity<"PLAYER">): void => {
   upsertComponents(
     player,
+    MaleComponent(),
     GlyphComponent({ glyph: DEFAULT_PLAYER_GLYPH }),
     ExpComponent(),
     ColorComponent(),

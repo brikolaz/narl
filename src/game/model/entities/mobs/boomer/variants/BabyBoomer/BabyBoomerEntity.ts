@@ -1,3 +1,4 @@
+import { MaleComponent } from "../../../../../components/gender/MaleComponent"
 import { OffensiveRingEntity } from "../../../../items/ring/variants/OffensiveRing/OffensiveRingEntity"
 import { DefensiveRingEntity } from "../../../../items/ring/variants/DefensiveRing/DefensiveRingEntity"
 import { DefensiveStringEntity } from "../../../../items/string/variants/DefensiveString/DefensiveStringEntity"
@@ -34,6 +35,7 @@ import { LongSwordEntity } from "../../../../items/sword/variants/LongSword/Long
 const addComponents = (babyBoomer: Entity<"BABY_BOOMER">): void => {
   upsertComponents(
     babyBoomer,
+    MaleComponent(),
     HpComponent({ hp: 5, maxHp: 5 }),
     ExpComponent({ exp: 25 }),
     GlyphComponent({ glyph: "B" }),
