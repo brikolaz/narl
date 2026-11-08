@@ -34,8 +34,12 @@ export const getDirection = (
   const sourcePosition = getPosition(source)
   const targetPosition = getPosition(target)
 
-  if (targetPosition < sourcePosition) return DirectionEnum.LEFT
-  if (targetPosition > sourcePosition) return DirectionEnum.RIGHT
+  if (targetPosition < sourcePosition) {
+    return DirectionEnum.LEFT
+  }
+  if (targetPosition > sourcePosition) {
+    return DirectionEnum.RIGHT
+  }
 
   return undefined
 }

@@ -8,13 +8,17 @@ import { getIngredientPairs } from "../getIngredientPairs"
 import type { CraftRecipe } from "../types"
 
 export const fillContainerRecipe: CraftRecipe = (items) => {
-  if (items.length !== 2) return undefined
+  if (items.length !== 2) {
+    return undefined
+  }
   const [first, second] = items
 
   const targets = getIngredientPairs(first, second).filter(([, target]) =>
     isContainer(target),
   )
-  if (!targets.length) return undefined
+  if (!targets.length) {
+    return undefined
+  }
 
   const [item, container] =
     targets.find(

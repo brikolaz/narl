@@ -11,7 +11,9 @@ import { resolveEntity, type EntityArgument } from "./normalize"
 
 const removeDataEntity = (id: Id): void => {
   const record = getEntityRegistryRecordById(id)
-  if (!record) return
+  if (!record) {
+    return
+  }
 
   const parent = record.parent
   if (parent !== null && record.role !== null) {
@@ -57,7 +59,9 @@ export const removeEntitiesByRole = (
 
 export const detachEntity = (entity: EntityArgument) => {
   const source = resolveEntity(entity)
-  if (!source) return
+  if (!source) {
+    return
+  }
   const record = getEntityRegistryRecordById(source.id)
 
   if (!record) {

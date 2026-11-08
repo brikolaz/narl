@@ -11,7 +11,9 @@ export const resolveWorldUpdateDmgAction = (
   const action = new Action(gameAction)
   ;(() => {
     const entity = getEntityById(gameAction.entityId)
-    if (!entity) return
+    if (!entity) {
+      return
+    }
     upsertComponents(
       entity,
       DmgMulComponent({ dmgMul: gameAction.dmgMul }),

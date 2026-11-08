@@ -27,7 +27,9 @@ const getCompatiblePrimaryEqSlot = (
   item: Entity,
 ): Entity | undefined => {
   const itemSlots = getItemSlots(item)
-  if (itemSlots.length === 0) return undefined
+  if (itemSlots.length === 0) {
+    return undefined
+  }
 
   assert(itemSlots.length === 1 || isTwoHand(item), "Invalid item slots")
 

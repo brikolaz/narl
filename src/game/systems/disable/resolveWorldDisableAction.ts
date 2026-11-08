@@ -13,7 +13,9 @@ export const resolveWorldDisableAction = (
 
   ;(() => {
     const entity = getEntityById(entityId)
-    if (!entity) return
+    if (!entity) {
+      return
+    }
     upsertComponents(entity, DisabledComponent())
   })()
 

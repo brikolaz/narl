@@ -26,7 +26,9 @@ export const resolveWorldSeverCockAction = (
 
   ;(() => {
     const target = getEntityById(targetId)
-    if (!target) return
+    if (!target) {
+      return
+    }
     const slot = assert(
       getEqSlotByType(target, PantsSlotComponent),
       "No pants slot",

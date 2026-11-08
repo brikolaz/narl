@@ -12,7 +12,9 @@ export const resolveWorldMakePantsAction = (
   const action = new Action(gameAction)
   ;(() => {
     const entity = getEntityById(gameAction.entityId)
-    if (!entity) return
+    if (!entity) {
+      return
+    }
     // Intentionally keep the current equipment slot; Pants applies on the next equip.
     removeComponentsByType(entity, HeadComponent)
     upsertComponents(entity, PantsComponent())

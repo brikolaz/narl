@@ -34,7 +34,9 @@ export const resolveWorldDealDmgAction = (
     const hitResult = hit(target, gameAction.dmg)
 
     if (gameAction.reason === WorldDealDmgActionReasonEnum.ATTACK) {
-      if (!source) return
+      if (!source) {
+        return
+      }
       if (hitResult.dmg === 0) {
         action.success(
           "ATTACK.TINGLE",

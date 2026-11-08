@@ -13,7 +13,9 @@ export const getExp = (entity: Entity) => {
 }
 
 export const addExp = (entity: Entity | undefined, exp: number): void => {
-  if (!entity) throw new Error("Cannot add exp to undefined entity.")
+  if (!entity) {
+    throw new Error("Cannot add exp to undefined entity.")
+  }
 
   patchComponentByType(entity, ExpComponent, (expComponent) => {
     expComponent.exp += exp
@@ -24,7 +26,9 @@ export const addExplorationExp = (
   floor: Entity,
   player: Entity | undefined,
 ): Entity => {
-  if (!player) throw new Error("Cannot add exp to undefined player.")
+  if (!player) {
+    throw new Error("Cannot add exp to undefined player.")
+  }
 
   if (!hasComponentsByType(floor, VisitedComponent)) {
     addExp(player, Exp.visitedTile)

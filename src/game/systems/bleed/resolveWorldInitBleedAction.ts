@@ -23,11 +23,15 @@ export const resolveWorldInitBleedAction = (
   ;(() => {
     const source = getEntityById(sourceId)
     const target = getEntityById(targetId)
-    if (!source || !target) return
+    if (!source || !target) {
+      return
+    }
     const bleedingEffect =
       getComponentByType(getAttackWeapon(source), BleedingEffectComponent) ??
       getComponentByType(source, BleedingEffectComponent)
-    if (!bleedingEffect || !getRng(source).chance(bleedingEffect.chance)) return
+    if (!bleedingEffect || !getRng(source).chance(bleedingEffect.chance)) {
+      return
+    }
     const { min, max, duration } = bleedingEffect
     assert(duration > 1, "Bleed must last at least 1 turn")
     const bleed = BleedComponent({ min, max })

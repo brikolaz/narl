@@ -18,7 +18,9 @@ export const resolveWorldCurseAction = (
 
   ;(() => {
     const entity = getEntityById(entityId)
-    if (!entity || isCursed(entity)) return
+    if (!entity || isCursed(entity)) {
+      return
+    }
     action.info("ENTITY.CURSED", getEntityName(entity))
     upsertComponents(entity, CursedComponent())
     patchComponentByType(entity, ColorComponent, (component) => {

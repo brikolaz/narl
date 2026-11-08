@@ -71,7 +71,9 @@ describe("log", () => {
 
   const createNamedEntity = (name?: MessageKey): Entity => {
     const entity = TestLogEntity()
-    if (name !== undefined) upsertComponents(entity, NameComponent({ name }))
+    if (name !== undefined) {
+      upsertComponents(entity, NameComponent({ name }))
+    }
     testEntities.push(entity)
     return entity
   }
@@ -81,8 +83,9 @@ describe("log", () => {
     loggedAction.info("LOG.TEXT", getEntityLogProjection(entity))
     const projection =
       loggedAction.resolve().pendingLogs[0].message.replacements?.[0]
-    if (typeof projection !== "object" || !("isPlayer" in projection))
+    if (typeof projection !== "object" || !("isPlayer" in projection)) {
       throw new Error("Missing entity projection")
+    }
     return projection
   }
 

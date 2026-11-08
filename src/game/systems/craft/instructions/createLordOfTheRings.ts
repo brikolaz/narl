@@ -11,7 +11,9 @@ import { ThreadComponent } from "../../../model/components/containers/ThreadComp
 
 export const createLordOfTheRings: CraftInstruction = (action, items) => {
   const container = fillContainer(action, items)
-  if (!container) return undefined
+  if (!container) {
+    return undefined
+  }
 
   if (hasComponentsByType(container, ThreadComponent)) {
     patchComponentByType(container, NameComponent, (component) => {

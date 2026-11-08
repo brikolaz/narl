@@ -10,7 +10,9 @@ const shouldApplyOffensiveContainerCurse = (item: Entity) =>
   hasComponentsByType(item, OffensiveContainerCurseComponent)
 
 export const applyOffensiveContainerCurse = (action: Action, item: Entity) => {
-  if (isCursed(item) || !shouldApplyOffensiveContainerCurse(item)) return
+  if (isCursed(item) || !shouldApplyOffensiveContainerCurse(item)) {
+    return
+  }
   curse(action, item)
   const { dmgMul, minDmg, maxDmg } =
     getComponentByType(item, OffensiveContainerCurseComponent) ??

@@ -13,7 +13,9 @@ export const getComponentsByType = <Props extends object | undefined>(
   componentType: ComponentTypeArgument<Props>,
 ): Component<Props>[] => {
   const source = resolveEntity(entity)
-  if (!source) return []
+  if (!source) {
+    return []
+  }
   const type = resolveComponentType(componentType)
 
   return (source.componentByType.get(type)?.values().toArray() ??
@@ -25,7 +27,9 @@ export const getComponentsByTypes = <Props extends object | undefined>(
   componentTypes: ComponentTypeArgument<Props>[],
 ): Component[] => {
   const source = resolveEntity(entity)
-  if (!source) return []
+  if (!source) {
+    return []
+  }
 
   return componentTypes.flatMap((componentType) => {
     const type = resolveComponentType(componentType)
@@ -38,7 +42,9 @@ export const getComponentByType = <Props extends object | undefined>(
   componentType: ComponentTypeArgument<Props>,
 ): Component<Props> | undefined => {
   const source = resolveEntity(entity)
-  if (!source) return undefined
+  if (!source) {
+    return undefined
+  }
   const type = resolveComponentType(componentType)
 
   return getComponentsByType(source, type)[0] as Component<Props>

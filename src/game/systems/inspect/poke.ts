@@ -19,6 +19,8 @@ export const poke = (
       ? player
       : getMob(tile)
 
-  if (target && !floorOnly) return pokeMob(action, source, target)
+  if (target && !floorOnly) {
+    return pokeMob(action, source, target)
+  }
   pokeFloor(action, tile)
 }

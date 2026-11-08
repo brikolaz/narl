@@ -19,11 +19,14 @@ export const applyWokeCurse = (
     !isPlayer(source) ||
     hasComponentsByType(source, WokedComponent) ||
     !hasComponentsByType(target, FemaleComponent)
-  )
+  ) {
     return
+  }
 
   const wokeCurse = getComponentByType(target, WokeCurseComponent)
-  if (!wokeCurse || !getRng(target).chance(wokeCurse.chance)) return
+  if (!wokeCurse || !getRng(target).chance(wokeCurse.chance)) {
+    return
+  }
 
   upsertComponents(source, WokedComponent())
   curse(action, source)

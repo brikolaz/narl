@@ -51,7 +51,9 @@ export const removeComponentsByType = <Props extends object | undefined>(
 
 const removeDataComponentById = (id: Id): void => {
   const record = getComponentRegistryRecord(id)
-  if (!record) return
+  if (!record) {
+    return
+  }
   const parent = record.parent
   const type = record.component.type
 

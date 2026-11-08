@@ -15,7 +15,9 @@ const formatContents = (
   locale: string,
 ): string | undefined => {
   const contents = container?.contents
-  if (!contents) return undefined
+  if (!contents) {
+    return undefined
+  }
 
   const terms = [
     hasDmgValue(contents.baseDmg) && hasStatValue(contents.dmgMul)

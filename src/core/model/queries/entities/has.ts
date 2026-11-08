@@ -13,7 +13,9 @@ export const hasEntitiesByRole = (
   parentEntity: EntityArgument,
   entityRole: EntityRoleEnum,
 ): boolean => {
-  if (parentEntity === undefined) return false
+  if (parentEntity === undefined) {
+    return false
+  }
 
   return (
     (resolveEntity(parentEntity)?.entityByRole?.get(entityRole)?.size ?? 0) > 0
@@ -27,7 +29,9 @@ export const hasEntity = (
   const source = resolveEntity(parentEntity)
   const child = resolveEntity(childEntity)
 
-  if (!source || !child) return false
+  if (!source || !child) {
+    return false
+  }
 
   return source?.entityById?.has(child?.id) ?? false
 }

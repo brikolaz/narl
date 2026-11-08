@@ -30,7 +30,9 @@ const getRawItemBonusDefMul = (entity: Entity): number => {
   const multiplier = bonusStats
     ? getDefMul(bonusStats)
     : DefMulComponent.defaults.defMul
-  if (!bonusStats || !isContainer(entity)) return multiplier
+  if (!bonusStats || !isContainer(entity)) {
+    return multiplier
+  }
   return getContainerItems(entity).reduce(
     (total, item) => total * getRawItemBonusDefMul(item),
     multiplier,

@@ -12,11 +12,21 @@ export const ZoneEnum = createEnum(
 export type ZoneEnum = EnumType<typeof ZoneEnum>
 
 export const getZone = (position: number): ZoneEnum => {
-  if (position < 50) return ZoneEnum.EARLY
-  if (position < 100) return ZoneEnum.LOW
-  if (position < 150) return ZoneEnum.MID
-  if (position < 200) return ZoneEnum.HIGH
-  if (position < MAX_WORLD_SIZE - 1) return ZoneEnum.LATE
+  if (position < 50) {
+    return ZoneEnum.EARLY
+  }
+  if (position < 100) {
+    return ZoneEnum.LOW
+  }
+  if (position < 150) {
+    return ZoneEnum.MID
+  }
+  if (position < 200) {
+    return ZoneEnum.HIGH
+  }
+  if (position < MAX_WORLD_SIZE - 1) {
+    return ZoneEnum.LATE
+  }
 
   return ZoneEnum.FINAL
 }

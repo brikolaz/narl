@@ -21,7 +21,9 @@ export const applySeverCockCurse = (
   slot: Entity,
   item: Entity,
 ) => {
-  if (isCursed(item) || !shouldApplySeverCockCurse(slot, item)) return
+  if (isCursed(item) || !shouldApplySeverCockCurse(slot, item)) {
+    return
+  }
   curse(action, item)
   upsertComponents(
     item,

@@ -125,7 +125,9 @@ export const dispatch = (action?: GameAction): void => {
     })
   }
 
-  if (!action) return
+  if (!action) {
+    return
+  }
 
   dispatchGameAction(action)
 

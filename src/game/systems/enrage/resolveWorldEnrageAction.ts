@@ -18,7 +18,9 @@ export const resolveWorldEnrageAction = (
   const { entityId } = gameAction
   ;(() => {
     const entity = getEntityById(entityId)
-    if (!entity || isHostile(entity)) return
+    if (!entity || isHostile(entity)) {
+      return
+    }
 
     patchComponentByType(entity, HostilityComponent, (component) => {
       component.hostility = HostilityEnum.HOSTILE

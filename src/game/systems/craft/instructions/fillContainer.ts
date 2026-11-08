@@ -10,7 +10,9 @@ import {
 } from "../../containers/containers"
 
 export const fillContainer: CraftInstruction = (action, items) => {
-  if (items.length !== 2) return undefined
+  if (items.length !== 2) {
+    return undefined
+  }
   const [item, container] = items
 
   if (getEqItems(getPlayer()).includes(item) && !isRemovable(item)) {

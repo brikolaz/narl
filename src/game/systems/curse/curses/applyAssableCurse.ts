@@ -14,7 +14,9 @@ const shouldApplyAssableCurse = (item: Entity) => {
 }
 
 export const applyAssableCurse = (action: Action, item: Entity) => {
-  if (isCursed(item) || !shouldApplyAssableCurse(item)) return
+  if (isCursed(item) || !shouldApplyAssableCurse(item)) {
+    return
+  }
   curse(action, item)
   action.addPendingImmediateAction({
     type: WorldActionTypeEnum.WORLD_MAKE_PANTS,

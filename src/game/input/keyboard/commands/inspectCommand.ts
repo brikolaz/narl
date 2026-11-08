@@ -91,13 +91,18 @@ const getEqCommands = (): KeyboardToAction => ({
 
 const getMapCommands = (): KeyboardToAction => {
   const highlight = UI_STATE.highlights.map
-  if (highlight.getHighlightedSlot() === undefined) highlight.highlightSlot()
+  if (highlight.getHighlightedSlot() === undefined) {
+    highlight.highlightSlot()
+  }
 
   const select = (offset: number): KeyboardToAction => {
-    if (offset !== -1 && offset !== 0 && offset !== 1) return getMapCommands()
+    if (offset !== -1 && offset !== 0 && offset !== 1) {
+      return getMapCommands()
+    }
     const position = getPosition(getPlayer()) + offset
-    if (position >= 0 && position < MAX_WORLD_SIZE)
+    if (position >= 0 && position < MAX_WORLD_SIZE) {
       highlight.highlightSlot(offset)
+    }
     return getMapCommands()
   }
   const confirm = () => {

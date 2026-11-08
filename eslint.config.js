@@ -30,6 +30,7 @@ export default defineConfig([
     },
 
     rules: {
+      curly: ["error", "all"],
       eqeqeq: ["error", "always"],
       "no-debugger": "error",
       "no-duplicate-imports": "error",

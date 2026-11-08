@@ -42,7 +42,9 @@ export class Random {
     const key = getRandomContextNamespace([this.context.seed, name])
 
     const cached = this.namedChances.get(key)
-    if (cached !== undefined) return cached
+    if (cached !== undefined) {
+      return cached
+    }
 
     const result = this.chance(percent)
     this.namedChances.set(key, result)

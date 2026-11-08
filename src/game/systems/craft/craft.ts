@@ -7,7 +7,9 @@ export const craft = (action: Action, items: Entity[]): void => {
   const ingredients = items.toSorted((first, second) => first.id - second.id)
   for (const [recipe, instruction] of CRAFT_RECIPES) {
     const plan = recipe(ingredients)
-    if (!plan) continue
+    if (!plan) {
+      continue
+    }
 
     const assembledItem = instruction(action, plan.items)
     if (assembledItem) {
