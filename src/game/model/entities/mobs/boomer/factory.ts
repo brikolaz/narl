@@ -9,11 +9,15 @@ import {
   HostilityComponent,
 } from "../../../components/ai/HostilityComponent"
 import { BaseMobFactory } from "../../../BaseMobFactory"
-import type { BoomerEntityVariants } from "./variants/variants"
+import { BoomerEntityVariants } from "./variants/variants"
 import { BoomerEntity } from "./variants/Boomer/BoomerEntity"
 import { BabyBoomerEntity } from "./variants/BabyBoomer/BabyBoomerEntity"
 
 class BoomerFactory extends BaseMobFactory<BoomerEntityVariants> {
+  protected getVariants(): readonly BoomerEntityVariants[] {
+    return BoomerEntityVariants
+  }
+
   getDefault(): Entity {
     return BoomerEntity()
   }

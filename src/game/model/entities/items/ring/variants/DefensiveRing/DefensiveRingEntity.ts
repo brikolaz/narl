@@ -7,7 +7,7 @@ import { upsertComponents } from "../../../../../../../core/model/queries/compon
 import { upsertRoleEntities } from "../../../../../../../core/model/queries/entities/add"
 import { COLORS } from "../../../../../../../core/utils/colors"
 import { getRng } from "../../../../../../systems/rng/rng"
-import { DmgMulComponent } from "../../../../../components/combat/DmgMulComponent"
+import { DefMulComponent } from "../../../../../components/combat/DefMulComponent"
 import { ColorComponent } from "../../../../../components/display/ColorComponent"
 import { GlyphComponent } from "../../../../../components/display/GlyphComponent"
 import { NameComponent } from "../../../../../components/display/NameComponent"
@@ -19,11 +19,11 @@ import { PickupableComponent } from "../../../../../components/interaction/Picku
 import { SeveringCurseComponent } from "../../../../../components/curse/SeveringCurseComponent"
 import { BonusStatsEntityFactory } from "../../../../bonusStats/factory"
 
-const addComponents = (ring: Entity<"RING">): void => {
+const addComponents = (defensiveRing: Entity<"DEFENSIVE_RING">): void => {
   upsertComponents(
-    ring,
+    defensiveRing,
     GlyphComponent({ glyph: "o" }),
-    NameComponent({ name: "ENTITY.RING" }),
+    NameComponent({ name: "ENTITY.DEFENSIVE_RING" }),
     RemovableComponent(),
     RingComponent(),
     PantsComponent(),
@@ -32,25 +32,28 @@ const addComponents = (ring: Entity<"RING">): void => {
     ColorComponent({ color: COLORS.tier.common }),
   )
 
-  if (getRng(ring).namedChance(80, "SEVERING_CURSE")) {
-    upsertComponents(ring, SeveringCurseComponent())
+  if (getRng(defensiveRing).namedChance(80, "SEVERING_CURSE")) {
+    upsertComponents(defensiveRing, SeveringCurseComponent())
   }
 }
-const addLoot = (ring: Entity<"RING">): void => {
-  void ring
+const addLoot = (defensiveRing: Entity<"DEFENSIVE_RING">): void => {
+  void defensiveRing
 }
 
-const addEntities = (ring: Entity<"RING">): void => {
+const addEntities = (defensiveRing: Entity<"DEFENSIVE_RING">): void => {
   const bonusStats = BonusStatsEntityFactory.getDefault()
   upsertComponents(
     bonusStats,
-    DmgMulComponent({
-      dmgMul: getRng(ring).pick(1.5, 2) ?? DmgMulComponent.defaults.dmgMul,
+    DefMulComponent({
+      defMul:
+        getRng(defensiveRing).pick(1.5, 2) ?? DefMulComponent.defaults.defMul,
     }),
   )
-  upsertRoleEntities(ring, { [EntityRoleEnum.BONUS_STATS]: bonusStats })
+  upsertRoleEntities(defensiveRing, {
+    [EntityRoleEnum.BONUS_STATS]: bonusStats,
+  })
 }
-export const RingEntity = getEntityCreator("RING", {
+export const DefensiveRingEntity = getEntityCreator("DEFENSIVE_RING", {
   components: addComponents,
   entities: addEntities,
   loot: addLoot,

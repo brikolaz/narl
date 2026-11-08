@@ -1,9 +1,13 @@
 import type { Entity } from "{{coreImport}}";
 import { BaseItemFactory } from "{{baseItemFactoryImport}}";
 import { {{entityName}}Entity } from "./variants/{{entityName}}/{{entityName}}Entity";
-import type { {{entityName}}EntityVariants } from "./variants/variants";
+import { {{entityName}}EntityVariants } from "./variants/variants";
 
 class {{entityName}}Factory extends BaseItemFactory<{{entityName}}EntityVariants> {
+  protected getVariants(): readonly {{entityName}}EntityVariants[] {
+    return {{entityName}}EntityVariants;
+  }
+
   getDefault(): Entity {
     return {{entityName}}Entity();
   }

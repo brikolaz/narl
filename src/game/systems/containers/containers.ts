@@ -20,7 +20,7 @@ import { PositionComponent } from "../../model/components/spatial/PositionCompon
 import { getPosition, setPosition } from "../position/position"
 import { ALL_CONTAINER_SLOTS, type ContainerSlot } from "./types"
 
-export const getBackpack = (entity: Entity): Entity | undefined => {
+export const getBackpack = (entity: EntityArgument): Entity | undefined => {
   return getEntityByRole(entity, EntityRoleEnum.BACKPACK)
 }
 

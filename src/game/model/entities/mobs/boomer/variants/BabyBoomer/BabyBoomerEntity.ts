@@ -1,3 +1,6 @@
+import { OffensiveRingEntity } from "../../../../items/ring/variants/OffensiveRing/OffensiveRingEntity"
+import { DefensiveRingEntity } from "../../../../items/ring/variants/DefensiveRing/DefensiveRingEntity"
+import { DefensiveStringEntity } from "../../../../items/string/variants/DefensiveString/DefensiveStringEntity"
 import { PantsEntity } from "../../../../items/pants/variants/Pants/PantsEntity"
 import { BootsEntity } from "../../../../items/boots/variants/Boots/BootsEntity"
 import { addContainerLoot } from "../../../../../../systems/loot/loot"
@@ -54,6 +57,9 @@ const addLoot = (babyBoomer: Entity<"BABY_BOOMER">): void => {
     [15, LongSwordEntity],
     [20, BootsEntity],
     [20, PantsEntity],
+    [15, DefensiveStringEntity],
+    [10, OffensiveRingEntity],
+    [10, DefensiveRingEntity],
   ])
 
   upsertRoleEntities(babyBoomer, {

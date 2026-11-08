@@ -1,2 +1,5 @@
-import type { ChestSlotEntity } from "./ChestSlot/ChestSlotEntity"
-export type ChestSlotEntityVariants = typeof ChestSlotEntity.type
+import { ChestSlotEntity } from "./ChestSlot/ChestSlotEntity"
+
+export const ChestSlotEntityVariants = [ChestSlotEntity.type] as const
+
+export type ChestSlotEntityVariants = (typeof ChestSlotEntityVariants)[number]

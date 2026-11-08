@@ -2,9 +2,13 @@ import { upsertComponents } from "../../../core/model/queries/components/add"
 import { END_GAME_GATE_POSITION, MAP_SIZE } from "../../../core/utils/constants"
 import { getDummyArray } from "../../../core/utils/getDummyArray"
 import { VisitedComponent } from "../../model/components/state/VisitedComponent"
+import { ContainerEntityFactory } from "../../model/entities/items/container/factory"
+import { BackpackEntity } from "../../model/entities/items/container/variants/Backpack/BackpackEntity"
 import { HelmetEntityFactory } from "../../model/entities/items/helmet/factory"
 import { HornedHelmetEntity } from "../../model/entities/items/helmet/variants/HornedHelmet/HornedHelmetEntity"
 import { RingEntityFactory } from "../../model/entities/items/ring/factory"
+import { StringEntityFactory } from "../../model/entities/items/string/factory"
+import { OffensiveStringEntity } from "../../model/entities/items/string/variants/OffensiveString/OffensiveStringEntity"
 import { SwordEntityFactory } from "../../model/entities/items/sword/factory"
 import { RageBaitEntityFactory } from "../../model/entities/mobs/rageBait/factory"
 import { WallEntityFactory } from "../../model/entities/wall/factory"
@@ -16,6 +20,14 @@ export const initWorld = (): WorldState => {
   const world: WorldState = getDummyArray(MAP_SIZE).map((_, position) =>
     getDefaultTile(position),
   )
+
+  const backpack = ContainerEntityFactory.getVariant(BackpackEntity)
+  world[0].items.push(backpack)
+  setPosition(backpack, 0)
+
+  const string = StringEntityFactory.getVariant(OffensiveStringEntity)
+  world[1].items.push(string)
+  setPosition(string, 1)
 
   const ring = RingEntityFactory.getDefault()
   world[2].items.push(ring)

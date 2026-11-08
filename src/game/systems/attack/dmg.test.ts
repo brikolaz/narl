@@ -116,7 +116,7 @@ describe("dmg", () => {
     })
     action.info("INSPECT.ITEM", getEntityLogProjection(backpack))
     expect(formatLogMessage(action.resolve().pendingLogs[0].message)).toContain(
-      "Contents: 2 DMG (2x0.5 + 4x0.25 from DEF)",
+      "Contents: 2 DMG (2x0.5 DMG + 4x0.25 DEF)",
     )
   })
 })

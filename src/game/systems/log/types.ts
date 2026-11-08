@@ -3,23 +3,31 @@ import type { MessageKey } from "../../i18n/types"
 import type { GameAction } from "../actions/types"
 import type { PlayerAction } from "../player/types"
 
+export type BonusStatsLogProjection = {
+  dmgMul?: number
+  defMul?: number
+}
+
 export type EntityLogProjection = {
   name: string | LogMessage
   isPlayer: boolean
   description: string
   dmg?: DmgRange
   def?: number
-  bonusDmgMul?: number
+  bonusStats?: BonusStatsLogProjection
   slotDmgMul?: number
   slotDefMul?: number
   container?: {
     size: number
+    currentSize?: number
     depth: number
     contents?: {
       baseDmg: DmgRange
       dmg: DmgRange
       dmgMul: number
       def: number
+      defMul?: number
+      effectiveDef?: number
       defToDmgMul?: number
     }
   }

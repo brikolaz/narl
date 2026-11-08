@@ -1,8 +1,11 @@
-import type { BackpackEntity } from "./Backpack/BackpackEntity"
-import type { ContainerEntity } from "./Container/ContainerEntity"
-import type { PlayerBackpackEntity } from "./PlayerBackpack/PlayerBackpackEntity"
+import { BackpackEntity } from "./Backpack/BackpackEntity"
+import { ContainerEntity } from "./Container/ContainerEntity"
+import { PlayerBackpackEntity } from "./PlayerBackpack/PlayerBackpackEntity"
 
-export type ContainerEntityVariants =
-  | typeof ContainerEntity.type
-  | typeof BackpackEntity.type
-  | typeof PlayerBackpackEntity.type
+export const ContainerEntityVariants = [
+  ContainerEntity.type,
+  BackpackEntity.type,
+  PlayerBackpackEntity.type,
+] as const
+
+export type ContainerEntityVariants = (typeof ContainerEntityVariants)[number]

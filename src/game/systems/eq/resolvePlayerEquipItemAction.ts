@@ -27,6 +27,7 @@ const getCompatiblePrimaryEqSlot = (
   item: Entity,
 ): Entity | undefined => {
   const itemSlots = getItemSlots(item)
+  if (itemSlots.length === 0) return undefined
 
   assert(itemSlots.length === 1 || isTwoHand(item), "Invalid item slots")
 
@@ -60,7 +61,7 @@ export const resolvePlayerEquipItemAction = (
 
     const eqSlot = getCompatiblePrimaryEqSlot(player, itemToEquip)
     if (!eqSlot) {
-      return action.fail("ITEM.NOT_EQUIPPABLE", getEntityName(itemToEquip))
+      return action.fail("ITEM.NOT_EQUIPPABLE")
     }
 
     const itemInPrimarySlot = getFirstContainerItem(eqSlot)

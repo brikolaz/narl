@@ -1,3 +1,6 @@
+import { OffensiveRingEntity } from "../../../../items/ring/variants/OffensiveRing/OffensiveRingEntity"
+import { DefensiveRingEntity } from "../../../../items/ring/variants/DefensiveRing/DefensiveRingEntity"
+import { OffensiveStringEntity } from "../../../../items/string/variants/OffensiveString/OffensiveStringEntity"
 import { ShieldEntity } from "../../../../items/shield/variants/Shield/ShieldEntity"
 import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import {
@@ -52,6 +55,9 @@ const addLoot = (boomer: Entity<"BOOMER">): void => {
   addContainerLoot(backpack, [
     [15, LongSwordEntity],
     [5, ShieldEntity],
+    [15, OffensiveStringEntity],
+    [20, OffensiveRingEntity],
+    [20, DefensiveRingEntity],
   ])
 
   upsertRoleEntities(boomer, {

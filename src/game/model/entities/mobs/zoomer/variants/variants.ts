@@ -1,3 +1,5 @@
-import type { ZoomerEntity } from "./Zoomer/ZoomerEntity"
+import { ZoomerEntity } from "./Zoomer/ZoomerEntity"
 
-export type ZoomerEntityVariants = typeof ZoomerEntity.type
+export const ZoomerEntityVariants = [ZoomerEntity.type] as const
+
+export type ZoomerEntityVariants = (typeof ZoomerEntityVariants)[number]

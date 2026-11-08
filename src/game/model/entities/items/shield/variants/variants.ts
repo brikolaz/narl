@@ -1,3 +1,5 @@
-import type { ShieldEntity } from "./Shield/ShieldEntity"
+import { ShieldEntity } from "./Shield/ShieldEntity"
 
-export type ShieldEntityVariants = typeof ShieldEntity.type
+export const ShieldEntityVariants = [ShieldEntity.type] as const
+
+export type ShieldEntityVariants = (typeof ShieldEntityVariants)[number]

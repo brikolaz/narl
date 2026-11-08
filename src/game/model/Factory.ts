@@ -3,6 +3,7 @@ import type { Entity, EntityType } from "../../core/model/Entity"
 
 export interface Factory<Variants extends EntityType = EntityType> {
   getDefault(): Entity
+  getRandomVariant?(): Entity
   getVariant?(variant: EntityTypeArgument<Variants>): Entity
 }
 

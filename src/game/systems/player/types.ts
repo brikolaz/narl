@@ -1,3 +1,4 @@
+import type { Id } from "../../../core/model/Id"
 import type { InvSlot } from "../containers/types"
 import type { DirectionEnum } from "../turn/types"
 import { createEnum, type EnumType } from "../../../core/utils/types/Enum"
@@ -10,13 +11,13 @@ export const PlayerActionTypeEnum = createEnum(
   "PLAYER_EQUIP_ITEM",
   "PLAYER_UNEQUIP_ITEM",
   "PLAYER_ATTACK",
-  "PLAYER_MOVE_ITEM",
   "PLAYER_DROP_ITEM",
   "PLAYER_INSPECT_INV",
   "PLAYER_INSPECT_EQ",
   "PLAYER_WAIT",
   "PLAYER_MELEE_ATTACK",
   "PLAYER_RANGED_ATTACK",
+  "PLAYER_CRAFT",
 )
 export type PlayerActionTypeEnum = EnumType<typeof PlayerActionTypeEnum>
 
@@ -65,11 +66,6 @@ export type PlayerInspectEqAction = {
   type: typeof PlayerActionTypeEnum.PLAYER_INSPECT_EQ
   eqSlot: EqSlot
 }
-export type PlayerMoveItemAction = {
-  type: typeof PlayerActionTypeEnum.PLAYER_MOVE_ITEM
-  fromSlot: InvSlot
-  toSlot: InvSlot
-}
 
 export type PlayerWaitAction = {
   type: typeof PlayerActionTypeEnum.PLAYER_WAIT
@@ -85,6 +81,11 @@ export type PlayerRangedAttackAction = {
   direction: DirectionEnum
 }
 
+export type PlayerCraftAction = {
+  type: typeof PlayerActionTypeEnum.PLAYER_CRAFT
+  items: (Id | undefined)[]
+}
+
 export type PlayerAction =
   | PlayerDropItemAction
   | PlayerMoveAction
@@ -93,9 +94,9 @@ export type PlayerAction =
   | PlayerEquipItemAction
   | PlayerUnequipItemAction
   | PlayerAttackAction
-  | PlayerMoveItemAction
   | PlayerInspectInvAction
   | PlayerInspectEqAction
   | PlayerWaitAction
   | PlayerMeleeAttackAction
   | PlayerRangedAttackAction
+  | PlayerCraftAction

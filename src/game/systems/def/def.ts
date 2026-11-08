@@ -9,15 +9,16 @@ import { DefComponent } from "../../model/components/combat/DefComponent"
 import { DefMulComponent } from "../../model/components/combat/DefMulComponent"
 import { isContainer } from "../containers/containers"
 import { getEq } from "../eq/eq"
+import { getBonusDefMul } from "../bonusStats/bonusStats"
 
-const getOwnDef = (entity?: Entity): number => {
+export const getOwnDef = (entity?: Entity): number => {
   return getComponentsByType(entity, DefComponent).reduce(
     (total, component) => total + component.def,
     DefComponent.defaults.def,
   )
 }
 
-const getDefMul = (entity: Entity): number => {
+export const getDefMul = (entity: Entity): number => {
   return (
     getComponentByType(entity, DefMulComponent)?.defMul ??
     DefMulComponent.defaults.defMul
@@ -43,10 +44,15 @@ export const getChildrenDef = (entity: Entity): number => {
   )
 }
 
+export const getEffectiveChildrenDef = (entity: Entity): number => {
+  return Math.ceil(getChildrenDef(entity) * getDefMul(entity))
+}
+
 export const getTotalDef = (entity: Entity): number => {
-  return getEq(entity).reduce((totalDef, slot) => {
+  const def = getEq(entity).reduce((totalDef, slot) => {
     return totalDef + getDef(slot)
   }, getDef(entity))
+  return Math.ceil(def * getBonusDefMul(entity))
 }
 
 export const getReducedDmg = (entity: Entity, dmg: number): number => {

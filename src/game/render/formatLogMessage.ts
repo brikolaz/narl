@@ -17,7 +17,8 @@ const formatReplacement = (
       typeof item === "string" ? item : formatLogMessage(item, locale),
     )
   if (inspect) return formatItemInspection(value, locale)
-  if (pickup) return formatItemInspection({ ...value, description: "" }, locale)
+  if (pickup)
+    return formatItemInspection({ ...value, description: "" }, locale, false)
   return value.isPlayer
     ? formatMessage("ENTITY.PLAYER", {}, locale)
     : typeof value.name === "string"

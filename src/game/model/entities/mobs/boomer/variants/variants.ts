@@ -1,5 +1,9 @@
-import type { BabyBoomerEntity } from "./BabyBoomer/BabyBoomerEntity"
-import type { BoomerEntity } from "./Boomer/BoomerEntity"
+import { BabyBoomerEntity } from "./BabyBoomer/BabyBoomerEntity"
+import { BoomerEntity } from "./Boomer/BoomerEntity"
 
-export type BoomerEntityVariants =
-  typeof BoomerEntity.type | typeof BabyBoomerEntity.type
+export const BoomerEntityVariants = [
+  BoomerEntity.type,
+  BabyBoomerEntity.type,
+] as const
+
+export type BoomerEntityVariants = (typeof BoomerEntityVariants)[number]

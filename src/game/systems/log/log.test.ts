@@ -226,10 +226,10 @@ describe("log", () => {
   it("does not interpret tokens inside replacement values", () => {
     expect(
       formatLogMessage({
-        key: "ITEM.MOVED",
-        replacements: ["{$arg0}", "{hit|hits}"],
+        key: "ITEM.COMBINED",
+        replacements: ["{$arg0} {hit|hits}"],
       }),
-    ).toBe("Moved {$arg0} to {hit|hits}")
+    ).toBe("Created {$arg0} {hit|hits}")
   })
 
   it("retains entity data after its components are removed", () => {
@@ -360,12 +360,12 @@ describe("log", () => {
       },
       dmg: { min: 3, max: 6 },
       def: 0,
-      bonusDmgMul: 0,
+      bonusStats: { dmgMul: 0, defMul: 0 },
     }
     expect(
       formatLogMessage({ key: "INSPECT.ITEM", replacements: [projection] }),
     ).toBe(
-      "Backpack. A sturdy bag. 0 SIZE. 1 DEPTH. 3-6 DMG. Contents: 3-6 DMG (2-4x1.5 + 0x0 from DEF). 0 DEF. Equip: x0 DMG",
+      "Backpack. A sturdy bag. 1 DEPTH, 3-6 DMG. Contents: 3-6 DMG (2-4x1.5 DMG)",
     )
   })
 

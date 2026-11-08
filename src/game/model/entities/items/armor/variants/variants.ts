@@ -1,3 +1,5 @@
-import type { ArmorEntity } from "./Armor/ArmorEntity"
+import { ArmorEntity } from "./Armor/ArmorEntity"
 
-export type ArmorEntityVariants = typeof ArmorEntity.type
+export const ArmorEntityVariants = [ArmorEntity.type] as const
+
+export type ArmorEntityVariants = (typeof ArmorEntityVariants)[number]

@@ -1,8 +1,12 @@
 import type { Entity } from "../../../../../../core/model/Entity"
 import { BaseItemFactory } from "../../../../BaseItemFactory"
 import { HeadSlotEntity } from "./variants/HeadSlot/HeadSlotEntity"
-import type { HeadSlotEntityVariants } from "./variants/variants"
+import { HeadSlotEntityVariants } from "./variants/variants"
 class HeadSlotFactory extends BaseItemFactory<HeadSlotEntityVariants> {
+  protected getVariants(): readonly HeadSlotEntityVariants[] {
+    return HeadSlotEntityVariants
+  }
+
   getDefault(): Entity {
     return HeadSlotEntity()
   }

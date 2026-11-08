@@ -1,3 +1,5 @@
-import type { {{entityName}}Entity } from "./{{entityName}}/{{entityName}}Entity";
+import { {{entityName}}Entity } from "./{{entityName}}/{{entityName}}Entity";
 
-export type {{entityName}}EntityVariants = typeof {{entityName}}Entity.type;
+export const {{entityName}}EntityVariants = [{{entityName}}Entity.type] as const;
+
+export type {{entityName}}EntityVariants = (typeof {{entityName}}EntityVariants)[number];

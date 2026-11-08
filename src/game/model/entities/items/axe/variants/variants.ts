@@ -1,3 +1,5 @@
-import type { AxeEntity } from "./Axe/AxeEntity"
+import { AxeEntity } from "./Axe/AxeEntity"
 
-export type AxeEntityVariants = typeof AxeEntity.type
+export const AxeEntityVariants = [AxeEntity.type] as const
+
+export type AxeEntityVariants = (typeof AxeEntityVariants)[number]

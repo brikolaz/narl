@@ -17,7 +17,7 @@ const addDmgRanges = (left: DmgRange, right: DmgRange): DmgRange => ({
   max: left.max + right.max,
 })
 
-const getOwnDmgRange = (entity: Entity): DmgRange => {
+export const getOwnDmgRange = (entity: Entity): DmgRange => {
   const dmg = getComponentByType(entity, DmgComponent)
   return {
     min: dmg?.min ?? DmgComponent.defaults.min,
@@ -45,7 +45,7 @@ export const getChildrenDefToDmg = (entity: Entity): number => {
     OffensiveContainerCurseComponent,
   )?.defToDmgMul
   if (ratio === undefined) {
-    return OffensiveContainerCurseComponent.defaults.defToDmgMul
+    return 0
   }
 
   return Math.ceil(getChildrenDef(entity) * ratio)

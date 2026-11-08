@@ -3,8 +3,10 @@ import { getComponentByType } from "../../../core/model/queries/components/get"
 import { hasComponentsByType } from "../../../core/model/queries/components/has"
 import { OffensiveContainerCurseComponent } from "../../model/components/curse/OffensiveContainerCurseComponent"
 import { DmgMulComponent } from "../../model/components/combat/DmgMulComponent"
+import { DefMulComponent } from "../../model/components/combat/DefMulComponent"
 import {
   getContainerSize,
+  getEmptySlots,
   getMaxNestDepth,
   isContainer,
 } from "../containers/containers"
@@ -12,18 +14,28 @@ import { isWeapon } from "../attack/getAttackWeapon"
 import {
   getBaseChildrenDmgRange,
   getDmgMul,
-  getDmgRange,
+  getOwnDmgRange,
   getChildrenDmgRange,
 } from "../attack/dmg"
-import { getBonusStats } from "../bonusStats/bonusStats"
-import { getChildrenDef, getEffectiveDef, isArmor } from "../def/def"
+import {
+  getItemBonusDmgMul,
+  getItemBonusDefMul,
+} from "../bonusStats/bonusStats"
+import {
+  getChildrenDef,
+  getEffectiveChildrenDef,
+  getEffectiveDef,
+  getOwnDef,
+  getDefMul,
+  isArmor,
+} from "../def/def"
 import { getInspectDesc } from "../inspect/inspect"
 
 import { EntityRoleEnum, type Entity } from "../../../core/model/Entity"
 import { getEntityName } from "../inspect/getEntityName"
 import { isPlayer } from "../player/player"
 import { STATE } from "../../state"
-import type { EntityLogProjection } from "./types"
+import type { BonusStatsLogProjection, EntityLogProjection } from "./types"
 
 export const getEntityLogProjection = (entity: Entity): EntityLogProjection => {
   const parent = getEntityRegistryRecordById(entity.id)?.parent
@@ -39,36 +51,46 @@ export const getEntityLogProjection = (entity: Entity): EntityLogProjection => {
   if (isContainer(entity)) {
     projection.container = {
       size: getContainerSize(entity),
+      currentSize: getEmptySlots(entity).size,
       depth: getMaxNestDepth(entity),
     }
-    const baseDmg = getBaseChildrenDmgRange(entity)
-    if (baseDmg) {
-      projection.dmg = getDmgRange(entity)
-      projection.container.contents = {
-        baseDmg,
-        dmg: getChildrenDmgRange(entity),
-        dmgMul: getDmgMul(entity),
-        def: getChildrenDef(entity),
-        defToDmgMul: getComponentByType(
-          entity,
-          OffensiveContainerCurseComponent,
-        )?.defToDmgMul,
-      }
+    projection.dmg = getOwnDmgRange(entity)
+    projection.def = getOwnDef(entity)
+    projection.container.contents = {
+      baseDmg: getBaseChildrenDmgRange(entity),
+      dmg: getChildrenDmgRange(entity),
+      dmgMul: getDmgMul(entity),
+      def: getChildrenDef(entity),
+      defToDmgMul: getComponentByType(entity, OffensiveContainerCurseComponent)
+        ?.defToDmgMul,
+      defMul: getDefMul(entity),
+      effectiveDef: getEffectiveChildrenDef(entity),
     }
   } else if (isWeapon(entity)) {
-    const { min, max } = getDmgRange(entity)
+    const { min, max } = getOwnDmgRange(entity)
     const multiplier = eqSlot ? getDmgMul(eqSlot) : 1
     projection.dmg = {
       min: Math.ceil(min * multiplier),
       max: Math.ceil(max * multiplier),
     }
   }
-  if (isArmor(entity)) projection.def = getEffectiveDef(entity, eqSlot)
-  const bonusStats = getBonusStats(entity)
-  if (bonusStats && hasComponentsByType(bonusStats, DmgMulComponent)) {
-    const multiplier = getDmgMul(bonusStats)
-    if (multiplier !== DmgMulComponent.defaults.dmgMul)
-      projection.bonusDmgMul = multiplier
+  if (
+    !isContainer(entity) &&
+    (isArmor(entity) || hasComponentsByType(entity, DefMulComponent))
+  ) {
+    projection.def = getEffectiveDef(entity, eqSlot)
+  }
+  const bonusStats: BonusStatsLogProjection = {}
+  const multiplier = getItemBonusDmgMul(entity)
+  if (multiplier !== DmgMulComponent.defaults.dmgMul) {
+    bonusStats.dmgMul = multiplier
+  }
+  const defMultiplier = getItemBonusDefMul(entity)
+  if (defMultiplier !== DefMulComponent.defaults.defMul) {
+    bonusStats.defMul = defMultiplier
+  }
+  if (bonusStats.dmgMul !== undefined || bonusStats.defMul !== undefined) {
+    projection.bonusStats = bonusStats
   }
   return projection
 }

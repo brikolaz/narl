@@ -3,8 +3,8 @@
     "INVALID_DIRECTION": "Invalid direction",
     "DROP": "Drop INV item (arrow keys, Tab for EQ, space to confirm)",
     "EQUIP": "Select item to equip (arrow keys, space to accept)",
-    "MOVE_SOURCE": "Select source (arrow keys, space to accept)",
-    "MOVE_TARGET": "Select target (arrow keys, space to accept)",
+    "COMBINE_FIRST": "Select first item to combine (Tab: INV / EQ, arrows to select, space to confirm)",
+    "COMBINE_SECOND": "Select second item to combine (Tab: INV / EQ, arrows to select, space to confirm)",
     "INSPECT": "Inspect (Tab: MAP / EQ / INV, arrows to select, space to confirm)",
     "UNEQUIP": "Select item to unequip (arrow keys, space to confirm)",
     "DIRECTION": "Left/right? (arrow keys)",
@@ -38,7 +38,10 @@
     "HELMET": "Helmet",
     "HORNED_HELMET": "Horned Helmet",
     "PANTS": "Mail Pants",
-    "RING": "Ring",
+    "OFFENSIVE_STRING": "Offensive String",
+    "DEFENSIVE_STRING": "Defensive String",
+    "OFFENSIVE_LORD_OF_THE_RINGS": "Offensive Lord of the Rings",
+    "DEFENSIVE_LORD_OF_THE_RINGS": "Defensive Lord of the Rings",
     "SHIELD": "Wooden Shield",
     "LONG_SWORD": "Long Sword",
     "SWORD": "Sword",
@@ -47,7 +50,9 @@
     "RAGE_BAIT": "Rage Bait",
     "ZOOMER": "Zoomer",
     "WALL": "Wall",
-    "CURSED_NAME": "Cursed {$name}"
+    "CURSED_NAME": "Cursed {$name}",
+    "OFFENSIVE_RING": "Offensive Ring",
+    "DEFENSIVE_RING": "Defensive Ring"
   },
   "ITEM": {
     "DROPPED_BY": "{$arg0} dropped {$arg1 :list style=long type=conjunction}",
@@ -63,12 +68,13 @@
     "NOT_PICKUPABLE": "{$arg0} is not pickupable",
     "PICKED_UP": "Picked up {$arg0}",
     "NOTHING_TO_EQUIP": "No item to equip",
-    "NOT_EQUIPPABLE": "{$arg0} can't be equipped",
+    "NOT_EQUIPPABLE": "Can't equip.",
     "EQUIPPED": "Equipped {$arg0}",
     "UNEQUIPPED": "Unequipped {$arg0}",
     "INVALID_SELECTION": "Invalid item selection",
-    "SAME_SELECTION": "Source and target are the same item",
-    "MOVED": "Moved {$arg0} to {$arg1}"
+    "SAME_SELECTION": "Select two different items",
+    "CANNOT_COMBINE": "These items cannot be combined",
+    "COMBINED": "Created {$arg0}"
   },
   "INSPECT": {
     "EQ_SLOT": "Slot: {$arg0}",
@@ -77,15 +83,24 @@
     "NAME": "{$name}",
     "DESCRIPTION": "{$description}",
     "SIZE": "{$size :number} SIZE",
+    "CURRENT_SIZE": "{$currentSize :number}/{$size :number} SIZE",
     "DEPTH": "{$depth :number} DEPTH",
     "DMG": "{$dmg} DMG",
-    "CONTENTS": ".input {$hasDefConversion :string}\n.match $hasDefConversion\nyes {{Contents: {$dmg} DMG ({$baseDmg}x{$dmgMul :number} + {$def :number}x{$defToDmgMul :number} from DEF)}}\n* {{Contents: {$dmg} DMG ({$baseDmg}x{$dmgMul :number})}}",
+    "CONTENTS": "Contents: {$stats}",
     "DEF": "{$def :number} DEF",
-    "BONUS_DMG": "Equip: x{$bonusDmgMul :number} DMG",
+    "CONTENTS_DEF": "{$def :number} DEF ({$terms})",
+    "BONUS_DMG": "x{$bonusDmgMul :number} DMG",
     "SEPARATOR": "{{. }}",
     "NO_ITEM": "No item to inspect",
     "EMPTY_SLOT": ".input {$arg0HasDescription :string}\n.match $arg0HasDescription\nyes {{{$arg0Description}}}\n* {{{$arg0} slot is empty}}",
-    "ITEM": "{$arg0}"
+    "ITEM": "{$arg0}",
+    "CONTENTS_DMG": "{$dmg} DMG ({$terms})",
+    "CONTENTS_DMG_TERM": "{$dmg}x{$multiplier :number} DMG",
+    "CONTENTS_DEF_TERM": "{$def :number}x{$multiplier :number} DEF",
+    "STAT_SEPARATOR": "{{, }}",
+    "TERM_SEPARATOR": "{{ + }}",
+    "BONUS_DEF": "x{$bonusDefMul :number} DEF",
+    "EQUIP": "Equip: {$stats}"
   },
   "MOVEMENT": {
     "CANNOT_MOVE": "Cannot move {$arg0}"
@@ -104,7 +119,6 @@
   },
   "CONTAINER": {
     "UNPACKED": "Dropped {$arg0} items to the floor",
-    "INVALID_TARGET": "Target item is not a container",
     "FULL": "Target container is full",
     "MAX_DEPTH": "Max nest depth ({$arg0}) reached"
   },

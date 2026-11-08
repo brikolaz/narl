@@ -1,3 +1,5 @@
-import type { RageBaitEntity } from "./RageBait/RageBaitEntity"
+import { RageBaitEntity } from "./RageBait/RageBaitEntity"
 
-export type RageBaitEntityVariants = typeof RageBaitEntity.type
+export const RageBaitEntityVariants = [RageBaitEntity.type] as const
+
+export type RageBaitEntityVariants = (typeof RageBaitEntityVariants)[number]

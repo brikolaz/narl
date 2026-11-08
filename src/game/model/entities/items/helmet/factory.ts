@@ -6,9 +6,13 @@ import type { Entity } from "../../../../../core/model/Entity"
 import { BaseItemFactory } from "../../../BaseItemFactory"
 import { HelmetEntity } from "./variants/Helmet/HelmetEntity"
 import { HornedHelmetEntity } from "./variants/HornedHelmet/HornedHelmetEntity"
-import type { HelmetEntityVariants } from "./variants/variants"
+import { HelmetEntityVariants } from "./variants/variants"
 
 class HelmetFactory extends BaseItemFactory<HelmetEntityVariants> {
+  protected getVariants(): readonly HelmetEntityVariants[] {
+    return HelmetEntityVariants
+  }
+
   getDefault(): Entity {
     return HelmetEntity()
   }

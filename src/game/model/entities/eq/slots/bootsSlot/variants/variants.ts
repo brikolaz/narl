@@ -1,2 +1,5 @@
-import type { BootsSlotEntity } from "./BootsSlot/BootsSlotEntity"
-export type BootsSlotEntityVariants = typeof BootsSlotEntity.type
+import { BootsSlotEntity } from "./BootsSlot/BootsSlotEntity"
+
+export const BootsSlotEntityVariants = [BootsSlotEntity.type] as const
+
+export type BootsSlotEntityVariants = (typeof BootsSlotEntityVariants)[number]

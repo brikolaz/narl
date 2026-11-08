@@ -6,9 +6,13 @@ import type { Entity } from "../../../../../core/model/Entity"
 import { BaseItemFactory } from "../../../BaseItemFactory"
 import { LongSwordEntity } from "./variants/LongSword/LongSwordEntity"
 import { SwordEntity } from "./variants/Sword/SwordEntity"
-import type { SwordEntityVariants } from "./variants/variants"
+import { SwordEntityVariants } from "./variants/variants"
 
 class SwordFactory extends BaseItemFactory<SwordEntityVariants> {
+  protected getVariants(): readonly SwordEntityVariants[] {
+    return SwordEntityVariants
+  }
+
   getDefault(): Entity {
     return SwordEntity()
   }

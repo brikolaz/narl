@@ -22,7 +22,8 @@ import type { PantsEntityVariants } from "./pants/variants/variants"
 import { PantsEntity } from "./pants/variants/Pants/PantsEntity"
 import { RingEntityFactory } from "./ring/factory"
 import type { RingEntityVariants } from "./ring/variants/variants"
-import { RingEntity } from "./ring/variants/Ring/RingEntity"
+import { OffensiveRingEntity } from "./ring/variants/OffensiveRing/OffensiveRingEntity"
+import { DefensiveRingEntity } from "./ring/variants/DefensiveRing/DefensiveRingEntity"
 import { ShieldEntityFactory } from "./shield/factory"
 import type { ShieldEntityVariants } from "./shield/variants/variants"
 import { ShieldEntity } from "./shield/variants/Shield/ShieldEntity"
@@ -36,6 +37,12 @@ import { AxeEntityFactory } from "./axe/factory"
 
 import type { AxeEntityVariants } from "./axe/variants/variants"
 
+import { OffensiveStringEntity } from "./string/variants/OffensiveString/OffensiveStringEntity"
+import { DefensiveStringEntity } from "./string/variants/DefensiveString/DefensiveStringEntity"
+import { StringEntityFactory } from "./string/factory"
+
+import type { StringEntityVariants } from "./string/variants/variants"
+
 export type ItemEntityVariants =
   | ArmorEntityVariants
   | BootsEntityVariants
@@ -47,6 +54,7 @@ export type ItemEntityVariants =
   | ShieldEntityVariants
   | SwordEntityVariants
   | AxeEntityVariants
+  | StringEntityVariants
 
 export const ITEM_FACTORIES = new Map<ItemEntityVariants, ItemFactory>([
   [ArmorEntity.type, ArmorEntityFactory],
@@ -58,9 +66,12 @@ export const ITEM_FACTORIES = new Map<ItemEntityVariants, ItemFactory>([
   [HelmetEntity.type, HelmetEntityFactory],
   [HornedHelmetEntity.type, HelmetEntityFactory],
   [PantsEntity.type, PantsEntityFactory],
-  [RingEntity.type, RingEntityFactory],
+  [OffensiveRingEntity.type, RingEntityFactory],
+  [DefensiveRingEntity.type, RingEntityFactory],
   [ShieldEntity.type, ShieldEntityFactory],
   [LongSwordEntity.type, SwordEntityFactory],
   [SwordEntity.type, SwordEntityFactory],
   [AxeEntity.type, AxeEntityFactory],
+  [OffensiveStringEntity.type, StringEntityFactory],
+  [DefensiveStringEntity.type, StringEntityFactory],
 ])

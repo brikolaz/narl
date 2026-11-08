@@ -1,3 +1,5 @@
-import type { PantsEntity } from "./Pants/PantsEntity"
+import { PantsEntity } from "./Pants/PantsEntity"
 
-export type PantsEntityVariants = typeof PantsEntity.type
+export const PantsEntityVariants = [PantsEntity.type] as const
+
+export type PantsEntityVariants = (typeof PantsEntityVariants)[number]

@@ -9,9 +9,13 @@ import { DroppableComponent } from "../../../components/interaction/DroppableCom
 import { BackpackEntity } from "./variants/Backpack/BackpackEntity"
 import { ContainerEntity } from "./variants/Container/ContainerEntity"
 import { PlayerBackpackEntity } from "./variants/PlayerBackpack/PlayerBackpackEntity"
-import type { ContainerEntityVariants } from "./variants/variants"
+import { ContainerEntityVariants } from "./variants/variants"
 
 class ContainerFactory extends BaseItemFactory<ContainerEntityVariants> {
+  protected getVariants(): readonly ContainerEntityVariants[] {
+    return ContainerEntityVariants
+  }
+
   getDefault(): ReturnType<typeof ContainerEntity> {
     return ContainerEntity()
   }

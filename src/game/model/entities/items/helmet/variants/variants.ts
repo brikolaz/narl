@@ -1,5 +1,9 @@
-import type { HelmetEntity } from "./Helmet/HelmetEntity"
-import type { HornedHelmetEntity } from "./HornedHelmet/HornedHelmetEntity"
+import { HelmetEntity } from "./Helmet/HelmetEntity"
+import { HornedHelmetEntity } from "./HornedHelmet/HornedHelmetEntity"
 
-export type HelmetEntityVariants =
-  typeof HelmetEntity.type | typeof HornedHelmetEntity.type
+export const HelmetEntityVariants = [
+  HelmetEntity.type,
+  HornedHelmetEntity.type,
+] as const
+
+export type HelmetEntityVariants = (typeof HelmetEntityVariants)[number]

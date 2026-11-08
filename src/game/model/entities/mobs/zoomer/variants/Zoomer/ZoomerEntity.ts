@@ -1,3 +1,5 @@
+import { OffensiveRingEntity } from "../../../../items/ring/variants/OffensiveRing/OffensiveRingEntity"
+import { DefensiveRingEntity } from "../../../../items/ring/variants/DefensiveRing/DefensiveRingEntity"
 import { ArmorEntity } from "../../../../items/armor/variants/Armor/ArmorEntity"
 import { addContainerLoot } from "../../../../../../systems/loot/loot"
 import { BleedingEffectComponent } from "../../../../../components/combat/BleedingEffectComponent"
@@ -60,6 +62,8 @@ const addLoot = (zoomer: Entity<"ZOOMER">): void => {
     [15, HornedHelmetEntity],
     [10, ArmorEntity],
     [20, AxeEntity],
+    [10, OffensiveRingEntity],
+    [10, DefensiveRingEntity],
   ])
 
   upsertRoleEntities(zoomer, {

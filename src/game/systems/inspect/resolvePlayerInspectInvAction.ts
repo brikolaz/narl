@@ -15,8 +15,7 @@ export const resolvePlayerInspectInvAction = (
   const action: Action = new Action(gameAction)
 
   ;(() => {
-    const player = getPlayer()
-    const backpack = assert(getBackpack(player), "Player has no backpack")
+    const backpack = assert(getBackpack(getPlayer()), "Player has no backpack")
 
     const item = getContainerItemAt(backpack, invSlot)
 

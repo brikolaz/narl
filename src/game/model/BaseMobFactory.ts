@@ -1,3 +1,4 @@
+import { STATE } from "../state"
 import type { EntityTypeArgument } from "../../core/model/queries/entities/normalize"
 import type { Entity, EntityType } from "../../core/model/Entity"
 import { makePursuer } from "../systems/pursuer/makePursuer"
@@ -7,6 +8,13 @@ export abstract class BaseMobFactory<
   Variants extends EntityType,
 > implements MobFactory<Variants> {
   abstract getDefault(): Entity
+
+  protected abstract getVariants(): readonly Variants[]
+
+  getRandomVariant(): Entity {
+    const variant = STATE.rng.mobs.pick(...this.getVariants())
+    return variant === undefined ? this.getDefault() : this.getVariant(variant)
+  }
 
   getVariant(variant: EntityTypeArgument<Variants>): Entity {
     void variant

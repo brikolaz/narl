@@ -5,6 +5,7 @@ import {
 import { upsertComponents } from "../../../../../../../core/model/queries/components/add"
 import { COLORS } from "../../../../../../../core/utils/colors"
 import { getRng } from "../../../../../../systems/rng/rng"
+import { DefMulComponent } from "../../../../../components/combat/DefMulComponent"
 import { ContainerComponent } from "../../../../../components/containers/ContainerComponent"
 import { NestDepthComponent } from "../../../../../components/containers/NestDepthComponent"
 import { SizeComponent } from "../../../../../components/containers/SizeComponent"
@@ -29,6 +30,7 @@ const addComponents = (backpack: Entity<"BACKPACK">): void => {
     NameComponent({ name: "ENTITY.BACKPACK" }),
     GlyphComponent({ glyph: "d" }),
     ContainerComponent(),
+    DefMulComponent({ defMul: 0 }),
     SizeComponent({ size: getRng(backpack).range(3, 4) }),
     NestDepthComponent({ nestDepth: getRng(backpack).range(1, 2) }),
     ColorComponent({ color: COLORS.tier.common }),
